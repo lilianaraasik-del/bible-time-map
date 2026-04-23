@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ArrowUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Navigation } from "@/components/Navigation";
 
 interface BibleBook {
   name: string;
@@ -26,8 +27,8 @@ const bibleBooks: BibleBook[] = [
   { name: "Joosua", author: "Joosua", yearWritten: "u 1400-1370 eKr", testament: "VT", category: "Ajalugu", slug: "joosua" },
   { name: "Kohtumõistjad", author: "Saamueli", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
   { name: "Rutt", author: "Tundmatu", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "rutt" },
-  { name: "1. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamueli" },
-  { name: "2. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamueli" },
+  { name: "1. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
+  { name: "2. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
   { name: "1. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "1-kuningate" },
   { name: "2. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "2-kuningate" },
   { name: "1. Ajaraamat", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "1-ajaraamat" },
@@ -134,8 +135,9 @@ export function BibleTimeline() {
   }, [searchQuery, filteredBooks.length]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-16 px-4 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 overflow-hidden">
+      <Navigation />
+      <div className="max-w-6xl mx-auto py-16 px-4">
         <header className="text-center mb-12 animate-in fade-in slide-in-from-top duration-1000">
           <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
             Piibli Tarkuse Puu

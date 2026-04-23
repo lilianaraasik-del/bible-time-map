@@ -1,0 +1,743 @@
+
+import { Link, useParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp } from "lucide-react";
+
+import { useState, useEffect } from "react";
+
+import { Navigation } from "@/components/Navigation";
+
+// Extended book data with author facts, breakdowns, overview and additional facts
+const bookDetails: Record<string, {
+  name: string;
+  author: string;
+  period: string;
+  category: string;
+  overview: string;
+  authorFacts: string[];
+  additionalFacts: string[];
+  breakdowns: {title: string;description: string;}[];
+  piibeeUrl: string;
+}> = {
+  "1-mooses": {
+    name: "1. Mooses",
+    author: "Mooses",
+    period: "u 1445-1405 eKr",
+    category: "Seadus",
+    overview: "1. Moosese raamat on alguse raamat - see räägib maailma loomisest, inimkonna pattulangemisest ja Jumala plaanist päästa inimsugu. See näitab, kuidas Jumal valis Aabrahami ja tema järglased, et luua rahvas, kelle kaudu tuleb Päästja. Raamat õpetab meile Jumala võimsust, headust ja ustavust.",
+    authorFacts: [
+      "Juhtis iisraellasi Egiptusest välja",
+      "Sai Siinai mäel Jumalalt 10 käsku",
+      "Kirjutas viis esimest Piibli raamatut (Pentateuhi)",
+      "Elas 120 aastat"
+    ],
+    additionalFacts: [
+      "Mooses oli kolmest õest-vennast noorim",
+      "Tema õde Mirjam oli piisavalt vana, et jälgida, mis tema vennakesega juhtuma hakkab",
+      "Tema vend Aaron oli kolm aastat vanem",
+      "Kasvas üles vaarao õukonnas, kuid valis oma rahva"
+    ],
+    breakdowns: [
+      { title: "Loomislugu (ptk 1-2)", description: "Jumal loob taeva, maa ja inimese kuue päevaga" },
+      { title: "Pattulangemine (ptk 3)", description: "Aadam ja Eeva langevad kiusatusse ja kaotavad Eedeni" },
+      { title: "Noa laev (ptk 6-9)", description: "Jumal päästab Noa ja tema pere veeuputusest" },
+      { title: "Aabrahami kutsumine (ptk 12)", description: "Jumal kutsub Aabrahami ja tõotab talle suure rahva" },
+      { title: "Joosepi lugu (ptk 37-50)", description: "Joosep müüakse orjaks, kuid saab Egiptuse valitsejaks" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "2-mooses": {
+    name: "2. Mooses",
+    author: "Mooses",
+    period: "u 1445-1405 eKr",
+    category: "Seadus",
+    overview: "2. Moosese raamat räägib vaprusest, usust ja vapustavatest imedest. See näitab meile, kuidas Jumal vabastab oma rahva orjusest ja juhib neid läbi kõrbe tõotatud maale. Raamat õpetab, et Jumal kuuleb meie hüüdeid ja tuleb appi ka siis, kui olukord tundub lootusetuna. 10 käsku annavad meile moraalsed juhised elamiseks ja näitavad Jumala armastust meie vastu.",
+    authorFacts: [
+      "Juhtis iisraellasi Egiptusest välja",
+      "Sai Siinai mäel Jumalalt 10 käsku",
+      "Kirjutas viis esimest Piibli raamatut",
+      "Nägi Jumala imetegusid ja ime"
+    ],
+    additionalFacts: [
+      "Põgenev põõsas oli esimene koht, kus Jumal ilmutas end Moosesele",
+      "10 nuhtlust Egiptusele tõestasid Jumala võimsust",
+      "Punase mere jagunemine on üks tuntuimaid Piibli imetest",
+      "Kirikutelk (tabernaakkel) oli Jumala elamispaik rahva keskel"
+    ],
+    breakdowns: [
+      { title: "Iisraeli orjapõli (ptk 1-2)", description: "Iisrael on Egiptuses orjuses, Mooses sünnib" },
+      { title: "Põlev põõsas (ptk 3)", description: "Jumal ilmub Moosesele ja kutsub teda rahvast vabastama" },
+      { title: "Kümme nuhtlust (ptk 7-12)", description: "Jumal saadab Egiptusele nuhtlusi, et vaarao laseks rahva lahti" },
+      { title: "Punasel merel (ptk 14)", description: "Jumal lahutab Punase mere veed, iisraellased pääsevad" },
+      { title: "10 käsku (ptk 20)", description: "Jumal annab Moosesele Siinai mäel 10 käsku" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "3-mooses": {
+    name: "3. Mooses",
+    author: "Mooses",
+    period: "u 1445-1405 eKr",
+    category: "Seadus",
+    overview: "3. Moosese raamat on praktilne juhend pühale elule. See õpetab, kuidas läheneda pühale Jumalale läbi ohvrite ja pühitsemise. Raamat näitab, et Jumal soovib elada oma rahva keskel, kuid patt eraldab meid Temast. Ohvrisüsteem osutab tulevase Päästja peale, kes toob lõpliku lepituse.",
+    authorFacts: [
+      "Kirjutas raamatu Siinai mäe jalamil",
+      "Sai kõik juhised otse Jumalalt",
+      "Õpetas iisraellasi pühadust ja puhastust",
+      "Seadis sisse preestrite ja ohvrite süsteemi"
+    ],
+    additionalFacts: [
+      "Raamat sisaldab peamiselt Jumala otseseid juhiseid",
+      "Aaron ja tema pojad määrati preestreiks",
+      "Lepituspäev oli kõige püham päev aastas",
+      "Paljud seadused puudutasid tervise ja hügieeni"
+    ],
+    breakdowns: [
+      { title: "Ohvrid (ptk 1-7)", description: "Viis erinevat ohvri liiki ja nende tähendused" },
+      { title: "Preestrite pühitsemine (ptk 8-10)", description: "Aaron ja ta pojad määratakse preestreiks" },
+      { title: "Puhtad ja roojased loomad (ptk 11)", description: "Juhised toidu ja puhastuse kohta" },
+      { title: "Lepituspäev (ptk 16)", description: "Kõige püham päev aastas, rahva pattude lepitamine" },
+      { title: "Püha elu (ptk 19-20)", description: "Olge pühad, sest mina, Issand, olen püha" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "4-mooses": {
+    name: "4. Mooses",
+    author: "Mooses",
+    period: "u 1445-1405 eKr",
+    category: "Seadus",
+    overview: "4. Moosese raamat jutustab iisraellaste 40-aastasest rännakust kõrbes. See on lugu usust ja uskmatusest, sõnakuulmatusest ja Jumala ustavusest. Vaatamata rahva mässamisele ja kaebamisele, jäi Jumal neile truuks ja viis nad lõpuks tõotatud maa piirile.",
+    authorFacts: [
+      "Dokumenteeris 40-aastast kõrberännakut",
+      "Kirjeldas rahva loendusi ja organiseerimist",
+      "Kirjutas üles rahva mässamised ja Jumala karistused",
+      "Elas kogu selle perioodi iisraellaste keskel"
+    ],
+    additionalFacts: [
+      "Raamat sisaldab kaks rahvaloendust - alguses ja lõpus",
+      "12 luurajat lähetati Kaanani maad uurima",
+      "Ainult Joosua ja Kaaleb usaldasid Jumalat",
+      "Mooses lõi kaljust vett, kuid ei täitnud Jumala käsku täpselt"
+    ],
+    breakdowns: [
+      { title: "Rahvaloendus (ptk 1-4)", description: "Iisrael korraldatakse sõjaväeliselt" },
+      { title: "12 luurajat (ptk 13-14)", description: "Rahvas keeldub minema tõotatud maale" },
+      { title: "Koora mäss (ptk 16)", description: "Koora juhitud mäss Moosese vastu ebaõnnestub" },
+      { title: "Vask madu (ptk 21)", description: "Kes vaatab mao poole, jääb ellu" },
+      { title: "Bileam (ptk 22-24)", description: "Prohvet, kes ei suutnud neetuda Iisraeli" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "5-mooses": {
+    name: "5. Mooses",
+    author: "Mooses",
+    period: "u 1445-1405 eKr",
+    category: "Seadus",
+    overview: "5. Moosese raamat on Moosese hüvastijätukõned uuele põlvkonnale enne tõotatud maale sisenemist. Ta meenutab Jumala ustavust, kordab seadusi ja julgustab rahvast armastama Jumalat kogu südamest. See on kutse valida elu ja õnnistus, mitte surm ja needus.",
+    authorFacts: [
+      "Viimane raamat, mille Mooses kirjutas",
+      "Pidas kolm suurt kõnet rahvale",
+      "Kordas ja selgitas seadusi uuele põlvkonnale",
+      "Suri enne tõotatud maale sisenemist"
+    ],
+    additionalFacts: [
+      "Mooses nägi tõotatud maad Nebo mäelt",
+      "Jumal mattis ta ise, keegi ei tea, kus ta haud asub",
+      "Joosua määrati tema järglaseks",
+      "Raamat lõpeb värsiga: 'Ei ole enam Iisraelis tõusnud prohvetit nagu Mooses'"
+    ],
+    breakdowns: [
+      { title: "Ajaloo meenutamine (ptk 1-4)", description: "Mooses meenutab Jumala tegusid kõrbes" },
+      { title: "10 käsku korratakse (ptk 5)", description: "Seaduse südamik antakse uuesti" },
+      { title: "Shema (ptk 6)", description: "Armasta Issandat, oma Jumalat, kogu südamega" },
+      { title: "Õnnistused ja needused (ptk 28)", description: "Sõnakuulmise tasu ja sõnakuulmatuse tagajärjed" },
+      { title: "Moosese surm (ptk 34)", description: "Mooses sureb Nebo mäel, olles 120-aastane" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "joosua": {
+    name: "Joosua",
+    author: "Joosua",
+    period: "u 1400-1370 eKr",
+    category: "Ajalugu",
+    overview: "Joosua on julguse ja usu sümbol. Pärast Moosese surma võttis ta vastutuse juhtida iisraellasi tõotatud maale. Tema lugu õpetab meile, et Jumal annab jõudu ja julgust, kui me usaldame Teda. Joosua ei kartanud väljakutseid ega vastaseid, sest ta teadis, et Jumal on temaga. Ta on eeskuju neile, kes seisavad silmitsi hirmutavate ülesannetega - usu ja julgusega on võimalik saavutada võimatu.",
+    authorFacts: [
+      "Moosese järglane ja Iisraeli juht",
+      "Juhtis iisraellasi Tõotatud maale",
+      "Oli üks kahest Egiptusest tulnud põlvkonnast, kes nägi Tõotatud maad",
+      "Elas üle 110 aasta vanuseks"
+    ],
+    additionalFacts: [
+      "Joosua oli Nuuni poeg ja Efraimi suguharust",
+      "Ta oli üks 12-st luurajast, kes uurisid Kaanani maad",
+      "Ainult tema ja Kaaleb usaldasid Jumalat piisavalt",
+      "Tema algne nimi oli Hoosea, kuid Mooses nimetas ta ümber Joosuaks"
+    ],
+    breakdowns: [
+      { title: "Jordani ületamine (ptk 3-4)", description: "Jumal peatab Jordani jõe vee, rahvas läheb üle" },
+      { title: "Jeeriko vallutamine (ptk 6)", description: "Müürid langevad, kui rahvas marssib linna ümber" },
+      { title: "Ai vallutamine (ptk 7-8)", description: "Pärast Aakani pattu vallutab Iisrael Ai linna" },
+      { title: "Päikese peatus (ptk 10)", description: "Jumal peatab päikese Joosua palve peale lahingus" },
+      { title: "Maa jagamine (ptk 13-21)", description: "Tõotatud maa jaotatakse 12 suguharu vahel" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "kohtumõistjad": {
+    name: "Kohtumõistjad",
+    author: "Tundmatu (võib-olla Saamuel)",
+    period: "u 1043-1004 eKr",
+    category: "Ajalugu",
+    overview: "Kohtumõistjate raamat kirjeldab Iisraeli ajalugu pärast Joosua surma kuni kuningate ajastuni. See on tsükliline lugu patust, orjusest, meeleparandusest ja päästest. Jumal tõstis üles juhte (kohtumõistjaid), kes vabastasid rahva rõhujate käest, kuid rahvas langes ikka ja jälle tagasi pattu.",
+    authorFacts: [
+      "Autor on tundmatu, traditsioon omistab Saamuelile",
+      "Kirjutas kuningate ajastul, vaadates tagasi",
+      "Dokumenteeris 12 peamist kohtumõistjat",
+      "Näitas Iisraeli vajadust kuninga järele"
+    ],
+    additionalFacts: [
+      "Raamat hõlmab umbes 350-aastast perioodi",
+      "Debora oli ainus naiskohtumõistja",
+      "Gideon võitis 300 mehega tohutu armeed",
+      "Simson oli kuulsaim kohtumõistja oma jõu poolest"
+    ],
+    breakdowns: [
+      { title: "Iisraeli patt (ptk 1-3)", description: "Rahvas ei hävita kaananlasi ja teenib nende jumalaid" },
+      { title: "Debora ja Barak (ptk 4-5)", description: "Naiskohtumõistja ja väejuht võidavad Siisera" },
+      { title: "Gideon (ptk 6-8)", description: "300 meest võidavad tohutu midjanlaste armee" },
+      { title: "Simson (ptk 13-16)", description: "Võimas mees võitleb filiistrite vastu" },
+      { title: "Moraalne langus (ptk 17-21)", description: "Igaüks tegi, mis talle õige tundus" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "rutt": {
+    name: "Ruti raamat",
+    author: "Tundmatu (võib-olla Saamuel)",
+    period: "u 1000 eKr",
+    category: "Ajalugu",
+    overview: "Ruti raamat on ilus armastuse ja truuduse lugu kohtumõistjate tumedal ajastul. Moabi naine Rutt jääb truuks oma ämmale Noomile ja leiab uue elu Iisraelis. Ta abiellub Boasega ja saab kuningas Taaveti vanavanaemaks. See näitab, et Jumala arm ulatub kõigile rahvastele.",
+    authorFacts: [
+      "Autor on tundmatu",
+      "Kirjutas peale Taaveti kuningaks saamist",
+      "Rõhutas Jumala providentssi",
+      "Näitas, et moablased võivad kuuluda Jumala rahvasse"
+    ],
+    additionalFacts: [
+      "Rutt oli üks kahest Piibli raamatust, mis on nimetatud naise järgi",
+      "Rutt on mainitud Jeesuse sugupuus",
+      "Lugu leiab aset kohtumõistjate ajastul",
+      "Boase oli Raahabi poeg"
+    ],
+    breakdowns: [
+      { title: "Noomi tragöödia (ptk 1)", description: "Noomi kaotab mehe ja pojad, naaseb Petlemmasse" },
+      { title: "Rutt kohtub Boasega (ptk 2)", description: "Rutt korjab tähki Boase põllul" },
+      { title: "Rutt palub lunastust (ptk 3)", description: "Noomi juhendab Rutti otsima lunastajat" },
+      { title: "Abielu ja lunastus (ptk 4)", description: "Boase lunastab Rutti ja abiellub temaga" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "1-saamuel": {
+    name: "1. Saamueli raamat",
+    author: "Saamuel ja teised prohvetid",
+    period: "u 931-722 eKr",
+    category: "Ajalugu",
+    overview: "1. Saamueli raamat räägib üleminekust kohtumõistjatest kuningatele. Saamuel, viimane suur kohtumõistja ja esimene prohvet, võidis kuningaks Sauli ja seejärel Taaveti. Lugu näitab, et Jumal otsib inimesi, kelle süda on Tema järgi, mitte välimust.",
+    authorFacts: [
+      "Saamuel kirjutas osa raamatust",
+      "Teised prohvetid täiendasid pärast tema surma",
+      "Dokumenteeris Iisraeli esimesi kuningaid",
+      "Oli nii prohvet, preester kui kohtumõistja"
+    ],
+    additionalFacts: [
+      "Saamuel sündis vastuseks ema Hanna palvele",
+      "Ta võidis kaks kuningat: Sauli ja Taaveti",
+      "Saul kaotis kuningriigi sõnakuulmatuse tõttu",
+      "Taavet lõi Koljati"
+    ],
+    breakdowns: [
+      { title: "Saamueli sünd (ptk 1-3)", description: "Hanna palve ja Saamueli kutstumine" },
+      { title: "Sauli kuningaks võidmine (ptk 8-10)", description: "Rahvas tahab kuningat" },
+      { title: "Sauli sõnakuulmatus (ptk 13-15)", description: "Saul kaotab kuningriigi" },
+      { title: "Taaveti võidmine (ptk 16)", description: "Jumal valib Taaveti" },
+      { title: "Taavet ja Koljat (ptk 17)", description: "Poiss võidab hiiglase" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "2-saamuel": {
+    name: "2. Saamueli raamat",
+    author: "Tundmatu (võib-olla prohvet Natan)",
+    period: "u 931-722 eKr",
+    category: "Ajalugu",
+    overview: "2. Saamueli raamat keskendub kuningas Taaveti valitsusele. See näitab nii Taaveti suuri võite kui ka sügavaid pattulangemisi. Vaatamata tema pattudele, nimetas Jumal teda 'meheks oma südame järgi' ja lubas, et tema soost tuleb igavene kuningas.",
+    authorFacts: [
+      "Autor on tundmatu, võib-olla prohvet Natan",
+      "Kirjutas objektiivselt Taaveti võitest ja pattudest",
+      "Dokumenteeris Taaveti lepingut Jumalaga",
+      "Näitas Jumala armu ja õiglust"
+    ],
+    additionalFacts: [
+      "Taavet tõi lepingulaeka Jeruusalemma",
+      "Ta soovis ehitada templi, aga Jumal ei lubanud",
+      "Tema suurim patt oli Batseba ja Uurija lugu",
+      "Absalom, tema poeg, mässas tema vastu"
+    ],
+    breakdowns: [
+      { title: "Taavet Juuda kuningas (ptk 1-4)", description: "Taavet saab kuningaks Juudas, seejärel kogu Iisraelis" },
+      { title: "Lepingulaeka Jeruusalemma (ptk 5-7)", description: "Taavet toob laeeka ja saab lepingu Jumalalt" },
+      { title: "Taaveti võidud (ptk 8-10)", description: "Taavet laiendab kuningriiki" },
+      { title: "Batseba ja Uurija (ptk 11-12)", description: "Taaveti suurim patt ja karistus" },
+      { title: "Absalomi mäss (ptk 13-19)", description: "Taaveti poeg mässab ja sureb" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "1-kuningate": {
+    name: "1. Kuningate raamat",
+    author: "Tundmatu (võib-olla Jeremija)",
+    period: "u 560 eKr",
+    category: "Ajalugu",
+    overview: "1. Kuningate raamat jutustab Saalomoni valitsusest ja kuningriigi jagunemisest. Saalomon, kõigi aegade targim mees, ehitas templi, kuid langes hiljem ebajumalakummardamisesse. Pärast tema surma jagunesid kuningriik kaheks - Iisraeliks põhjas ja Juudaks lõunas.",
+    authorFacts: [
+      "Autor on tundmatu, traditsioon omistab Jeremijale",
+      "Kirjutas Babüloonia vangipõlves",
+      "Dokumenteeris kuningate võrdlust Jumala seadusega",
+      "Rõhutas sõnakuulmise tähtsust"
+    ],
+    additionalFacts: [
+      "Saalomon palus tarkust, mitte rikkust või võimu",
+      "Ta ehitas kuulsa templi Jeruusalemma",
+      "Tal oli 700 naist ja 300 lisanaist",
+      "Eelija oli võimas prohvet Aahabi ajal"
+    ],
+    breakdowns: [
+      { title: "Saalomoni tarkus (ptk 1-4)", description: "Saalomon saab kuningaks ja palub tarkust" },
+      { title: "Templi ehitamine (ptk 5-8)", description: "Saalomon ehitab kuulsa templi" },
+      { title: "Kuningriigi jagunemine (ptk 12)", description: "10 suguharu eralduvad Juudast" },
+      { title: "Eelija ja Baaali preestrid (ptk 17-18)", description: "Eelija näitab Baaali preestritele Jumala võimsust" },
+      { title: "Eelija taevasse minek (ptk 19-2.Kn 2)", description: "Eelija võetakse tuletõllaga taevasse" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "2-kuningate": {
+    name: "2. Kuningate raamat",
+    author: "Tundmatu (võib-olla Jeremija)",
+    period: "u 560 eKr",
+    category: "Ajalugu",
+    overview: "2. Kuningate raamat jätkab Iisraeli ja Juuda kuningate lugu kuni vangipõlveni. Enamik kuningaid oli kurjad ja viisid rahva ebajumalakummardamiseni. Jumal saatis prohveteid hoiatama, kuid rahvas ei kuulanud. Lõpuks viis Jumal mõlemad kuningriigid vangipõlve.",
+    authorFacts: [
+      "Autor on tundmatu, võib-olla Jeremija",
+      "Kirjutas vangipõlve ajal või vahetult pärast seda",
+      "Dokumenteeris mõlema kuningriigi langust",
+      "Näitas patu tagajärgi"
+    ],
+    additionalFacts: [
+      "Eelisa tegi kahekordse osa imetegusid võrreldes Eelijaga",
+      "Iisraeli (põhja) kuningriik langes 722 eKr Assüüriale",
+      "Juuda (lõuna) kuningriik langes 586 eKr Babülooniale",
+      "Jeruusalemma tempel hävitati"
+    ],
+    breakdowns: [
+      { title: "Eelija taevasse minek (ptk 1-2)", description: "Eelisa saab kahekordse osa vaimust" },
+      { title: "Eelisa imed (ptk 3-8)", description: "Eelisa teeb palju imetegusid" },
+      { title: "Iisraeli langemine (ptk 17)", description: "Assüüria võtab põhja kuningriigi vangi" },
+      { title: "Hiskija reform (ptk 18-20)", description: "Hea kuningas reformib Juudat" },
+      { title: "Jeruusalemma langemine (ptk 25)", description: "Babüloonia hävitab linna ja templi" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "1-ajaraamat": {
+    name: "1. Ajaraamat",
+    author: "Esra",
+    period: "u 450-425 eKr",
+    category: "Ajalugu",
+    overview: "1. Ajaraamat on Iisraeli ajaloo ülevaade Aadamast Taaveti kuningriigini. Raamat rõhutab Juuda suguharu ja Jeruusalemma templi tähtsust. See kirjutati pärast vangipõlvest naasmist, et näidata Jumala ustavust oma rahvale läbi ajaloo.",
+    authorFacts: [
+      "Autor on tõenäoliselt Esra",
+      "Kirjutas pärast Babüloonia vangipõlvest naasmist",
+      "Rõhutas Juuda suguharu ja templi tähtsust",
+      "Kasutas genealoogiaid sidumaks mineviku ja oleviku"
+    ],
+    additionalFacts: [
+      "Esimesed 9 peatükki on peamiselt sugupuud",
+      "Raamat katab samu sündmusi kui Saamueli ja Kuningate raamatud",
+      "Fookus on templi teenistusel ja leevilastel",
+      "Taavet valmistas templi ehitamiseks"
+    ],
+    breakdowns: [
+      { title: "Genealoogiad (ptk 1-9)", description: "Sugupuud Aadamast vangipõlveni" },
+      { title: "Taaveti valitsus (ptk 10-20)", description: "Taavet saab kuningaks ja võidab vaenlased" },
+      { title: "Lepingulaeka toomine (ptk 13-16)", description: "Taavet toob laeega Jeruusalemma" },
+      { title: "Taaveti leping (ptk 17)", description: "Jumal lubab igavese kuningriigi" },
+      { title: "Templi ettevalmistused (ptk 21-29)", description: "Taavet valmistab templi ehitamiseks" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "2-ajaraamat": {
+    name: "2. Ajaraamat",
+    author: "Esra",
+    period: "u 450-425 eKr",
+    category: "Ajalugu",
+    overview: "2. Ajaraamat keskendub Juuda kuningate ajaloole Saalominist vangipõlveni. Erinevalt Kuningate raamatust, mis dokumenteerib nii Iisraeli kui Juuda kuningaid, keskendub see ainult Juuda kuningatele ja templile. Raamat lõpeb lootusega - Küürose dekreediga, mis lubas juutidel naasta koju.",
+    authorFacts: [
+      "Autor on tõenäoliselt Esra",
+      "Kirjutas vangipõlvest naasnud juutidele",
+      "Keskendus templile ja Jeruusalemmale",
+      "Näitas Jumala õnnistust truudusele"
+    ],
+    additionalFacts: [
+      "Saalomon ehitas templi 7 aastaga",
+      "Hiskija ja Joosija olid kaks parimat kuningat",
+      "Raamat lõpeb Küürose dekreediga (539 eKr)",
+      "Templi taastamine oli keskne teema"
+    ],
+    breakdowns: [
+      { title: "Saalomoni tempel (ptk 1-9)", description: "Saalomon ehitab ja pühitseb templi" },
+      { title: "Kuningriigi jagunemine (ptk 10-12)", description: "10 suguharu eralduvad Juudast" },
+      { title: "Juuda kuningad (ptk 13-35)", description: "Mõned head, enamik halbu kuningaid" },
+      { title: "Jeruusalemma langemine (ptk 36)", description: "Babüloonia hävitab linna" },
+      { title: "Küürose dekreet (ptk 36)", description: "Luba naasta ja ehitada tempel uuesti" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "esra": {
+    name: "Esra raamat",
+    author: "Esra",
+    period: "u 440 eKr",
+    category: "Ajalugu",
+    overview: "Esra raamat jutustab, kuidas juudid naasid Babüloonia vangipõlvest ja ehitasid templi uuesti. Küürose dekreet võimaldas neil naasta, kuid teekond oli raske. Esra, preester ja seaduseõpetaja, viis läbi vaimuliku ärkamise ja õpetas rahvale Jumala seadust.",
+    authorFacts: [
+      "Esra oli preester ja seaduseõpetaja",
+      "Juhtis teist naasmisgrupp Jeruusalemma (458 eKr)",
+      "Õpetas rahvale Moosese seadust",
+      "Viis läbi vaimuliku reformi"
+    ],
+    additionalFacts: [
+      "Esimene naasmisgrupp tuli Serubbaabeli juhtimisel (538 eKr)",
+      "Templi ehitamine kestis 23 aastat (536-515 eKr)",
+      "Vastased püüdsid takistada ehitust",
+      "Esra võitles segaabiellumise vastu"
+    ],
+    breakdowns: [
+      { title: "Esimene naasmism (ptk 1-2)", description: "Serubbaabel viib esimese grupi koju" },
+      { title: "Templi aluse panemine (ptk 3)", description: "Töö algab, kuid vastased takistavad" },
+      { title: "Templi valmistamine (ptk 4-6)", description: "Pärast peatust valmib tempel" },
+      { title: "Esra teine naasmisgrupp (ptk 7-8)", description: "Esra toob veel ühe grupi" },
+      { title: "Segaabiellumise probleem (ptk 9-10)", description: "Esra nõuab parandust" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "nehemja": {
+    name: "Nehemja raamat",
+    author: "Nehemja",
+    period: "u 430 eKr",
+    category: "Ajalugu",
+    overview: "Nehemja raamat jutustab, kuidas Jeruusalemma müürid ehitati uuesti 52 päevaga. Nehemja, Pärsia kuninga joogimees, sai loa minna Jeruusalemma ja juhtida müüride taastamist. Vaatamata vastaste rünnakutele ja sisemistele probleemidele, viis ta töö edukal lõpuni.",
+    authorFacts: [
+      "Nehemja oli Pärsia kuninga joogimees",
+      "Sai loa minna Jeruusalemma 445 eKr",
+      "Juhtis müüride ehitamist 52 päevaga",
+      "Viis läbi sotsiaalseid ja vaimulikke reforme"
+    ],
+    additionalFacts: [
+      "Nehemja kuulis Jeruusalemma olukorrast ja nuttis",
+      "Ta palvetas 4 kuud enne kuninga juurde minekut",
+      "Vastased naersid ja ähvardasid, kuid ei suutnud takistada",
+      "Esra ja Nehemja töötasid koos vaimuliku ärkamise nimel"
+    ],
+    breakdowns: [
+      { title: "Nehemja palve (ptk 1-2)", description: "Nehemja kuuleb Jeruusalemma olukorrast" },
+      { title: "Müüride ehitamine (ptk 3-7)", description: "52 päevaga valmisvad müürid" },
+      { title: "Seaduse lugemine (ptk 8)", description: "Esra loeb seadust rahvale" },
+      { title: "Meeleparandus (ptk 9-10)", description: "Rahvas tunnistab patte ja teeb lepingu" },
+      { title: "Reformid (ptk 11-13)", description: "Nehemja viib läbi reforme" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  },
+  "ester": {
+    name: "Esteri raamat",
+    author: "Tundmatu (võib-olla Mordokai)",
+    period: "u 465 eKr",
+    category: "Ajalugu",
+    overview: "Esteri raamat on dramaatiline lugu sellest, kuidas Jumal päästis juudi rahva hävingust Pärsias. Ester, juudi neiu, sai kuningannaks ja riskis oma eluga, et päästa oma rahvast. Kuigi Jumala nime ei mainita, on Tema providentssi selgelt näha kogu loos.",
+    authorFacts: [
+      "Autor on tundmatu, võib-olla Mordokai",
+      "Kirjutas Pärsia perioodil",
+      "Ei maini Jumala nime üldse",
+      "Näitas Jumala providentssi"
+    ],
+    additionalFacts: [
+      "Ester oli Mordokai õetütar",
+      "Ta varjas algul oma juudi päritolu",
+      "Haman ehitas poomispuu Mordokai jaoks",
+      "Lõpuks poodi Haman ise sellel puul üles"
+    ],
+    breakdowns: [
+      { title: "Ester kuningannaks (ptk 1-2)", description: "Vasti kukutatakse, Ester saab kuningannaks" },
+      { title: "Hamani plaan (ptk 3)", description: "Haman plaanib hävitada kõik juudid" },
+      { title: "Mordokai abi (ptk 4)", description: "Mordokai palub Esterit sekkuda" },
+      { title: "Esteri julgus (ptk 5-7)", description: "Ester paljastab Hamani plaani" },
+      { title: "Juutide päästmine (ptk 8-10)", description: "Juudid päästetakse, Purim tähistamine" }
+    ],
+    piibeeUrl: "https://piibel.ee"
+  }
+};
+
+export default function RaamatuLeht() {
+  const { book } = useParams<{ book: string }>();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const details = book ? bookDetails[book] : null;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (!details && true) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Card className="p-8 max-w-md text-center">
+          <h1 className="text-2xl font-serif font-semibold mb-4">Raamatut ei leitud</h1>
+          <p className="text-muted-foreground mb-6">Kahjuks ei leidnud me seda raamatut.</p>
+          <Link to="/ajajoon">
+            <Button>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Tagasi avalehele
+            </Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!details) {
+    return null;
+  }
+
+  return (
+    <>
+      
+      
+      <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
+        
+
+        <Navigation />
+
+        <main className="max-w-4xl mx-auto px-6 py-12 space-y-16">
+          <section className="text-center space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5 px-4 py-1.5 text-sm">
+              {details.category}
+            </Badge>
+            <h1 className="text-5xl md:text-6xl font-serif font-bold text-foreground leading-tight">
+              {details.name}
+            </h1>
+            <div className="flex items-center justify-center gap-6 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <User className="w-5 h-5 text-primary" />
+                <span className="text-lg">{details.author}</span>
+              </div>
+              <div className="w-1 h-1 rounded-full bg-muted-foreground/40"></div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-primary" />
+                <span className="text-lg">{details.period}</span>
+              </div>
+            </div>
+          </section>
+
+          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+            <Card className="p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-l-4 border-l-primary shadow-lg">
+              <div className="flex gap-4">
+                <Info className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-2xl font-serif font-semibold text-foreground mb-4">Ülevaade</h3>
+                  <p className="text-lg text-foreground/90 leading-relaxed mb-3">
+                    {details.overview}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </section>
+
+          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+            <Card className="p-8 bg-gradient-to-br from-accent/5 to-primary/5 border-l-4 border-l-accent shadow-lg">
+              <div className="flex gap-4">
+                <Quote className="w-8 h-8 text-accent flex-shrink-0" />
+                <div>
+                  <p className="text-lg italic text-foreground/90 leading-relaxed mb-3">
+                    &ldquo;Iga Jumala sõna on puhas; tema on kilbiks neile, kes usaldavad teda.&rdquo;
+                  </p>
+                  <p className="text-sm text-muted-foreground">— Õpetussõnad 30:5</p>
+                </div>
+              </div>
+            </Card>
+          </section>
+
+          <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
+                <Sparkles className="w-5 h-5 text-primary" />
+                <h2 className="text-sm font-semibold text-primary uppercase tracking-wider">
+                  Huvitavad faktid
+                </h2>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+                {details.name} kohta
+              </h3>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-5">
+              {details.authorFacts.map((fact, index) => (
+                <Card
+                  key={index}
+                  className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-card to-muted/10 animate-in fade-in slide-in-from-left-4"
+                  style={{ animationDelay: `${index * 100 + 300}ms` }}
+                >
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-accent" />
+                      </div>
+                    </div>
+                    <p className="text-foreground/90 leading-relaxed pt-2">{fact}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-250">
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full">
+                <Info className="w-5 h-5 text-accent" />
+                <h2 className="text-sm font-semibold text-accent uppercase tracking-wider">
+                  Veel huvitavat
+                </h2>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+                Lisafaktid
+              </h3>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-5">
+              {details.additionalFacts.map((fact, index) => (
+                <Card
+                  key={index}
+                  className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-card to-accent/5 animate-in fade-in slide-in-from-right-4"
+                  style={{ animationDelay: `${index * 100 + 350}ms` }}
+                >
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
+                      </div>
+                    </div>
+                    <p className="text-foreground/90 leading-relaxed pt-2">{fact}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
+                <BookOpen className="w-5 h-5 text-primary" />
+                <h2 className="text-sm font-semibold text-primary uppercase tracking-wider">
+                  Peamised sündmused
+                </h2>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+                Raamatu murdepunktid
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Viis kõige olulisemat hetke, mis kujundasid selle raamatu sõnumit
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {details.breakdowns.map((breakdown, index) => (
+                <Card
+                  key={index}
+                  className="p-8 hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] bg-gradient-to-br from-card to-muted/5 animate-in fade-in slide-in-from-bottom-4"
+                  style={{ animationDelay: `${index * 100 + 400}ms` }}
+                >
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-primary/20 flex items-center justify-center shadow-lg">
+                        <span className="text-2xl font-serif font-bold text-primary">
+                          {index + 1}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-3">
+                      <h4 className="text-2xl font-serif font-semibold text-foreground">
+                        {breakdown.title}
+                      </h4>
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        {breakdown.description}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section className="text-center space-y-6 py-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+            <Card className="p-10 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5 border-primary/20 shadow-2xl">
+              <div className="space-y-6">
+                <div className="w-16 h-16 mx-auto rounded-full bg-primary/20 flex items-center justify-center">
+                  <BookOpen className="w-8 h-8 text-primary" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-3xl font-serif font-bold text-foreground">
+                    Valmis süvitsi sukelduma?
+                  </h3>
+                  <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+                    Loe täispikka {details.name} raamatut ja avasta veel rohkem tarkust
+                  </p>
+                </div>
+                <a
+                  href={details.piibeeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button size="lg" className="gap-3 px-8 py-6 text-lg bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all">
+                    <ExternalLink className="w-5 h-5" />
+                    Ava piibel.ee lehel
+                  </Button>
+                </a>
+              </div>
+            </Card>
+          </section>
+        </main>
+
+        <footer className="border-t border-border/30 bg-card/50 backdrop-blur-sm py-8 mt-16">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Piibli Tarkuse Puu. Kõik õigused kaitstud.
+            </p>
+          </div>
+        </footer>
+
+        {showScrollTop && (
+          <Button
+            onClick={scrollToTop}
+            size="icon"
+            className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full shadow-2xl bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110 animate-in fade-in slide-in-from-bottom-4"
+            aria-label="Keri üles"
+          >
+            <ArrowUp className="h-6 w-6" />
+          </Button>
+        )}
+      </div>
+    </>
+  );
+}
