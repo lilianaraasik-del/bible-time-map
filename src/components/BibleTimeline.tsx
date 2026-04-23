@@ -55,7 +55,7 @@ const bibleBooks: BibleBook[] = [
   // Luule ja tarkus
   { name: "Iiob", author: "Tundmatu", yearWritten: "u 1500-1000 eKr", testament: "VT", category: "Luule", slug: "iiob" },
   { name: "Psalmid", author: "Taavet jt", yearWritten: "u 1440-450 eKr", testament: "VT", category: "Luule", slug: "psalmid" },
-  { name: "Õpetussõnad", author: "Saalomon jt", yearWritten: "u 970-700 eKr", testament: "VT", category: "Tarkus", slug: "opetussonad" },
+  { name: "Õpetussõnad", author: "Saalomon, Aagur, Lemuel, „tarkade sõnad“", yearWritten: "u 970-700 eKr", testament: "VT", category: "Tarkus", slug: "opetussonad" },
   { name: "Koguja", author: "Saalomon", yearWritten: "u 935-900 eKr", testament: "VT", category: "Tarkus", slug: "koguja" },
   { name: "Ülemlaul", author: "Saalomon", yearWritten: "u 970-930 eKr", testament: "VT", category: "Luule", slug: "ulemlaul" },
   // Suured prohvetid
