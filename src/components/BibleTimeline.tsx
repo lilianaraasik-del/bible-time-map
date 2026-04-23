@@ -41,10 +41,10 @@ const bibleBooks: BibleBook[] = [
   { name: "5. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "5-mooses" },
   // Ajalugu
   { name: "Joosua", author: "Joosua", yearWritten: "u 1400-1370 eKr", testament: "VT", category: "Ajalugu", slug: "joosua" },
-  { name: "Kohtumõistjad", author: "Saamueli", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
+  { name: "Kohtumõistjad", author: "Saamuel (traditsiooniliselt)", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
   { name: "Rutt", author: "Tundmatu", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "rutt" },
-  { name: "1. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
-  { name: "2. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
+  { name: "1. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
+  { name: "2. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
   { name: "1. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "1-kuningate" },
   { name: "2. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "2-kuningate" },
   { name: "1. Ajaraamat", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "1-ajaraamat" },
@@ -55,7 +55,7 @@ const bibleBooks: BibleBook[] = [
   // Luule ja tarkus
   { name: "Iiob", author: "Tundmatu", yearWritten: "u 1500-1000 eKr", testament: "VT", category: "Luule", slug: "iiob" },
   { name: "Psalmid", author: "Taavet jt", yearWritten: "u 1440-450 eKr", testament: "VT", category: "Luule", slug: "psalmid" },
-  { name: "Õpetussõnad", author: "Saalomon jt", yearWritten: "u 970-700 eKr", testament: "VT", category: "Tarkus", slug: "opetussonad" },
+  { name: "Õpetussõnad", author: "Saalomon, Aagur, Lemuel, „tarkade sõnad“", yearWritten: "u 970-700 eKr", testament: "VT", category: "Tarkus", slug: "opetussonad" },
   { name: "Koguja", author: "Saalomon", yearWritten: "u 935-900 eKr", testament: "VT", category: "Tarkus", slug: "koguja" },
   { name: "Ülemlaul", author: "Saalomon", yearWritten: "u 970-930 eKr", testament: "VT", category: "Luule", slug: "ulemlaul" },
   // Suured prohvetid
