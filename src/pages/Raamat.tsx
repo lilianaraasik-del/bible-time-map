@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
+import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
@@ -664,31 +665,43 @@ export default function RaamatuLeht() {
             </div>
 
             <div className="space-y-6">
-              {details.breakdowns.map((breakdown, index) => (
-                <Card
-                  key={index}
-                  className="p-8 hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] bg-gradient-to-br from-card to-muted/5 animate-in fade-in slide-in-from-bottom-4"
-                  style={{ animationDelay: `${index * 100 + 400}ms` }}
-                >
-                  <div className="flex gap-6">
-                    <div className="flex-shrink-0">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-primary/20 flex items-center justify-center shadow-lg">
-                        <span className="text-2xl font-serif font-bold text-primary">
-                          {index + 1}
-                        </span>
+              {details.breakdowns.map((breakdown, index) => {
+                const chapter = parseChapterFromTitle(breakdown.title);
+                const url = buildPiibelUrl(book!, chapter);
+                return (
+                  <a
+                    key={index}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block group outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl animate-in fade-in slide-in-from-bottom-4"
+                    style={{ animationDelay: `${index * 100 + 400}ms` }}
+                  >
+                    <Card className="p-8 hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.01] bg-gradient-to-br from-card to-muted/5 cursor-pointer">
+                      <div className="flex gap-6">
+                        <div className="flex-shrink-0">
+                          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-primary/20 flex items-center justify-center shadow-lg">
+                            <span className="text-2xl font-serif font-bold text-primary">
+                              {index + 1}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex-1 space-y-3">
+                          <div className="flex items-start justify-between gap-3">
+                            <h4 className="text-2xl font-serif font-semibold text-foreground group-hover:text-primary transition-colors">
+                              {breakdown.title}
+                            </h4>
+                            <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1" />
+                          </div>
+                          <p className="text-lg text-muted-foreground leading-relaxed">
+                            {breakdown.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-1 space-y-3">
-                      <h4 className="text-2xl font-serif font-semibold text-foreground">
-                        {breakdown.title}
-                      </h4>
-                      <p className="text-lg text-muted-foreground leading-relaxed">
-                        {breakdown.description}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+                    </Card>
+                  </a>
+                );
+              })}
             </div>
           </section>
 
@@ -707,7 +720,7 @@ export default function RaamatuLeht() {
                   </p>
                 </div>
                 <a
-                  href={details.piibeeUrl}
+                  href={buildPiibelUrl(book!, 1)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
