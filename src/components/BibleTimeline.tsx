@@ -337,6 +337,40 @@ export function BibleTimeline() {
               );
             })}
           </div>
+
+          {/* Sorteerimise lüliti */}
+          <div className="mt-6 inline-flex items-center gap-1 p-1 rounded-full border border-border bg-card/60 backdrop-blur-sm">
+            <button
+              onClick={() => setSortMode("canonical")}
+              className={`text-xs px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-all ${
+                sortMode === "canonical"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={sortMode === "canonical"}
+            >
+              <ListOrdered className="h-3.5 w-3.5" />
+              Piibli järjekord
+            </button>
+            <button
+              onClick={() => setSortMode("written")}
+              className={`text-xs px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-all ${
+                sortMode === "written"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={sortMode === "written"}
+            >
+              <Clock className="h-3.5 w-3.5" />
+              Kirjutamise aeg
+            </button>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground inline-flex items-center gap-1.5">
+            <ArrowUpDown className="h-3 w-3" />
+            {sortMode === "canonical"
+              ? "Traditsiooniline järjekord (1. Mooses → Ilmutus)"
+              : "Vanimast uuemaks (Iiob → Ilmutus)"}
+          </p>
         </header>
 
         <div className="relative">
