@@ -900,7 +900,7 @@ export default function Paigad() {
                               href={event.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm text-accent font-semibold hover:text-accent/80 transition-colors inline-flex items-center gap-1"
+                              className="text-sm text-primary font-semibold hover:text-primary/80 transition-colors inline-flex items-center gap-1 underline-offset-2 hover:underline"
                             >
                               → {event.scripture}
                               <ExternalLink className="h-3 w-3" />
