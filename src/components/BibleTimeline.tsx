@@ -191,11 +191,25 @@ const categoryLegend = [
   "Üldkirjad",
 ];
 
+type SortMode = "canonical" | "written";
+
+// Parsib aastastringi (nt "u 1445-1405 eKr", "u 95-96 pKr", "u 586 eKr")
+// algusaastaks numbrina (eKr negatiivne, pKr positiivne) sorteerimiseks.
+function parseStartYear(yearWritten: string): number {
+  const isBC = /eKr/i.test(yearWritten);
+  const cleaned = yearWritten.replace(/eKr|pKr|u\.?|circa/gi, "").trim();
+  const firstNum = cleaned.match(/\d+/);
+  if (!firstNum) return 0;
+  const n = parseInt(firstNum[0], 10);
+  return isBC ? -n : n;
+}
+
 export function BibleTimeline() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [sortMode, setSortMode] = useState<SortMode>("canonical");
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const bookRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const bookRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const matchesSearch = (book: BibleBook) => {
     if (!searchQuery) return true;
@@ -213,13 +227,23 @@ export function BibleTimeline() {
   const isHighlighted = (book: BibleBook) =>
     (!!searchQuery || !!activeCategory) && matchesSearch(book) && matchesCategory(book);
 
+  const orderedBooks = useMemo(() => {
+    if (sortMode === "canonical") return bibleBooks;
+    return [...bibleBooks].sort(
+      (a, b) => parseStartYear(a.yearWritten) - parseStartYear(b.yearWritten)
+    );
+  }, [sortMode]);
+
   const visibleBooks = useMemo(
-    () => bibleBooks.filter((b) => matchesSearch(b) && matchesCategory(b)),
-    [searchQuery, activeCategory]
+    () => orderedBooks.filter((b) => matchesSearch(b) && matchesCategory(b)),
+    [orderedBooks, searchQuery, activeCategory]
   );
 
-  // Indeks, kus algab Uus Testament (esimese UT raamatu indeks)
-  const utStartIndex = bibleBooks.findIndex((b) => b.testament === "UT");
+  // Indeks, kus algab Uus Testament — kuvame eraldaja ainult kanoonilises vaates
+  const utStartIndex =
+    sortMode === "canonical"
+      ? orderedBooks.findIndex((b) => b.testament === "UT")
+      : -1;
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
