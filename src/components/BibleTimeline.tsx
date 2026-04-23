@@ -135,8 +135,9 @@ export function BibleTimeline() {
   }, [searchQuery, filteredBooks.length]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 py-16 px-4 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 overflow-hidden">
+      <Navigation />
+      <div className="max-w-6xl mx-auto py-16 px-4">
         <header className="text-center mb-12 animate-in fade-in slide-in-from-top duration-1000">
           <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
             Piibli Tarkuse Puu
