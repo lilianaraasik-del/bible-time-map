@@ -486,7 +486,8 @@ export default function RaamatuLeht() {
   const { book } = useParams<{ book: string }>();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const details = book ? bookDetails[book] : null;
+  const allBookDetails = { ...bookDetails, ...additionalBookDetails };
+  const details = book ? allBookDetails[book] : null;
 
   useEffect(() => {
     const handleScroll = () => {
