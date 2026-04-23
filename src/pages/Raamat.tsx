@@ -8,6 +8,7 @@ import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, Che
 import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
+import { additionalBookDetails } from "@/data/additionalBookDetails";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
