@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
+import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
