@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
@@ -14,6 +14,7 @@ import {
   Cross,
   Users,
   Baby,
+  ArrowUp,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/Navigation";
@@ -81,6 +82,14 @@ export default function Sundmused() {
   const [activeCategory, setActiveCategory] = useState<UtEventCategory | null>(
     null,
   );
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -267,6 +276,25 @@ export default function Sundmused() {
           </Link>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            key="scroll-top"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            transition={{ duration: 0.2 }}
+            onClick={() =>
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }
+            aria-label="Liigu lehe ülesse"
+            className="fixed bottom-6 right-6 z-50 h-11 w-11 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:shadow-xl transition-all flex items-center justify-center"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
