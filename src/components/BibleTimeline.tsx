@@ -1,9 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, ArrowUp } from "lucide-react";
+import {
+  Search,
+  ArrowUp,
+  Scroll,
+  Landmark,
+  Music,
+  Sparkles,
+  Flame,
+  BookOpen,
+  Mail,
+  Users,
+  Eye,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 
@@ -93,23 +105,117 @@ const bibleBooks: BibleBook[] = [
   { name: "Johannese Ilmutus", author: "Johannes", yearWritten: "u 95-96 pKr", testament: "UT", category: "Prohvetid", slug: "ilmutus" },
 ];
 
+// Kategoriate visuaalne stiil — ikoon + tonaalne värv (HSL semantilised tokenid)
+const categoryStyles: Record<
+  string,
+  { icon: typeof Scroll; tint: string; ring: string; chip: string; dot: string }
+> = {
+  Seadus: {
+    icon: Scroll,
+    tint: "from-amber-500/15 to-amber-500/0",
+    ring: "hover:border-amber-500/50",
+    chip: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
+    dot: "bg-amber-500",
+  },
+  Ajalugu: {
+    icon: Landmark,
+    tint: "from-stone-500/15 to-stone-500/0",
+    ring: "hover:border-stone-500/50",
+    chip: "bg-stone-500/15 text-stone-700 dark:text-stone-300 border-stone-500/30",
+    dot: "bg-stone-500",
+  },
+  Luule: {
+    icon: Music,
+    tint: "from-rose-500/15 to-rose-500/0",
+    ring: "hover:border-rose-500/50",
+    chip: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30",
+    dot: "bg-rose-500",
+  },
+  Tarkus: {
+    icon: Sparkles,
+    tint: "from-violet-500/15 to-violet-500/0",
+    ring: "hover:border-violet-500/50",
+    chip: "bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/30",
+    dot: "bg-violet-500",
+  },
+  Prohvetid: {
+    icon: Flame,
+    tint: "from-orange-500/15 to-orange-500/0",
+    ring: "hover:border-orange-500/50",
+    chip: "bg-orange-500/15 text-orange-700 dark:text-orange-300 border-orange-500/30",
+    dot: "bg-orange-500",
+  },
+  Evangeeliumid: {
+    icon: BookOpen,
+    tint: "from-sky-500/15 to-sky-500/0",
+    ring: "hover:border-sky-500/50",
+    chip: "bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30",
+    dot: "bg-sky-500",
+  },
+  "Pauluse kirjad": {
+    icon: Mail,
+    tint: "from-emerald-500/15 to-emerald-500/0",
+    ring: "hover:border-emerald-500/50",
+    chip: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+    dot: "bg-emerald-500",
+  },
+  Üldkirjad: {
+    icon: Users,
+    tint: "from-teal-500/15 to-teal-500/0",
+    ring: "hover:border-teal-500/50",
+    chip: "bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30",
+    dot: "bg-teal-500",
+  },
+};
+
+const fallbackStyle = {
+  icon: Eye,
+  tint: "from-primary/10 to-primary/0",
+  ring: "hover:border-primary/40",
+  chip: "bg-muted text-muted-foreground border-border",
+  dot: "bg-primary",
+};
+
+const categoryLegend = [
+  "Seadus",
+  "Ajalugu",
+  "Luule",
+  "Tarkus",
+  "Prohvetid",
+  "Evangeeliumid",
+  "Pauluse kirjad",
+  "Üldkirjad",
+];
+
 export function BibleTimeline() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const bookRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const filteredBooks = bibleBooks.filter((book) =>
-    book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    book.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const matchesSearch = (book: BibleBook) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      book.name.toLowerCase().includes(q) ||
+      book.author.toLowerCase().includes(q) ||
+      book.category.toLowerCase().includes(q)
+    );
+  };
+
+  const matchesCategory = (book: BibleBook) =>
+    !activeCategory || book.category === activeCategory;
+
+  const isHighlighted = (book: BibleBook) =>
+    (!!searchQuery || !!activeCategory) && matchesSearch(book) && matchesCategory(book);
+
+  const visibleBooks = useMemo(
+    () => bibleBooks.filter((b) => matchesSearch(b) && matchesCategory(b)),
+    [searchQuery, activeCategory]
   );
 
-  const isBookMatched = (book: BibleBook) => {
-    if (!searchQuery) return false;
-    return book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.category.toLowerCase().includes(searchQuery.toLowerCase());
-  };
+  // Indeks, kus algab Uus Testament (esimese UT raamatu indeks)
+  const utStartIndex = bibleBooks.findIndex((b) => b.testament === "UT");
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -120,32 +226,52 @@ export function BibleTimeline() {
   }, []);
 
   useEffect(() => {
-    if (searchQuery && filteredBooks.length > 0) {
-      const firstMatchIndex = bibleBooks.findIndex((book) =>
-        book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.category.toLowerCase().includes(searchQuery.toLowerCase())
+    if ((searchQuery || activeCategory) && visibleBooks.length > 0) {
+      const firstMatchIndex = bibleBooks.findIndex(
+        (b) => matchesSearch(b) && matchesCategory(b)
       );
       if (firstMatchIndex !== -1 && bookRefs.current[firstMatchIndex]) {
         setTimeout(() => {
-          bookRefs.current[firstMatchIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+          bookRefs.current[firstMatchIndex]?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
         }, 100);
       }
     }
-  }, [searchQuery, filteredBooks.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, activeCategory]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 overflow-hidden">
       <Navigation />
+
+      {/* Dekoratiivne taustamuster */}
+      <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.04] dark:opacity-[0.07]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+      </div>
+
       <div className="max-w-6xl mx-auto py-16 px-4">
-        <header className="text-center mb-12 animate-in fade-in slide-in-from-top duration-1000">
-          <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+        <header className="text-center mb-10 animate-in fade-in slide-in-from-top duration-1000">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-card/60 backdrop-blur-sm text-xs text-muted-foreground mb-4">
+            <Sparkles className="h-3 w-3" />
+            <span>66 raamatut · 40+ autorit · 1500 aastat</span>
+          </div>
+          <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">
             Piibli Tarkuse Puu
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Interaktiivne ülevaade Piibli raamatute kirjutamisest — autorid, ajastud ja kategooriad kronoloogilises järjekorras.
+            Interaktiivne ülevaade Piibli raamatute kirjutamisest — autorid,
+            ajastud ja kategooriad kronoloogilises järjekorras.
           </p>
-          <div className="relative max-w-md mx-auto">
+          <div className="relative max-w-md mx-auto mb-6">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={searchQuery}
@@ -154,79 +280,201 @@ export function BibleTimeline() {
               className="pl-10"
             />
           </div>
+
+          {/* Kategooriate legend / filter */}
+          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
+            <button
+              onClick={() => setActiveCategory(null)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+                activeCategory === null
+                  ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                  : "bg-card/60 text-muted-foreground border-border hover:border-primary/40"
+              }`}
+            >
+              Kõik
+            </button>
+            {categoryLegend.map((cat) => {
+              const style = categoryStyles[cat] ?? fallbackStyle;
+              const Icon = style.icon;
+              const active = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(active ? null : cat)}
+                  className={`text-xs px-3 py-1.5 rounded-full border inline-flex items-center gap-1.5 transition-all ${
+                    active
+                      ? `${style.chip} ring-2 ring-offset-1 ring-offset-background`
+                      : "bg-card/60 text-muted-foreground border-border hover:border-primary/40"
+                  }`}
+                >
+                  <Icon className="h-3 w-3" />
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
         </header>
 
         <div className="relative">
-          <div className="absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 opacity-40">
-            <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary/60 to-primary/30 rounded-full" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full" />
+          {/* Keskne "tüvi" — gradiendiga, pehme helendus */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/40 to-primary/20 rounded-full" />
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent blur-md rounded-full" />
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-2">
             {bibleBooks.map((book, index) => {
               const isLeft = index % 2 === 0;
-              const delay = index * 30;
-              const isMatched = isBookMatched(book);
-              const isVisible = !searchQuery || filteredBooks.includes(book);
+              const delay = index * 25;
+              const highlighted = isHighlighted(book);
+              const isVisible = matchesSearch(book) && matchesCategory(book);
+              const style = categoryStyles[book.category] ?? fallbackStyle;
+              const Icon = style.icon;
+              const showUtDivider = index === utStartIndex;
 
               return (
-                <div
-                  key={index}
-                  ref={(el) => { bookRefs.current[index] = el; }}
-                  className={`relative flex items-center ${isLeft ? "flex-row" : "flex-row-reverse"} group transition-all duration-500 ${!isVisible ? "opacity-20 scale-95 blur-sm" : "opacity-100 scale-100"}`}
-                  style={{ animationDelay: `${delay}ms` }}
-                >
-                  <div className={`w-5/12 ${isLeft ? "pr-6" : "pl-6"} relative`}>
-                    <Link to={`/raamat/${book.slug}`} className="block relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl">
-                      <Card className={`p-6 transition-all duration-500 border-2 bg-card/95 backdrop-blur-sm hover:scale-[1.02] hover:-translate-y-1 relative overflow-hidden group/card cursor-pointer ${isMatched ? "border-accent shadow-2xl ring-2 ring-accent/30" : "border-border/50 hover:shadow-2xl hover:border-primary/40"}`}>
-                        <div className="space-y-3 relative z-10">
-                          <div className="flex items-start justify-between gap-3">
-                            <h3 className={`font-serif text-xl font-bold leading-tight ${isMatched ? "text-accent-foreground" : "text-foreground group-hover/card:text-primary"}`}>
-                              {book.name}
-                            </h3>
-                            <Badge
-                              variant="secondary"
-                              className={`text-xs shrink-0 font-semibold shadow-sm ${book.testament === "VT" ? "bg-primary/15 text-primary border-primary/40" : "bg-accent text-accent-foreground border-accent"}`}
-                            >
-                              {book.testament}
-                            </Badge>
-                          </div>
-                          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                          <div className="space-y-2 text-sm">
-                            <p className="text-muted-foreground flex items-center gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
-                              <span className="font-semibold text-foreground">Autor:</span>
-                              <span className="italic">{book.author}</span>
-                            </p>
-                            <p className="text-muted-foreground flex items-center gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0" />
-                              <span className="font-semibold text-foreground">Kirjutatud:</span>
-                              <span>{book.yearWritten}</span>
-                            </p>
-                            <div className="pt-2">
-                              <span className="inline-block px-3 py-1 text-xs rounded-full bg-muted/60 text-muted-foreground border border-border/30">
-                                {book.category}
-                              </span>
+                <div key={index} className="relative">
+                  {showUtDivider && (
+                    <div className="relative my-10 flex items-center justify-center">
+                      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                      <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
+                        ✦ Uus Testament ✦
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    ref={(el) => {
+                      bookRefs.current[index] = el;
+                    }}
+                    className={`relative flex items-center ${
+                      isLeft ? "flex-row" : "flex-row-reverse"
+                    } group transition-all duration-500 ${
+                      !isVisible
+                        ? "opacity-15 scale-95 blur-[2px]"
+                        : "opacity-100 scale-100"
+                    }`}
+                    style={{ animationDelay: `${delay}ms` }}
+                  >
+                    {/* Kaart */}
+                    <div className={`w-5/12 ${isLeft ? "pr-8" : "pl-8"} relative`}>
+                      {/* "Oks" — joon kaardilt tüveni */}
+                      <div
+                        className={`absolute top-1/2 ${
+                          isLeft ? "right-0" : "left-0"
+                        } h-px w-8 -translate-y-1/2 bg-gradient-to-r ${
+                          isLeft
+                            ? "from-border via-border to-primary/40"
+                            : "from-primary/40 via-border to-border"
+                        }`}
+                      />
+                      <Link
+                        to={`/raamat/${book.slug}`}
+                        className="block relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
+                      >
+                        <Card
+                          className={`p-5 transition-all duration-500 border-2 bg-card/95 backdrop-blur-sm hover:scale-[1.02] hover:-translate-y-1 relative overflow-hidden cursor-pointer ${
+                            highlighted
+                              ? "border-primary shadow-2xl ring-2 ring-primary/30"
+                              : `border-border/50 hover:shadow-xl ${style.ring}`
+                          }`}
+                        >
+                          {/* Värvigradient kategoriapõhiselt */}
+                          <div
+                            className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${style.tint} opacity-80`}
+                          />
+                          {/* Kategooria triip kaardi servas */}
+                          <div
+                            className={`absolute ${
+                              isLeft ? "right-0" : "left-0"
+                            } top-0 bottom-0 w-1 ${style.dot}`}
+                          />
+
+                          <div className="space-y-3 relative z-10">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex items-start gap-2.5 min-w-0">
+                                <div
+                                  className={`shrink-0 mt-0.5 h-8 w-8 rounded-lg border ${style.chip} flex items-center justify-center`}
+                                >
+                                  <Icon className="h-4 w-4" />
+                                </div>
+                                <h3 className="font-serif text-lg md:text-xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
+                                  {book.name}
+                                </h3>
+                              </div>
+                              <Badge
+                                variant="secondary"
+                                className={`text-[10px] shrink-0 font-bold tracking-wider ${
+                                  book.testament === "VT"
+                                    ? "bg-primary/15 text-primary border-primary/40"
+                                    : "bg-primary text-primary-foreground border-primary"
+                                }`}
+                              >
+                                {book.testament}
+                              </Badge>
+                            </div>
+                            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                            <div className="space-y-1.5 text-sm">
+                              <p className="text-muted-foreground flex items-center gap-2">
+                                <span className="font-semibold text-foreground">
+                                  Autor:
+                                </span>
+                                <span className="italic truncate">
+                                  {book.author}
+                                </span>
+                              </p>
+                              <p className="text-muted-foreground flex items-center gap-2">
+                                <span className="font-semibold text-foreground">
+                                  Kirjutatud:
+                                </span>
+                                <span className="tabular-nums">
+                                  {book.yearWritten}
+                                </span>
+                              </p>
+                              <div className="pt-1">
+                                <span
+                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-full border font-medium ${style.chip}`}
+                                >
+                                  <Icon className="h-3 w-3" />
+                                  {book.category}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Card>
-                    </Link>
-                  </div>
-
-                  <div className="w-2/12 flex justify-center relative z-10">
-                    <div className="relative group/node">
-                      <div className={`w-5 h-5 rounded-full border-4 border-background shadow-lg group-hover/node:scale-125 transition-all duration-300 relative z-10 ${isMatched ? "bg-accent" : "bg-primary"}`} />
-                      <div className={`absolute inset-0 rounded-full blur-sm ${isMatched ? "bg-accent/30" : "bg-primary/30"}`} />
+                        </Card>
+                      </Link>
                     </div>
-                  </div>
 
-                  <div className="w-5/12" />
+                    {/* Sõlme punkt tüvel */}
+                    <div className="w-2/12 flex justify-center relative z-10">
+                      <div className="relative">
+                        <div
+                          className={`w-4 h-4 rounded-full border-[3px] border-background shadow-lg transition-all duration-300 group-hover:scale-150 ${
+                            highlighted ? "bg-primary" : style.dot
+                          }`}
+                        />
+                        <div
+                          className={`absolute inset-0 rounded-full blur-md opacity-70 ${
+                            highlighted ? "bg-primary/40" : style.dot
+                          }`}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-5/12" />
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
+
+        {/* Tulemuste arv otsingul */}
+        {(searchQuery || activeCategory) && (
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            Leitud <span className="font-semibold text-foreground">{visibleBooks.length}</span> raamatut
+          </p>
+        )}
 
         <footer className="mt-20 text-center text-sm text-muted-foreground space-y-2">
           <div className="flex items-center justify-center gap-2 opacity-60">
