@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navigation() {
   const location = useLocation();
@@ -60,6 +61,8 @@ export function Navigation() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <ThemeToggle />
           </div>
         </div>
       </div>
