@@ -255,16 +255,12 @@ export function BibleTimeline() {
 
   useEffect(() => {
     if ((searchQuery || activeCategory) && visibleBooks.length > 0) {
-      const firstMatchIndex = bibleBooks.findIndex(
-        (b) => matchesSearch(b) && matchesCategory(b)
-      );
-      if (firstMatchIndex !== -1 && bookRefs.current[firstMatchIndex]) {
+      const first = visibleBooks[0];
+      const el = bookRefs.current[first.slug];
+      if (el) {
         setTimeout(() => {
-          bookRefs.current[firstMatchIndex]?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }, 100);
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 150);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
