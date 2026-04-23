@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Ajajoon from "./pages/Ajajoon.tsx";
 import Raamat from "./pages/Raamat.tsx";
 import Paigad from "./pages/Paigad.tsx";
+import Sundmused from "./pages/Sundmused.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/ajajoon" element={<Ajajoon />} />
           <Route path="/paigad" element={<Paigad />} />
+          <Route path="/sundmused" element={<Sundmused />} />
           <Route path="/raamat/:book" element={<Raamat />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
