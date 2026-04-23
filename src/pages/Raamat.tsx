@@ -8,6 +8,7 @@ import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, Che
 import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
+import { additionalBookDetails } from "@/data/additionalBookDetails";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
@@ -485,7 +486,8 @@ export default function RaamatuLeht() {
   const { book } = useParams<{ book: string }>();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const details = book ? bookDetails[book] : null;
+  const allBookDetails = { ...bookDetails, ...additionalBookDetails };
+  const details = book ? allBookDetails[book] : null;
 
   useEffect(() => {
     const handleScroll = () => {
