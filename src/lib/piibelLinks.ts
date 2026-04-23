@@ -25,7 +25,7 @@ const slugToPiibelBook: Record<string, string> = {
   "ester": "Ester",
   // VT - Luule / Tarkus
   "iiob": "Iiob",
-  "psalmid": "Laulud",
+  "psalmid": "Psalmid",
   "opetussonad": "Õpetussõnad",
   "õpetussõnad": "Õpetussõnad",
   "koguja": "Koguja",
