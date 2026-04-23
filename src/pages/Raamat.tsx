@@ -720,7 +720,7 @@ export default function RaamatuLeht() {
                   </p>
                 </div>
                 <a
-                  href={details.piibeeUrl}
+                  href={buildPiibelUrl(book!, 1)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
