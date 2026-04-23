@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -42,7 +42,7 @@ export function Navigation() {
                   variant="ghost"
                   className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
-                    isActive("/paigad")
+                    isActive("/paigad") || isActive("/sundmused")
                       ? "bg-primary text-primary-foreground shadow-md hover:bg-primary hover:text-primary-foreground"
                       : "hover:bg-muted"
                   )}
@@ -52,11 +52,17 @@ export function Navigation() {
                   <ChevronDown className="h-4 w-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-popover">
+              <DropdownMenuContent align="end" className="w-56 bg-popover">
                 <DropdownMenuItem asChild>
                   <Link to="/paigad" className="flex items-center gap-2 cursor-pointer">
                     <Map className="h-4 w-4" />
                     <span>Piibli paigad</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/sundmused" className="flex items-center gap-2 cursor-pointer">
+                    <Sparkles className="h-4 w-4" />
+                    <span>UT sündmused</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
