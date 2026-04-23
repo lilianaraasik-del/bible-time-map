@@ -380,20 +380,34 @@ export function BibleTimeline() {
             <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent blur-md rounded-full" />
           </div>
 
-          <div className="space-y-2">
-            {bibleBooks.map((book, index) => {
-              const isLeft = index % 2 === 0;
-              const delay = index * 25;
-              const highlighted = isHighlighted(book);
-              const isVisible = matchesSearch(book) && matchesCategory(book);
-              const style = categoryStyles[book.category] ?? fallbackStyle;
-              const Icon = style.icon;
-              const showUtDivider = index === utStartIndex;
+          <LayoutGroup>
+            <div className="space-y-2">
+              {orderedBooks.map((book, index) => {
+                const isLeft = index % 2 === 0;
+                const highlighted = isHighlighted(book);
+                const isVisible = matchesSearch(book) && matchesCategory(book);
+                const style = categoryStyles[book.category] ?? fallbackStyle;
+                const Icon = style.icon;
+                const showUtDivider = index === utStartIndex;
 
-              return (
-                <div key={index} className="relative">
-                  {showUtDivider && (
-                    <div className="relative my-10 flex items-center justify-center">
+                return (
+                  <motion.div
+                    key={book.slug}
+                    layout
+                    transition={{
+                      layout: { type: "spring", stiffness: 260, damping: 30 },
+                      opacity: { duration: 0.25 },
+                    }}
+                    initial={false}
+                    animate={{
+                      opacity: isVisible ? 1 : 0.15,
+                      filter: isVisible ? "blur(0px)" : "blur(2px)",
+                      scale: isVisible ? 1 : 0.95,
+                    }}
+                    className="relative"
+                  >
+                    {showUtDivider && (
+                      <motion.div layout="position" className="relative my-10 flex items-center justify-center">
                       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                       <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
                         ✦ Uus Testament ✦
