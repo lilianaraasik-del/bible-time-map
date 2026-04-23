@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
 import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
+import { getBookQuote } from "@/data/bookQuotes";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
@@ -574,9 +575,9 @@ export default function RaamatuLeht() {
                 <Quote className="w-8 h-8 text-accent flex-shrink-0" />
                 <div>
                   <p className="text-lg italic text-foreground/90 leading-relaxed mb-3">
-                    &ldquo;Iga Jumala sõna on puhas; tema on kilbiks neile, kes usaldavad teda.&rdquo;
+                    &ldquo;{getBookQuote(book!).text}&rdquo;
                   </p>
-                  <p className="text-sm text-muted-foreground">— Õpetussõnad 30:5</p>
+                  <p className="text-sm text-muted-foreground">— {getBookQuote(book!).reference}</p>
                 </div>
               </div>
             </Card>
