@@ -408,137 +408,128 @@ export function BibleTimeline() {
                   >
                     {showUtDivider && (
                       <motion.div layout="position" className="relative my-10 flex items-center justify-center">
-                      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                      <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
-                        ✦ Uus Testament ✦
-                      </div>
-                    </div>
-                  )}
+                        <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                        <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
+                          ✦ Uus Testament ✦
+                        </div>
+                      </motion.div>
+                    )}
 
-                  <div
-                    ref={(el) => {
-                      bookRefs.current[index] = el;
-                    }}
-                    className={`relative flex items-center ${
-                      isLeft ? "flex-row" : "flex-row-reverse"
-                    } group transition-all duration-500 ${
-                      !isVisible
-                        ? "opacity-15 scale-95 blur-[2px]"
-                        : "opacity-100 scale-100"
-                    }`}
-                    style={{ animationDelay: `${delay}ms` }}
-                  >
-                    {/* Kaart */}
-                    <div className={`w-5/12 ${isLeft ? "pr-8" : "pl-8"} relative`}>
-                      {/* "Oks" — joon kaardilt tüveni */}
-                      <div
-                        className={`absolute top-1/2 ${
-                          isLeft ? "right-0" : "left-0"
-                        } h-px w-8 -translate-y-1/2 bg-gradient-to-r ${
-                          isLeft
-                            ? "from-border via-border to-primary/40"
-                            : "from-primary/40 via-border to-border"
-                        }`}
-                      />
-                      <Link
-                        to={`/raamat/${book.slug}`}
-                        className="block relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
-                      >
-                        <Card
-                          className={`p-5 transition-all duration-500 border-2 bg-card/95 backdrop-blur-sm hover:scale-[1.02] hover:-translate-y-1 relative overflow-hidden cursor-pointer ${
-                            highlighted
-                              ? "border-primary shadow-2xl ring-2 ring-primary/30"
-                              : `border-border/50 hover:shadow-xl ${style.ring}`
+                    <div
+                      ref={(el) => {
+                        bookRefs.current[book.slug] = el;
+                      }}
+                      className={`relative flex items-center ${
+                        isLeft ? "flex-row" : "flex-row-reverse"
+                      } group`}
+                    >
+                      {/* Kaart */}
+                      <div className={`w-5/12 ${isLeft ? "pr-8" : "pl-8"} relative`}>
+                        {/* "Oks" — joon kaardilt tüveni */}
+                        <div
+                          className={`absolute top-1/2 ${
+                            isLeft ? "right-0" : "left-0"
+                          } h-px w-8 -translate-y-1/2 bg-gradient-to-r ${
+                            isLeft
+                              ? "from-border via-border to-primary/40"
+                              : "from-primary/40 via-border to-border"
                           }`}
+                        />
+                        <Link
+                          to={`/raamat/${book.slug}`}
+                          className="block relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
                         >
-                          {/* Värvigradient kategoriapõhiselt */}
-                          <div
-                            className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${style.tint} opacity-80`}
-                          />
-                          {/* Kategooria triip kaardi servas */}
-                          <div
-                            className={`absolute ${
-                              isLeft ? "right-0" : "left-0"
-                            } top-0 bottom-0 w-1 ${style.dot}`}
-                          />
+                          <Card
+                            className={`p-5 transition-all duration-500 border-2 bg-card/95 backdrop-blur-sm hover:scale-[1.02] hover:-translate-y-1 relative overflow-hidden cursor-pointer ${
+                              highlighted
+                                ? "border-primary shadow-2xl ring-2 ring-primary/30"
+                                : `border-border/50 hover:shadow-xl ${style.ring}`
+                            }`}
+                          >
+                            <div
+                              className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${style.tint} opacity-80`}
+                            />
+                            <div
+                              className={`absolute ${
+                                isLeft ? "right-0" : "left-0"
+                              } top-0 bottom-0 w-1 ${style.dot}`}
+                            />
 
-                          <div className="space-y-3 relative z-10">
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex items-start gap-2.5 min-w-0">
-                                <div
-                                  className={`shrink-0 mt-0.5 h-8 w-8 rounded-lg border ${style.chip} flex items-center justify-center`}
-                                >
-                                  <Icon className="h-4 w-4" />
+                            <div className="space-y-3 relative z-10">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="flex items-start gap-2.5 min-w-0">
+                                  <div
+                                    className={`shrink-0 mt-0.5 h-8 w-8 rounded-lg border ${style.chip} flex items-center justify-center`}
+                                  >
+                                    <Icon className="h-4 w-4" />
+                                  </div>
+                                  <h3 className="font-serif text-lg md:text-xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
+                                    {book.name}
+                                  </h3>
                                 </div>
-                                <h3 className="font-serif text-lg md:text-xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
-                                  {book.name}
-                                </h3>
-                              </div>
-                              <Badge
-                                variant="secondary"
-                                className={`text-[10px] shrink-0 font-bold tracking-wider ${
-                                  book.testament === "VT"
-                                    ? "bg-primary/15 text-primary border-primary/40"
-                                    : "bg-primary text-primary-foreground border-primary"
-                                }`}
-                              >
-                                {book.testament}
-                              </Badge>
-                            </div>
-                            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                            <div className="space-y-1.5 text-sm">
-                              <p className="text-muted-foreground flex items-center gap-2">
-                                <span className="font-semibold text-foreground">
-                                  Autor:
-                                </span>
-                                <span className="italic truncate">
-                                  {book.author}
-                                </span>
-                              </p>
-                              <p className="text-muted-foreground flex items-center gap-2">
-                                <span className="font-semibold text-foreground">
-                                  Kirjutatud:
-                                </span>
-                                <span className="tabular-nums">
-                                  {book.yearWritten}
-                                </span>
-                              </p>
-                              <div className="pt-1">
-                                <span
-                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-full border font-medium ${style.chip}`}
+                                <Badge
+                                  variant="secondary"
+                                  className={`text-[10px] shrink-0 font-bold tracking-wider ${
+                                    book.testament === "VT"
+                                      ? "bg-primary/15 text-primary border-primary/40"
+                                      : "bg-primary text-primary-foreground border-primary"
+                                  }`}
                                 >
-                                  <Icon className="h-3 w-3" />
-                                  {book.category}
-                                </span>
+                                  {book.testament}
+                                </Badge>
+                              </div>
+                              <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                              <div className="space-y-1.5 text-sm">
+                                <p className="text-muted-foreground flex items-center gap-2">
+                                  <span className="font-semibold text-foreground">Autor:</span>
+                                  <span className="italic truncate">{book.author}</span>
+                                </p>
+                                <p className="text-muted-foreground flex items-center gap-2">
+                                  <span className="font-semibold text-foreground">Kirjutatud:</span>
+                                  <span className="tabular-nums">{book.yearWritten}</span>
+                                </p>
+                                <div className="pt-1 flex items-center gap-2 flex-wrap">
+                                  <span
+                                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-full border font-medium ${style.chip}`}
+                                  >
+                                    <Icon className="h-3 w-3" />
+                                    {book.category}
+                                  </span>
+                                  {sortMode === "written" && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-muted text-muted-foreground border border-border/50 font-mono">
+                                      #{index + 1}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Card>
-                      </Link>
-                    </div>
-
-                    {/* Sõlme punkt tüvel */}
-                    <div className="w-2/12 flex justify-center relative z-10">
-                      <div className="relative">
-                        <div
-                          className={`w-4 h-4 rounded-full border-[3px] border-background shadow-lg transition-all duration-300 group-hover:scale-150 ${
-                            highlighted ? "bg-primary" : style.dot
-                          }`}
-                        />
-                        <div
-                          className={`absolute inset-0 rounded-full blur-md opacity-70 ${
-                            highlighted ? "bg-primary/40" : style.dot
-                          }`}
-                        />
+                          </Card>
+                        </Link>
                       </div>
-                    </div>
 
-                    <div className="w-5/12" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                      {/* Sõlme punkt tüvel */}
+                      <div className="w-2/12 flex justify-center relative z-10">
+                        <div className="relative">
+                          <div
+                            className={`w-4 h-4 rounded-full border-[3px] border-background shadow-lg transition-all duration-300 group-hover:scale-150 ${
+                              highlighted ? "bg-primary" : style.dot
+                            }`}
+                          />
+                          <div
+                            className={`absolute inset-0 rounded-full blur-md opacity-70 ${
+                              highlighted ? "bg-primary/40" : style.dot
+                            }`}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="w-5/12" />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </LayoutGroup>
         </div>
 
         {/* Tulemuste arv otsingul */}
