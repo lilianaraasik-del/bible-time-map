@@ -41,10 +41,10 @@ const bibleBooks: BibleBook[] = [
   { name: "5. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "5-mooses" },
   // Ajalugu
   { name: "Joosua", author: "Joosua", yearWritten: "u 1400-1370 eKr", testament: "VT", category: "Ajalugu", slug: "joosua" },
-  { name: "Kohtumõistjad", author: "Saamueli", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
+  { name: "Kohtumõistjad", author: "Saamuel (traditsiooniliselt)", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
   { name: "Rutt", author: "Tundmatu", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "rutt" },
-  { name: "1. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
-  { name: "2. Saamueli", author: "Saamueli/prohvetid", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
+  { name: "1. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
+  { name: "2. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
   { name: "1. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "1-kuningate" },
   { name: "2. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "2-kuningate" },
   { name: "1. Ajaraamat", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "1-ajaraamat" },
