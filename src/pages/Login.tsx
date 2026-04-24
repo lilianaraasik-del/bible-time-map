@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -11,15 +11,16 @@ import { Chrome, LogIn, Smartphone } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, loginWithGoogle, session } = useAuth();
+  const { login, loginWithGoogle, session, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (session) {
-    navigate("/profiil", { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (!authLoading && session) {
+      navigate("/profiil", { replace: true });
+    }
+  }, [authLoading, session, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

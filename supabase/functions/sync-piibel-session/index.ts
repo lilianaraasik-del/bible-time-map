@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface PiibelUser {
@@ -143,7 +143,12 @@ Deno.serve(async (req) => {
       }
     );
   } catch (e) {
-    const message = e instanceof Error ? e.message : String(e);
+    const message =
+      e instanceof Error
+        ? e.message
+        : typeof e === "object" && e !== null
+          ? JSON.stringify(e)
+          : String(e);
     console.error("sync-piibel-session error:", message);
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
