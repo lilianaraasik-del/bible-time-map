@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import ePub, { Book, Rendition } from "epubjs";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X, Loader2 } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { extractEpubAsHtml } from "@/lib/epubFallback";
 
@@ -11,25 +10,11 @@ interface EpubReaderProps {
   onClose: () => void;
 }
 
-const EPUB_RENDER_TIMEOUT_MS = 15000;
-
 export function EpubReader({ url, title, onClose }: EpubReaderProps) {
   const viewerRef = useRef<HTMLDivElement>(null);
-  const bookRef = useRef<Book | null>(null);
-  const renditionRef = useRef<Rendition | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fallbackHtml, setFallbackHtml] = useState<string | null>(null);
-
-  const fallbackSrc = useMemo(() => {
-    if (!fallbackHtml) return null;
-    return URL.createObjectURL(new Blob([fallbackHtml], { type: "text/html;charset=utf-8" }));
-  }, [fallbackHtml]);
-
-  useEffect(() => {
-    if (!fallbackSrc) return;
-    return () => URL.revokeObjectURL(fallbackSrc);
-  }, [fallbackSrc]);
 
   useEffect(() => {
     if (!viewerRef.current) return;
@@ -118,28 +103,16 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
 
     return () => {
       cancelled = true;
-      try {
-        renditionRef.current?.destroy();
-        bookRef.current?.destroy();
-      } catch {
-        /* noop */
-      }
     };
   }, [title, url]);
 
-  const next = () => renditionRef.current?.next();
-  const prev = () => renditionRef.current?.prev();
-
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (fallbackSrc) return;
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [fallbackSrc, onClose]);
+  }, [onClose]);
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -168,35 +141,15 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
             </div>
           )}
 
-          {fallbackSrc ? (
+          {fallbackHtml ? (
             <iframe
               title={title}
-              src={fallbackSrc}
+              srcDoc={fallbackHtml}
+              sandbox="allow-same-origin"
               className="absolute inset-0 h-full w-full border-0 bg-background"
             />
           ) : (
             <div ref={viewerRef} className="absolute inset-0" />
-          )}
-
-          {!loading && !error && !fallbackSrc && (
-            <>
-              <button
-                type="button"
-                onClick={prev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-card/80 hover:bg-card border border-border shadow-md transition-colors z-10"
-                aria-label="Eelmine lehekülg"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-card/80 hover:bg-card border border-border shadow-md transition-colors z-10"
-                aria-label="Järgmine lehekülg"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-            </>
           )}
         </div>
       </DialogContent>
