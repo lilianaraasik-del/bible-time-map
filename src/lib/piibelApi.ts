@@ -199,15 +199,28 @@ export async function piibelAddTransaction(opts: {
   return piibelPost("add_transaction", opts);
 }
 
-/** Osta sisu / peatükk müntidega. */
+/** Osta sisu / peatükk müntidega.
+ *  content_type: 1=book, 2=audio, 3=video
+ *  audiobook_type: sama (book/audio/video) — mängija formaat raamatu seest
+ */
 export async function piibelBuyContentEpisode(opts: {
   user_id: string | number;
   unique_token: string;
   content_id: string | number;
-  episode_id?: string | number;
+  content_episode_id: string | number;
   coin: number;
+  content_type?: number; // vaikimisi 1 (book)
+  audiobook_type?: number; // vaikimisi 1 (book)
 }) {
-  return piibelPost("buy_content_episode", opts);
+  return piibelPost("buy_content_episode", {
+    user_id: opts.user_id,
+    unique_token: opts.unique_token,
+    content_id: opts.content_id,
+    content_episode_id: opts.content_episode_id,
+    coin: opts.coin,
+    content_type: opts.content_type ?? 1,
+    audiobook_type: opts.audiobook_type ?? 1,
+  });
 }
 
 /** Sisu detailid (sh kas tasuline ja mitu münti maksab). */
