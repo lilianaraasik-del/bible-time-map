@@ -85,133 +85,25 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
         }
 
-        log("samm 5: epubjs kutsumine");
-        const book = ePub(fetchedBuffer, { openAs: "epub" });
-        bookRef.current = book;
-        await book.ready;
-        const spineCount = Array.isArray((book as any).spine?.spineItems)
-          ? (book as any).spine.spineItems.length
-          : undefined;
-        log("samm 5.1: book.ready", {
-          spineItems: spineCount,
-        });
-
-        const rendition = book.renderTo(viewerRef.current!, {
-          width: "100%",
-          height: "100%",
-          spread: "auto",
-          allowScriptedContent: true,
-        });
-        renditionRef.current = rendition;
-        log("samm 6: rendition loodud");
-
-        const isMeaningfulContentRendered = () => {
-          const contents = rendition.getContents?.() || [];
-          const snapshots = contents.map((content, index) => {
-            const doc = content?.document;
-            const textLength = doc?.body?.innerText?.replace(/\s+/g, " ").trim().length || 0;
-            const imageCount = doc?.images?.length || 0;
-            return { index, textLength, imageCount };
-          });
-          log("samm 7.1: renderduse sisu", snapshots);
-          return snapshots.some((entry) => entry.textLength > 80 || entry.imageCount > 0);
-        };
-
-        const tryDisplaySpineItem = async (index: number) => {
-          const target = book.spine?.get?.(index);
-          if (!target) return false;
-          log("samm 7.2: proovin spine elementi", { index, href: target.href });
-          await rendition.display(target.href);
-          await new Promise((resolve) => window.setTimeout(resolve, 350));
-          return isMeaningfulContentRendered();
-        };
-
-        rendition.themes.default({
-          body: {
-            "font-family": "Georgia, serif",
-            "line-height": "1.6",
-            padding: "1rem",
-          },
-        });
-
-        await new Promise<void>((resolve, reject) => {
-          let settled = false;
-
-          const cleanup = () => {
-            window.clearTimeout(timeoutId);
-            rendition.off?.("rendered", handleRendered);
-            rendition.off?.("render_failed", handleRenderFailed);
-          };
-
-          const finish = (callback: () => void) => {
-            if (settled || cancelled) return;
-            settled = true;
-            cleanup();
-            callback();
-          };
-
-          const handleRendered = () => {
-            log("samm 7: epubjs rendered event");
-            finish(resolve);
-          };
-          const handleRenderFailed = (_section: unknown, renderError: unknown) => {
-            warn("samm 7: epubjs render_failed", renderError);
-            finish(() =>
-              reject(renderError instanceof Error ? renderError : new Error("EPUB renderdamine ebaõnnestus."))
-            );
-          };
-
-          const timeoutId = window.setTimeout(() => {
-            warn("samm 7: epubjs timeout");
-            finish(() => reject(new Error("Raamatu laadimine võtab liiga kaua aega. Proovi uuesti.")));
-          }, EPUB_RENDER_TIMEOUT_MS);
-
-          rendition.on("rendered", handleRendered);
-          rendition.on("render_failed", handleRenderFailed);
-
-          void rendition
-            .display()
-            .then(() => {
-              log("samm 7: rendition.display() resolved");
-              finish(resolve);
-            })
-            .catch((renderError) => {
-              warn("samm 7: rendition.display() catch", renderError);
-            finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB avamine ebaõnnestus.")));
-          });
-        });
-
-        if (!isMeaningfulContentRendered()) {
-          log("samm 7.3: esimene vaade tühi, proovin järgmisi spine elemente");
-          let foundReadableSection = false;
-          const maxSpineChecks = Math.min(spineCount ?? 0, 6);
-          for (let index = 1; index < maxSpineChecks; index += 1) {
-            if (await tryDisplaySpineItem(index)) {
-              foundReadableSection = true;
-              log("samm 7.4: leidsin loetava spine elemendi", { index });
-              break;
-            }
-          }
-
-          if (!foundReadableSection) {
-            throw new Error("EPUB renderdus jäi tühjaks – avan sisemise HTML-vaate.");
-          }
-        }
-
-        log("samm 8: epubjs valmis");
+        log("samm 5: loon EPUB-ist sisemise HTML-vaate");
+        const html = await extractEpubAsHtml(fetchedBuffer, title);
+        log("samm 6: HTML fallback valmis", { htmlLength: html.length });
+        if (cancelled) return;
+        setFallbackHtml(html);
+        log("samm 7: EPUB avatud HTML-vaates");
         if (!cancelled) setLoading(false);
       } catch (e: any) {
         if (cancelled) return;
-        warn("samm X: epubjs voog ebaõnnestus, proovin HTML fallback'i", e);
+        warn("samm X: EPUB avamine ebaõnnestus", e);
 
         try {
           const fallbackBuffer = fetchedBuffer ?? (await fetch(url).then((res) => {
             if (!res.ok) throw new Error(`Ei õnnestunud laadida (${res.status})`);
             return res.arrayBuffer();
           }));
-          log("samm X.1: fallback puhver", { bytes: fallbackBuffer.byteLength });
+          log("samm X.1: teine katse fallback puhver", { bytes: fallbackBuffer.byteLength });
           const html = await extractEpubAsHtml(fallbackBuffer, title);
-          log("samm X.2: fallback HTML pikkus", html.length);
+          log("samm X.2: teine HTML fallback valmis", html.length);
           if (cancelled) return;
           setFallbackHtml(html);
           setError(null);
