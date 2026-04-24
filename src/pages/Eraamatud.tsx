@@ -372,7 +372,25 @@ export default function Eraamatud() {
                       return (
                         <Card
                           key={book.id}
-                          className="group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200"
+                          role={hasMedia ? "button" : undefined}
+                          tabIndex={hasMedia ? 0 : -1}
+                          onClick={() => {
+                            if (!hasMedia) return;
+                            if (paid && (authLoading || purchaseHistoryLoading)) return;
+                            if (openingId === book.id) return;
+                            open(book);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Enter" && e.key !== " ") return;
+                            if (!hasMedia) return;
+                            if (paid && (authLoading || purchaseHistoryLoading)) return;
+                            if (openingId === book.id) return;
+                            e.preventDefault();
+                            open(book);
+                          }}
+                          className={`group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200 ${
+                            hasMedia ? "cursor-pointer" : "cursor-not-allowed opacity-80"
+                          }`}
                         >
                           <div className="aspect-[2/3] bg-muted relative overflow-hidden">
                             {cover ? (
@@ -405,7 +423,11 @@ export default function Eraamatud() {
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
                               disabled={!hasMedia || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
-                              onClick={() => hasMedia && !authLoading && !purchaseHistoryLoading && openingId !== book.id && open(book)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (!hasMedia || authLoading || purchaseHistoryLoading || openingId === book.id) return;
+                                open(book);
+                              }}
                             >
                               {openingId === book.id ? (
                                 <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
