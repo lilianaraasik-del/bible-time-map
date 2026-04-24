@@ -503,6 +503,67 @@ export default function Eraamatud() {
         />
       )}
 
+      {/* Episoodide loend (kui raamatul on mitu peatükki) */}
+      {episodeList && (
+        <Dialog open onOpenChange={(o) => !o && setEpisodeList(null)}>
+          <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col p-0 gap-0">
+            <header className="flex items-center justify-between px-5 py-4 border-b border-border bg-card shrink-0">
+              <div className="min-w-0">
+                <h2 className="font-serif text-lg font-semibold truncate">{episodeList.book.title}</h2>
+                <p className="text-xs text-muted-foreground">{episodeList.episodes.length} peatükki</p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setEpisodeList(null)} aria-label="Sulge">
+                <X className="h-5 w-5" />
+              </Button>
+            </header>
+            <div className="overflow-auto p-2">
+              <ul className="divide-y divide-border">
+                {episodeList.episodes.map((episode) => {
+                  const cost = Number(episode.is_book_coin || 0);
+                  const bought =
+                    Number(episode.is_buy || 0) === 1 ||
+                    purchasedEpisodeIds.has(String(episode.id));
+                  const hasFile = !!episode.book;
+                  const isOpening = openingEpisodeId === String(episode.id);
+                  return (
+                    <li
+                      key={episode.id}
+                      className="flex items-center gap-3 px-3 py-3 hover:bg-muted/50 rounded-md"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="font-serif font-semibold text-sm truncate">{episode.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {!hasFile
+                            ? "Sisu pole veel saadaval"
+                            : bought
+                            ? "Ostetud"
+                            : cost > 0
+                            ? `${cost} münti`
+                            : "Tasuta"}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant={hasFile ? "default" : "secondary"}
+                        disabled={!hasFile || isOpening}
+                        onClick={() => handleOpenEpisode(episodeList.book, episode)}
+                      >
+                        {isOpening ? (
+                          <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                        ) : (
+                          <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                        )}
+                        {isOpening ? "Avan..." : hasFile ? "Loe" : "Pole saadaval"}
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* PDF lugeja */}
       {player?.kind === "book" && player.format === "pdf" && (
         <PdfReader
