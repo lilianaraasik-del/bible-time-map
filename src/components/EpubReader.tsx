@@ -26,7 +26,12 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         setLoading(true);
         setError(null);
         const res = await fetch(url);
-        if (!res.ok) throw new Error(`Ei õnnestunud laadida (${res.status})`);
+        if (!res.ok) {
+          if (res.status === 401) throw new Error("Sisselogimine vajalik");
+          if (res.status === 402) throw new Error("Raamat on tasuline – osta müntide eest");
+          if (res.status === 404) throw new Error("Raamatut ei leitud");
+          throw new Error(`Ei õnnestunud laadida (${res.status})`);
+        }
         const buffer = await res.arrayBuffer();
         if (cancelled) return;
 
