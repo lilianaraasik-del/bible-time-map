@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { BookOpen, Headphones, Video, Play, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   fetchEraamatud,
   imageUrl,
@@ -220,23 +221,22 @@ function MediaModal({
   onClose: () => void;
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-        <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
-        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Sulge">
-          <X className="h-5 w-5" />
-        </Button>
-      </header>
-      <div className="flex-1 flex items-center justify-center p-4 md:p-8">
-        <div className="w-full max-w-4xl">{children}</div>
-      </div>
-    </div>
+    <Dialog open onOpenChange={(o) => !o && onClose()}>
+      <DialogContent
+        className="max-w-none w-screen h-screen p-0 gap-0 rounded-none border-0 flex flex-col [&>button]:hidden"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
+          <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Sulge">
+            <X className="h-5 w-5" />
+          </Button>
+        </header>
+        <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-background">
+          <div className="w-full max-w-4xl">{children}</div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
