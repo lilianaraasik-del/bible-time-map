@@ -186,9 +186,13 @@ export default function Eraamatud() {
             : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
         }
         const lower = rawUrl.toLowerCase();
-        const format: BookFormat = lower.includes(".pdf") ? "pdf" : "epub";
+        const proxiedUrl = proxyUrl(rawUrl);
+        const format: BookFormat = await detectRemoteBookFormat(
+          proxiedUrl,
+          lower.includes(".pdf") ? "pdf" : "epub"
+        );
         console.log("[Eraamatud] avan raamatu:", { id: book.id, title: book.title, rawUrl, format });
-        setPlayer({ kind: "book", book, url: proxyUrl(rawUrl), format });
+        setPlayer({ kind: "book", book, url: proxiedUrl, format });
       } catch (e) {
         toast({
           title: "Raamatu avamine ebaõnnestus",
