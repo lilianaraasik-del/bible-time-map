@@ -130,8 +130,18 @@ export default function Eraamatud() {
           toast({ title: "Raamat avatud!", description: `−${cost} münti` });
         }
 
-        const rawUrl = episode.book;
-        const format: BookFormat = rawUrl.toLowerCase().endsWith(".pdf") ? "pdf" : "epub";
+        // Normaliseeri URL: kui on suhteline tee, lisa eraamat host ette
+        let rawUrl = episode.book.trim();
+        if (!/^https?:\/\//i.test(rawUrl)) {
+          const path = rawUrl.replace(/^\/+/, "");
+          // Failid on tavaliselt admin/storage/app/public all
+          rawUrl = path.startsWith("admin/") || path.startsWith("storage/")
+            ? `https://eraamat.piibel.ee/${path}`
+            : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
+        }
+        const lower = rawUrl.toLowerCase();
+        const format: BookFormat = lower.includes(".pdf") ? "pdf" : "epub";
+        console.log("[Eraamatud] avan raamatu:", { id: book.id, title: book.title, rawUrl, format });
         setPlayer({ kind: "book", book, url: proxyUrl(rawUrl), format });
       } catch (e) {
         toast({
