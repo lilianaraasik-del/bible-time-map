@@ -64,7 +64,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
         }
 
-        const book = ePub(buffer);
+        const book = ePub(buffer, { openAs: "epub" });
         bookRef.current = book;
 
         const rendition = book.renderTo(viewerRef.current!, {
@@ -83,14 +83,38 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           },
         });
 
-        await Promise.race([
-          rendition.display(),
-          new Promise((_, reject) => {
-            window.setTimeout(() => {
-              reject(new Error("Raamatu laadimine võtab liiga kaua aega. Proovi uuesti."));
-            }, EPUB_RENDER_TIMEOUT_MS);
-          }),
-        ]);
+        await new Promise<void>((resolve, reject) => {
+          let settled = false;
+
+          const cleanup = () => {
+            window.clearTimeout(timeoutId);
+            rendition.off?.("rendered", handleRendered);
+            rendition.off?.("render_failed", handleRenderFailed);
+          };
+
+          const finish = (callback: () => void) => {
+            if (settled || cancelled) return;
+            settled = true;
+            cleanup();
+            callback();
+          };
+
+          const handleRendered = () => finish(resolve);
+          const handleRenderFailed = (_section: unknown, renderError: unknown) => {
+            finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB renderdamine ebaõnnestus.")));
+          };
+
+          const timeoutId = window.setTimeout(() => {
+            finish(() => reject(new Error("Raamatu laadimine võtab liiga kaua aega. Proovi uuesti.")));
+          }, EPUB_RENDER_TIMEOUT_MS);
+
+          rendition.on("rendered", handleRendered);
+          rendition.on("render_failed", handleRenderFailed);
+
+          void rendition.display().then(() => finish(resolve)).catch((renderError) => {
+            finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB avamine ebaõnnestus.")));
+          });
+        });
         if (!cancelled) setLoading(false);
       } catch (e: any) {
         if (!cancelled) {
