@@ -17,6 +17,7 @@ export interface EraamatApi {
   content_type?: string; // 1=audio, 2=raamat, 3=video
   upload_type?: string;
   is_paid_novel?: string;
+  novel_coin?: string;
   category_id?: string;
   language_id?: string;
   status?: string;
