@@ -26,6 +26,18 @@ function firstResult<T>(result: T | T[] | undefined): T | undefined {
   return result;
 }
 
+function createPiibelToken(userId: string | number) {
+  return btoa(`${userId}|${Math.floor(Date.now() / 1000)}`);
+}
+
+function ensurePiibelUser(user: PiibelUser | undefined): PiibelUser | undefined {
+  if (!user) return undefined;
+  return {
+    ...user,
+    unique_token: user.unique_token || createPiibelToken(user.id),
+  };
+}
+
 async function piibelGoogleLogin(email: string, full_name: string) {
   const params = new URLSearchParams({
     type: "2",
@@ -48,7 +60,7 @@ async function piibelGoogleLogin(email: string, full_name: string) {
   const json = (await res.json()) as PiibelApiResponse<PiibelUser | PiibelUser[]>;
   return {
     ...json,
-    result: firstResult(json.result),
+    result: ensurePiibelUser(firstResult(json.result)),
   } as PiibelApiResponse<PiibelUser>;
 }
 
