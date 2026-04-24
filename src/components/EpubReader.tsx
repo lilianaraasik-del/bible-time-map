@@ -89,8 +89,11 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         const book = ePub(fetchedBuffer, { openAs: "epub" });
         bookRef.current = book;
         await book.ready;
+        const spineCount = Array.isArray((book as any).spine?.spineItems)
+          ? (book as any).spine.spineItems.length
+          : undefined;
         log("samm 5.1: book.ready", {
-          spineItems: Array.isArray(book.spine?.spineItems) ? book.spine.spineItems.length : undefined,
+          spineItems: spineCount,
         });
 
         const rendition = book.renderTo(viewerRef.current!, {
@@ -181,7 +184,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         if (!isMeaningfulContentRendered()) {
           log("samm 7.3: esimene vaade tühi, proovin järgmisi spine elemente");
           let foundReadableSection = false;
-          const maxSpineChecks = Math.min(book.spine?.spineItems?.length ?? 0, 6);
+          const maxSpineChecks = Math.min(spineCount ?? 0, 6);
           for (let index = 1; index < maxSpineChecks; index += 1) {
             if (await tryDisplaySpineItem(index)) {
               foundReadableSection = true;
