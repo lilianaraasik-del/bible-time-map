@@ -102,7 +102,7 @@ export default function Eraamatud() {
         }
 
         const cost = Number(episode.is_book_coin || 0);
-        const alreadyBought = Number(episode.is_buy || 0) === 1;
+        const alreadyBought = Number(episode.is_buy || 0) === 1 || locallyPurchasedBookIds.has(String(book.id));
         const needsPurchase = !alreadyBought && cost > 0;
 
         // Kui pole ostetud ja maksab münte, osta
