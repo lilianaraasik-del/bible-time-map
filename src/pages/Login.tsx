@@ -11,7 +11,7 @@ import { LogIn, Smartphone } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, session } = useAuth();
+  const { login, loginWithGoogle, session } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
