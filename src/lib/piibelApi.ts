@@ -92,24 +92,34 @@ async function piibelPost<T = unknown>(
 
 /** Login mobiili kontoga (email + parool, type=4 = Normal). */
 export async function piibelLogin(email: string, password: string) {
-  return piibelPost<PiibelUser>("login", {
+  const res = await piibelPost<PiibelUser | PiibelUser[]>("login", {
     type: 4,
     email,
     password,
     device_type: 3, // 3 = web
     device_token: "web-session",
   });
+
+  return {
+    ...res,
+    result: firstResult(res.result),
+  } as PiibelApiResponse<PiibelUser>;
 }
 
 /** Google sisselogimine (type=2). Email tuleb juba verifitseeritud Google'ist. */
 export async function piibelGoogleLogin(email: string, full_name: string) {
-  return piibelPost<PiibelUser>("login", {
+  const res = await piibelPost<PiibelUser | PiibelUser[]>("login", {
     type: 2,
     email,
     full_name,
     device_type: 3,
     device_token: "web-session",
   });
+
+  return {
+    ...res,
+    result: firstResult(res.result),
+  } as PiibelApiResponse<PiibelUser>;
 }
 
 /** Kasutaja profiil (sh wallet_coin). */
