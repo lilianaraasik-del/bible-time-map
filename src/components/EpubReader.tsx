@@ -10,6 +10,8 @@ interface EpubReaderProps {
   onClose: () => void;
 }
 
+const EPUB_RENDER_TIMEOUT_MS = 15000;
+
 export function EpubReader({ url, title, onClose }: EpubReaderProps) {
   const viewerRef = useRef<HTMLDivElement>(null);
   const bookRef = useRef<Book | null>(null);
@@ -37,24 +39,29 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         const buffer = await res.arrayBuffer();
         if (cancelled) return;
 
+        const contentType = (res.headers.get("content-type") || "").toLowerCase();
+        const bytes = new Uint8Array(buffer.slice(0, 4));
+        const isZip = bytes[0] === 0x50 && bytes[1] === 0x4b;
+        const isPdf = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
+
+        if (contentType.includes("pdf") || isPdf) {
+          throw new Error("Server tagastas PDF faili EPUB-i asemel. Proovi raamat uuesti avada.");
+        }
+
         // Mõned serveriotspunktid tagastavad 200 staatuse, aga sisuks on
         // HTML/PHP veateade (nt epub.php SQL viga). Kontrollime EPUB allkirja
         // ("PK" zip-faili algus), enne kui anname epubjs-le faili.
-        if (buffer.byteLength < 5000) {
-          const head = new Uint8Array(buffer.slice(0, 2));
-          const isZip = head[0] === 0x50 && head[1] === 0x4b;
-          if (!isZip) {
-            const text = new TextDecoder().decode(buffer);
-            if (text.toLowerCase().includes("vajalik sisselogimine")) {
-              throw new Error("Server nõuab sisselogimist – kontrolli oma kontot.");
-            }
-            if (text.toLowerCase().includes("fatal error") || text.toLowerCase().includes("pdoexception")) {
-              throw new Error(
-                "Raamatuserveris on viga (epub.php). Palun teavita KERK administraatorit – vaja on lubada veebikasutajate tokenid."
-              );
-            }
-            throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
+        if (!isZip) {
+          const text = new TextDecoder().decode(buffer.slice(0, Math.min(buffer.byteLength, 2048)));
+          if (text.toLowerCase().includes("vajalik sisselogimine")) {
+            throw new Error("Server nõuab sisselogimist – kontrolli oma kontot.");
           }
+          if (text.toLowerCase().includes("fatal error") || text.toLowerCase().includes("pdoexception")) {
+            throw new Error(
+              "Raamatuserveris on viga (epub.php). Palun teavita KERK administraatorit – vaja on lubada veebikasutajate tokenid."
+            );
+          }
+          throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
         }
 
         const book = ePub(buffer);
@@ -76,7 +83,14 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           },
         });
 
-        await rendition.display();
+        await Promise.race([
+          rendition.display(),
+          new Promise((_, reject) => {
+            window.setTimeout(() => {
+              reject(new Error("Raamatu laadimine võtab liiga kaua aega. Proovi uuesti."));
+            }, EPUB_RENDER_TIMEOUT_MS);
+          }),
+        ]);
         if (!cancelled) setLoading(false);
       } catch (e: any) {
         if (!cancelled) {
