@@ -423,7 +423,11 @@ export default function Eraamatud() {
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
                               disabled={!hasMedia || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
-                              onClick={() => hasMedia && !authLoading && !purchaseHistoryLoading && openingId !== book.id && open(book)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (!hasMedia || authLoading || purchaseHistoryLoading || openingId === book.id) return;
+                                open(book);
+                              }}
                             >
                               {openingId === book.id ? (
                                 <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
