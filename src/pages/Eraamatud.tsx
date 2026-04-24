@@ -81,6 +81,7 @@ export default function Eraamatud() {
   const [openingId, setOpeningId] = useState<string | null>(null);
   const [locallyPurchasedBookIds, setLocallyPurchasedBookIds] = useState<Set<string>>(new Set());
   const [purchasedBookIds, setPurchasedBookIds] = useState<Set<string>>(new Set());
+  const [purchasedEpisodeIds, setPurchasedEpisodeIds] = useState<Set<string>>(new Set());
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
 
   useEffect(() => {
@@ -94,6 +95,7 @@ export default function Eraamatud() {
   useEffect(() => {
     if (!session) {
       setPurchasedBookIds(new Set());
+      setPurchasedEpisodeIds(new Set());
       setPurchaseHistoryLoading(false);
       return;
     }
@@ -105,17 +107,28 @@ export default function Eraamatud() {
       .then((res) => {
         if (!active || res.status !== 200) return;
 
-        const ids = new Set(
+        const contentIds = new Set(
           (res.result || [])
             .map((row) => row.content_id)
             .filter((value): value is string | number => value !== undefined && value !== null)
             .map((value) => String(value))
         );
 
-        setPurchasedBookIds(ids);
+        const episodeIds = new Set(
+          (res.result || [])
+            .map((row) => row.episode_id)
+            .filter((value): value is string | number => value !== undefined && value !== null)
+            .map((value) => String(value))
+        );
+
+        setPurchasedBookIds(contentIds);
+        setPurchasedEpisodeIds(episodeIds);
       })
       .catch(() => {
-        if (active) setPurchasedBookIds(new Set());
+        if (active) {
+          setPurchasedBookIds(new Set());
+          setPurchasedEpisodeIds(new Set());
+        }
       })
       .finally(() => {
         if (active) setPurchaseHistoryLoading(false);
@@ -176,7 +189,13 @@ export default function Eraamatud() {
           const alreadyBought =
             Number(episode.is_buy || 0) === 1 ||
             locallyPurchasedBookIds.has(String(book.id)) ||
-            purchasedBookIds.has(String(book.id));
+            purchasedBookIds.has(String(book.id)) ||
+            purchasedEpisodeIds.has(String(episode.id));
+
+          if (alreadyBought && !locallyPurchasedBookIds.has(String(book.id))) {
+            setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+          }
+
           const needsPurchase = !alreadyBought && cost > 0;
 
           if (needsPurchase) {
@@ -209,6 +228,7 @@ export default function Eraamatud() {
 
             setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
             setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+            setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
             await refreshProfile();
 
             const refreshedEp = await piibelGetEpisodeBookByContent({
