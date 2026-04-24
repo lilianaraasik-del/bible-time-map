@@ -35,6 +35,8 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
     if (!viewerRef.current) return;
     let cancelled = false;
     let fetchedBuffer: ArrayBuffer | null = null;
+    const log = (...args: unknown[]) => console.log("[EpubReader]", `"${title}"`, ...args);
+    const warn = (...args: unknown[]) => console.warn("[EpubReader]", `"${title}"`, ...args);
 
     (async () => {
       try {
@@ -42,7 +44,9 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         setError(null);
         setFallbackHtml(null);
 
+        log("samm 1: fetch", url);
         const res = await fetch(url);
+        log("samm 2: vastus", { status: res.status, type: res.headers.get("content-type"), length: res.headers.get("content-length") });
         if (!res.ok) {
           if (res.status === 401) throw new Error("Sisselogimine vajalik");
           if (res.status === 402) throw new Error("Raamat on tasuline – osta müntide eest");
@@ -56,11 +60,13 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
 
         fetchedBuffer = await res.arrayBuffer();
         if (cancelled) return;
+        log("samm 3: bait-puhver kätte saadud", { bytes: fetchedBuffer.byteLength });
 
         const contentType = (res.headers.get("content-type") || "").toLowerCase();
         const bytes = new Uint8Array(fetchedBuffer.slice(0, 4));
         const isZip = bytes[0] === 0x50 && bytes[1] === 0x4b;
         const isPdf = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
+        log("samm 4: faili allkiri", { isZip, isPdf, firstBytes: Array.from(bytes).map((b) => b.toString(16)).join(" ") });
 
         if (contentType.includes("pdf") || isPdf) {
           throw new Error("Server tagastas PDF faili EPUB-i asemel. Proovi raamat uuesti avada.");
@@ -79,6 +85,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
         }
 
+        log("samm 5: epubjs kutsumine");
         const book = ePub(fetchedBuffer, { openAs: "epub" });
         bookRef.current = book;
 
@@ -89,6 +96,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           allowScriptedContent: true,
         });
         renditionRef.current = rendition;
+        log("samm 6: rendition loodud");
 
         rendition.themes.default({
           body: {
@@ -114,39 +122,56 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
             callback();
           };
 
-          const handleRendered = () => finish(resolve);
+          const handleRendered = () => {
+            log("samm 7: epubjs rendered event");
+            finish(resolve);
+          };
           const handleRenderFailed = (_section: unknown, renderError: unknown) => {
+            warn("samm 7: epubjs render_failed", renderError);
             finish(() =>
               reject(renderError instanceof Error ? renderError : new Error("EPUB renderdamine ebaõnnestus."))
             );
           };
 
           const timeoutId = window.setTimeout(() => {
+            warn("samm 7: epubjs timeout");
             finish(() => reject(new Error("Raamatu laadimine võtab liiga kaua aega. Proovi uuesti.")));
           }, EPUB_RENDER_TIMEOUT_MS);
 
           rendition.on("rendered", handleRendered);
           rendition.on("render_failed", handleRenderFailed);
 
-          void rendition.display().then(() => finish(resolve)).catch((renderError) => {
+          void rendition
+            .display()
+            .then(() => {
+              log("samm 7: rendition.display() resolved");
+              finish(resolve);
+            })
+            .catch((renderError) => {
+              warn("samm 7: rendition.display() catch", renderError);
             finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB avamine ebaõnnestus.")));
           });
         });
 
+        log("samm 8: epubjs valmis");
         if (!cancelled) setLoading(false);
       } catch (e: any) {
         if (cancelled) return;
+        warn("samm X: epubjs voog ebaõnnestus, proovin HTML fallback'i", e);
 
         try {
           const fallbackBuffer = fetchedBuffer ?? (await fetch(url).then((res) => {
             if (!res.ok) throw new Error(`Ei õnnestunud laadida (${res.status})`);
             return res.arrayBuffer();
           }));
+          log("samm X.1: fallback puhver", { bytes: fallbackBuffer.byteLength });
           const html = await extractEpubAsHtml(fallbackBuffer, title);
+          log("samm X.2: fallback HTML pikkus", html.length);
           if (cancelled) return;
           setFallbackHtml(html);
           setError(null);
-        } catch {
+        } catch (fallbackError) {
+          warn("samm X.3: fallback ebaõnnestus", fallbackError);
           setError(e?.message || "Tundmatu viga");
         } finally {
           if (!cancelled) setLoading(false);
