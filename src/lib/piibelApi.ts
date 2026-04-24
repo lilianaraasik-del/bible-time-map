@@ -24,6 +24,11 @@ export interface PiibelUser {
   status?: string | number;
 }
 
+function firstResult<T>(result: T | T[] | undefined): T | undefined {
+  if (Array.isArray(result)) return result[0];
+  return result;
+}
+
 export interface PiibelPackage {
   id: number;
   name: string;
