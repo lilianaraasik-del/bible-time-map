@@ -94,14 +94,18 @@ export default function Eraamatud() {
           content_id: book.id,
         });
         const episode = ep.result?.[0];
+        console.log("[Eraamatud] episode vastus:", { bookId: book.id, episode, fullResponse: ep });
         if (!episode || !episode.book) {
           toast({ title: "Raamatu faili ei leitud", variant: "destructive" });
           return;
         }
 
-        // Kui pole ostetud, osta müntide eest
-        if (!episode.is_buy) {
-          const cost = Number(episode.is_book_coin || 0);
+        const cost = Number(episode.is_book_coin || 0);
+        const alreadyBought = Number(episode.is_buy || 0) === 1;
+        const needsPurchase = !alreadyBought && cost > 0;
+
+        // Kui pole ostetud ja maksab münte, osta
+        if (needsPurchase) {
           if (session.walletCoin < cost) {
             toast({
               title: "Müntidest jääb puudu",
@@ -118,10 +122,11 @@ export default function Eraamatud() {
             episode_id: episode.id,
             coin: cost,
           });
+          console.log("[Eraamatud] ostmise vastus:", buy);
           if (buy.status !== 200) {
             toast({
               title: "Ostmine ebaõnnestus",
-              description: buy.message || "Proovi uuesti.",
+              description: `${buy.message || "Tundmatu viga"} (status ${buy.status}). Vaata konsoolist täpsemat infot.`,
               variant: "destructive",
             });
             return;
