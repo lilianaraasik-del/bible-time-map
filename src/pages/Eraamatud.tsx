@@ -439,11 +439,20 @@ export default function Eraamatud() {
                           ? !!audioUrl(book)
                           : !!videoEmbedUrl(book);
                       const coinPrice = Number(book.novel_coin || 0);
-                      const priceLabel = paid
-                        ? coinPrice > 0
-                          ? `${coinPrice} münti`
-                          : "Tasuline"
-                        : "Tasuta";
+                      const summary = key === "book" ? episodeSummary[String(book.id)] : undefined;
+                      let priceLabel: string;
+                      if (!paid) {
+                        priceLabel = "Tasuta";
+                      } else if (coinPrice > 0) {
+                        priceLabel = `${coinPrice} münti`;
+                      } else if (summary && summary.totalCoin > 0) {
+                        priceLabel =
+                          summary.minCoin === summary.maxCoin
+                            ? `${summary.count} × ${summary.minCoin} münti`
+                            : `${summary.minCoin}–${summary.maxCoin} münti`;
+                      } else {
+                        priceLabel = "Tasuline";
+                      }
                       return (
                         <Card
                           key={book.id}
