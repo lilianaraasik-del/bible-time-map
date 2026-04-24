@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown, Sparkles, Library } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Navigation() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const { session } = useAuth();
 
   return (
     <nav className="border-b border-border/30 bg-card/80 backdrop-blur-md sticky top-0 z-40 shadow-sm">
@@ -80,6 +82,34 @@ export function Navigation() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {session ? (
+              <Link
+                to="/profiil"
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                  isActive("/profiil") || isActive("/paketid")
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "hover:bg-muted text-foreground"
+                )}
+              >
+                <Coins className="h-4 w-4" />
+                <span className="font-medium">{session.walletCoin}</span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                  isActive("/login")
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "hover:bg-muted text-foreground"
+                )}
+              >
+                <LogIn className="h-4 w-4" />
+                <span className="font-medium">Logi sisse</span>
+              </Link>
+            )}
 
             <ThemeToggle />
           </div>

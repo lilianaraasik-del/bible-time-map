@@ -1,0 +1,167 @@
+// Klient eraamat.piibel.ee mobiilirakenduse API jaoks.
+// Kõik endpointid on POST ja vastus on `{ status, message, result }`.
+
+export const PIIBEL_API_BASE = "https://eraamat.piibel.ee/admin/public/api";
+
+export interface PiibelApiResponse<T = unknown> {
+  status: number;
+  message: string;
+  result?: T;
+  total_rows?: number;
+  total_page?: number;
+  current_page?: number;
+  more_page?: boolean;
+}
+
+export interface PiibelUser {
+  id: number | string;
+  full_name?: string;
+  email: string;
+  unique_token: string;
+  wallet_coin?: number;
+  profile_image?: string;
+  language_id?: string | number;
+  status?: string | number;
+}
+
+export interface PiibelPackage {
+  id: number;
+  name: string;
+  est_name?: string;
+  image: string;
+  price: number;
+  coin: number;
+  android_product_package?: string;
+  ios_product_package?: string;
+  status: number;
+}
+
+export interface PiibelTransaction {
+  id: number;
+  user_id: number | string;
+  package_id: number | string;
+  package_name?: string;
+  coin: number;
+  price: number;
+  payment_type?: string;
+  transaction_id?: string;
+  status?: number | string;
+  created_at: string;
+}
+
+export interface PiibelWalletTransaction {
+  id: number;
+  user_id: number | string;
+  content_id?: number | string;
+  content_name?: string;
+  episode_id?: number | string;
+  episode_name?: string;
+  coin: number;
+  type?: string;
+  created_at: string;
+}
+
+/** Üldine POST helper. Saadab x-www-form-urlencoded (Laravel ootab seda). */
+async function piibelPost<T = unknown>(
+  endpoint: string,
+  body: Record<string, string | number | undefined> = {}
+): Promise<PiibelApiResponse<T>> {
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(body)) {
+    if (v !== undefined && v !== null) params.append(k, String(v));
+  }
+
+  const res = await fetch(`${PIIBEL_API_BASE}/${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString(),
+  });
+
+  if (!res.ok) {
+    throw new Error(`API viga (${res.status})`);
+  }
+
+  const json = await res.json();
+  return json as PiibelApiResponse<T>;
+}
+
+/** Login mobiili kontoga. */
+export async function piibelLogin(email: string, password: string) {
+  return piibelPost<PiibelUser>("login", {
+    email,
+    password,
+    device_type: "web",
+    device_token: "web-session",
+  });
+}
+
+/** Kasutaja profiil (sh wallet_coin). */
+export async function piibelGetProfile(user_id: string | number, unique_token: string) {
+  return piibelPost<PiibelUser>("get_profile", { user_id, unique_token });
+}
+
+/** Pakettide nimekiri. */
+export async function piibelGetPackages(language_id: string | number = 1) {
+  return piibelPost<PiibelPackage[]>("get_package", { language_id });
+}
+
+/** Müntide ostuajalugu (ostetud paketid). */
+export async function piibelGetTransactions(user_id: string | number, unique_token: string) {
+  return piibelPost<PiibelTransaction[]>("get_transaction_list", {
+    user_id,
+    unique_token,
+  });
+}
+
+/** Müntidega avatud raamatute / peatükkide ajalugu. */
+export async function piibelGetWalletTransactions(
+  user_id: string | number,
+  unique_token: string
+) {
+  return piibelPost<PiibelWalletTransaction[]>("get_wallet_transaction_list", {
+    user_id,
+    unique_token,
+  });
+}
+
+/** Lisa ostutehing (= lisab mündid kasutaja rahakotti). */
+export async function piibelAddTransaction(opts: {
+  user_id: string | number;
+  unique_token: string;
+  package_id: string | number;
+  coin: number;
+  price: number;
+  payment_type: string; // "stripe"
+  transaction_id: string; // Stripe session id
+}) {
+  return piibelPost("add_transaction", opts);
+}
+
+/** Osta sisu / peatükk müntidega. */
+export async function piibelBuyContentEpisode(opts: {
+  user_id: string | number;
+  unique_token: string;
+  content_id: string | number;
+  episode_id?: string | number;
+  coin: number;
+}) {
+  return piibelPost("buy_content_episode", opts);
+}
+
+/** Sisu detailid (sh kas tasuline ja mitu münti maksab). */
+export async function piibelGetContentDetail(opts: {
+  user_id?: string | number;
+  unique_token?: string;
+  content_id: string | number;
+}) {
+  return piibelPost("get_content_detail", opts);
+}
+
+/** Raamatu peatükid (epub failid). */
+export async function piibelGetEpisodeBookByContent(opts: {
+  user_id?: string | number;
+  unique_token?: string;
+  content_id: string | number;
+}) {
+  return piibelPost("get_episode_book_by_content", opts);
+}
