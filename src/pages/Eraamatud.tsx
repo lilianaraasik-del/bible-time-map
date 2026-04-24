@@ -9,17 +9,20 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   fetchEraamatud,
   imageUrl,
-  epubUrl,
+  bookFileUrl,
+  bookFormat,
   audioUrl,
   videoEmbedUrl,
   getMediaKind,
   type EraamatApi,
   type MediaKind,
+  type BookFormat,
 } from "@/lib/eraamatud";
 import EpubReader from "@/components/EpubReader";
+import PdfReader from "@/components/PdfReader";
 
 type PlayerState =
-  | { kind: "book"; book: EraamatApi; url: string }
+  | { kind: "book"; book: EraamatApi; url: string; format: BookFormat }
   | { kind: "audio"; book: EraamatApi; url: string }
   | { kind: "video"; book: EraamatApi; url: string }
   | null;
@@ -48,8 +51,8 @@ export default function Eraamatud() {
   const open = (book: EraamatApi) => {
     const kind = getMediaKind(book);
     if (kind === "book") {
-      const url = epubUrl(book);
-      if (url) setPlayer({ kind: "book", book, url });
+      const url = bookFileUrl(book);
+      if (url) setPlayer({ kind: "book", book, url, format: bookFormat(book) });
     } else if (kind === "audio") {
       const url = audioUrl(book);
       if (url) setPlayer({ kind: "audio", book, url });
@@ -123,7 +126,7 @@ export default function Eraamatud() {
                       const cover = imageUrl(book.portrait_img);
                       const hasMedia =
                         key === "book"
-                          ? !!epubUrl(book)
+                          ? !!bookFileUrl(book)
                           : key === "audio"
                           ? !!audioUrl(book)
                           : !!videoEmbedUrl(book);
@@ -179,8 +182,17 @@ export default function Eraamatud() {
       </main>
 
       {/* EPUB lugeja */}
-      {player?.kind === "book" && (
+      {player?.kind === "book" && player.format === "epub" && (
         <EpubReader
+          url={player.url}
+          title={player.book.title}
+          onClose={() => setPlayer(null)}
+        />
+      )}
+
+      {/* PDF lugeja */}
+      {player?.kind === "book" && player.format === "pdf" && (
+        <PdfReader
           url={player.url}
           title={player.book.title}
           onClose={() => setPlayer(null)}
