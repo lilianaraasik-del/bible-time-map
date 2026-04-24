@@ -111,6 +111,7 @@ export async function fetchEraamatud(): Promise<EraamatApi[]> {
 
 /** Mähib URL-i meie edge function proxy'sse, mis lisab CORS päised. */
 export function proxyUrl(rawUrl: string): string {
-  const base = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/book-proxy`;
+  const projectUrl = (import.meta.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
+  const base = `${projectUrl}/functions/v1/book-proxy`;
   return `${base}?url=${encodeURIComponent(rawUrl)}`;
 }
