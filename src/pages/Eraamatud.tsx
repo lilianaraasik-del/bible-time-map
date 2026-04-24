@@ -116,7 +116,7 @@ export default function Eraamatud() {
 
         const episodeIds = new Set(
           (res.result || [])
-            .map((row) => row.episode_id)
+            .map((row) => row.content_episode_id)
             .filter((value): value is string | number => value !== undefined && value !== null)
             .map((value) => String(value))
         );
