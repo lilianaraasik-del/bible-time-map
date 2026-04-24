@@ -45,15 +45,26 @@ export function epubUrl(book: EraamatApi): string | null {
   return book.file_url || null;
 }
 
-/** Tagastab raamatu faili URL-i (epub või pdf). */
-export function bookFileUrl(book: EraamatApi): string | null {
-  // Eelistame full_novel'i (sisaldab tegelikku faili nime laiendiga)
-  const direct = book.full_novel?.trim();
-  if (direct && direct.length > 0) {
-    if (direct.startsWith("http")) return direct;
-    return `${ERAAMAT_IMG_BASE}${direct}`;
+/** Tagastab raamatu faili URL-i (epub või pdf).
+ * Kasutab serveri epub.php proxy't, et CORS ja autentimine töötaks.
+ * Kui raamat on tasuline, lisab user_id + unique_token URL-ile.
+ */
+export function bookFileUrl(
+  book: EraamatApi,
+  auth?: { userId: string; uniqueToken: string } | null
+): string | null {
+  const base = book.file_url;
+  if (!base) return null;
+  if (book.is_paid_novel === "1" && auth) {
+    const sep = base.includes("?") ? "&" : "?";
+    return `${base}${sep}user_id=${encodeURIComponent(auth.userId)}&unique_token=${encodeURIComponent(auth.uniqueToken)}`;
   }
-  return book.file_url || null;
+  return base;
+}
+
+/** Kas raamat nõuab sisselogimist (tasuline)? */
+export function isPaid(book: EraamatApi): boolean {
+  return book.is_paid_novel === "1";
 }
 
 /** Tuvastab faili formaadi URL-i v\u00f5i failinime j\u00e4rgi. */
