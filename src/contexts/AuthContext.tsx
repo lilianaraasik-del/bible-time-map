@@ -83,6 +83,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(syncedSession);
         return;
       }
+
+      console.log("[Auth] backend sünkroon ebaõnnestus, proovin browseri fallback'i");
+      try {
+        const fullName =
+          authUser.user_metadata?.full_name ||
+          authUser.user_metadata?.name ||
+          "";
+        const res = await piibelGoogleLogin(authUser.email || "", fullName);
+
+        if (res.status === 200 && res.result) {
+          const { error: upsertError } = await supabase.from("piibel_sessions").upsert(
+            {
+              auth_user_id: authUser.id,
+              piibel_user_id: String(res.result.id),
+              piibel_unique_token: res.result.unique_token,
+              email: res.result.email,
+              full_name: res.result.full_name || null,
+            },
+            { onConflict: "auth_user_id" }
+          );
+
+          if (!upsertError) {
+            setSession({
+              piibelUserId: String(res.result.id),
+              piibelUniqueToken: res.result.unique_token,
+              email: res.result.email,
+              fullName: res.result.full_name || null,
+              walletCoin: Number(res.result.wallet_coin || 0),
+            });
+            return;
+          }
+
+          console.error("[Auth] browser fallback upsert viga:", upsertError);
+        } else {
+          console.error("[Auth] browser fallback Piibel login ebaõnnestus:", res);
+        }
+      } catch (fallbackError) {
+        console.error("[Auth] browser fallback viskas vea:", fallbackError);
+      }
     }
 
     if (error || !data) {
