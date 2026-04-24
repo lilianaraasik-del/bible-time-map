@@ -132,6 +132,7 @@ export default function Eraamatud() {
             });
             return;
           }
+          setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
           await refreshProfile();
           toast({ title: "Raamat avatud!", description: `−${cost} münti` });
         }
