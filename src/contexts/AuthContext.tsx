@@ -1,12 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import {
-  piibelLogin,
-  piibelGoogleLogin,
-  piibelGetProfile,
-  type PiibelUser,
-} from "@/lib/piibelApi";
+import { piibelLogin, piibelGetProfile, type PiibelUser } from "@/lib/piibelApi";
 
 interface PiibelSession {
   piibelUserId: string;
@@ -17,6 +12,12 @@ interface PiibelSession {
 }
 
 type LoginResult = { ok: true } | { ok: false; error: string };
+
+interface SyncPiibelSessionResponse {
+  ok: boolean;
+  session?: PiibelSession;
+  error?: string;
+}
 
 interface AuthContextValue {
   session: PiibelSession | null;
@@ -33,65 +34,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<PiibelSession | null>(null);
   const [loading, setLoading] = useState(true);
 
-  /** Loe sessioon andmebaasist (peale Supabase auth'i). */
+  const syncPiibelSession = useCallback(async (): Promise<PiibelSession | null> => {
+    const { data, error } = await supabase.functions.invoke<SyncPiibelSessionResponse>(
+      "sync-piibel-session"
+    );
+
+    if (error) {
+      console.error("[Auth] sync-piibel-session viga:", error);
+      return null;
+    }
+
+    if (!data?.ok || !data.session) {
+      console.error("[Auth] sync-piibel-session ebaõnnestus:", data?.error);
+      return null;
+    }
+
+    return data.session;
+  }, []);
+
+  /** Loe sessioon andmebaasist (peale auth sessiooni taastamist). */
   const loadSession = useCallback(async () => {
-    const { data: authData } = await supabase.auth.getUser();
-    console.log("[Auth] loadSession - supabase user:", authData.user?.id, authData.user?.email);
-    if (!authData.user) {
+    const {
+      data: { session: authSession },
+      error: authError,
+    } = await supabase.auth.getSession();
+
+    console.log("[Auth] loadSession - supabase user:", authSession?.user?.id, authSession?.user?.email);
+
+    if (authError || !authSession?.user) {
       setSession(null);
       return;
     }
 
+    const authUser = authSession.user;
+
     const { data, error } = await supabase
       .from("piibel_sessions")
       .select("*")
-      .eq("auth_user_id", authData.user.id)
+      .eq("auth_user_id", authUser.id)
       .maybeSingle();
 
     console.log("[Auth] piibel_sessions row:", data, "error:", error);
 
-    // Kui Supabase auth on, aga piibel_sessions rida puudub
-    // (nt Google OAuth redirect tagasi) → loo see automaatselt
-    if (!error && !data && authData.user.email) {
-      const email = authData.user.email;
-      const fullName =
-        authData.user.user_metadata?.full_name ||
-        authData.user.user_metadata?.name ||
-        "";
-      console.log("[Auth] Sünkroonin PHP backendiga:", email, fullName);
-      try {
-        const res = await piibelGoogleLogin(email, fullName);
-        console.log("[Auth] piibelGoogleLogin vastus:", res);
-        if (res.status === 200 && res.result) {
-          const upsertRes = await supabase.from("piibel_sessions").upsert(
-            {
-              auth_user_id: authData.user.id,
-              piibel_user_id: String(res.result.id),
-              piibel_unique_token: res.result.unique_token,
-              email: res.result.email,
-              full_name: res.result.full_name || null,
-            },
-            { onConflict: "auth_user_id" }
-          );
-          console.log("[Auth] upsert tulemus:", upsertRes);
-          if (upsertRes.error) {
-            console.error("[Auth] Upsert ebaõnnestus:", upsertRes.error);
-            setSession(null);
-            return;
-          }
-          setSession({
-            piibelUserId: String(res.result.id),
-            piibelUniqueToken: res.result.unique_token,
-            email: res.result.email,
-            fullName: res.result.full_name || null,
-            walletCoin: Number(res.result.wallet_coin || 0),
-          });
-          return;
-        } else {
-          console.error("[Auth] PHP login ebaõnnestus:", res);
-        }
-      } catch (e) {
-        console.error("[Auth] PHP login viskas vea:", e);
+    if (!error && !data) {
+      console.log("[Auth] piibel_sessions puudub, proovin backend sünkrooni");
+      const syncedSession = await syncPiibelSession();
+      if (syncedSession) {
+        setSession(syncedSession);
+        return;
       }
     }
 
@@ -100,7 +90,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Värskenda mündi saldot PHP-st
     let walletCoin = 0;
     try {
       const profile = await piibelGetProfile(data.piibel_user_id, data.piibel_unique_token);
@@ -118,12 +107,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       fullName: data.full_name,
       walletCoin,
     });
-  }, []);
+  }, [syncPiibelSession]);
 
   useEffect(() => {
     let mounted = true;
 
-    // Diagnostika: kui Google saatis meid tagasi OAuth code'iga, logi see.
     const url = new URL(window.location.href);
     const oauthCode = url.searchParams.get("code");
     const oauthError = url.searchParams.get("error");
@@ -136,16 +124,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    // Kuula auth state muutusi ENNE getSession-it (oluline OAuth callback'i puhul).
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("[Auth] onAuthStateChange event:", event, "user:", session?.user?.email);
-      loadSession();
+    const refreshAuth = async () => {
+      if (mounted) setLoading(true);
+      try {
+        await loadSession();
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, authSession) => {
+      console.log("[Auth] onAuthStateChange event:", event, "user:", authSession?.user?.email);
+      void refreshAuth();
     });
 
-    (async () => {
-      await loadSession();
-      if (mounted) setLoading(false);
-    })();
+    void refreshAuth();
 
     return () => {
       mounted = false;
@@ -205,43 +198,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [persistPiibelUser]
   );
 
-  const loginWithGoogle = useCallback(
-    async (): Promise<LoginResult> => {
-      try {
-        const result = await lovable.auth.signInWithOAuth("google", {
-          redirect_uri: window.location.origin,
-          extraParams: { prompt: "select_account" },
-        });
+  const loginWithGoogle = useCallback(async (): Promise<LoginResult> => {
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+        extraParams: { prompt: "select_account" },
+      });
 
-        if (result.redirected) {
-          return { ok: true };
-        }
-
-        const { data: authData, error: authError } = await supabase.auth.getUser();
-        if (authError || !authData.user?.email) {
-          return { ok: false, error: "Google konto andmeid ei õnnestunud kätte saada" };
-        }
-
-        const email = authData.user.email;
-        const fullName =
-          authData.user.user_metadata?.full_name ||
-          authData.user.user_metadata?.name ||
-          "";
-
-        const res = await piibelGoogleLogin(email, fullName);
-        if (res.status !== 200 || !res.result) {
-          return { ok: false, error: res.message || "Sisselogimine ebaõnnestus" };
-        }
-        return persistPiibelUser(res.result);
-      } catch (error) {
-        return {
-          ok: false,
-          error: error instanceof Error ? error.message : "Google sisselogimine ebaõnnestus",
-        };
+      if (result.redirected) {
+        return { ok: true };
       }
-    },
-    [persistPiibelUser]
-  );
+
+      const {
+        data: { session: authSession },
+        error: authError,
+      } = await supabase.auth.getSession();
+
+      if (authError || !authSession?.user?.email) {
+        return { ok: false, error: "Google konto andmeid ei õnnestunud kätte saada" };
+      }
+
+      const syncedSession = await syncPiibelSession();
+      if (!syncedSession) {
+        return { ok: false, error: "Google konto sünkroonimine ebaõnnestus" };
+      }
+
+      setSession(syncedSession);
+      return { ok: true };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Google sisselogimine ebaõnnestus",
+      };
+    }
+  }, [syncPiibelSession]);
 
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
