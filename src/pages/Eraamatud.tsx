@@ -119,7 +119,7 @@ export default function Eraamatud() {
             user_id: session.piibelUserId,
             unique_token: session.piibelUniqueToken,
             content_id: book.id,
-            episode_id: episode.id,
+            content_episode_id: episode.id,
             coin: cost,
           });
           console.log("[Eraamatud] ostmise vastus:", buy);
