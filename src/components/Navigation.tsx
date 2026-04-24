@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown, Sparkles } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -34,6 +34,19 @@ export function Navigation() {
             >
               <BookOpen className="h-4 w-4" />
               <span className="font-medium">Raamatud</span>
+            </Link>
+
+            <Link
+              to="/eraamatud"
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                isActive("/eraamatud")
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "hover:bg-muted text-foreground"
+              )}
+            >
+              <Library className="h-4 w-4" />
+              <span className="font-medium">E-raamatud</span>
             </Link>
 
             <DropdownMenu>
