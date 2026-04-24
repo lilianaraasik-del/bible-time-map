@@ -23,6 +23,7 @@ export interface EraamatApi {
 }
 
 export type MediaKind = "book" | "audio" | "video";
+export type BookFormat = "epub" | "pdf";
 
 export function imageUrl(filename?: string): string | null {
   if (!filename) return null;
@@ -42,6 +43,24 @@ export function getMediaKind(book: EraamatApi): MediaKind {
 
 export function epubUrl(book: EraamatApi): string | null {
   return book.file_url || null;
+}
+
+/** Tagastab raamatu faili URL-i (epub või pdf). */
+export function bookFileUrl(book: EraamatApi): string | null {
+  // Eelistame full_novel'i (sisaldab tegelikku faili nime laiendiga)
+  const direct = book.full_novel?.trim();
+  if (direct && direct.length > 0) {
+    if (direct.startsWith("http")) return direct;
+    return `${ERAAMAT_IMG_BASE}${direct}`;
+  }
+  return book.file_url || null;
+}
+
+/** Tuvastab faili formaadi URL-i v\u00f5i failinime j\u00e4rgi. */
+export function bookFormat(book: EraamatApi): BookFormat {
+  const src = (book.full_novel || book.file_url || "").toLowerCase();
+  if (src.endsWith(".pdf") || src.includes(".pdf?")) return "pdf";
+  return "epub";
 }
 
 /** YouTube watch URL -> embed URL. Tagastab null kui pole YouTube. */
