@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
-import { LogIn, Smartphone } from "lucide-react";
+import { Chrome, LogIn, Smartphone } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -91,44 +90,30 @@ export default function Login() {
             </div>
 
             <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  const idToken = credentialResponse.credential;
-                  if (!idToken) {
-                    toast({
-                      title: "Google sisselogimine ebaõnnestus",
-                      description: "Tokenit ei saadud.",
-                      variant: "destructive",
-                    });
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full max-w-[320px]"
+                disabled={loading}
+                onClick={async () => {
+                  setLoading(true);
+                  const res = await loginWithGoogle();
+                  setLoading(false);
+
+                  if (res.ok) {
                     return;
                   }
-                  setLoading(true);
-                  const res = await loginWithGoogle(idToken);
-                  setLoading(false);
-                  if (res.ok) {
-                    toast({ title: "Tere tulemast!", description: "Sisselogimine õnnestus." });
-                    navigate("/profiil");
-                  } else {
-                    toast({
-                      title: "Google sisselogimine ebaõnnestus",
-                      description: (res as { ok: false; error: string }).error,
-                      variant: "destructive",
-                    });
-                  }
-                }}
-                onError={() => {
+
                   toast({
                     title: "Google sisselogimine ebaõnnestus",
-                    description: "Palun proovi uuesti.",
+                    description: (res as { ok: false; error: string }).error,
                     variant: "destructive",
                   });
                 }}
-                text="signin_with"
-                shape="rectangular"
-                theme="outline"
-                size="large"
-                width="320"
-              />
+              >
+                <Chrome className="h-4 w-4" />
+                Jätka Google'iga
+              </Button>
             </div>
 
             <div className="mt-8 p-4 rounded-lg bg-muted/50 border border-border/50">
