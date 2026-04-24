@@ -47,6 +47,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq("auth_user_id", authData.user.id)
       .maybeSingle();
 
+    // Kui Supabase auth on, aga piibel_sessions rida puudub
+    // (nt Google OAuth redirect tagasi) → loo see automaatselt
+    if (!error && !data && authData.user.email) {
+      const email = authData.user.email;
+      const fullName =
+        authData.user.user_metadata?.full_name ||
+        authData.user.user_metadata?.name ||
+        "";
+      try {
+        const res = await piibelGoogleLogin(email, fullName);
+        if (res.status === 200 && res.result) {
+          await supabase.from("piibel_sessions").upsert(
+            {
+              auth_user_id: authData.user.id,
+              piibel_user_id: String(res.result.id),
+              piibel_unique_token: res.result.unique_token,
+              email: res.result.email,
+              full_name: res.result.full_name || null,
+            },
+            { onConflict: "auth_user_id" }
+          );
+          // Lae sessioon uuesti, et saada loodud rida
+          const { data: fresh } = await supabase
+            .from("piibel_sessions")
+            .select("*")
+            .eq("auth_user_id", authData.user.id)
+            .maybeSingle();
+          if (fresh) {
+            setSession({
+              piibelUserId: fresh.piibel_user_id,
+              piibelUniqueToken: fresh.piibel_unique_token,
+              email: fresh.email,
+              fullName: fresh.full_name,
+              walletCoin: Number(res.result.wallet_coin || 0),
+            });
+            return;
+          }
+        }
+      } catch {
+        // ignore - session jääb null'iks
+      }
+    }
+
     if (error || !data) {
       setSession(null);
       return;
