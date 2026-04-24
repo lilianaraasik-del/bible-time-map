@@ -45,6 +45,7 @@ export default function Eraamatud() {
   const [tab, setTab] = useState<MediaKind>("book");
   const [player, setPlayer] = useState<PlayerState>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
+  const [locallyPurchasedBookIds, setLocallyPurchasedBookIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     document.title = "E-raamatud | Piibli Tarkuse Puu";
