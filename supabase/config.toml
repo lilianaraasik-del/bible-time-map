@@ -12,3 +12,6 @@ verify_jwt = false
 [functions.sync-piibel-session]
 verify_jwt = true
 
+[functions.book-proxy]
+verify_jwt = false
+
