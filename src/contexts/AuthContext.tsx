@@ -122,14 +122,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
+
+    // Diagnostika: kui Google saatis meid tagasi OAuth code'iga, logi see.
+    const url = new URL(window.location.href);
+    const oauthCode = url.searchParams.get("code");
+    const oauthError = url.searchParams.get("error");
+    if (oauthCode || oauthError) {
+      console.log("[Auth] OAuth callback URL-is:", {
+        code: oauthCode ? "olemas" : null,
+        error: oauthError,
+        hash: window.location.hash,
+        href: window.location.href,
+      });
+    }
+
+    // Kuula auth state muutusi ENNE getSession-it (oluline OAuth callback'i puhul).
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("[Auth] onAuthStateChange event:", event, "user:", session?.user?.email);
+      loadSession();
+    });
+
     (async () => {
       await loadSession();
       if (mounted) setLoading(false);
     })();
-
-    const { data: sub } = supabase.auth.onAuthStateChange(() => {
-      loadSession();
-    });
 
     return () => {
       mounted = false;
