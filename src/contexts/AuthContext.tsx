@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback 
 import { supabase } from "@/integrations/supabase/client";
 import {
   piibelLogin,
+  piibelGoogleLogin,
   piibelGetProfile,
   type PiibelUser,
 } from "@/lib/piibelApi";
@@ -14,10 +15,13 @@ interface PiibelSession {
   walletCoin: number;
 }
 
+type LoginResult = { ok: true } | { ok: false; error: string };
+
 interface AuthContextValue {
   session: PiibelSession | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  loginWithGoogle: (idToken: string) => Promise<LoginResult>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
