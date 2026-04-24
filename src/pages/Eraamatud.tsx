@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X, Lock } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,6 +24,10 @@ import {
 } from "@/lib/eraamatud";
 import EpubReader from "@/components/EpubReader";
 import PdfReader from "@/components/PdfReader";
+import {
+  piibelGetEpisodeBookByContent,
+  piibelBuyContentEpisode,
+} from "@/lib/piibelApi";
 
 type PlayerState =
   | { kind: "book"; book: EraamatApi; url: string; format: BookFormat }
@@ -33,12 +37,13 @@ type PlayerState =
 
 export default function Eraamatud() {
   const navigate = useNavigate();
-  const { session, loading: authLoading } = useAuth();
+  const { session, loading: authLoading, refreshProfile } = useAuth();
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<MediaKind>("book");
   const [player, setPlayer] = useState<PlayerState>(null);
+  const [openingId, setOpeningId] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "E-raamatud | Piibli Tarkuse Puu";
@@ -58,7 +63,7 @@ export default function Eraamatud() {
     ? { userId: session.piibelUserId, uniqueToken: session.piibelUniqueToken }
     : null;
 
-  const open = (book: EraamatApi) => {
+  const open = async (book: EraamatApi) => {
     if (isPaid(book) && authLoading) {
       toast({
         title: "Palun oota hetk",
@@ -77,6 +82,68 @@ export default function Eraamatud() {
     }
 
     const kind = getMediaKind(book);
+
+    // Tasuline raamat: küsi episood ja kasuta selle otseURL-i (api/epub.php on katki)
+    if (kind === "book" && isPaid(book) && session) {
+      try {
+        setOpeningId(book.id);
+        const ep = await piibelGetEpisodeBookByContent({
+          user_id: session.piibelUserId,
+          unique_token: session.piibelUniqueToken,
+          content_id: book.id,
+        });
+        const episode = ep.result?.[0];
+        if (!episode || !episode.book) {
+          toast({ title: "Raamatu faili ei leitud", variant: "destructive" });
+          return;
+        }
+
+        // Kui pole ostetud, osta müntide eest
+        if (!episode.is_buy) {
+          const cost = Number(episode.is_book_coin || 0);
+          if (session.walletCoin < cost) {
+            toast({
+              title: "Müntidest jääb puudu",
+              description: `Selle raamatu avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+              variant: "destructive",
+            });
+            navigate("/paketid");
+            return;
+          }
+          const buy = await piibelBuyContentEpisode({
+            user_id: session.piibelUserId,
+            unique_token: session.piibelUniqueToken,
+            content_id: book.id,
+            episode_id: episode.id,
+            coin: cost,
+          });
+          if (buy.status !== 200) {
+            toast({
+              title: "Ostmine ebaõnnestus",
+              description: buy.message || "Proovi uuesti.",
+              variant: "destructive",
+            });
+            return;
+          }
+          await refreshProfile();
+          toast({ title: "Raamat avatud!", description: `−${cost} münti` });
+        }
+
+        const url = episode.book;
+        const format: BookFormat = url.toLowerCase().endsWith(".pdf") ? "pdf" : "epub";
+        setPlayer({ kind: "book", book, url, format });
+      } catch (e) {
+        toast({
+          title: "Raamatu avamine ebaõnnestus",
+          description: e instanceof Error ? e.message : "Tundmatu viga",
+          variant: "destructive",
+        });
+      } finally {
+        setOpeningId(null);
+      }
+      return;
+    }
+
     if (kind === "book") {
       const url = bookFileUrl(book, auth);
       if (url) setPlayer({ kind: "book", book, url, format: bookFormat(book) });
@@ -193,15 +260,23 @@ export default function Eraamatud() {
                               size="sm"
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
-                              disabled={!hasMedia || (paid && authLoading)}
-                              onClick={() => hasMedia && !authLoading && open(book)}
+                              disabled={!hasMedia || (paid && authLoading) || openingId === book.id}
+                              onClick={() => hasMedia && !authLoading && openingId !== book.id && open(book)}
                             >
-                              {key === "book" ? (
+                              {openingId === book.id ? (
+                                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                              ) : key === "book" ? (
                                 <BookOpen className="h-3.5 w-3.5 mr-1.5" />
                               ) : (
                                 <Play className="h-3.5 w-3.5 mr-1.5" />
                               )}
-                              {paid && authLoading ? "Kontrollin..." : hasMedia ? cta : "Pole saadaval"}
+                              {openingId === book.id
+                                ? "Avan..."
+                                : paid && authLoading
+                                ? "Kontrollin..."
+                                : hasMedia
+                                ? cta
+                                : "Pole saadaval"}
                             </Button>
                           </CardContent>
                         </Card>

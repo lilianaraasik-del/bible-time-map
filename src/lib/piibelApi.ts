@@ -78,6 +78,24 @@ export interface PiibelWalletTransaction {
   created_at: string;
 }
 
+export interface PiibelEpisode {
+  id: number;
+  content_id: number | string;
+  name: string;
+  est_name?: string;
+  book?: string;
+  book_type?: number;
+  is_book_paid?: number;
+  is_book_coin?: number;
+  audio?: string;
+  is_audio_paid?: number;
+  is_audio_coin?: number;
+  video?: string;
+  is_video_paid?: number;
+  is_video_coin?: number;
+  is_buy?: number; // 1 = kasutaja on selle juba ostnud
+}
+
 /** Üldine POST helper. Saadab x-www-form-urlencoded (Laravel ootab seda). */
 async function piibelPost<T = unknown>(
   endpoint: string,
@@ -207,5 +225,5 @@ export async function piibelGetEpisodeBookByContent(opts: {
   unique_token?: string;
   content_id: string | number;
 }) {
-  return piibelPost("get_episode_book_by_content", opts);
+  return piibelPost<PiibelEpisode[]>("get_episode_book_by_content", opts);
 }
