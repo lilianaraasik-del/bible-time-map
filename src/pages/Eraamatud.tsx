@@ -449,7 +449,7 @@ export default function Eraamatud() {
                         priceLabel =
                           summary.minCoin === summary.maxCoin
                             ? `${summary.count} × ${summary.minCoin} münti`
-                            : `${summary.minCoin}–${summary.maxCoin} münti`;
+                            : `alates ${summary.minCoin} münti`;
                       } else {
                         priceLabel = "Tasuline";
                       }
