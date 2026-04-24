@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import {
   piibelLogin,
   piibelGoogleLogin,
@@ -21,7 +22,7 @@ interface AuthContextValue {
   session: PiibelSession | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<LoginResult>;
-  loginWithGoogle: (idToken: string) => Promise<LoginResult>;
+  loginWithGoogle: () => Promise<LoginResult>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -141,32 +142,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const loginWithGoogle = useCallback(
-    async (idToken: string): Promise<LoginResult> => {
-      // 1. Verifitseeri Google id_token meie edge funktsiooniga
-      let email: string;
-      let fullName: string;
+    async (): Promise<LoginResult> => {
       try {
-        const { data, error } = await supabase.functions.invoke("google-verify", {
-          body: { id_token: idToken },
+        const result = await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: window.location.origin,
+          extraParams: { prompt: "select_account" },
         });
-        if (error || !data?.email) {
-          return { ok: false, error: "Google sisselogimine ebaõnnestus" };
-        }
-        email = data.email;
-        fullName = data.full_name || "";
-      } catch {
-        return { ok: false, error: "Google verifikatsioon ebaõnnestus" };
-      }
 
-      // 2. Logi PHP backend'i sisse type=2 (Google)
-      try {
+        if (result.redirected) {
+          return { ok: true };
+        }
+
+        const { data: authData, error: authError } = await supabase.auth.getUser();
+        if (authError || !authData.user?.email) {
+          return { ok: false, error: "Google konto andmeid ei õnnestunud kätte saada" };
+        }
+
+        const email = authData.user.email;
+        const fullName =
+          authData.user.user_metadata?.full_name ||
+          authData.user.user_metadata?.name ||
+          "";
+
         const res = await piibelGoogleLogin(email, fullName);
         if (res.status !== 200 || !res.result) {
           return { ok: false, error: res.message || "Sisselogimine ebaõnnestus" };
         }
         return persistPiibelUser(res.result);
-      } catch {
-        return { ok: false, error: "Ühendus mobiilirakenduse serveriga ebaõnnestus" };
+      } catch (error) {
+        return {
+          ok: false,
+          error: error instanceof Error ? error.message : "Google sisselogimine ebaõnnestus",
+        };
       }
     },
     [persistPiibelUser]
