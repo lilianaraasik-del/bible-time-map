@@ -28,6 +28,7 @@ import PdfReader from "@/components/PdfReader";
 import {
   piibelGetEpisodeBookByContent,
   piibelBuyContentEpisode,
+  piibelGetWalletTransactions,
 } from "@/lib/piibelApi";
 
 type PlayerState =
@@ -68,6 +69,8 @@ export default function Eraamatud() {
   const [player, setPlayer] = useState<PlayerState>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
   const [locallyPurchasedBookIds, setLocallyPurchasedBookIds] = useState<Set<string>>(new Set());
+  const [purchasedBookIds, setPurchasedBookIds] = useState<Set<string>>(new Set());
+  const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
 
   useEffect(() => {
     document.title = "E-raamatud | Piibli Tarkuse Puu";
@@ -76,6 +79,41 @@ export default function Eraamatud() {
       .catch((e) => setError(e?.message || "Viga"))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!session) {
+      setPurchasedBookIds(new Set());
+      setPurchaseHistoryLoading(false);
+      return;
+    }
+
+    let active = true;
+    setPurchaseHistoryLoading(true);
+
+    piibelGetWalletTransactions(session.piibelUserId, session.piibelUniqueToken)
+      .then((res) => {
+        if (!active || res.status !== 200) return;
+
+        const ids = new Set(
+          (res.result || [])
+            .map((row) => row.content_id)
+            .filter((value): value is string | number => value !== undefined && value !== null)
+            .map((value) => String(value))
+        );
+
+        setPurchasedBookIds(ids);
+      })
+      .catch(() => {
+        if (active) setPurchasedBookIds(new Set());
+      })
+      .finally(() => {
+        if (active) setPurchaseHistoryLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
 
   const grouped = useMemo(() => {
     const g: Record<MediaKind, EraamatApi[]> = { book: [], audio: [], video: [] };
@@ -88,10 +126,10 @@ export default function Eraamatud() {
     : null;
 
   const open = async (book: EraamatApi) => {
-    if (isPaid(book) && authLoading) {
+    if (isPaid(book) && (authLoading || purchaseHistoryLoading)) {
       toast({
         title: "Palun oota hetk",
-        description: "Kontrollime sinu sisselogimist.",
+        description: "Kontrollime sinu sisselogimist ja ostuajalugu.",
       });
       return;
     }
@@ -124,7 +162,10 @@ export default function Eraamatud() {
         }
 
         const cost = Number(episode.is_book_coin || 0);
-        const alreadyBought = Number(episode.is_buy || 0) === 1 || locallyPurchasedBookIds.has(String(book.id));
+        const alreadyBought =
+          Number(episode.is_buy || 0) === 1 ||
+          locallyPurchasedBookIds.has(String(book.id)) ||
+          purchasedBookIds.has(String(book.id));
         const needsPurchase = !alreadyBought && cost > 0;
 
         if (needsPurchase) {
@@ -156,6 +197,7 @@ export default function Eraamatud() {
           }
 
           setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+          setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
           await refreshProfile();
 
           const refreshedEp = await piibelGetEpisodeBookByContent({
@@ -321,8 +363,8 @@ export default function Eraamatud() {
                               size="sm"
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
-                              disabled={!hasMedia || (paid && authLoading) || openingId === book.id}
-                              onClick={() => hasMedia && !authLoading && openingId !== book.id && open(book)}
+                              disabled={!hasMedia || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
+                              onClick={() => hasMedia && !authLoading && !purchaseHistoryLoading && openingId !== book.id && open(book)}
                             >
                               {openingId === book.id ? (
                                 <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
@@ -333,7 +375,7 @@ export default function Eraamatud() {
                               )}
                               {openingId === book.id
                                 ? "Avan..."
-                                : paid && authLoading
+                                : paid && (authLoading || purchaseHistoryLoading)
                                 ? "Kontrollin..."
                                 : hasMedia
                                 ? cta
