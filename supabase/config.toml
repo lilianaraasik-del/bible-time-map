@@ -8,3 +8,7 @@ verify_jwt = false
 
 [functions.google-verify]
 verify_jwt = false
+
+[functions.sync-piibel-session]
+verify_jwt = true
+
