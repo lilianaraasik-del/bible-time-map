@@ -33,9 +33,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<PiibelSession | null>(null);
   const [loading, setLoading] = useState(true);
 
-  /** Loe sessioon andmebaasist (peale anonüümset Supabase auth'i). */
+  /** Loe sessioon andmebaasist (peale Supabase auth'i). */
   const loadSession = useCallback(async () => {
     const { data: authData } = await supabase.auth.getUser();
+    console.log("[Auth] loadSession - supabase user:", authData.user?.id, authData.user?.email);
     if (!authData.user) {
       setSession(null);
       return;
@@ -47,6 +48,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq("auth_user_id", authData.user.id)
       .maybeSingle();
 
+    console.log("[Auth] piibel_sessions row:", data, "error:", error);
+
     // Kui Supabase auth on, aga piibel_sessions rida puudub
     // (nt Google OAuth redirect tagasi) → loo see automaatselt
     if (!error && !data && authData.user.email) {
@@ -55,8 +58,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         authData.user.user_metadata?.full_name ||
         authData.user.user_metadata?.name ||
         "";
+      console.log("[Auth] Sünkroonin PHP backendiga:", email, fullName);
       try {
         const res = await piibelGoogleLogin(email, fullName);
+        console.log("[Auth] piibelGoogleLogin vastus:", res);
         if (res.status === 200 && res.result) {
           const upsertRes = await supabase.from("piibel_sessions").upsert(
             {
@@ -68,7 +73,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             },
             { onConflict: "auth_user_id" }
           );
+          console.log("[Auth] upsert tulemus:", upsertRes);
           if (upsertRes.error) {
+            console.error("[Auth] Upsert ebaõnnestus:", upsertRes.error);
             setSession(null);
             return;
           }
@@ -80,9 +87,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             walletCoin: Number(res.result.wallet_coin || 0),
           });
           return;
+        } else {
+          console.error("[Auth] PHP login ebaõnnestus:", res);
         }
-      } catch {
-        // ignore - session jääb null'iks
+      } catch (e) {
+        console.error("[Auth] PHP login viskas vea:", e);
       }
     }
 
