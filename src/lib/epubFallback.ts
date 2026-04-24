@@ -178,32 +178,30 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
     `);
   }
 
-  return `<!doctype html>
-  <html lang="et">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>${escapeHtml(title)}</title>
-      <style>
-        :root { color-scheme: light; }
-        html, body { margin: 0; padding: 0; background: #ffffff; color: #111827; }
-        body {
-          font-family: Georgia, serif;
-          line-height: 1.7;
-          padding: 24px clamp(16px, 4vw, 40px) 48px;
-          max-width: 920px;
-          margin: 0 auto;
-          word-break: break-word;
-        }
-        img, svg, video, audio, iframe { max-width: 100%; height: auto; }
-        a { color: inherit; }
-        .epub-chapter { margin: 0 auto 2.5rem; }
-        .epub-chapter + .epub-chapter { padding-top: 2rem; border-top: 1px solid #e5e7eb; }
-      </style>
-      ${styles.map((style) => `<style>${style}</style>`).join("\n")}
-    </head>
-    <body>
+  return `
+    <style>
+      .epub-reader-root {
+        color-scheme: light;
+        background: #ffffff;
+        color: #111827;
+        font-family: Georgia, serif;
+        line-height: 1.7;
+        padding: 24px clamp(16px, 4vw, 40px) 48px;
+        max-width: 920px;
+        margin: 0 auto;
+        word-break: break-word;
+      }
+      .epub-reader-root img,
+      .epub-reader-root svg,
+      .epub-reader-root video,
+      .epub-reader-root audio,
+      .epub-reader-root iframe { max-width: 100%; height: auto; }
+      .epub-reader-root a { color: inherit; }
+      .epub-reader-root .epub-chapter { margin: 0 auto 2.5rem; }
+      .epub-reader-root .epub-chapter + .epub-chapter { padding-top: 2rem; border-top: 1px solid #e5e7eb; }
+    </style>
+    ${styles.map((style) => `<style>${style}</style>`).join("\n")}
+    <div class="epub-reader-root" aria-label="${escapeHtml(title)}">
       ${sections.join("\n")}
-    </body>
-  </html>`;
+    </div>`;
 }

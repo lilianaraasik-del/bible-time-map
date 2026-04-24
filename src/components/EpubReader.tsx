@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -11,13 +11,11 @@ interface EpubReaderProps {
 }
 
 export function EpubReader({ url, title, onClose }: EpubReaderProps) {
-  const viewerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fallbackHtml, setFallbackHtml] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!viewerRef.current) return;
     let cancelled = false;
     let fetchedBuffer: ArrayBuffer | null = null;
     const log = (...args: unknown[]) => console.log("[EpubReader]", `"${title}"`, ...args);
@@ -142,14 +140,11 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           )}
 
           {fallbackHtml ? (
-            <iframe
-              title={title}
-              srcDoc={fallbackHtml}
-              sandbox="allow-same-origin"
-              className="absolute inset-0 h-full w-full border-0 bg-background"
-            />
+            <div className="absolute inset-0 overflow-auto bg-background">
+              <div dangerouslySetInnerHTML={{ __html: fallbackHtml }} />
+            </div>
           ) : (
-            <div ref={viewerRef} className="absolute inset-0" />
+            <div className="absolute inset-0" />
           )}
         </div>
       </DialogContent>
