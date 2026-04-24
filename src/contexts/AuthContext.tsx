@@ -55,10 +55,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         authData.user.user_metadata?.full_name ||
         authData.user.user_metadata?.name ||
         "";
+      console.log("[Auth] Google sync: piibelGoogleLogin", { email, fullName });
       try {
         const res = await piibelGoogleLogin(email, fullName);
+        console.log("[Auth] piibelGoogleLogin response", res);
         if (res.status === 200 && res.result) {
-          await supabase.from("piibel_sessions").upsert(
+          const upsertRes = await supabase.from("piibel_sessions").upsert(
             {
               auth_user_id: authData.user.id,
               piibel_user_id: String(res.result.id),
@@ -68,25 +70,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             },
             { onConflict: "auth_user_id" }
           );
-          // Lae sessioon uuesti, et saada loodud rida
-          const { data: fresh } = await supabase
-            .from("piibel_sessions")
-            .select("*")
-            .eq("auth_user_id", authData.user.id)
-            .maybeSingle();
-          if (fresh) {
-            setSession({
-              piibelUserId: fresh.piibel_user_id,
-              piibelUniqueToken: fresh.piibel_unique_token,
-              email: fresh.email,
-              fullName: fresh.full_name,
-              walletCoin: Number(res.result.wallet_coin || 0),
-            });
+          console.log("[Auth] piibel_sessions upsert", upsertRes);
+          if (upsertRes.error) {
+            console.error("[Auth] Upsert FAILED", upsertRes.error);
+            setSession(null);
             return;
           }
+          setSession({
+            piibelUserId: String(res.result.id),
+            piibelUniqueToken: res.result.unique_token,
+            email: res.result.email,
+            fullName: res.result.full_name || null,
+            walletCoin: Number(res.result.wallet_coin || 0),
+          });
+          return;
+        } else {
+          console.error("[Auth] piibelGoogleLogin failed", res);
         }
-      } catch {
-        // ignore - session jääb null'iks
+      } catch (e) {
+        console.error("[Auth] piibelGoogleLogin threw", e);
       }
     }
 
