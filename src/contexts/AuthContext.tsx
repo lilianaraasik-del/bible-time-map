@@ -22,7 +22,7 @@ interface AuthContextValue {
   session: PiibelSession | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<LoginResult>;
-  loginWithGoogle: (idToken: string) => Promise<LoginResult>;
+  loginWithGoogle: () => Promise<LoginResult>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
