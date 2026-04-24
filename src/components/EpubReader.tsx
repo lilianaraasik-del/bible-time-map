@@ -35,6 +35,26 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         const buffer = await res.arrayBuffer();
         if (cancelled) return;
 
+        // Mõned serveriotspunktid tagastavad 200 staatuse, aga sisuks on
+        // HTML/PHP veateade (nt epub.php SQL viga). Kontrollime EPUB allkirja
+        // ("PK" zip-faili algus), enne kui anname epubjs-le faili.
+        if (buffer.byteLength < 5000) {
+          const head = new Uint8Array(buffer.slice(0, 2));
+          const isZip = head[0] === 0x50 && head[1] === 0x4b;
+          if (!isZip) {
+            const text = new TextDecoder().decode(buffer);
+            if (text.toLowerCase().includes("vajalik sisselogimine")) {
+              throw new Error("Server nõuab sisselogimist – kontrolli oma kontot.");
+            }
+            if (text.toLowerCase().includes("fatal error") || text.toLowerCase().includes("pdoexception")) {
+              throw new Error(
+                "Raamatuserveris on viga (epub.php). Palun teavita KERK administraatorit – vaja on lubada veebikasutajate tokenid."
+              );
+            }
+            throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
+          }
+        }
+
         const book = ePub(buffer);
         bookRef.current = book;
 
