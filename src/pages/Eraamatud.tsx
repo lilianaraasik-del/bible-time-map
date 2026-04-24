@@ -36,6 +36,28 @@ type PlayerState =
   | { kind: "video"; book: EraamatApi; url: string }
   | null;
 
+async function detectRemoteBookFormat(url: string, fallback: BookFormat = "epub"): Promise<BookFormat> {
+  try {
+    const res = await fetch(url, { method: "GET" });
+    if (!res.ok) return fallback;
+
+    const contentType = (res.headers.get("content-type") || "").toLowerCase();
+    if (contentType.includes("pdf")) return "pdf";
+    if (contentType.includes("epub") || contentType.includes("application/zip")) return "epub";
+
+    const buffer = await res.arrayBuffer();
+    const bytes = new Uint8Array(buffer.slice(0, 8));
+    const isPdf = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
+    if (isPdf) return "pdf";
+    const isZip = bytes[0] === 0x50 && bytes[1] === 0x4b;
+    if (isZip) return "epub";
+
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function Eraamatud() {
   const navigate = useNavigate();
   const { session, loading: authLoading, refreshProfile } = useAuth();
@@ -164,9 +186,13 @@ export default function Eraamatud() {
             : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
         }
         const lower = rawUrl.toLowerCase();
-        const format: BookFormat = lower.includes(".pdf") ? "pdf" : "epub";
+        const proxiedUrl = proxyUrl(rawUrl);
+        const format: BookFormat = await detectRemoteBookFormat(
+          proxiedUrl,
+          lower.includes(".pdf") ? "pdf" : "epub"
+        );
         console.log("[Eraamatud] avan raamatu:", { id: book.id, title: book.title, rawUrl, format });
-        setPlayer({ kind: "book", book, url: proxyUrl(rawUrl), format });
+        setPlayer({ kind: "book", book, url: proxiedUrl, format });
       } catch (e) {
         toast({
           title: "Raamatu avamine ebaõnnestus",
