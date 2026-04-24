@@ -55,10 +55,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         authData.user.user_metadata?.full_name ||
         authData.user.user_metadata?.name ||
         "";
-      console.log("[Auth] Google sync: piibelGoogleLogin", { email, fullName });
       try {
         const res = await piibelGoogleLogin(email, fullName);
-        console.log("[Auth] piibelGoogleLogin response", res);
         if (res.status === 200 && res.result) {
           const upsertRes = await supabase.from("piibel_sessions").upsert(
             {
@@ -70,9 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             },
             { onConflict: "auth_user_id" }
           );
-          console.log("[Auth] piibel_sessions upsert", upsertRes);
           if (upsertRes.error) {
-            console.error("[Auth] Upsert FAILED", upsertRes.error);
             setSession(null);
             return;
           }
@@ -84,11 +80,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             walletCoin: Number(res.result.wallet_coin || 0),
           });
           return;
-        } else {
-          console.error("[Auth] piibelGoogleLogin failed", res);
         }
-      } catch (e) {
-        console.error("[Auth] piibelGoogleLogin threw", e);
+      } catch {
+        // ignore - session jääb null'iks
       }
     }
 

@@ -33,7 +33,7 @@ type PlayerState =
 
 export default function Eraamatud() {
   const navigate = useNavigate();
-  const { session } = useAuth();
+  const { session, loading: authLoading } = useAuth();
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +59,14 @@ export default function Eraamatud() {
     : null;
 
   const open = (book: EraamatApi) => {
+    if (isPaid(book) && authLoading) {
+      toast({
+        title: "Palun oota hetk",
+        description: "Kontrollime sinu sisselogimist.",
+      });
+      return;
+    }
+
     if (isPaid(book) && !session) {
       toast({
         title: "Sisselogimine vajalik",
@@ -185,15 +193,15 @@ export default function Eraamatud() {
                               size="sm"
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
-                              disabled={!hasMedia}
-                              onClick={() => hasMedia && open(book)}
+                              disabled={!hasMedia || (paid && authLoading)}
+                              onClick={() => hasMedia && !authLoading && open(book)}
                             >
                               {key === "book" ? (
                                 <BookOpen className="h-3.5 w-3.5 mr-1.5" />
                               ) : (
                                 <Play className="h-3.5 w-3.5 mr-1.5" />
                               )}
-                              {hasMedia ? cta : "Pole saadaval"}
+                              {paid && authLoading ? "Kontrollin..." : hasMedia ? cta : "Pole saadaval"}
                             </Button>
                           </CardContent>
                         </Card>
