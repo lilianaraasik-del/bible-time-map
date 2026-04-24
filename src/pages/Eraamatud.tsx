@@ -143,9 +143,10 @@ export default function Eraamatud() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {grouped[key].map((book) => {
                       const cover = imageUrl(book.portrait_img);
+                      const paid = isPaid(book);
                       const hasMedia =
                         key === "book"
-                          ? !!bookFileUrl(book)
+                          ? !!bookFileUrl(book, auth)
                           : key === "audio"
                           ? !!audioUrl(book)
                           : !!videoEmbedUrl(book);
@@ -168,6 +169,11 @@ export default function Eraamatud() {
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
                                 <Icon className="h-10 w-10 text-muted-foreground" />
+                              </div>
+                            )}
+                            {paid && (
+                              <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground rounded-full p-1.5 shadow-md">
+                                <Lock className="h-3 w-3" />
                               </div>
                             )}
                           </div>
