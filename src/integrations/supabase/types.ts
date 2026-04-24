@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      piibel_sessions: {
+        Row: {
+          auth_user_id: string
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          piibel_unique_token: string
+          piibel_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id: string
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          piibel_unique_token: string
+          piibel_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          piibel_unique_token?: string
+          piibel_user_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
