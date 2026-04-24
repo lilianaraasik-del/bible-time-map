@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Loader2, ZoomIn, ZoomOut } from "lucide-react";
+import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
-// pdf.js worker — lae sama versiooniga CDN-ist
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 interface PdfReaderProps {
   url: string;
@@ -21,6 +21,31 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
   const [scale, setScale] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const loadTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    setNumPages(0);
+    setPage(1);
+    setScale(1);
+    setError(null);
+    setLoading(true);
+
+    if (loadTimeoutRef.current) {
+      window.clearTimeout(loadTimeoutRef.current);
+    }
+
+    loadTimeoutRef.current = window.setTimeout(() => {
+      setError("PDF laadimine võtab liiga kaua aega. Proovi uuesti.");
+      setLoading(false);
+    }, 15000);
+
+    return () => {
+      if (loadTimeoutRef.current) {
+        window.clearTimeout(loadTimeoutRef.current);
+        loadTimeoutRef.current = null;
+      }
+    };
+  }, [url]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -79,11 +104,27 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
             <Document
               file={url}
               onLoadSuccess={({ numPages }) => {
+                if (loadTimeoutRef.current) {
+                  window.clearTimeout(loadTimeoutRef.current);
+                  loadTimeoutRef.current = null;
+                }
                 setNumPages(numPages);
                 setLoading(false);
               }}
               onLoadError={(e) => {
+                if (loadTimeoutRef.current) {
+                  window.clearTimeout(loadTimeoutRef.current);
+                  loadTimeoutRef.current = null;
+                }
                 setError(e?.message || "Tundmatu viga");
+                setLoading(false);
+              }}
+              onSourceError={(e) => {
+                if (loadTimeoutRef.current) {
+                  window.clearTimeout(loadTimeoutRef.current);
+                  loadTimeoutRef.current = null;
+                }
+                setError(e?.message || "PDF allika laadimine ebaõnnestus");
                 setLoading(false);
               }}
               loading={
