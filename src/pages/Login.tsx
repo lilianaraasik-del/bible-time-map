@@ -27,7 +27,7 @@ export default function Login() {
     const res = await login(email, password);
     setLoading(false);
 
-    if (res.ok === true) {
+    if (res.ok) {
       toast({ title: "Tere tulemast!", description: "Sisselogimine õnnestus." });
       navigate("/profiil");
       return;
@@ -35,7 +35,7 @@ export default function Login() {
 
     toast({
       title: "Sisselogimine ebaõnnestus",
-      description: res.error,
+      description: (res as { ok: false; error: string }).error,
       variant: "destructive",
     });
   };
