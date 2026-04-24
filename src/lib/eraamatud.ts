@@ -108,3 +108,9 @@ export async function fetchEraamatud(): Promise<EraamatApi[]> {
   const data = await res.json();
   return Array.isArray(data) ? data.filter((b) => b.status === "1") : [];
 }
+
+/** Mähib URL-i meie edge function proxy'sse, mis lisab CORS päised. */
+export function proxyUrl(rawUrl: string): string {
+  const base = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/book-proxy`;
+  return `${base}?url=${encodeURIComponent(rawUrl)}`;
+}

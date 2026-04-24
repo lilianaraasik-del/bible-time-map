@@ -18,6 +18,7 @@ import {
   videoEmbedUrl,
   getMediaKind,
   isPaid,
+  proxyUrl,
   type EraamatApi,
   type MediaKind,
   type BookFormat,
@@ -129,9 +130,9 @@ export default function Eraamatud() {
           toast({ title: "Raamat avatud!", description: `−${cost} münti` });
         }
 
-        const url = episode.book;
-        const format: BookFormat = url.toLowerCase().endsWith(".pdf") ? "pdf" : "epub";
-        setPlayer({ kind: "book", book, url, format });
+        const rawUrl = episode.book;
+        const format: BookFormat = rawUrl.toLowerCase().endsWith(".pdf") ? "pdf" : "epub";
+        setPlayer({ kind: "book", book, url: proxyUrl(rawUrl), format });
       } catch (e) {
         toast({
           title: "Raamatu avamine ebaõnnestus",
