@@ -56,29 +56,33 @@ function rewriteCssUrls(css: string, basePath: string, resourceMap: Map<string, 
 }
 
 function rewriteDocumentLinks(doc: Document, basePath: string, resourceMap: Map<string, string>, chapterAnchors: Map<string, string>) {
-  const attributes = ["src", "href", "xlink:href"];
+  const attributes = [
+    { name: "src", selector: "[src]" },
+    { name: "href", selector: "[href]" },
+    { name: "xlink:href", selector: "[xlink\\:href]" },
+  ];
 
-  for (const attr of attributes) {
-    doc.querySelectorAll(`[${attr}]`).forEach((node) => {
-      const rawValue = node.getAttribute(attr);
+  for (const { name, selector } of attributes) {
+    doc.querySelectorAll(selector).forEach((node) => {
+      const rawValue = node.getAttribute(name);
       if (!rawValue) return;
       const [pathPart, hashPart] = rawValue.split("#");
 
       if (!pathPart) {
-        if (hashPart) node.setAttribute(attr, `#${hashPart}`);
+        if (hashPart) node.setAttribute(name, `#${hashPart}`);
         return;
       }
 
       const resolvedPath = resolvePath(basePath, pathPart);
       const mappedResource = resourceMap.get(resolvedPath);
       if (mappedResource) {
-        node.setAttribute(attr, hashPart ? `${mappedResource}#${hashPart}` : mappedResource);
+        node.setAttribute(name, hashPart ? `${mappedResource}#${hashPart}` : mappedResource);
         return;
       }
 
       const chapterAnchor = chapterAnchors.get(resolvedPath);
       if (chapterAnchor) {
-        node.setAttribute(attr, hashPart ? `#${hashPart}` : `#${chapterAnchor}`);
+        node.setAttribute(name, hashPart ? `#${hashPart}` : `#${chapterAnchor}`);
       }
     });
   }
