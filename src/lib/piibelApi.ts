@@ -225,5 +225,5 @@ export async function piibelGetEpisodeBookByContent(opts: {
   unique_token?: string;
   content_id: string | number;
 }) {
-  return piibelPost("get_episode_book_by_content", opts);
+  return piibelPost<PiibelEpisode[]>("get_episode_book_by_content", opts);
 }
