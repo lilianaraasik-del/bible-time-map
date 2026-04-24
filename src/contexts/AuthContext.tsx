@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback 
 import { supabase } from "@/integrations/supabase/client";
 import {
   piibelLogin,
+  piibelGoogleLogin,
   piibelGetProfile,
   type PiibelUser,
 } from "@/lib/piibelApi";
@@ -14,10 +15,13 @@ interface PiibelSession {
   walletCoin: number;
 }
 
+type LoginResult = { ok: true } | { ok: false; error: string };
+
 interface AuthContextValue {
   session: PiibelSession | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  loginWithGoogle: (idToken: string) => Promise<LoginResult>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -84,21 +88,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [loadSession]);
 
-  const login = useCallback(
-    async (email: string, password: string): Promise<{ ok: true } | { ok: false; error: string }> => {
-      // 1. PHP API login
-      let piibelUser: PiibelUser | undefined;
-      try {
-        const res = await piibelLogin(email, password);
-        if (res.status !== 200 || !res.result) {
-          return { ok: false, error: res.message || "Vale email või parool" };
-        }
-        piibelUser = res.result;
-      } catch (e) {
-        return { ok: false, error: "Ühendus mobiilirakenduse serveriga ebaõnnestus" };
-      }
-
-      // 2. Anonüümne Supabase sessioon (et saaks RLS-iga sessiooni hoida)
+  /** Salvesta PHP kasutaja → Supabase anonüümne sessioon → piibel_sessions tabel. */
+  const persistPiibelUser = useCallback(
+    async (piibelUser: PiibelUser): Promise<LoginResult> => {
       const { data: authData } = await supabase.auth.getUser();
       if (!authData.user) {
         const { error: anonErr } = await supabase.auth.signInAnonymously();
@@ -112,7 +104,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { ok: false, error: "Sessiooni alustamine ebaõnnestus" };
       }
 
-      // 3. Salvesta seos andmebaasi
       const { error: upsertErr } = await supabase.from("piibel_sessions").upsert(
         {
           auth_user_id: userData.user.id,
@@ -134,13 +125,62 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [loadSession]
   );
 
+  const login = useCallback(
+    async (email: string, password: string): Promise<LoginResult> => {
+      try {
+        const res = await piibelLogin(email, password);
+        if (res.status !== 200 || !res.result) {
+          return { ok: false, error: res.message || "Vale email või parool" };
+        }
+        return persistPiibelUser(res.result);
+      } catch {
+        return { ok: false, error: "Ühendus mobiilirakenduse serveriga ebaõnnestus" };
+      }
+    },
+    [persistPiibelUser]
+  );
+
+  const loginWithGoogle = useCallback(
+    async (idToken: string): Promise<LoginResult> => {
+      // 1. Verifitseeri Google id_token meie edge funktsiooniga
+      let email: string;
+      let fullName: string;
+      try {
+        const { data, error } = await supabase.functions.invoke("google-verify", {
+          body: { id_token: idToken },
+        });
+        if (error || !data?.email) {
+          return { ok: false, error: "Google sisselogimine ebaõnnestus" };
+        }
+        email = data.email;
+        fullName = data.full_name || "";
+      } catch {
+        return { ok: false, error: "Google verifikatsioon ebaõnnestus" };
+      }
+
+      // 2. Logi PHP backend'i sisse type=2 (Google)
+      try {
+        const res = await piibelGoogleLogin(email, fullName);
+        if (res.status !== 200 || !res.result) {
+          return { ok: false, error: res.message || "Sisselogimine ebaõnnestus" };
+        }
+        return persistPiibelUser(res.result);
+      } catch {
+        return { ok: false, error: "Ühendus mobiilirakenduse serveriga ebaõnnestus" };
+      }
+    },
+    [persistPiibelUser]
+  );
+
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
     setSession(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, loading, login, logout, refreshProfile: loadSession }}>
+    <AuthContext.Provider
+      value={{ session, loading, login, loginWithGoogle, logout, refreshProfile: loadSession }}
+    >
       {children}
     </AuthContext.Provider>
   );

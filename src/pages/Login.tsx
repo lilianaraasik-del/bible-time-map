@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { LogIn, Smartphone } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, session } = useAuth();
+  const { login, loginWithGoogle, session } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,6 +83,53 @@ export default function Login() {
                 {loading ? "Sisse logimine..." : "Logi sisse"}
               </Button>
             </form>
+
+            <div className="my-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">või</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  const idToken = credentialResponse.credential;
+                  if (!idToken) {
+                    toast({
+                      title: "Google sisselogimine ebaõnnestus",
+                      description: "Tokenit ei saadud.",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  setLoading(true);
+                  const res = await loginWithGoogle(idToken);
+                  setLoading(false);
+                  if (res.ok) {
+                    toast({ title: "Tere tulemast!", description: "Sisselogimine õnnestus." });
+                    navigate("/profiil");
+                  } else {
+                    toast({
+                      title: "Google sisselogimine ebaõnnestus",
+                      description: (res as { ok: false; error: string }).error,
+                      variant: "destructive",
+                    });
+                  }
+                }}
+                onError={() => {
+                  toast({
+                    title: "Google sisselogimine ebaõnnestus",
+                    description: "Palun proovi uuesti.",
+                    variant: "destructive",
+                  });
+                }}
+                text="signin_with"
+                shape="rectangular"
+                theme="outline"
+                size="large"
+                width="320"
+              />
+            </div>
 
             <div className="mt-8 p-4 rounded-lg bg-muted/50 border border-border/50">
               <div className="flex gap-3">

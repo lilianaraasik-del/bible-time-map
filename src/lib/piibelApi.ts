@@ -85,12 +85,24 @@ async function piibelPost<T = unknown>(
   return json as PiibelApiResponse<T>;
 }
 
-/** Login mobiili kontoga. */
+/** Login mobiili kontoga (email + parool, type=4 = Normal). */
 export async function piibelLogin(email: string, password: string) {
   return piibelPost<PiibelUser>("login", {
+    type: 4,
     email,
     password,
-    device_type: "web",
+    device_type: 3, // 3 = web
+    device_token: "web-session",
+  });
+}
+
+/** Google sisselogimine (type=2). Email tuleb juba verifitseeritud Google'ist. */
+export async function piibelGoogleLogin(email: string, full_name: string) {
+  return piibelPost<PiibelUser>("login", {
+    type: 2,
+    email,
+    full_name,
+    device_type: 3,
     device_token: "web-session",
   });
 }
