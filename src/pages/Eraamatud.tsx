@@ -59,6 +59,17 @@ async function detectRemoteBookFormat(url: string, fallback: BookFormat = "epub"
   }
 }
 
+function normalizeEpisodeBookUrl(rawBookUrl: string): string {
+  let rawUrl = rawBookUrl.trim();
+  if (!/^https?:\/\//i.test(rawUrl)) {
+    const path = rawUrl.replace(/^\/+/, "");
+    rawUrl = path.startsWith("admin/") || path.startsWith("storage/")
+      ? `https://eraamat.piibel.ee/${path}`
+      : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
+  }
+  return rawUrl;
+}
+
 export default function Eraamatud() {
   const navigate = useNavigate();
   const { session, loading: authLoading, refreshProfile } = useAuth();
@@ -145,13 +156,12 @@ export default function Eraamatud() {
 
     const kind = getMediaKind(book);
 
-    // Tasuline raamat: küsi episood ja kasuta selle otseURL-i (api/epub.php on katki)
-    if (kind === "book" && isPaid(book) && session) {
+    if (kind === "book") {
       try {
         setOpeningId(book.id);
         const ep = await piibelGetEpisodeBookByContent({
-          user_id: session.piibelUserId,
-          unique_token: session.piibelUniqueToken,
+          user_id: session?.piibelUserId,
+          unique_token: session?.piibelUniqueToken,
           content_id: book.id,
         });
         let episode = ep.result?.[0];
@@ -161,72 +171,76 @@ export default function Eraamatud() {
           return;
         }
 
-        const cost = Number(episode.is_book_coin || 0);
-        const alreadyBought =
-          Number(episode.is_buy || 0) === 1 ||
-          locallyPurchasedBookIds.has(String(book.id)) ||
-          purchasedBookIds.has(String(book.id));
-        const needsPurchase = !alreadyBought && cost > 0;
+        if (isPaid(book) && session) {
+          const cost = Number(episode.is_book_coin || 0);
+          const alreadyBought =
+            Number(episode.is_buy || 0) === 1 ||
+            locallyPurchasedBookIds.has(String(book.id)) ||
+            purchasedBookIds.has(String(book.id));
+          const needsPurchase = !alreadyBought && cost > 0;
 
-        if (needsPurchase) {
-          if (session.walletCoin < cost) {
-            toast({
-              title: "Müntidest jääb puudu",
-              description: `Selle raamatu avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
-              variant: "destructive",
+          if (needsPurchase) {
+            if (session.walletCoin < cost) {
+              toast({
+                title: "Müntidest jääb puudu",
+                description: `Selle raamatu avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+                variant: "destructive",
+              });
+              navigate("/paketid");
+              return;
+            }
+
+            const buy = await piibelBuyContentEpisode({
+              user_id: session.piibelUserId,
+              unique_token: session.piibelUniqueToken,
+              content_id: book.id,
+              content_episode_id: episode.id,
+              coin: cost,
             });
-            navigate("/paketid");
-            return;
-          }
+            console.log("[Eraamatud] ostmise vastus:", buy);
+            if (buy.status !== 200) {
+              toast({
+                title: "Ostmine ebaõnnestus",
+                description: `${buy.message || "Tundmatu viga"} (status ${buy.status}). Vaata konsoolist täpsemat infot.`,
+                variant: "destructive",
+              });
+              return;
+            }
 
-          const buy = await piibelBuyContentEpisode({
-            user_id: session.piibelUserId,
-            unique_token: session.piibelUniqueToken,
-            content_id: book.id,
-            content_episode_id: episode.id,
-            coin: cost,
-          });
-          console.log("[Eraamatud] ostmise vastus:", buy);
-          if (buy.status !== 200) {
-            toast({
-              title: "Ostmine ebaõnnestus",
-              description: `${buy.message || "Tundmatu viga"} (status ${buy.status}). Vaata konsoolist täpsemat infot.`,
-              variant: "destructive",
+            setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+            setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+            await refreshProfile();
+
+            const refreshedEp = await piibelGetEpisodeBookByContent({
+              user_id: session.piibelUserId,
+              unique_token: session.piibelUniqueToken,
+              content_id: book.id,
             });
-            return;
+            episode = refreshedEp.result?.[0];
+            console.log("[Eraamatud] episode pärast ostu:", { bookId: book.id, episode, fullResponse: refreshedEp });
+
+            toast({ title: "Raamat avatud!", description: `−${cost} münti` });
           }
-
-          setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
-          setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
-          await refreshProfile();
-
-          const refreshedEp = await piibelGetEpisodeBookByContent({
-            user_id: session.piibelUserId,
-            unique_token: session.piibelUniqueToken,
-            content_id: book.id,
-          });
-          episode = refreshedEp.result?.[0];
-          console.log("[Eraamatud] episode pärast ostu:", { bookId: book.id, episode, fullResponse: refreshedEp });
-
-          toast({ title: "Raamat avatud!", description: `−${cost} münti` });
         }
 
         if (!episode?.book) {
-          toast({
-            title: "Raamatu faili ei leitud",
-            description: "Ost läks läbi, aga faililinki ei saadud kätte. Proovi uuesti.",
-            variant: "destructive",
-          });
+          const fallbackUrl = bookFileUrl(book, auth);
+          if (!fallbackUrl) {
+            toast({
+              title: "Raamatu faili ei leitud",
+              description: "Selle raamatu faililinki ei saadud kätte. Proovi uuesti.",
+              variant: "destructive",
+            });
+            return;
+          }
+
+          const proxiedFallbackUrl = proxyUrl(fallbackUrl);
+          const fallbackFormat = await detectRemoteBookFormat(proxiedFallbackUrl, bookFormat(book));
+          setPlayer({ kind: "book", book, url: proxiedFallbackUrl, format: fallbackFormat });
           return;
         }
 
-        let rawUrl = episode.book.trim();
-        if (!/^https?:\/\//i.test(rawUrl)) {
-          const path = rawUrl.replace(/^\/+/, "");
-          rawUrl = path.startsWith("admin/") || path.startsWith("storage/")
-            ? `https://eraamat.piibel.ee/${path}`
-            : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
-        }
+        const rawUrl = normalizeEpisodeBookUrl(episode.book);
         const lower = rawUrl.toLowerCase();
         const proxiedUrl = proxyUrl(rawUrl);
         const format: BookFormat = await detectRemoteBookFormat(
@@ -247,10 +261,7 @@ export default function Eraamatud() {
       return;
     }
 
-    if (kind === "book") {
-      const url = bookFileUrl(book, auth);
-      if (url) setPlayer({ kind: "book", book, url, format: bookFormat(book) });
-    } else if (kind === "audio") {
+    if (kind === "audio") {
       const url = audioUrl(book);
       if (url) setPlayer({ kind: "audio", book, url });
     } else {
