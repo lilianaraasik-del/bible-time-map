@@ -86,6 +86,33 @@ function rewriteDocumentLinks(doc: Document, basePath: string, resourceMap: Map<
       }
     });
   }
+
+  // SVG <image> elemendid kasutavad sageli xlink:href, aga HTML parser
+  // kaotab namespace'i. Käime eraldi kõik SVG image/use elemendid läbi
+  // ja proovime kõiki võimalikke atribuudinimesid.
+  doc.querySelectorAll("image, use").forEach((node) => {
+    const candidates = ["href", "xlink:href", "xlink\\:href"];
+    for (const attr of candidates) {
+      const rawValue = node.getAttribute(attr) || node.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+      if (!rawValue) continue;
+      const [pathPart, hashPart] = rawValue.split("#");
+      if (!pathPart) continue;
+      const resolved = resourceMap.get(resolvePath(basePath, pathPart));
+      if (!resolved) continue;
+      const finalValue = hashPart ? `${resolved}#${hashPart}` : resolved;
+      try {
+        node.setAttribute(attr, finalValue);
+      } catch {
+        // ignore invalid attribute names
+      }
+      try {
+        node.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", finalValue);
+      } catch {
+        // ignore
+      }
+      break;
+    }
+  });
 }
 
 export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
