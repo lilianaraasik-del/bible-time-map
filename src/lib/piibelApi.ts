@@ -136,7 +136,12 @@ export async function piibelGoogleLogin(email: string, full_name: string) {
 
 /** Kasutaja profiil (sh wallet_coin). */
 export async function piibelGetProfile(user_id: string | number, unique_token: string) {
-  return piibelPost<PiibelUser>("get_profile", { user_id, unique_token });
+  const res = await piibelPost<PiibelUser | PiibelUser[]>("get_profile", { user_id, unique_token });
+
+  return {
+    ...res,
+    result: ensurePiibelUser(firstResult(res.result)),
+  } as PiibelApiResponse<PiibelUser>;
 }
 
 /** Pakettide nimekiri. */
