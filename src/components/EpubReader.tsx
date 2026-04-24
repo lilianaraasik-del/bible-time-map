@@ -88,6 +88,13 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         log("samm 5: epubjs kutsumine");
         const book = ePub(fetchedBuffer, { openAs: "epub" });
         bookRef.current = book;
+        await book.ready;
+        const spineCount = Array.isArray((book as any).spine?.spineItems)
+          ? (book as any).spine.spineItems.length
+          : undefined;
+        log("samm 5.1: book.ready", {
+          spineItems: spineCount,
+        });
 
         const rendition = book.renderTo(viewerRef.current!, {
           width: "100%",
@@ -97,6 +104,27 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         });
         renditionRef.current = rendition;
         log("samm 6: rendition loodud");
+
+        const isMeaningfulContentRendered = () => {
+          const contents = rendition.getContents?.() || [];
+          const snapshots = contents.map((content, index) => {
+            const doc = content?.document;
+            const textLength = doc?.body?.innerText?.replace(/\s+/g, " ").trim().length || 0;
+            const imageCount = doc?.images?.length || 0;
+            return { index, textLength, imageCount };
+          });
+          log("samm 7.1: renderduse sisu", snapshots);
+          return snapshots.some((entry) => entry.textLength > 80 || entry.imageCount > 0);
+        };
+
+        const tryDisplaySpineItem = async (index: number) => {
+          const target = book.spine?.get?.(index);
+          if (!target) return false;
+          log("samm 7.2: proovin spine elementi", { index, href: target.href });
+          await rendition.display(target.href);
+          await new Promise((resolve) => window.setTimeout(resolve, 350));
+          return isMeaningfulContentRendered();
+        };
 
         rendition.themes.default({
           body: {
@@ -152,6 +180,23 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
             finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB avamine ebaõnnestus.")));
           });
         });
+
+        if (!isMeaningfulContentRendered()) {
+          log("samm 7.3: esimene vaade tühi, proovin järgmisi spine elemente");
+          let foundReadableSection = false;
+          const maxSpineChecks = Math.min(spineCount ?? 0, 6);
+          for (let index = 1; index < maxSpineChecks; index += 1) {
+            if (await tryDisplaySpineItem(index)) {
+              foundReadableSection = true;
+              log("samm 7.4: leidsin loetava spine elemendi", { index });
+              break;
+            }
+          }
+
+          if (!foundReadableSection) {
+            throw new Error("EPUB renderdus jäi tühjaks – avan sisemise HTML-vaate.");
+          }
+        }
 
         log("samm 8: epubjs valmis");
         if (!cancelled) setLoading(false);
