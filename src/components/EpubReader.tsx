@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ePub, { Book, Rendition } from "epubjs";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { extractEpubAsHtml } from "@/lib/epubFallback";
 
 interface EpubReaderProps {
   url: string;
@@ -18,29 +19,46 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
   const renditionRef = useRef<Rendition | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fallbackHtml, setFallbackHtml] = useState<string | null>(null);
+
+  const fallbackSrc = useMemo(() => {
+    if (!fallbackHtml) return null;
+    return URL.createObjectURL(new Blob([fallbackHtml], { type: "text/html;charset=utf-8" }));
+  }, [fallbackHtml]);
+
+  useEffect(() => {
+    if (!fallbackSrc) return;
+    return () => URL.revokeObjectURL(fallbackSrc);
+  }, [fallbackSrc]);
 
   useEffect(() => {
     if (!viewerRef.current) return;
     let cancelled = false;
+    let fetchedBuffer: ArrayBuffer | null = null;
 
     (async () => {
       try {
         setLoading(true);
         setError(null);
-        console.log("[EpubReader] laadin:", url);
+        setFallbackHtml(null);
+
         const res = await fetch(url);
         if (!res.ok) {
-          console.error("[EpubReader] HTTP viga", res.status, "URL:", url);
           if (res.status === 401) throw new Error("Sisselogimine vajalik");
           if (res.status === 402) throw new Error("Raamat on tasuline – osta müntide eest");
-          if (res.status === 404) throw new Error(`Raamatut ei leitud serverist (404). URL: ${decodeURIComponent(new URL(url).searchParams.get("url") || url)}`);
+          if (res.status === 404) {
+            throw new Error(
+              `Raamatut ei leitud serverist (404). URL: ${decodeURIComponent(new URL(url).searchParams.get("url") || url)}`
+            );
+          }
           throw new Error(`Ei õnnestunud laadida (${res.status})`);
         }
-        const buffer = await res.arrayBuffer();
+
+        fetchedBuffer = await res.arrayBuffer();
         if (cancelled) return;
 
         const contentType = (res.headers.get("content-type") || "").toLowerCase();
-        const bytes = new Uint8Array(buffer.slice(0, 4));
+        const bytes = new Uint8Array(fetchedBuffer.slice(0, 4));
         const isZip = bytes[0] === 0x50 && bytes[1] === 0x4b;
         const isPdf = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
 
@@ -48,11 +66,8 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           throw new Error("Server tagastas PDF faili EPUB-i asemel. Proovi raamat uuesti avada.");
         }
 
-        // Mõned serveriotspunktid tagastavad 200 staatuse, aga sisuks on
-        // HTML/PHP veateade (nt epub.php SQL viga). Kontrollime EPUB allkirja
-        // ("PK" zip-faili algus), enne kui anname epubjs-le faili.
         if (!isZip) {
-          const text = new TextDecoder().decode(buffer.slice(0, Math.min(buffer.byteLength, 2048)));
+          const text = new TextDecoder().decode(fetchedBuffer.slice(0, Math.min(fetchedBuffer.byteLength, 2048)));
           if (text.toLowerCase().includes("vajalik sisselogimine")) {
             throw new Error("Server nõuab sisselogimist – kontrolli oma kontot.");
           }
@@ -64,7 +79,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           throw new Error("Server tagastas vigased andmed: " + text.slice(0, 160));
         }
 
-        const book = ePub(buffer, { openAs: "epub" });
+        const book = ePub(fetchedBuffer, { openAs: "epub" });
         bookRef.current = book;
 
         const rendition = book.renderTo(viewerRef.current!, {
@@ -101,7 +116,9 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
 
           const handleRendered = () => finish(resolve);
           const handleRenderFailed = (_section: unknown, renderError: unknown) => {
-            finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB renderdamine ebaõnnestus.")));
+            finish(() =>
+              reject(renderError instanceof Error ? renderError : new Error("EPUB renderdamine ebaõnnestus."))
+            );
           };
 
           const timeoutId = window.setTimeout(() => {
@@ -115,11 +132,24 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
             finish(() => reject(renderError instanceof Error ? renderError : new Error("EPUB avamine ebaõnnestus.")));
           });
         });
+
         if (!cancelled) setLoading(false);
       } catch (e: any) {
-        if (!cancelled) {
+        if (cancelled) return;
+
+        try {
+          const fallbackBuffer = fetchedBuffer ?? (await fetch(url).then((res) => {
+            if (!res.ok) throw new Error(`Ei õnnestunud laadida (${res.status})`);
+            return res.arrayBuffer();
+          }));
+          const html = await extractEpubAsHtml(fallbackBuffer, title);
+          if (cancelled) return;
+          setFallbackHtml(html);
+          setError(null);
+        } catch {
           setError(e?.message || "Tundmatu viga");
-          setLoading(false);
+        } finally {
+          if (!cancelled) setLoading(false);
         }
       }
     })();
@@ -133,20 +163,21 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         /* noop */
       }
     };
-  }, [url]);
+  }, [title, url]);
 
   const next = () => renditionRef.current?.next();
   const prev = () => renditionRef.current?.prev();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (fallbackSrc) return;
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [fallbackSrc, onClose]);
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -174,9 +205,18 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
               <Button variant="outline" onClick={onClose}>Sulge</Button>
             </div>
           )}
-          <div ref={viewerRef} className="absolute inset-0" />
 
-          {!loading && !error && (
+          {fallbackSrc ? (
+            <iframe
+              title={title}
+              src={fallbackSrc}
+              className="absolute inset-0 h-full w-full border-0 bg-background"
+            />
+          ) : (
+            <div ref={viewerRef} className="absolute inset-0" />
+          )}
+
+          {!loading && !error && !fallbackSrc && (
             <>
               <button
                 type="button"
