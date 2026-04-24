@@ -37,21 +37,31 @@ type PlayerState =
   | { kind: "video"; book: EraamatApi; url: string }
   | null;
 
+function inferBookFormatFromUrl(url: string): BookFormat | null {
+  const normalized = url.toLowerCase();
+  if (normalized.includes(".pdf") || normalized.includes("format=pdf")) return "pdf";
+  if (normalized.includes(".epub") || normalized.includes("format=epub")) return "epub";
+  return null;
+}
+
 async function detectRemoteBookFormat(url: string, fallback: BookFormat = "epub"): Promise<BookFormat> {
+  const inferredFromUrl = inferBookFormatFromUrl(url);
+  if (inferredFromUrl) return inferredFromUrl;
+
   try {
-    const res = await fetch(url, { method: "GET" });
+    const res = await fetch(url, { method: "HEAD" });
     if (!res.ok) return fallback;
 
     const contentType = (res.headers.get("content-type") || "").toLowerCase();
-    if (contentType.includes("pdf")) return "pdf";
-    if (contentType.includes("epub") || contentType.includes("application/zip")) return "epub";
-
-    const buffer = await res.arrayBuffer();
-    const bytes = new Uint8Array(buffer.slice(0, 8));
-    const isPdf = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
-    if (isPdf) return "pdf";
-    const isZip = bytes[0] === 0x50 && bytes[1] === 0x4b;
-    if (isZip) return "epub";
+    const contentDisposition = (res.headers.get("content-disposition") || "").toLowerCase();
+    if (contentType.includes("pdf") || contentDisposition.includes(".pdf")) return "pdf";
+    if (
+      contentType.includes("epub") ||
+      contentType.includes("application/zip") ||
+      contentDisposition.includes(".epub")
+    ) {
+      return "epub";
+    }
 
     return fallback;
   } catch {
