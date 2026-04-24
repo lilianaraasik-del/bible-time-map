@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   fetchEraamatud,
   imageUrl,
@@ -14,6 +17,7 @@ import {
   audioUrl,
   videoEmbedUrl,
   getMediaKind,
+  isPaid,
   type EraamatApi,
   type MediaKind,
   type BookFormat,
@@ -28,6 +32,8 @@ type PlayerState =
   | null;
 
 export default function Eraamatud() {
+  const navigate = useNavigate();
+  const { session } = useAuth();
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,10 +54,23 @@ export default function Eraamatud() {
     return g;
   }, [items]);
 
+  const auth = session
+    ? { userId: session.piibelUserId, uniqueToken: session.piibelUniqueToken }
+    : null;
+
   const open = (book: EraamatApi) => {
+    if (isPaid(book) && !session) {
+      toast({
+        title: "Sisselogimine vajalik",
+        description: "Selle raamatu lugemiseks logi palun sisse.",
+      });
+      navigate("/login");
+      return;
+    }
+
     const kind = getMediaKind(book);
     if (kind === "book") {
-      const url = bookFileUrl(book);
+      const url = bookFileUrl(book, auth);
       if (url) setPlayer({ kind: "book", book, url, format: bookFormat(book) });
     } else if (kind === "audio") {
       const url = audioUrl(book);
