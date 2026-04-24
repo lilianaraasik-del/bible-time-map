@@ -260,15 +260,23 @@ export default function Eraamatud() {
                               size="sm"
                               variant={hasMedia ? "default" : "secondary"}
                               className="w-full"
-                              disabled={!hasMedia || (paid && authLoading)}
-                              onClick={() => hasMedia && !authLoading && open(book)}
+                              disabled={!hasMedia || (paid && authLoading) || openingId === book.id}
+                              onClick={() => hasMedia && !authLoading && openingId !== book.id && open(book)}
                             >
-                              {key === "book" ? (
+                              {openingId === book.id ? (
+                                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                              ) : key === "book" ? (
                                 <BookOpen className="h-3.5 w-3.5 mr-1.5" />
                               ) : (
                                 <Play className="h-3.5 w-3.5 mr-1.5" />
                               )}
-                              {paid && authLoading ? "Kontrollin..." : hasMedia ? cta : "Pole saadaval"}
+                              {openingId === book.id
+                                ? "Avan..."
+                                : paid && authLoading
+                                ? "Kontrollin..."
+                                : hasMedia
+                                ? cta
+                                : "Pole saadaval"}
                             </Button>
                           </CardContent>
                         </Card>
