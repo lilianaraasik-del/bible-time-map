@@ -25,11 +25,13 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
       try {
         setLoading(true);
         setError(null);
+        console.log("[EpubReader] laadin:", url);
         const res = await fetch(url);
         if (!res.ok) {
+          console.error("[EpubReader] HTTP viga", res.status, "URL:", url);
           if (res.status === 401) throw new Error("Sisselogimine vajalik");
           if (res.status === 402) throw new Error("Raamat on tasuline – osta müntide eest");
-          if (res.status === 404) throw new Error("Raamatut ei leitud");
+          if (res.status === 404) throw new Error(`Raamatut ei leitud serverist (404). URL: ${decodeURIComponent(new URL(url).searchParams.get("url") || url)}`);
           throw new Error(`Ei õnnestunud laadida (${res.status})`);
         }
         const buffer = await res.arrayBuffer();
