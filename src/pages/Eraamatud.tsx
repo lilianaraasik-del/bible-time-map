@@ -369,6 +369,12 @@ export default function Eraamatud() {
                           : key === "audio"
                           ? !!audioUrl(book)
                           : !!videoEmbedUrl(book);
+                      const coinPrice = Number(book.novel_coin || 0);
+                      const priceLabel = paid
+                        ? coinPrice > 0
+                          ? `${coinPrice} münti`
+                          : "Tasuline"
+                        : "Tasuta";
                       return (
                         <Card
                           key={book.id}
@@ -413,6 +419,15 @@ export default function Eraamatud() {
                                 <Lock className="h-3 w-3" />
                               </div>
                             )}
+                            <div
+                              className={`absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-semibold shadow-md ${
+                                paid
+                                  ? "bg-primary/90 text-primary-foreground"
+                                  : "bg-emerald-500/90 text-white"
+                              }`}
+                            >
+                              {priceLabel}
+                            </div>
                           </div>
                           <CardContent className="p-3 space-y-2">
                             <h3 className="font-serif font-semibold text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
