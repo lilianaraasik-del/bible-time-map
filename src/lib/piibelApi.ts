@@ -71,7 +71,7 @@ export interface PiibelWalletTransaction {
   user_id: number | string;
   content_id?: number | string;
   content_name?: string;
-  episode_id?: number | string;
+  content_episode_id?: number | string;
   episode_name?: string;
   coin: number;
   type?: string;
