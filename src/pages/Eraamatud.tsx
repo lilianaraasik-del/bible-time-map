@@ -45,6 +45,7 @@ export default function Eraamatud() {
   const [tab, setTab] = useState<MediaKind>("book");
   const [player, setPlayer] = useState<PlayerState>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
+  const [locallyPurchasedBookIds, setLocallyPurchasedBookIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     document.title = "E-raamatud | Piibli Tarkuse Puu";
@@ -93,18 +94,17 @@ export default function Eraamatud() {
           unique_token: session.piibelUniqueToken,
           content_id: book.id,
         });
-        const episode = ep.result?.[0];
+        let episode = ep.result?.[0];
         console.log("[Eraamatud] episode vastus:", { bookId: book.id, episode, fullResponse: ep });
-        if (!episode || !episode.book) {
-          toast({ title: "Raamatu faili ei leitud", variant: "destructive" });
+        if (!episode) {
+          toast({ title: "Raamatu andmeid ei leitud", variant: "destructive" });
           return;
         }
 
         const cost = Number(episode.is_book_coin || 0);
-        const alreadyBought = Number(episode.is_buy || 0) === 1;
+        const alreadyBought = Number(episode.is_buy || 0) === 1 || locallyPurchasedBookIds.has(String(book.id));
         const needsPurchase = !alreadyBought && cost > 0;
 
-        // Kui pole ostetud ja maksab münte, osta
         if (needsPurchase) {
           if (session.walletCoin < cost) {
             toast({
@@ -115,6 +115,7 @@ export default function Eraamatud() {
             navigate("/paketid");
             return;
           }
+
           const buy = await piibelBuyContentEpisode({
             user_id: session.piibelUserId,
             unique_token: session.piibelUniqueToken,
@@ -131,15 +132,33 @@ export default function Eraamatud() {
             });
             return;
           }
+
+          setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
           await refreshProfile();
+
+          const refreshedEp = await piibelGetEpisodeBookByContent({
+            user_id: session.piibelUserId,
+            unique_token: session.piibelUniqueToken,
+            content_id: book.id,
+          });
+          episode = refreshedEp.result?.[0];
+          console.log("[Eraamatud] episode pärast ostu:", { bookId: book.id, episode, fullResponse: refreshedEp });
+
           toast({ title: "Raamat avatud!", description: `−${cost} münti` });
         }
 
-        // Normaliseeri URL: kui on suhteline tee, lisa eraamat host ette
+        if (!episode?.book) {
+          toast({
+            title: "Raamatu faili ei leitud",
+            description: "Ost läks läbi, aga faililinki ei saadud kätte. Proovi uuesti.",
+            variant: "destructive",
+          });
+          return;
+        }
+
         let rawUrl = episode.book.trim();
         if (!/^https?:\/\//i.test(rawUrl)) {
           const path = rawUrl.replace(/^\/+/, "");
-          // Failid on tavaliselt admin/storage/app/public all
           rawUrl = path.startsWith("admin/") || path.startsWith("storage/")
             ? `https://eraamat.piibel.ee/${path}`
             : `https://eraamat.piibel.ee/admin/storage/app/public/${path}`;
