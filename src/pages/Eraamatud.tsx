@@ -30,6 +30,7 @@ import {
   piibelBuyContentEpisode,
   piibelGetWalletTransactions,
 } from "@/lib/piibelApi";
+import type { PiibelEpisode } from "@/lib/piibelApi";
 
 type PlayerState =
   | { kind: "book"; book: EraamatApi; url: string; format: BookFormat }
@@ -93,6 +94,8 @@ export default function Eraamatud() {
   const [purchasedBookIds, setPurchasedBookIds] = useState<Set<string>>(new Set());
   const [purchasedEpisodeIds, setPurchasedEpisodeIds] = useState<Set<string>>(new Set());
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
+  const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
+  const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "E-raamatud | Piibli Tarkuse Puu";
@@ -187,98 +190,19 @@ export default function Eraamatud() {
           unique_token: session?.piibelUniqueToken,
           content_id: book.id,
         });
-        let episode = ep.result?.[0];
-        console.log("[Eraamatud] episode vastus:", { bookId: book.id, episode, fullResponse: ep });
-        if (!episode) {
+        const episodes = ep.result || [];
+        console.log("[Eraamatud] episode vastus:", { bookId: book.id, count: episodes.length, fullResponse: ep });
+        if (episodes.length === 0) {
           toast({ title: "Raamatu andmeid ei leitud", variant: "destructive" });
           return;
         }
 
-        if (isPaid(book) && session) {
-          const cost = Number(episode.is_book_coin || 0);
-          const alreadyBought =
-            Number(episode.is_buy || 0) === 1 ||
-            locallyPurchasedBookIds.has(String(book.id)) ||
-            purchasedBookIds.has(String(book.id)) ||
-            purchasedEpisodeIds.has(String(episode.id));
-
-          if (alreadyBought && !locallyPurchasedBookIds.has(String(book.id))) {
-            setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
-          }
-
-          const needsPurchase = !alreadyBought && cost > 0;
-
-          if (needsPurchase) {
-            if (session.walletCoin < cost) {
-              toast({
-                title: "Müntidest jääb puudu",
-                description: `Selle raamatu avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
-                variant: "destructive",
-              });
-              navigate("/paketid");
-              return;
-            }
-
-            const buy = await piibelBuyContentEpisode({
-              user_id: session.piibelUserId,
-              unique_token: session.piibelUniqueToken,
-              content_id: book.id,
-              content_episode_id: episode.id,
-              coin: cost,
-            });
-            console.log("[Eraamatud] ostmise vastus:", buy);
-            if (buy.status !== 200) {
-              toast({
-                title: "Ostmine ebaõnnestus",
-                description: `${buy.message || "Tundmatu viga"} (status ${buy.status}). Vaata konsoolist täpsemat infot.`,
-                variant: "destructive",
-              });
-              return;
-            }
-
-            setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
-            setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
-            setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
-            await refreshProfile();
-
-            const refreshedEp = await piibelGetEpisodeBookByContent({
-              user_id: session.piibelUserId,
-              unique_token: session.piibelUniqueToken,
-              content_id: book.id,
-            });
-            episode = refreshedEp.result?.[0];
-            console.log("[Eraamatud] episode pärast ostu:", { bookId: book.id, episode, fullResponse: refreshedEp });
-
-            toast({ title: "Raamat avatud!", description: `−${cost} münti` });
-          }
-        }
-
-        if (!episode?.book) {
-          const fallbackUrl = bookFileUrl(book, auth);
-          if (!fallbackUrl) {
-            toast({
-              title: "Raamatu faili ei leitud",
-              description: "Selle raamatu faililinki ei saadud kätte. Proovi uuesti.",
-              variant: "destructive",
-            });
-            return;
-          }
-
-          const proxiedFallbackUrl = proxyUrl(fallbackUrl);
-          const fallbackFormat = await detectRemoteBookFormat(proxiedFallbackUrl, bookFormat(book));
-          setPlayer({ kind: "book", book, url: proxiedFallbackUrl, format: fallbackFormat });
+        if (episodes.length > 1) {
+          setEpisodeList({ book, episodes });
           return;
         }
 
-        const rawUrl = normalizeEpisodeBookUrl(episode.book);
-        const lower = rawUrl.toLowerCase();
-        const proxiedUrl = proxyUrl(rawUrl);
-        const format: BookFormat = await detectRemoteBookFormat(
-          proxiedUrl,
-          lower.includes(".pdf") ? "pdf" : "epub"
-        );
-        console.log("[Eraamatud] avan raamatu:", { id: book.id, title: book.title, rawUrl, format });
-        setPlayer({ kind: "book", book, url: proxiedUrl, format });
+        await openSingleEpisode(book, episodes[0]);
       } catch (e) {
         toast({
           title: "Raamatu avamine ebaõnnestus",
@@ -299,6 +223,109 @@ export default function Eraamatud() {
       if (url) setPlayer({ kind: "video", book, url });
     }
   };
+
+  /** Avab ühe peatüki: vajadusel ostab müntide eest, siis käivitab lugeja. */
+  async function openSingleEpisode(book: EraamatApi, initialEpisode: PiibelEpisode) {
+    let episode = initialEpisode;
+
+    if (isPaid(book) && session) {
+      const cost = Number(episode.is_book_coin || 0);
+      const alreadyBought =
+        Number(episode.is_buy || 0) === 1 ||
+        locallyPurchasedBookIds.has(String(book.id)) ||
+        purchasedBookIds.has(String(book.id)) ||
+        purchasedEpisodeIds.has(String(episode.id));
+
+      if (alreadyBought && !locallyPurchasedBookIds.has(String(book.id))) {
+        setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+      }
+
+      if (!alreadyBought && cost > 0) {
+        if (session.walletCoin < cost) {
+          toast({
+            title: "Müntidest jääb puudu",
+            description: `Selle peatüki avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+            variant: "destructive",
+          });
+          navigate("/paketid");
+          return;
+        }
+
+        const buy = await piibelBuyContentEpisode({
+          user_id: session.piibelUserId,
+          unique_token: session.piibelUniqueToken,
+          content_id: book.id,
+          content_episode_id: episode.id,
+          coin: cost,
+        });
+        if (buy.status !== 200) {
+          toast({
+            title: "Ostmine ebaõnnestus",
+            description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
+            variant: "destructive",
+          });
+          return;
+        }
+
+        setLocallyPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+        setPurchasedBookIds((prev) => new Set(prev).add(String(book.id)));
+        setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
+        await refreshProfile();
+
+        const refreshedEp = await piibelGetEpisodeBookByContent({
+          user_id: session.piibelUserId,
+          unique_token: session.piibelUniqueToken,
+          content_id: book.id,
+        });
+        const refreshed = (refreshedEp.result || []).find((e) => String(e.id) === String(episode.id));
+        if (refreshed) episode = refreshed;
+
+        toast({ title: "Peatükk avatud!", description: `−${cost} münti` });
+      }
+    }
+
+    if (!episode.book) {
+      const fallbackUrl = bookFileUrl(book, auth);
+      if (!fallbackUrl) {
+        toast({
+          title: "Sisu pole veel saadaval",
+          description: "Selle peatüki faili pole serverisse veel lisatud.",
+          variant: "destructive",
+        });
+        return;
+      }
+      const proxiedFallbackUrl = proxyUrl(fallbackUrl);
+      const fallbackFormat = await detectRemoteBookFormat(proxiedFallbackUrl, bookFormat(book));
+      setEpisodeList(null);
+      setPlayer({ kind: "book", book, url: proxiedFallbackUrl, format: fallbackFormat });
+      return;
+    }
+
+    const rawUrl = normalizeEpisodeBookUrl(episode.book);
+    const lower = rawUrl.toLowerCase();
+    const proxiedUrl = proxyUrl(rawUrl);
+    const format: BookFormat = await detectRemoteBookFormat(
+      proxiedUrl,
+      lower.includes(".pdf") ? "pdf" : "epub"
+    );
+    setEpisodeList(null);
+    setPlayer({ kind: "book", book, url: proxiedUrl, format });
+  }
+
+  async function handleOpenEpisode(book: EraamatApi, episode: PiibelEpisode) {
+    try {
+      setOpeningEpisodeId(String(episode.id));
+      await openSingleEpisode(book, episode);
+    } catch (e) {
+      toast({
+        title: "Peatüki avamine ebaõnnestus",
+        description: e instanceof Error ? e.message : "Tundmatu viga",
+        variant: "destructive",
+      });
+    } finally {
+      setOpeningEpisodeId(null);
+    }
+  }
 
   const tabConfig: { key: MediaKind; label: string; icon: typeof BookOpen; cta: string }[] = [
     { key: "book", label: "Raamatud", icon: BookOpen, cta: "Loe" },
