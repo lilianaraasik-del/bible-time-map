@@ -430,9 +430,6 @@ export default function Eraamatud() {
                             </div>
                           </div>
                           <CardContent className="p-3 space-y-2">
-                            <h3 className="font-serif font-semibold text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
-                              {book.title}
-                            </h3>
                             <Button
                               size="sm"
                               variant={hasMedia ? "default" : "secondary"}
