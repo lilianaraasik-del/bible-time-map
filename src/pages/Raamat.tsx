@@ -166,16 +166,19 @@ const bookDetails: Record<string, {
     category: "Ajalugu",
     overview: "Joosua on julguse ja usu sümbol. Pärast Moosese surma võttis ta vastutuse juhtida iisraellasi tõotatud maale. Tema lugu õpetab meile, et Jumal annab jõudu ja julgust, kui me usaldame Teda. Joosua ei kartanud väljakutseid ega vastaseid, sest ta teadis, et Jumal on temaga. Ta on eeskuju neile, kes seisavad silmitsi hirmutavate ülesannetega - usu ja julgusega on võimalik saavutada võimatu.",
     authorFacts: [
-      "Moosese järglane ja Iisraeli juht",
-      "Juhtis iisraellasi Tõotatud maale",
-      "Oli üks kahest Egiptusest tulnud põlvkonnast, kes nägi Tõotatud maad",
-      "Elas üle 110 aasta vanuseks"
+      "Joosua (hbr Jehošua – 'Issand on pääste') oli Nuuni poeg Efraimi suguharust ning Moosese lähim abiline ja teener juba kõrbeteekonna algusest peale (2Ms 24:13; 33:11)",
+      "Tema algne nimi oli Hoosea, kuid Mooses andis talle uue nime Joosua, mis viitab tema rollile rahva päästmisel (4Ms 13:16)",
+      "Mooses pühitses ta avalikult oma järeltulijaks, pannes käed tema peale ja andes talle Vaimu täiuse (4Ms 27:18–23; 5Ms 34:9)",
+      "Joosuat peetakse traditsiooniliselt raamatu peamiseks autoriks – ta ise pani kirja vähemalt liidu uuendamise sõnad Sekemis (Jos 24:26); lõpu osad (nt tema surm) lisasid hiljem teised, tõenäoliselt preestrid Eleasar ja Piinehas",
+      "Raamat on kirjutatud pealtnägija perspektiivist – 'meie' ja 'tänase päevani' vormid (nt Jos 5:1; 6:25) viitavad sellele, et autor elas kirjeldatud sündmuste ajal"
     ],
     additionalFacts: [
-      "Joosua oli Nuuni poeg ja Efraimi suguharust",
-      "Ta oli üks 12-st luurajast, kes uurisid Kaanani maad",
-      "Ainult tema ja Kaaleb usaldasid Jumalat piisavalt",
-      "Tema algne nimi oli Hoosea, kuid Mooses nimetas ta ümber Joosuaks"
+      "Joosua oli üks 12 luurajast, kes uurisid Kaanani maad – ainult tema ja Kaaleb usaldasid Jumalat ning said tasuks Tõotatud maale jõuda (4Ms 14:6–9, 30)",
+      "Ta juhtis iisraellaste esimest võitu Amaleki vastu Refidimis, samal ajal kui Mooses palvetas mäe otsas (2Ms 17:8–13)",
+      "Joosua oli sõjaväejuht, prohvet ja vaimulik liider ühes isikus – tema juhtimisel jagati maa loosi teel kaheteistkümne suguharu vahel",
+      "Ta elas 110-aastaseks ja maeti oma pärisossa Timnat-Serahisse Efraimi mäestikus (Jos 24:29–30)",
+      "Tema kuulus tunnistus 'Mina ja minu pere, meie teenime Issandat' (Jos 24:15) on saanud üheks tuntuimaks usutunnistuseks Vanas Testamendis",
+      "Uues Testamendis võrreldakse Joosuat eeltüübina Jeesusega – mõlema nimi tähendab 'Issand päästab' ning mõlemad juhivad rahva pärandi sisse (Hb 4:8)"
     ],
     breakdowns: [
       { title: "Jordani ületamine (ptk 3-4)", description: "Jumal peatab Jordani jõe vee, rahvas läheb üle" },
