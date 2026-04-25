@@ -11,6 +11,7 @@ import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
 import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
 import { getBookQuote } from "@/data/bookQuotes";
+import { renderWithBibleRefs } from "@/lib/bibleRefs";
 
 // Extended book data with author facts, breakdowns, overview and additional facts
 const bookDetails: Record<string, {
