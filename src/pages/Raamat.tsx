@@ -613,7 +613,7 @@ export default function RaamatuLeht() {
                         <CheckCircle2 className="w-5 h-5 text-accent" />
                       </div>
                     </div>
-                    <p className="text-foreground/90 leading-relaxed pt-2">{fact}</p>
+                    <p className="text-foreground/90 leading-relaxed pt-2">{renderWithBibleRefs(fact)}</p>
                   </div>
                 </Card>
               ))}
