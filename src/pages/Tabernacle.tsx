@@ -476,6 +476,7 @@ export default function Tabernacle() {
             <TabsTrigger value="overview">Ülevaade</TabsTrigger>
             <TabsTrigger value="elements">Elemendid</TabsTrigger>
             <TabsTrigger value="meaning">Tähendus</TabsTrigger>
+            <TabsTrigger value="video">Video</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -542,6 +543,41 @@ export default function Tabernacle() {
                   <li>{renderWithBibleRefs("Eesriie – Kristuse ihu, mille kaudu pääseme Isa juurde (Hb 10:19-20).")}</li>
                   <li>{renderWithBibleRefs("Lepituskaas – Kristus, lepitusohver (Rm 3:25).")}</li>
                 </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="video" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Tabernaakli reproduktsioon Timna pargis (Eilat)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  Iisraelis Timna rahvuspargis (Eilati lähedal) asub täismõõtmeline tabernaakli koopia,
+                  mis on ehitatud Piibli kirjelduste järgi. Allpool on Sergio &amp; Rhoda põhjalik
+                  ringkäik (inglise keeles).
+                </p>
+                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full rounded-md"
+                    src="https://www.youtube.com/embed/0fcUVe6S4vg"
+                    title="Tabernacle of Moses Replica in Timna Park"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Video:{" "}
+                  <a
+                    href="https://www.youtube.com/watch?v=0fcUVe6S4vg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-primary"
+                  >
+                    Sergio &amp; Rhoda in Israel – YouTube
+                  </a>
+                </p>
               </CardContent>
             </Card>
           </TabsContent>
