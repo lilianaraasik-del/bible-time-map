@@ -88,7 +88,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 200,
     color: "hsl(280 30% 55%)",
     description:
-      "Telgi esimene osa, 20 × 10 küünart. Ainult preestrid tohtisid siia siseneda. Sees olid lauasaiad, kuldküünlajalg ja suitsutusaltar.",
+      "Telgi esimene osa, 20 × 10 küünart (≈9 × 4,5 m). Ainult preestrid tohtisid siia siseneda. Sees olid vaateleibade laud, kuldküünlajalg ja suitsutusaltar.",
     refs: ["2Ms 26:33", "Hb 9:2"],
     details: [
       "Telgi seinad olid 48 akaatsiapuust lauast, ülekaetud kullaga.",
