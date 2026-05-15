@@ -178,7 +178,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 150,
     color: "hsl(0 65% 35%)",
     description:
-      "Telgi tagumine, 10 × 10 × 10 küünart kuubi­kujuline ruum. Siia tohtis siseneda ainult ülempreester, ja sedagi vaid kord aastas lepituspäeval (Joom Kippur).",
+      "Telgi tagumine, 10 × 10 × 10 küünart (≈4,5 × 4,5 × 4,5 m) kuubi­kujuline ruum. Siia tohtis siseneda ainult ülempreester, ja sedagi vaid kord aastas lepituspäeval (Joom Kippur).",
     refs: ["2Ms 26:33-34", "3Ms 16", "Hb 9:7"],
     details: [
       "Jumala kohaloleku (Šekiina) püsiv asupaik.",
@@ -196,7 +196,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 35,
     color: "hsl(45 100% 50%)",
     description:
-      "Akaatsiapuust kast, ülekaetud kullaga seest ja väljast (2½ × 1½ × 1½ küünart). Kaaneks oli puhtast kullast lepituskaas, mille otstes olid kaks tiibadega keerubi.",
+      "Akaatsiapuust kast, ülekaetud kullaga seest ja väljast (2½ × 1½ × 1½ küünart; ≈1,125 × 0,675 × 0,675 m). Kaaneks oli puhtast kullast lepituskaas, mille otstes olid kaks tiibadega keerubi.",
     refs: ["2Ms 25:10-22", "Hb 9:4"],
     details: [
       "Sees: kivilauad, mannakruus ja Aaroni õitsenud kepp (Hb 9:4).",
@@ -210,7 +210,7 @@ const FACTS = [
   {
     title: "Mõõtmed ja materjal",
     body:
-      "Tabernaakel ehk \"kohtumistelk\" oli liikuv pühamu, mille Mooses lasi ehitada Siinai mäe juures Jumala antud kava järgi (2Ms 25:8-9). Telk ise oli 30 × 10 × 10 küünart (≈13,5 × 4,5 × 4,5 m), õu 100 × 50 küünart.",
+      "Tabernaakel ehk \"kohtumistelk\" oli liikuv pühamu, mille Mooses lasi ehitada Siinai mäe juures Jumala antud kava järgi (2Ms 25:8-9). Telk ise oli 30 × 10 × 10 küünart (≈13,5 × 4,5 × 4,5 m), õu 100 × 50 küünart (≈45 × 22,5 m).",
   },
   {
     title: "Annetused",
