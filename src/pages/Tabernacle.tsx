@@ -20,7 +20,7 @@ type Hotspot = {
   details: string[];
 };
 
-// Tabernaakli ala on 100 küünart pikk × 50 küünart lai (ca 45 × 22.5 m).
+// Tabernaakli ala on 100 küünart pikk × 50 küünart lai (≈45 × 22,5 m).
 // SVG viewBox: 0 0 1000 500 (1 küünar = 10 ühikut). Sissepääs idast (paremalt).
 const HOTSPOTS: Hotspot[] = [
   {
@@ -51,7 +51,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 100,
     color: "hsl(15 70% 45%)",
     description:
-      "Akaatsiapuust ehitatud ja vasega ülekaetud altar, 5 × 5 küünart ja 3 küünart kõrge. Igas nurgas oli sarv, ja külgedel olid rõngad kandepuude jaoks. Siin põletati looma- ja teraviljaohvrid.",
+      "Akaatsiapuust ehitatud ja vasega ülekaetud altar, 5 × 5 küünart (≈2,25 × 2,25 m) ja 3 küünart (≈1,35 m) kõrge. Igas nurgas oli sarv, ja külgedel olid rõngad kandepuude jaoks. Siin põletati looma- ja teraviljaohvrid.",
     refs: ["2Ms 27:1-8", "3Ms 1:1-9"],
     details: [
       "Altari tuli pidi põlema lakkamatult (3Ms 6:13).",
@@ -88,7 +88,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 200,
     color: "hsl(280 30% 55%)",
     description:
-      "Telgi esimene osa, 20 × 10 küünart. Ainult preestrid tohtisid siia siseneda. Sees olid lauasaiad, kuldküünlajalg ja suitsutusaltar.",
+      "Telgi esimene osa, 20 × 10 küünart (≈9 × 4,5 m). Ainult preestrid tohtisid siia siseneda. Sees olid vaateleibade laud, kuldküünlajalg ja suitsutusaltar.",
     refs: ["2Ms 26:33", "Hb 9:2"],
     details: [
       "Telgi seinad olid 48 akaatsiapuust lauast, ülekaetud kullaga.",
@@ -142,7 +142,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 30,
     color: "hsl(30 80% 50%)",
     description:
-      "Väike akaatsiapuust altar (1 × 1 × 2 küünart), ülekaetud kullaga. Asetses vahetult vahetelgi eesriide ees. Hommikul ja õhtul põletati siin lõhnasuitsutust.",
+      "Väike akaatsiapuust altar (1 × 1 × 2 küünart; ≈0,45 × 0,45 × 0,9 m), ülekaetud kullaga. Asetses vahetult vahetelgi eesriide ees. Hommikul ja õhtul põletati siin lõhnasuitsutust.",
     refs: ["2Ms 30:1-10", "Ilm 8:3-4"],
     details: [
       "Suitsutus sümboliseerib pühade palveid (Ps 141:2; Ilm 5:8).",
@@ -178,7 +178,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 150,
     color: "hsl(0 65% 35%)",
     description:
-      "Telgi tagumine, 10 × 10 × 10 küünart kuubi­kujuline ruum. Siia tohtis siseneda ainult ülempreester, ja sedagi vaid kord aastas lepituspäeval (Joom Kippur).",
+      "Telgi tagumine, 10 × 10 × 10 küünart (≈4,5 × 4,5 × 4,5 m) kuubi­kujuline ruum. Siia tohtis siseneda ainult ülempreester, ja sedagi vaid kord aastas lepituspäeval (Joom Kippur).",
     refs: ["2Ms 26:33-34", "3Ms 16", "Hb 9:7"],
     details: [
       "Jumala kohaloleku (Šekiina) püsiv asupaik.",
@@ -196,7 +196,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 35,
     color: "hsl(45 100% 50%)",
     description:
-      "Akaatsiapuust kast, ülekaetud kullaga seest ja väljast (2½ × 1½ × 1½ küünart). Kaaneks oli puhtast kullast lepituskaas, mille otstes olid kaks tiibadega keerubi.",
+      "Akaatsiapuust kast, ülekaetud kullaga seest ja väljast (2½ × 1½ × 1½ küünart; ≈1,125 × 0,675 × 0,675 m). Kaaneks oli puhtast kullast lepituskaas, mille otstes olid kaks tiibadega keerubi.",
     refs: ["2Ms 25:10-22", "Hb 9:4"],
     details: [
       "Sees: kivilauad, mannakruus ja Aaroni õitsenud kepp (Hb 9:4).",
@@ -210,7 +210,7 @@ const FACTS = [
   {
     title: "Mõõtmed ja materjal",
     body:
-      "Tabernaakel ehk \"kohtumistelk\" oli liikuv pühamu, mille Mooses lasi ehitada Siinai mäe juures Jumala antud kava järgi (2Ms 25:8-9). Telk ise oli 30 × 10 × 10 küünart (≈13,5 × 4,5 × 4,5 m), õu 100 × 50 küünart.",
+      "Tabernaakel ehk \"kohtumistelk\" oli liikuv pühamu, mille Mooses lasi ehitada Siinai mäe juures Jumala antud kava järgi (2Ms 25:8-9). Telk ise oli 30 × 10 × 10 küünart (≈13,5 × 4,5 × 4,5 m), õu 100 × 50 küünart (≈45 × 22,5 m).",
   },
   {
     title: "Annetused",
