@@ -524,7 +524,7 @@ export default function Tabernacle() {
           <TabsContent value="meaning" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Kristuse ettekuju</CardTitle>
+                <CardTitle>Kristuse eeskuju</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-foreground/90 leading-relaxed">
                 <p>
@@ -536,7 +536,7 @@ export default function Tabernacle() {
                   <li>{renderWithBibleRefs("Värav (sissepääs idast) – Jeesus on uks (Jh 10:9).")}</li>
                   <li>{renderWithBibleRefs("Põletusohvrialtar – Kristuse rist (Hb 13:10-12).")}</li>
                   <li>{renderWithBibleRefs("Pesemisnõu – Sõna pesu ja uuestisünd (Ef 5:26; Tt 3:5).")}</li>
-                  <li>{renderWithBibleRefs("Pakileivad – Kristus, eluleib (Jh 6:35).")}</li>
+                  <li>{renderWithBibleRefs("Vaateleivad – Kristus, eluleib (Jh 6:35).")}</li>
                   <li>{renderWithBibleRefs("Menoraa – maailma valgus (Jh 8:12).")}</li>
                   <li>{renderWithBibleRefs("Suitsutusaltar – pühade palved (Ilm 8:3-4).")}</li>
                   <li>{renderWithBibleRefs("Eesriie – Kristuse ihu, mille kaudu pääseme Isa juurde (Hb 10:19-20).")}</li>
