@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins, Tent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -78,6 +78,12 @@ export function Navigation() {
                   <Link to="/sundmused" className="flex items-center gap-2 cursor-pointer">
                     <Sparkles className="h-4 w-4" />
                     <span>UT sündmused</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/kaardid/tabernaakel" className="flex items-center gap-2 cursor-pointer">
+                    <Tent className="h-4 w-4" />
+                    <span>Tabernaakel</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
