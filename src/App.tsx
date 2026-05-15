@@ -13,6 +13,7 @@ import Eraamatud from "./pages/Eraamatud.tsx";
 import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
+import Tabernacle from "./pages/Tabernacle.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
