@@ -97,6 +97,7 @@ export function buildPiibelUrl(
   const bookName = getPiibelBookName(slug);
   if (!bookName) return "https://piibel.ee";
   const params = new URLSearchParams();
+  params.set("translation", "1968");
   params.set("book", bookName);
   if (chapter != null) params.set("chapter", String(chapter));
   if (verse != null) params.set("verse", String(verse));
