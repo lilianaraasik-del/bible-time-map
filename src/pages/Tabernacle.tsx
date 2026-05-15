@@ -476,6 +476,7 @@ export default function Tabernacle() {
             <TabsTrigger value="overview">Ülevaade</TabsTrigger>
             <TabsTrigger value="elements">Elemendid</TabsTrigger>
             <TabsTrigger value="meaning">Tähendus</TabsTrigger>
+            <TabsTrigger value="video">Video</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
