@@ -51,7 +51,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 100,
     color: "hsl(15 70% 45%)",
     description:
-      "Akaatsiapuust ehitatud ja vasega ülekaetud altar, 5 × 5 küünart ja 3 küünart kõrge. Igas nurgas oli sarv, ja külgedel olid rõngad kandepuude jaoks. Siin põletati looma- ja teraviljaohvrid.",
+      "Akaatsiapuust ehitatud ja vasega ülekaetud altar, 5 × 5 küünart (≈2,25 × 2,25 m) ja 3 küünart (≈1,35 m) kõrge. Igas nurgas oli sarv, ja külgedel olid rõngad kandepuude jaoks. Siin põletati looma- ja teraviljaohvrid.",
     refs: ["2Ms 27:1-8", "3Ms 1:1-9"],
     details: [
       "Altari tuli pidi põlema lakkamatult (3Ms 6:13).",
