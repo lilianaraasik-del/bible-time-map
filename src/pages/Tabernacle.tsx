@@ -142,7 +142,7 @@ const HOTSPOTS: Hotspot[] = [
     h: 30,
     color: "hsl(30 80% 50%)",
     description:
-      "Väike akaatsiapuust altar (1 × 1 × 2 küünart), ülekaetud kullaga. Asetses vahetult vahetelgi eesriide ees. Hommikul ja õhtul põletati siin lõhnasuitsutust.",
+      "Väike akaatsiapuust altar (1 × 1 × 2 küünart; ≈0,45 × 0,45 × 0,9 m), ülekaetud kullaga. Asetses vahetult vahetelgi eesriide ees. Hommikul ja õhtul põletati siin lõhnasuitsutust.",
     refs: ["2Ms 30:1-10", "Ilm 8:3-4"],
     details: [
       "Suitsutus sümboliseerib pühade palveid (Ps 141:2; Ilm 5:8).",
