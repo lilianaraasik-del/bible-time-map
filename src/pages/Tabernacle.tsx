@@ -20,7 +20,7 @@ type Hotspot = {
   details: string[];
 };
 
-// Tabernaakli ala on 100 küünart pikk × 50 küünart lai (ca 45 × 22.5 m).
+// Tabernaakli ala on 100 küünart pikk × 50 küünart lai (≈45 × 22,5 m).
 // SVG viewBox: 0 0 1000 500 (1 küünar = 10 ühikut). Sissepääs idast (paremalt).
 const HOTSPOTS: Hotspot[] = [
   {
