@@ -225,7 +225,7 @@ const FACTS = [
   {
     title: "Püstitamine",
     body:
-      "Tabernaakel pandi kokku esimese kuu esimesel päeval, teisel aastal pärast Egiptusest lahkumist (2Ms 40:17). Selle täitis Jumala kirkuse pilv (2Ms 40:34-38), mis juhtis rahva rändamist – kui pilv tõusis, asuti teele.",
+      "Tabernaakel pandi kokku esimese kuu esimesel päeval, teisel aastal pärast Egiptusest lahkumist (2Ms 40:17). Selle täitis Jumala auhiilguse pilv (2Ms 40:34-38), mis juhtis rahva rändamist – kui pilv tõusis, asuti teele.",
   },
   {
     title: "Hilisem ajalugu",
