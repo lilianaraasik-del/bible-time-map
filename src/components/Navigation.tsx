@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins, Tent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
