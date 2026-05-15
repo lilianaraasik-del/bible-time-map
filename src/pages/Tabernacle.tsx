@@ -558,9 +558,9 @@ export default function Tabernacle() {
                   mis on ehitatud Piibli kirjelduste järgi. Allpool on Sergio &amp; Rhoda põhjalik
                   ringkäik (inglise keeles).
                 </p>
-                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                <div className="relative w-full overflow-hidden rounded-md" style={{ paddingBottom: "56.25%", height: 0 }}>
                   <iframe
-                    className="absolute top-0 left-0 w-full h-full rounded-md"
+                    className="absolute top-0 left-0 w-full h-full border-0"
                     src="https://www.youtube.com/embed/0fcUVe6S4vg"
                     title="Tabernacle of Moses Replica in Timna Park"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
