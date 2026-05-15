@@ -80,6 +80,12 @@ export function Navigation() {
                     <span>UT sündmused</span>
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/kaardid/tabernaakel" className="flex items-center gap-2 cursor-pointer">
+                    <Tent className="h-4 w-4" />
+                    <span>Tabernaakel</span>
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
