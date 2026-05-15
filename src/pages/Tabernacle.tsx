@@ -98,15 +98,15 @@ const HOTSPOTS: Hotspot[] = [
   },
   {
     id: "table",
-    name: "Pakileibade laud",
-    shortName: "Laud",
+    name: "Vaateleibade laud",
+    shortName: "Vaateleibade laud",
     x: 230,
     y: 175,
     w: 70,
     h: 40,
     color: "hsl(45 80% 55%)",
     description:
-      "Akaatsiapuust laud, ülekaetud puhta kullaga. Sellel olid alati 12 pakileiba (Iisraeli sugukondade arvu järgi), mida vahetati igal hingamispäeval.",
+      "Akaatsiapuust laud, ülekaetud puhta kullaga. Sellel olid alati 12 vaateleiba (Iisraeli sugukondade arvu järgi), mida vahetati igal hingamispäeval.",
     refs: ["2Ms 25:23-30", "3Ms 24:5-9"],
     details: [
       "Laud asus pühamus põhjapoolsel küljel.",
