@@ -580,6 +580,81 @@ export default function Tabernacle() {
                 </p>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>3D ringkäik tabernaaklis (4K animatsioon)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  Fotorealistlik 3D rekonstruktsioon: värav, ohvrialtar, vaskvann, püha paik
+                  vaateleibade laua, menoraa ja suitsutusaltariga ning kõige pühama paik
+                  seaduselaekaga.
+                </p>
+                <div className="relative w-full overflow-hidden rounded-md" style={{ paddingBottom: "56.25%", height: 0 }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full border-0"
+                    src="https://www.youtube.com/embed/_PAazWWJKAc"
+                    title="Tabernacle of Moses - 3D Walkthrough in 4K"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Video:{" "}
+                  <a
+                    href="https://www.youtube.com/watch?v=_PAazWWJKAc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-primary"
+                  >
+                    Messages of Christ – YouTube
+                  </a>
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Interaktiivsed materjalid</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm">
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>
+                    <a
+                      href="https://freebibleimages.org/illustrations/bs-tabernacle-walkthrough/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-primary"
+                    >
+                      FreeBibleImages – 3D stseenide ringkäik tabernaaklis
+                    </a>{" "}
+                    (klikitavad pildid kõigist osadest)
+                  </li>
+                  <li>
+                    <a
+                      href="http://3dtabernacle.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-primary"
+                    >
+                      3D Virtual Bible Tabernacle (eBibleTeacher)
+                    </a>{" "}
+                    – detailsed 3D mudelid ja ehitusjuhised
+                  </li>
+                  <li>
+                    <a
+                      href="https://tabernacle.co.il/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-primary"
+                    >
+                      Timna pargi tabernaakli ametlik leht
+                    </a>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
