@@ -289,7 +289,7 @@ export function BibleTimeline() {
             <span>66 raamatut · 40+ autorit · 1500 aastat</span>
           </div>
           <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">
-            Piibli Tarkuse Puu
+            Piibli Raamatud
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             Interaktiivne ülevaade Piibli raamatute kirjutamisest — autorid,
