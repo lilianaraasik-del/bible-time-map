@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      commentaries: {
+        Row: {
+          book_slug: string
+          content_html: string
+          created_at: string
+          id: string
+          language: string
+          section: string
+          source: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          book_slug: string
+          content_html: string
+          created_at?: string
+          id?: string
+          language: string
+          section?: string
+          source: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          book_slug?: string
+          content_html?: string
+          created_at?: string
+          id?: string
+          language?: string
+          section?: string
+          source?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       piibel_sessions: {
         Row: {
           auth_user_id: string
