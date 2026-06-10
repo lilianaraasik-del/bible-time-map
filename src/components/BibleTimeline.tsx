@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
+import { useTranslation, Trans } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,147 +24,154 @@ import {
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 
+type CategoryKey =
+  | "law"
+  | "history"
+  | "poetry"
+  | "wisdom"
+  | "prophets"
+  | "gospels"
+  | "paulineLetters"
+  | "generalLetters";
+
 interface BibleBook {
-  name: string;
-  author: string;
-  yearWritten: string;
-  testament: "VT" | "UT";
-  category: string;
+  testament: "OT" | "NT";
+  categoryKey: CategoryKey;
   slug: string;
 }
 
 const bibleBooks: BibleBook[] = [
   // VANA TESTAMENT - Seadus
-  { name: "1. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "1-mooses" },
-  { name: "2. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "2-mooses" },
-  { name: "3. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "3-mooses" },
-  { name: "4. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "4-mooses" },
-  { name: "5. Mooses", author: "Mooses", yearWritten: "u 1445-1405 eKr", testament: "VT", category: "Seadus", slug: "5-mooses" },
+  { testament: "OT", categoryKey: "law", slug: "1-mooses" },
+  { testament: "OT", categoryKey: "law", slug: "2-mooses" },
+  { testament: "OT", categoryKey: "law", slug: "3-mooses" },
+  { testament: "OT", categoryKey: "law", slug: "4-mooses" },
+  { testament: "OT", categoryKey: "law", slug: "5-mooses" },
   // Ajalugu
-  { name: "Joosua", author: "Joosua", yearWritten: "u 1400-1370 eKr", testament: "VT", category: "Ajalugu", slug: "joosua" },
-  { name: "Kohtumõistjad", author: "Saamuel (traditsiooniliselt)", yearWritten: "u 1050-1000 eKr", testament: "VT", category: "Ajalugu", slug: "kohtumoistjad" },
-  { name: "Rutt", author: "Tundmatu", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "rutt" },
-  { name: "1. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "1-saamuel" },
-  { name: "2. Saamueli", author: "Saamuel, Naatan, Gaad", yearWritten: "u 1000-900 eKr", testament: "VT", category: "Ajalugu", slug: "2-saamuel" },
-  { name: "1. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "1-kuningate" },
-  { name: "2. Kuningate", author: "Jeremija", yearWritten: "u 560-540 eKr", testament: "VT", category: "Ajalugu", slug: "2-kuningate" },
-  { name: "1. Ajaraamat", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "1-ajaraamat" },
-  { name: "2. Ajaraamat", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "2-ajaraamat" },
-  { name: "Esra", author: "Esra", yearWritten: "u 450-425 eKr", testament: "VT", category: "Ajalugu", slug: "esra" },
-  { name: "Nehemja", author: "Nehemja", yearWritten: "u 445-425 eKr", testament: "VT", category: "Ajalugu", slug: "nehemja" },
-  { name: "Ester", author: "Tundmatu", yearWritten: "u 470-450 eKr", testament: "VT", category: "Ajalugu", slug: "ester" },
+  { testament: "OT", categoryKey: "history", slug: "joosua" },
+  { testament: "OT", categoryKey: "history", slug: "kohtumoistjad" },
+  { testament: "OT", categoryKey: "history", slug: "rutt" },
+  { testament: "OT", categoryKey: "history", slug: "1-saamuel" },
+  { testament: "OT", categoryKey: "history", slug: "2-saamuel" },
+  { testament: "OT", categoryKey: "history", slug: "1-kuningate" },
+  { testament: "OT", categoryKey: "history", slug: "2-kuningate" },
+  { testament: "OT", categoryKey: "history", slug: "1-ajaraamat" },
+  { testament: "OT", categoryKey: "history", slug: "2-ajaraamat" },
+  { testament: "OT", categoryKey: "history", slug: "esra" },
+  { testament: "OT", categoryKey: "history", slug: "nehemja" },
+  { testament: "OT", categoryKey: "history", slug: "ester" },
   // Luule ja tarkus
-  { name: "Iiob", author: "Tundmatu", yearWritten: "u 1500-1000 eKr", testament: "VT", category: "Luule", slug: "iiob" },
-  { name: "Psalmid", author: "Taavet jt", yearWritten: "u 1440-450 eKr", testament: "VT", category: "Luule", slug: "psalmid" },
-  { name: "Õpetussõnad", author: "Saalomon, Aagur, Lemuel, „tarkade sõnad“", yearWritten: "u 970-700 eKr", testament: "VT", category: "Tarkus", slug: "opetussonad" },
-  { name: "Koguja", author: "Saalomon", yearWritten: "u 935-900 eKr", testament: "VT", category: "Tarkus", slug: "koguja" },
-  { name: "Ülemlaul", author: "Saalomon", yearWritten: "u 970-930 eKr", testament: "VT", category: "Luule", slug: "ulemlaul" },
+  { testament: "OT", categoryKey: "poetry", slug: "iiob" },
+  { testament: "OT", categoryKey: "poetry", slug: "psalmid" },
+  { testament: "OT", categoryKey: "wisdom", slug: "opetussonad" },
+  { testament: "OT", categoryKey: "wisdom", slug: "koguja" },
+  { testament: "OT", categoryKey: "poetry", slug: "ulemlaul" },
   // Suured prohvetid
-  { name: "Jesaja", author: "Jesaja", yearWritten: "u 740-680 eKr", testament: "VT", category: "Prohvetid", slug: "jesaja" },
-  { name: "Jeremija", author: "Jeremija", yearWritten: "u 627-580 eKr", testament: "VT", category: "Prohvetid", slug: "jeremija" },
-  { name: "Nutulaul", author: "Jeremija", yearWritten: "u 586 eKr", testament: "VT", category: "Prohvetid", slug: "nutulaul" },
-  { name: "Hesekiel", author: "Hesekiel", yearWritten: "u 593-565 eKr", testament: "VT", category: "Prohvetid", slug: "hesekiel" },
-  { name: "Taaniel", author: "Taaniel", yearWritten: "u 540-530 eKr", testament: "VT", category: "Prohvetid", slug: "taaniel" },
+  { testament: "OT", categoryKey: "prophets", slug: "jesaja" },
+  { testament: "OT", categoryKey: "prophets", slug: "jeremija" },
+  { testament: "OT", categoryKey: "prophets", slug: "nutulaul" },
+  { testament: "OT", categoryKey: "prophets", slug: "hesekiel" },
+  { testament: "OT", categoryKey: "prophets", slug: "taaniel" },
   // Väikesed prohvetid
-  { name: "Hoosea", author: "Hoosea", yearWritten: "u 755-715 eKr", testament: "VT", category: "Prohvetid", slug: "hoosea" },
-  { name: "Joel", author: "Joel", yearWritten: "u 835-800 eKr", testament: "VT", category: "Prohvetid", slug: "joel" },
-  { name: "Aamos", author: "Aamos", yearWritten: "u 760-750 eKr", testament: "VT", category: "Prohvetid", slug: "aamos" },
-  { name: "Obadja", author: "Obadja", yearWritten: "u 586-585 eKr", testament: "VT", category: "Prohvetid", slug: "obadja" },
-  { name: "Joona", author: "Joona", yearWritten: "u 780-750 eKr", testament: "VT", category: "Prohvetid", slug: "joona" },
-  { name: "Miika", author: "Miika", yearWritten: "u 735-700 eKr", testament: "VT", category: "Prohvetid", slug: "miika" },
-  { name: "Nahum", author: "Nahum", yearWritten: "u 663-612 eKr", testament: "VT", category: "Prohvetid", slug: "nahum" },
-  { name: "Habakuk", author: "Habakuk", yearWritten: "u 609-605 eKr", testament: "VT", category: "Prohvetid", slug: "habakuk" },
-  { name: "Sefanja", author: "Sefanja", yearWritten: "u 635-625 eKr", testament: "VT", category: "Prohvetid", slug: "sefanja" },
-  { name: "Haggai", author: "Haggai", yearWritten: "u 520 eKr", testament: "VT", category: "Prohvetid", slug: "haggai" },
-  { name: "Sakarja", author: "Sakarja", yearWritten: "u 520-475 eKr", testament: "VT", category: "Prohvetid", slug: "sakarja" },
-  { name: "Malaki", author: "Malaki", yearWritten: "u 450-400 eKr", testament: "VT", category: "Prohvetid", slug: "malaki" },
+  { testament: "OT", categoryKey: "prophets", slug: "hoosea" },
+  { testament: "OT", categoryKey: "prophets", slug: "joel" },
+  { testament: "OT", categoryKey: "prophets", slug: "aamos" },
+  { testament: "OT", categoryKey: "prophets", slug: "obadja" },
+  { testament: "OT", categoryKey: "prophets", slug: "joona" },
+  { testament: "OT", categoryKey: "prophets", slug: "miika" },
+  { testament: "OT", categoryKey: "prophets", slug: "nahum" },
+  { testament: "OT", categoryKey: "prophets", slug: "habakuk" },
+  { testament: "OT", categoryKey: "prophets", slug: "sefanja" },
+  { testament: "OT", categoryKey: "prophets", slug: "haggai" },
+  { testament: "OT", categoryKey: "prophets", slug: "sakarja" },
+  { testament: "OT", categoryKey: "prophets", slug: "malaki" },
   // UT - Evangeeliumid
-  { name: "Matteuse evangeelium", author: "Matteus", yearWritten: "u 50-70 pKr", testament: "UT", category: "Evangeeliumid", slug: "matteus" },
-  { name: "Markuse evangeelium", author: "Markus", yearWritten: "u 55-65 pKr", testament: "UT", category: "Evangeeliumid", slug: "markus" },
-  { name: "Luuka evangeelium", author: "Luukas", yearWritten: "u 60-80 pKr", testament: "UT", category: "Evangeeliumid", slug: "luuka" },
-  { name: "Johannese evangeelium", author: "Johannes", yearWritten: "u 85-95 pKr", testament: "UT", category: "Evangeeliumid", slug: "johannese-evangeelium" },
-  { name: "Apostlite teod", author: "Luukas", yearWritten: "u 60-80 pKr", testament: "UT", category: "Ajalugu", slug: "apostlite-teod" },
+  { testament: "NT", categoryKey: "gospels", slug: "matteus" },
+  { testament: "NT", categoryKey: "gospels", slug: "markus" },
+  { testament: "NT", categoryKey: "gospels", slug: "luuka" },
+  { testament: "NT", categoryKey: "gospels", slug: "johannese-evangeelium" },
+  { testament: "NT", categoryKey: "history", slug: "apostlite-teod" },
   // Pauluse kirjad
-  { name: "Kiri roomlastele", author: "Paulus", yearWritten: "u 57-58 pKr", testament: "UT", category: "Pauluse kirjad", slug: "rooma" },
-  { name: "1. Kiri korintlastele", author: "Paulus", yearWritten: "u 55-56 pKr", testament: "UT", category: "Pauluse kirjad", slug: "1-korintlastele" },
-  { name: "2. Kiri korintlastele", author: "Paulus", yearWritten: "u 56-57 pKr", testament: "UT", category: "Pauluse kirjad", slug: "2-korintlastele" },
-  { name: "Kiri galaatlastele", author: "Paulus", yearWritten: "u 49-50 pKr", testament: "UT", category: "Pauluse kirjad", slug: "galaatlastele" },
-  { name: "Kiri efeslastele", author: "Paulus", yearWritten: "u 60-62 pKr", testament: "UT", category: "Pauluse kirjad", slug: "efeslastele" },
-  { name: "Kiri filiplastele", author: "Paulus", yearWritten: "u 61-62 pKr", testament: "UT", category: "Pauluse kirjad", slug: "filiplastele" },
-  { name: "Kiri koloslastele", author: "Paulus", yearWritten: "u 60-62 pKr", testament: "UT", category: "Pauluse kirjad", slug: "koloslastele" },
-  { name: "1. Kiri tessalooniklastele", author: "Paulus", yearWritten: "u 50-51 pKr", testament: "UT", category: "Pauluse kirjad", slug: "1-tessalooniklastele" },
-  { name: "2. Kiri tessalooniklastele", author: "Paulus", yearWritten: "u 51-52 pKr", testament: "UT", category: "Pauluse kirjad", slug: "2-tessalooniklastele" },
-  { name: "1. Kiri Timoteosele", author: "Paulus", yearWritten: "u 62-64 pKr", testament: "UT", category: "Pauluse kirjad", slug: "1-timoteosele" },
-  { name: "2. Kiri Timoteosele", author: "Paulus", yearWritten: "u 66-67 pKr", testament: "UT", category: "Pauluse kirjad", slug: "2-timoteosele" },
-  { name: "Kiri Tiitusele", author: "Paulus", yearWritten: "u 62-64 pKr", testament: "UT", category: "Pauluse kirjad", slug: "tiitusele" },
-  { name: "Kiri Fileemonile", author: "Paulus", yearWritten: "u 60-62 pKr", testament: "UT", category: "Pauluse kirjad", slug: "fileemonile" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "rooma" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "1-korintlastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "2-korintlastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "galaatlastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "efeslastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "filiplastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "koloslastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "1-tessalooniklastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "2-tessalooniklastele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "1-timoteosele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "2-timoteosele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "tiitusele" },
+  { testament: "NT", categoryKey: "paulineLetters", slug: "fileemonile" },
   // Üldkirjad
-  { name: "Kiri heebrealastele", author: "Tundmatu", yearWritten: "u 65-70 pKr", testament: "UT", category: "Üldkirjad", slug: "heebrealastele" },
-  { name: "Jaakobuse kiri", author: "Jaakobus", yearWritten: "u 45-50 pKr", testament: "UT", category: "Üldkirjad", slug: "jaakobus" },
-  { name: "1. Peetruse kiri", author: "Peetrus", yearWritten: "u 62-64 pKr", testament: "UT", category: "Üldkirjad", slug: "1-peetrus" },
-  { name: "2. Peetruse kiri", author: "Peetrus", yearWritten: "u 65-68 pKr", testament: "UT", category: "Üldkirjad", slug: "2-peetrus" },
-  { name: "1. Johannese kiri", author: "Johannes", yearWritten: "u 90-95 pKr", testament: "UT", category: "Üldkirjad", slug: "1-johannese-kiri" },
-  { name: "2. Johannese kiri", author: "Johannes", yearWritten: "u 90-95 pKr", testament: "UT", category: "Üldkirjad", slug: "2-johannese-kiri" },
-  { name: "3. Johannese kiri", author: "Johannes", yearWritten: "u 90-95 pKr", testament: "UT", category: "Üldkirjad", slug: "3-johannese-kiri" },
-  { name: "Juudase kiri", author: "Juudas", yearWritten: "u 65-80 pKr", testament: "UT", category: "Üldkirjad", slug: "juudas" },
-  { name: "Johannese Ilmutus", author: "Johannes", yearWritten: "u 95-96 pKr", testament: "UT", category: "Prohvetid", slug: "ilmutus" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "heebrealastele" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "jaakobus" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "1-peetrus" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "2-peetrus" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "1-johannese-kiri" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "2-johannese-kiri" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "3-johannese-kiri" },
+  { testament: "NT", categoryKey: "generalLetters", slug: "juudas" },
+  { testament: "NT", categoryKey: "prophets", slug: "ilmutus" },
 ];
 
-// Kategoriate visuaalne stiil — ikoon + tonaalne värv (HSL semantilised tokenid)
+// Kategooriate visuaalne stiil — ikoon + tonaalne värv
 const categoryStyles: Record<
-  string,
+  CategoryKey,
   { icon: typeof Scroll; tint: string; ring: string; chip: string; dot: string }
 > = {
-  Seadus: {
+  law: {
     icon: Scroll,
     tint: "from-amber-500/15 to-amber-500/0",
     ring: "hover:border-amber-500/50",
     chip: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
     dot: "bg-amber-500",
   },
-  Ajalugu: {
+  history: {
     icon: Landmark,
     tint: "from-stone-500/15 to-stone-500/0",
     ring: "hover:border-stone-500/50",
     chip: "bg-stone-500/15 text-stone-700 dark:text-stone-300 border-stone-500/30",
     dot: "bg-stone-500",
   },
-  Luule: {
+  poetry: {
     icon: Music,
     tint: "from-rose-500/15 to-rose-500/0",
     ring: "hover:border-rose-500/50",
     chip: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30",
     dot: "bg-rose-500",
   },
-  Tarkus: {
+  wisdom: {
     icon: Sparkles,
     tint: "from-violet-500/15 to-violet-500/0",
     ring: "hover:border-violet-500/50",
     chip: "bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/30",
     dot: "bg-violet-500",
   },
-  Prohvetid: {
+  prophets: {
     icon: Flame,
     tint: "from-orange-500/15 to-orange-500/0",
     ring: "hover:border-orange-500/50",
     chip: "bg-orange-500/15 text-orange-700 dark:text-orange-300 border-orange-500/30",
     dot: "bg-orange-500",
   },
-  Evangeeliumid: {
+  gospels: {
     icon: BookOpen,
     tint: "from-sky-500/15 to-sky-500/0",
     ring: "hover:border-sky-500/50",
     chip: "bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30",
     dot: "bg-sky-500",
   },
-  "Pauluse kirjad": {
+  paulineLetters: {
     icon: Mail,
     tint: "from-emerald-500/15 to-emerald-500/0",
     ring: "hover:border-emerald-500/50",
     chip: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
     dot: "bg-emerald-500",
   },
-  Üldkirjad: {
+  generalLetters: {
     icon: Users,
     tint: "from-teal-500/15 to-teal-500/0",
     ring: "hover:border-teal-500/50",
@@ -180,24 +188,25 @@ const fallbackStyle = {
   dot: "bg-primary",
 };
 
-const categoryLegend = [
-  "Seadus",
-  "Ajalugu",
-  "Luule",
-  "Tarkus",
-  "Prohvetid",
-  "Evangeeliumid",
-  "Pauluse kirjad",
-  "Üldkirjad",
+const categoryLegend: CategoryKey[] = [
+  "law",
+  "history",
+  "poetry",
+  "wisdom",
+  "prophets",
+  "gospels",
+  "paulineLetters",
+  "generalLetters",
 ];
 
 type SortMode = "canonical" | "written";
 
-// Parsib aastastringi (nt "u 1445-1405 eKr", "u 95-96 pKr", "u 586 eKr")
-// algusaastaks numbrina (eKr negatiivne, pKr positiivne) sorteerimiseks.
+// Parsib aastastringi algusaastaks (negatiivne eKr / до н.э. / BC, positiivne pKr / AD)
 function parseStartYear(yearWritten: string): number {
-  const isBC = /eKr/i.test(yearWritten);
-  const cleaned = yearWritten.replace(/eKr|pKr|u\.?|circa/gi, "").trim();
+  const isBC = /eKr|BC|до\s*н/i.test(yearWritten);
+  const cleaned = yearWritten
+    .replace(/eKr|pKr|BC|AD|до\s*н\.?\s*э\.?|н\.?\s*э\.?|u\.?|c\.?|ок\.?|circa/gi, "")
+    .trim();
   const firstNum = cleaned.match(/\d+/);
   if (!firstNum) return 0;
   const n = parseInt(firstNum[0], 10);
@@ -205,24 +214,30 @@ function parseStartYear(yearWritten: string): number {
 }
 
 export function BibleTimeline() {
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("canonical");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const bookRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Tõlgitud väljad raamatu jaoks
+  const getName = (slug: string) => t(`books.${slug}.name`);
+  const getAuthor = (slug: string) => t(`books.${slug}.author`);
+  const getYear = (slug: string) => t(`books.${slug}.year`);
 
   const matchesSearch = (book: BibleBook) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
     return (
-      book.name.toLowerCase().includes(q) ||
-      book.author.toLowerCase().includes(q) ||
-      book.category.toLowerCase().includes(q)
+      getName(book.slug).toLowerCase().includes(q) ||
+      getAuthor(book.slug).toLowerCase().includes(q) ||
+      t(`categories.${book.categoryKey}`).toLowerCase().includes(q)
     );
   };
 
   const matchesCategory = (book: BibleBook) =>
-    !activeCategory || book.category === activeCategory;
+    !activeCategory || book.categoryKey === activeCategory;
 
   const isHighlighted = (book: BibleBook) =>
     (!!searchQuery || !!activeCategory) && matchesSearch(book) && matchesCategory(book);
@@ -230,19 +245,20 @@ export function BibleTimeline() {
   const orderedBooks = useMemo(() => {
     if (sortMode === "canonical") return bibleBooks;
     return [...bibleBooks].sort(
-      (a, b) => parseStartYear(a.yearWritten) - parseStartYear(b.yearWritten)
+      (a, b) => parseStartYear(getYear(a.slug)) - parseStartYear(getYear(b.slug))
     );
-  }, [sortMode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortMode, i18n.language]);
 
   const visibleBooks = useMemo(
     () => orderedBooks.filter((b) => matchesSearch(b) && matchesCategory(b)),
-    [orderedBooks, searchQuery, activeCategory]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [orderedBooks, searchQuery, activeCategory, i18n.language]
   );
 
-  // Indeks, kus algab Uus Testament — kuvame eraldaja ainult kanoonilises vaates
   const utStartIndex =
     sortMode === "canonical"
-      ? orderedBooks.findIndex((b) => b.testament === "UT")
+      ? orderedBooks.findIndex((b) => b.testament === "NT")
       : -1;
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -266,11 +282,15 @@ export function BibleTimeline() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, activeCategory]);
 
+  // Update document title when language changes
+  useEffect(() => {
+    document.title = t("timeline.heading");
+  }, [t, i18n.language]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 overflow-hidden">
       <Navigation />
 
-      {/* Dekoratiivne taustamuster */}
       <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.04] dark:opacity-[0.07]">
         <div
           className="h-full w-full"
@@ -286,26 +306,24 @@ export function BibleTimeline() {
         <header className="text-center mb-10 animate-in fade-in slide-in-from-top duration-1000">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-card/60 backdrop-blur-sm text-xs text-muted-foreground mb-4">
             <Sparkles className="h-3 w-3" />
-            <span>66 raamatut · 40+ autorit · 1500 aastat</span>
+            <span>{t("timeline.badge")}</span>
           </div>
           <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">
-            Piibli Raamatud
+            {t("timeline.heading")}
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Interaktiivne ülevaade Piibli raamatute kirjutamisest — autorid,
-            ajastud ja kategooriad kronoloogilises järjekorras.
+            {t("timeline.intro")}
           </p>
           <div className="relative max-w-md mx-auto mb-6">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Otsi raamatut, autorit või kategooriat..."
+              placeholder={t("timeline.searchPlaceholder")}
               className="pl-10"
             />
           </div>
 
-          {/* Kategooriate legend / filter */}
           <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
             <button
               onClick={() => setActiveCategory(null)}
@@ -315,7 +333,7 @@ export function BibleTimeline() {
                   : "bg-card/60 text-muted-foreground border-border hover:border-primary/40"
               }`}
             >
-              Kõik
+              {t("timeline.filterAll")}
             </button>
             {categoryLegend.map((cat) => {
               const style = categoryStyles[cat] ?? fallbackStyle;
@@ -332,13 +350,12 @@ export function BibleTimeline() {
                   }`}
                 >
                   <Icon className="h-3 w-3" />
-                  {cat}
+                  {t(`categories.${cat}`)}
                 </button>
               );
             })}
           </div>
 
-          {/* Sorteerimise lüliti */}
           <div className="mt-6 inline-flex items-center gap-1 p-1 rounded-full border border-border bg-card/60 backdrop-blur-sm">
             <button
               onClick={() => setSortMode("canonical")}
@@ -350,7 +367,7 @@ export function BibleTimeline() {
               aria-pressed={sortMode === "canonical"}
             >
               <ListOrdered className="h-3.5 w-3.5" />
-              Piibli järjekord
+              {t("timeline.sortCanonical")}
             </button>
             <button
               onClick={() => setSortMode("written")}
@@ -362,19 +379,18 @@ export function BibleTimeline() {
               aria-pressed={sortMode === "written"}
             >
               <Clock className="h-3.5 w-3.5" />
-              Kirjutamise aeg
+              {t("timeline.sortWritten")}
             </button>
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground inline-flex items-center gap-1.5">
             <ArrowUpDown className="h-3 w-3" />
             {sortMode === "canonical"
-              ? "Traditsiooniline järjekord (1. Mooses → Ilmutus)"
-              : "Vanimast uuemaks (Iiob → Ilmutus)"}
+              ? t("timeline.sortHintCanonical")
+              : t("timeline.sortHintWritten")}
           </p>
         </header>
 
         <div className="relative">
-          {/* Keskne "tüvi" — gradiendiga, pehme helendus */}
           <div className="absolute left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/40 to-primary/20 rounded-full" />
             <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent blur-md rounded-full" />
@@ -386,7 +402,7 @@ export function BibleTimeline() {
                 const isLeft = index % 2 === 0;
                 const highlighted = isHighlighted(book);
                 const isVisible = matchesSearch(book) && matchesCategory(book);
-                const style = categoryStyles[book.category] ?? fallbackStyle;
+                const style = categoryStyles[book.categoryKey] ?? fallbackStyle;
                 const Icon = style.icon;
                 const showUtDivider = index === utStartIndex;
 
@@ -410,7 +426,7 @@ export function BibleTimeline() {
                       <motion.div layout="position" className="relative my-10 flex items-center justify-center">
                         <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                         <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
-                          ✦ Uus Testament ✦
+                          {t("timeline.newTestamentDivider")}
                         </div>
                       </motion.div>
                     )}
@@ -423,9 +439,7 @@ export function BibleTimeline() {
                         isLeft ? "flex-row" : "flex-row-reverse"
                       } group`}
                     >
-                      {/* Kaart */}
                       <div className={`w-5/12 ${isLeft ? "pr-8" : "pl-8"} relative`}>
-                        {/* "Oks" — joon kaardilt tüveni */}
                         <div
                           className={`absolute top-1/2 ${
                             isLeft ? "right-0" : "left-0"
@@ -464,36 +478,36 @@ export function BibleTimeline() {
                                     <Icon className="h-4 w-4" />
                                   </div>
                                   <h3 className="font-serif text-lg md:text-xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
-                                    {book.name}
+                                    {getName(book.slug)}
                                   </h3>
                                 </div>
                                 <Badge
                                   variant="secondary"
                                   className={`text-[10px] shrink-0 font-bold tracking-wider ${
-                                    book.testament === "VT"
+                                    book.testament === "OT"
                                       ? "bg-primary/15 text-primary border-primary/40"
                                       : "bg-primary text-primary-foreground border-primary"
                                   }`}
                                 >
-                                  {book.testament}
+                                  {book.testament === "OT" ? t("timeline.ot") : t("timeline.nt")}
                                 </Badge>
                               </div>
                               <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
                               <div className="space-y-1.5 text-sm">
                                 <p className="text-muted-foreground flex items-center gap-2">
-                                  <span className="font-semibold text-foreground">Autor:</span>
-                                  <span className="italic truncate">{book.author}</span>
+                                  <span className="font-semibold text-foreground">{t("timeline.author")}</span>
+                                  <span className="italic truncate">{getAuthor(book.slug)}</span>
                                 </p>
                                 <p className="text-muted-foreground flex items-center gap-2">
-                                  <span className="font-semibold text-foreground">Kirjutatud:</span>
-                                  <span className="tabular-nums">{book.yearWritten}</span>
+                                  <span className="font-semibold text-foreground">{t("timeline.written")}</span>
+                                  <span className="tabular-nums">{getYear(book.slug)}</span>
                                 </p>
                                 <div className="pt-1 flex items-center gap-2 flex-wrap">
                                   <span
                                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-full border font-medium ${style.chip}`}
                                   >
                                     <Icon className="h-3 w-3" />
-                                    {book.category}
+                                    {t(`categories.${book.categoryKey}`)}
                                   </span>
                                   {sortMode === "written" && (
                                     <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-muted text-muted-foreground border border-border/50 font-mono">
@@ -507,7 +521,6 @@ export function BibleTimeline() {
                         </Link>
                       </div>
 
-                      {/* Sõlme punkt tüvel */}
                       <div className="w-2/12 flex justify-center relative z-10">
                         <div className="relative">
                           <div
@@ -532,10 +545,14 @@ export function BibleTimeline() {
           </LayoutGroup>
         </div>
 
-        {/* Tulemuste arv otsingul */}
         {(searchQuery || activeCategory) && (
           <p className="text-center text-sm text-muted-foreground mt-8">
-            Leitud <span className="font-semibold text-foreground">{visibleBooks.length}</span> raamatut
+            <Trans
+              i18nKey="timeline.resultsFound"
+              count={visibleBooks.length}
+              values={{ count: visibleBooks.length }}
+              components={{ strong: <span className="font-semibold text-foreground" /> }}
+            />
           </p>
         )}
 
@@ -545,7 +562,7 @@ export function BibleTimeline() {
             <span>✦</span>
             <div className="w-8 h-px bg-border" />
           </div>
-          <p>© {new Date().getFullYear()} Piibel.ee Materjalid</p>
+          <p>{t("footer.copyright", { year: new Date().getFullYear() })}</p>
         </footer>
 
         {showScrollTop && (
@@ -553,7 +570,7 @@ export function BibleTimeline() {
             onClick={scrollToTop}
             size="icon"
             className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full shadow-2xl"
-            aria-label="Keri üles"
+            aria-label={t("timeline.scrollTop")}
           >
             <ArrowUp className="h-6 w-6" />
           </Button>
