@@ -545,7 +545,7 @@ export function BibleTimeline() {
             <span>✦</span>
             <div className="w-8 h-px bg-border" />
           </div>
-          <p>© {new Date().getFullYear()} Piibli Tarkuse Puu</p>
+          <p>© {new Date().getFullYear()} Piibel.ee Materjalid</p>
         </footer>
 
         {showScrollTop && (
