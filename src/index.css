@@ -103,3 +103,41 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Stiilid AI-genereeritud kommentaaride HTML sisule */
+  .commentary-prose {
+    @apply text-foreground/90 leading-relaxed;
+  }
+  .commentary-prose h3 {
+    @apply font-serif text-xl md:text-2xl font-semibold text-foreground mt-8 mb-3 first:mt-0;
+  }
+  .commentary-prose h4 {
+    @apply font-serif text-lg font-semibold text-foreground mt-6 mb-2;
+  }
+  .commentary-prose p {
+    @apply mb-4 text-base md:text-[17px] leading-[1.75];
+  }
+  .commentary-prose ul,
+  .commentary-prose ol {
+    @apply mb-4 pl-6 space-y-1.5;
+  }
+  .commentary-prose ul { @apply list-disc; }
+  .commentary-prose ol { @apply list-decimal; }
+  .commentary-prose li {
+    @apply leading-[1.7];
+  }
+  .commentary-prose strong {
+    @apply font-semibold text-foreground;
+  }
+  .commentary-prose em {
+    @apply italic;
+  }
+  .commentary-prose blockquote {
+    @apply border-l-4 border-primary/40 pl-4 italic text-muted-foreground my-4;
+  }
+  .commentary-prose a {
+    @apply text-primary underline underline-offset-2 hover:text-primary/80;
+  }
+}
+
