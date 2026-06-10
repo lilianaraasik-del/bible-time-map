@@ -8,7 +8,8 @@
     "events": "NT events",
     "tabernacle": "Tabernacle",
     "login": "Log in",
-    "language": "Language"
+    "language": "Language",
+    "commentary": "Commentary"
   },
   "index": {
     "title": "Bible Materials",
@@ -47,71 +48,347 @@
     "generalLetters": "General letters"
   },
   "books": {
-    "1-mooses":         { "name": "Genesis",                       "author": "Moses",                                          "year": "c. 1445-1405 BC" },
-    "2-mooses":         { "name": "Exodus",                        "author": "Moses",                                          "year": "c. 1445-1405 BC" },
-    "3-mooses":         { "name": "Leviticus",                     "author": "Moses",                                          "year": "c. 1445-1405 BC" },
-    "4-mooses":         { "name": "Numbers",                       "author": "Moses",                                          "year": "c. 1445-1405 BC" },
-    "5-mooses":         { "name": "Deuteronomy",                   "author": "Moses",                                          "year": "c. 1445-1405 BC" },
-    "joosua":           { "name": "Joshua",                        "author": "Joshua",                                         "year": "c. 1400-1370 BC" },
-    "kohtumoistjad":    { "name": "Judges",                        "author": "Samuel (traditionally)",                         "year": "c. 1050-1000 BC" },
-    "rutt":             { "name": "Ruth",                          "author": "Unknown",                                        "year": "c. 1000-900 BC" },
-    "1-saamuel":        { "name": "1 Samuel",                      "author": "Samuel, Nathan, Gad",                            "year": "c. 1000-900 BC" },
-    "2-saamuel":        { "name": "2 Samuel",                      "author": "Samuel, Nathan, Gad",                            "year": "c. 1000-900 BC" },
-    "1-kuningate":      { "name": "1 Kings",                       "author": "Jeremiah",                                       "year": "c. 560-540 BC" },
-    "2-kuningate":      { "name": "2 Kings",                       "author": "Jeremiah",                                       "year": "c. 560-540 BC" },
-    "1-ajaraamat":      { "name": "1 Chronicles",                  "author": "Ezra",                                           "year": "c. 450-425 BC" },
-    "2-ajaraamat":      { "name": "2 Chronicles",                  "author": "Ezra",                                           "year": "c. 450-425 BC" },
-    "esra":             { "name": "Ezra",                          "author": "Ezra",                                           "year": "c. 450-425 BC" },
-    "nehemja":          { "name": "Nehemiah",                      "author": "Nehemiah",                                       "year": "c. 445-425 BC" },
-    "ester":            { "name": "Esther",                        "author": "Unknown",                                        "year": "c. 470-450 BC" },
-    "iiob":             { "name": "Job",                           "author": "Unknown",                                        "year": "c. 1500-1000 BC" },
-    "psalmid":          { "name": "Psalms",                        "author": "David and others",                               "year": "c. 1440-450 BC" },
-    "opetussonad":      { "name": "Proverbs",                      "author": "Solomon, Agur, Lemuel, 'sayings of the wise'",   "year": "c. 970-700 BC" },
-    "koguja":           { "name": "Ecclesiastes",                  "author": "Solomon",                                        "year": "c. 935-900 BC" },
-    "ulemlaul":         { "name": "Song of Songs",                 "author": "Solomon",                                        "year": "c. 970-930 BC" },
-    "jesaja":           { "name": "Isaiah",                        "author": "Isaiah",                                         "year": "c. 740-680 BC" },
-    "jeremija":         { "name": "Jeremiah",                      "author": "Jeremiah",                                       "year": "c. 627-580 BC" },
-    "nutulaul":         { "name": "Lamentations",                  "author": "Jeremiah",                                       "year": "c. 586 BC" },
-    "hesekiel":         { "name": "Ezekiel",                       "author": "Ezekiel",                                        "year": "c. 593-565 BC" },
-    "taaniel":          { "name": "Daniel",                        "author": "Daniel",                                         "year": "c. 540-530 BC" },
-    "hoosea":           { "name": "Hosea",                         "author": "Hosea",                                          "year": "c. 755-715 BC" },
-    "joel":             { "name": "Joel",                          "author": "Joel",                                           "year": "c. 835-800 BC" },
-    "aamos":            { "name": "Amos",                          "author": "Amos",                                           "year": "c. 760-750 BC" },
-    "obadja":           { "name": "Obadiah",                       "author": "Obadiah",                                        "year": "c. 586-585 BC" },
-    "joona":            { "name": "Jonah",                         "author": "Jonah",                                          "year": "c. 780-750 BC" },
-    "miika":            { "name": "Micah",                         "author": "Micah",                                          "year": "c. 735-700 BC" },
-    "nahum":            { "name": "Nahum",                         "author": "Nahum",                                          "year": "c. 663-612 BC" },
-    "habakuk":          { "name": "Habakkuk",                      "author": "Habakkuk",                                       "year": "c. 609-605 BC" },
-    "sefanja":          { "name": "Zephaniah",                     "author": "Zephaniah",                                      "year": "c. 635-625 BC" },
-    "haggai":           { "name": "Haggai",                        "author": "Haggai",                                         "year": "c. 520 BC" },
-    "sakarja":          { "name": "Zechariah",                     "author": "Zechariah",                                      "year": "c. 520-475 BC" },
-    "malaki":           { "name": "Malachi",                       "author": "Malachi",                                        "year": "c. 450-400 BC" },
-    "matteus":          { "name": "Gospel of Matthew",             "author": "Matthew",                                        "year": "c. 50-70 AD" },
-    "markus":           { "name": "Gospel of Mark",                "author": "Mark",                                           "year": "c. 55-65 AD" },
-    "luuka":            { "name": "Gospel of Luke",                "author": "Luke",                                           "year": "c. 60-80 AD" },
-    "johannese-evangeelium": { "name": "Gospel of John",           "author": "John",                                           "year": "c. 85-95 AD" },
-    "apostlite-teod":   { "name": "Acts of the Apostles",          "author": "Luke",                                           "year": "c. 60-80 AD" },
-    "rooma":            { "name": "Romans",                        "author": "Paul",                                           "year": "c. 57-58 AD" },
-    "1-korintlastele":  { "name": "1 Corinthians",                 "author": "Paul",                                           "year": "c. 55-56 AD" },
-    "2-korintlastele":  { "name": "2 Corinthians",                 "author": "Paul",                                           "year": "c. 56-57 AD" },
-    "galaatlastele":    { "name": "Galatians",                     "author": "Paul",                                           "year": "c. 49-50 AD" },
-    "efeslastele":      { "name": "Ephesians",                     "author": "Paul",                                           "year": "c. 60-62 AD" },
-    "filiplastele":     { "name": "Philippians",                   "author": "Paul",                                           "year": "c. 61-62 AD" },
-    "koloslastele":     { "name": "Colossians",                    "author": "Paul",                                           "year": "c. 60-62 AD" },
-    "1-tessalooniklastele": { "name": "1 Thessalonians",           "author": "Paul",                                           "year": "c. 50-51 AD" },
-    "2-tessalooniklastele": { "name": "2 Thessalonians",           "author": "Paul",                                           "year": "c. 51-52 AD" },
-    "1-timoteosele":    { "name": "1 Timothy",                     "author": "Paul",                                           "year": "c. 62-64 AD" },
-    "2-timoteosele":    { "name": "2 Timothy",                     "author": "Paul",                                           "year": "c. 66-67 AD" },
-    "tiitusele":        { "name": "Titus",                         "author": "Paul",                                           "year": "c. 62-64 AD" },
-    "fileemonile":      { "name": "Philemon",                      "author": "Paul",                                           "year": "c. 60-62 AD" },
-    "heebrealastele":   { "name": "Hebrews",                       "author": "Unknown",                                        "year": "c. 65-70 AD" },
-    "jaakobus":         { "name": "James",                         "author": "James",                                          "year": "c. 45-50 AD" },
-    "1-peetrus":        { "name": "1 Peter",                       "author": "Peter",                                          "year": "c. 62-64 AD" },
-    "2-peetrus":        { "name": "2 Peter",                       "author": "Peter",                                          "year": "c. 65-68 AD" },
-    "1-johannese-kiri": { "name": "1 John",                        "author": "John",                                           "year": "c. 90-95 AD" },
-    "2-johannese-kiri": { "name": "2 John",                        "author": "John",                                           "year": "c. 90-95 AD" },
-    "3-johannese-kiri": { "name": "3 John",                        "author": "John",                                           "year": "c. 90-95 AD" },
-    "juudas":           { "name": "Jude",                          "author": "Jude",                                           "year": "c. 65-80 AD" },
-    "ilmutus":          { "name": "Revelation",                    "author": "John",                                           "year": "c. 95-96 AD" }
+    "1-mooses": {
+      "name": "Genesis",
+      "author": "Moses",
+      "year": "c. 1445-1405 BC"
+    },
+    "2-mooses": {
+      "name": "Exodus",
+      "author": "Moses",
+      "year": "c. 1445-1405 BC"
+    },
+    "3-mooses": {
+      "name": "Leviticus",
+      "author": "Moses",
+      "year": "c. 1445-1405 BC"
+    },
+    "4-mooses": {
+      "name": "Numbers",
+      "author": "Moses",
+      "year": "c. 1445-1405 BC"
+    },
+    "5-mooses": {
+      "name": "Deuteronomy",
+      "author": "Moses",
+      "year": "c. 1445-1405 BC"
+    },
+    "joosua": {
+      "name": "Joshua",
+      "author": "Joshua",
+      "year": "c. 1400-1370 BC"
+    },
+    "kohtumoistjad": {
+      "name": "Judges",
+      "author": "Samuel (traditionally)",
+      "year": "c. 1050-1000 BC"
+    },
+    "rutt": {
+      "name": "Ruth",
+      "author": "Unknown",
+      "year": "c. 1000-900 BC"
+    },
+    "1-saamuel": {
+      "name": "1 Samuel",
+      "author": "Samuel, Nathan, Gad",
+      "year": "c. 1000-900 BC"
+    },
+    "2-saamuel": {
+      "name": "2 Samuel",
+      "author": "Samuel, Nathan, Gad",
+      "year": "c. 1000-900 BC"
+    },
+    "1-kuningate": {
+      "name": "1 Kings",
+      "author": "Jeremiah",
+      "year": "c. 560-540 BC"
+    },
+    "2-kuningate": {
+      "name": "2 Kings",
+      "author": "Jeremiah",
+      "year": "c. 560-540 BC"
+    },
+    "1-ajaraamat": {
+      "name": "1 Chronicles",
+      "author": "Ezra",
+      "year": "c. 450-425 BC"
+    },
+    "2-ajaraamat": {
+      "name": "2 Chronicles",
+      "author": "Ezra",
+      "year": "c. 450-425 BC"
+    },
+    "esra": {
+      "name": "Ezra",
+      "author": "Ezra",
+      "year": "c. 450-425 BC"
+    },
+    "nehemja": {
+      "name": "Nehemiah",
+      "author": "Nehemiah",
+      "year": "c. 445-425 BC"
+    },
+    "ester": {
+      "name": "Esther",
+      "author": "Unknown",
+      "year": "c. 470-450 BC"
+    },
+    "iiob": {
+      "name": "Job",
+      "author": "Unknown",
+      "year": "c. 1500-1000 BC"
+    },
+    "psalmid": {
+      "name": "Psalms",
+      "author": "David and others",
+      "year": "c. 1440-450 BC"
+    },
+    "opetussonad": {
+      "name": "Proverbs",
+      "author": "Solomon, Agur, Lemuel, 'sayings of the wise'",
+      "year": "c. 970-700 BC"
+    },
+    "koguja": {
+      "name": "Ecclesiastes",
+      "author": "Solomon",
+      "year": "c. 935-900 BC"
+    },
+    "ulemlaul": {
+      "name": "Song of Songs",
+      "author": "Solomon",
+      "year": "c. 970-930 BC"
+    },
+    "jesaja": {
+      "name": "Isaiah",
+      "author": "Isaiah",
+      "year": "c. 740-680 BC"
+    },
+    "jeremija": {
+      "name": "Jeremiah",
+      "author": "Jeremiah",
+      "year": "c. 627-580 BC"
+    },
+    "nutulaul": {
+      "name": "Lamentations",
+      "author": "Jeremiah",
+      "year": "c. 586 BC"
+    },
+    "hesekiel": {
+      "name": "Ezekiel",
+      "author": "Ezekiel",
+      "year": "c. 593-565 BC"
+    },
+    "taaniel": {
+      "name": "Daniel",
+      "author": "Daniel",
+      "year": "c. 540-530 BC"
+    },
+    "hoosea": {
+      "name": "Hosea",
+      "author": "Hosea",
+      "year": "c. 755-715 BC"
+    },
+    "joel": {
+      "name": "Joel",
+      "author": "Joel",
+      "year": "c. 835-800 BC"
+    },
+    "aamos": {
+      "name": "Amos",
+      "author": "Amos",
+      "year": "c. 760-750 BC"
+    },
+    "obadja": {
+      "name": "Obadiah",
+      "author": "Obadiah",
+      "year": "c. 586-585 BC"
+    },
+    "joona": {
+      "name": "Jonah",
+      "author": "Jonah",
+      "year": "c. 780-750 BC"
+    },
+    "miika": {
+      "name": "Micah",
+      "author": "Micah",
+      "year": "c. 735-700 BC"
+    },
+    "nahum": {
+      "name": "Nahum",
+      "author": "Nahum",
+      "year": "c. 663-612 BC"
+    },
+    "habakuk": {
+      "name": "Habakkuk",
+      "author": "Habakkuk",
+      "year": "c. 609-605 BC"
+    },
+    "sefanja": {
+      "name": "Zephaniah",
+      "author": "Zephaniah",
+      "year": "c. 635-625 BC"
+    },
+    "haggai": {
+      "name": "Haggai",
+      "author": "Haggai",
+      "year": "c. 520 BC"
+    },
+    "sakarja": {
+      "name": "Zechariah",
+      "author": "Zechariah",
+      "year": "c. 520-475 BC"
+    },
+    "malaki": {
+      "name": "Malachi",
+      "author": "Malachi",
+      "year": "c. 450-400 BC"
+    },
+    "matteus": {
+      "name": "Gospel of Matthew",
+      "author": "Matthew",
+      "year": "c. 50-70 AD"
+    },
+    "markus": {
+      "name": "Gospel of Mark",
+      "author": "Mark",
+      "year": "c. 55-65 AD"
+    },
+    "luuka": {
+      "name": "Gospel of Luke",
+      "author": "Luke",
+      "year": "c. 60-80 AD"
+    },
+    "johannese-evangeelium": {
+      "name": "Gospel of John",
+      "author": "John",
+      "year": "c. 85-95 AD"
+    },
+    "apostlite-teod": {
+      "name": "Acts of the Apostles",
+      "author": "Luke",
+      "year": "c. 60-80 AD"
+    },
+    "rooma": {
+      "name": "Romans",
+      "author": "Paul",
+      "year": "c. 57-58 AD"
+    },
+    "1-korintlastele": {
+      "name": "1 Corinthians",
+      "author": "Paul",
+      "year": "c. 55-56 AD"
+    },
+    "2-korintlastele": {
+      "name": "2 Corinthians",
+      "author": "Paul",
+      "year": "c. 56-57 AD"
+    },
+    "galaatlastele": {
+      "name": "Galatians",
+      "author": "Paul",
+      "year": "c. 49-50 AD"
+    },
+    "efeslastele": {
+      "name": "Ephesians",
+      "author": "Paul",
+      "year": "c. 60-62 AD"
+    },
+    "filiplastele": {
+      "name": "Philippians",
+      "author": "Paul",
+      "year": "c. 61-62 AD"
+    },
+    "koloslastele": {
+      "name": "Colossians",
+      "author": "Paul",
+      "year": "c. 60-62 AD"
+    },
+    "1-tessalooniklastele": {
+      "name": "1 Thessalonians",
+      "author": "Paul",
+      "year": "c. 50-51 AD"
+    },
+    "2-tessalooniklastele": {
+      "name": "2 Thessalonians",
+      "author": "Paul",
+      "year": "c. 51-52 AD"
+    },
+    "1-timoteosele": {
+      "name": "1 Timothy",
+      "author": "Paul",
+      "year": "c. 62-64 AD"
+    },
+    "2-timoteosele": {
+      "name": "2 Timothy",
+      "author": "Paul",
+      "year": "c. 66-67 AD"
+    },
+    "tiitusele": {
+      "name": "Titus",
+      "author": "Paul",
+      "year": "c. 62-64 AD"
+    },
+    "fileemonile": {
+      "name": "Philemon",
+      "author": "Paul",
+      "year": "c. 60-62 AD"
+    },
+    "heebrealastele": {
+      "name": "Hebrews",
+      "author": "Unknown",
+      "year": "c. 65-70 AD"
+    },
+    "jaakobus": {
+      "name": "James",
+      "author": "James",
+      "year": "c. 45-50 AD"
+    },
+    "1-peetrus": {
+      "name": "1 Peter",
+      "author": "Peter",
+      "year": "c. 62-64 AD"
+    },
+    "2-peetrus": {
+      "name": "2 Peter",
+      "author": "Peter",
+      "year": "c. 65-68 AD"
+    },
+    "1-johannese-kiri": {
+      "name": "1 John",
+      "author": "John",
+      "year": "c. 90-95 AD"
+    },
+    "2-johannese-kiri": {
+      "name": "2 John",
+      "author": "John",
+      "year": "c. 90-95 AD"
+    },
+    "3-johannese-kiri": {
+      "name": "3 John",
+      "author": "John",
+      "year": "c. 90-95 AD"
+    },
+    "juudas": {
+      "name": "Jude",
+      "author": "Jude",
+      "year": "c. 65-80 AD"
+    },
+    "ilmutus": {
+      "name": "Revelation",
+      "author": "John",
+      "year": "c. 95-96 AD"
+    }
+  },
+  "commentary": {
+    "title": "Classical Introduction",
+    "subtitle": "Based on the tradition of Matthew Henry, Calvin, Barnes and other classical commentaries",
+    "backToBook": "Back to the book",
+    "openCommentary": "Read the classical introduction",
+    "openCommentaryShort": "Classical introduction",
+    "loading": "Loading commentary...",
+    "notFound": "A commentary for this book is not yet available. Content is being added soon.",
+    "sourceLabel": "Source",
+    "sourceClassical": "Based on classical commentaries (Matthew Henry, Calvin, Barnes, JFB)",
+    "introduction": "Introduction"
   }
 }
