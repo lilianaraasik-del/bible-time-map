@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
 import Ajajoon from "./pages/Ajajoon.tsx";
 import Raamat from "./pages/Raamat.tsx";
+import Kommentaar from "./pages/Kommentaar.tsx";
 import Paigad from "./pages/Paigad.tsx";
 import Sundmused from "./pages/Sundmused.tsx";
 import Eraamatud from "./pages/Eraamatud.tsx";
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/sundmused" element={<Sundmused />} />
             <Route path="/eraamatud" element={<Eraamatud />} />
             <Route path="/raamat/:book" element={<Raamat />} />
+            <Route path="/raamat/:book/kommentaar" element={<Kommentaar />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
