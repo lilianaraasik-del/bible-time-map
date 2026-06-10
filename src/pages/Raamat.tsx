@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp, MessageSquareText } from "lucide-react";
 
 import { useState, useEffect } from "react";
 
@@ -490,6 +491,7 @@ const bookDetails: Record<string, {
 
 export default function RaamatuLeht() {
   const { book } = useParams<{ book: string }>();
+  const { t } = useTranslation();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const allBookDetails = { ...bookDetails, ...additionalBookDetails };
@@ -556,6 +558,14 @@ export default function RaamatuLeht() {
                 <Calendar className="w-5 h-5 text-primary" />
                 <span className="text-lg">{details.period}</span>
               </div>
+            </div>
+            <div className="pt-2">
+              <Link to={`/raamat/${book}/kommentaar`}>
+                <Button size="lg" variant="outline" className="gap-2 border-primary/40 hover:border-primary hover:bg-primary/5 shadow-sm">
+                  <MessageSquareText className="w-5 h-5 text-primary" />
+                  {t("commentary.openCommentary")}
+                </Button>
+              </Link>
             </div>
           </section>
 
