@@ -21,7 +21,7 @@ export function Navigation() {
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="font-serif text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-            Piibli Tarkuse Puu
+            Piibli Materjalid
           </Link>
 
           <div className="flex items-center gap-2">
@@ -31,7 +31,7 @@ export function Navigation() {
                 "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
                 isActive("/ajajoon")
                   ? "bg-primary text-primary-foreground shadow-md"
-                  : "hover:bg-muted text-foreground"
+                  : "hover:bg-muted text-foreground",
               )}
             >
               <BookOpen className="h-4 w-4" />
@@ -44,7 +44,7 @@ export function Navigation() {
                 "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
                 isActive("/eraamatud")
                   ? "bg-primary text-primary-foreground shadow-md"
-                  : "hover:bg-muted text-foreground"
+                  : "hover:bg-muted text-foreground",
               )}
             >
               <Library className="h-4 w-4" />
@@ -59,7 +59,7 @@ export function Navigation() {
                     "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
                     isActive("/paigad") || isActive("/sundmused")
                       ? "bg-primary text-primary-foreground shadow-md hover:bg-primary hover:text-primary-foreground"
-                      : "hover:bg-muted"
+                      : "hover:bg-muted",
                   )}
                 >
                   <Map className="h-4 w-4" />
@@ -96,7 +96,7 @@ export function Navigation() {
                   "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
                   isActive("/profiil") || isActive("/paketid")
                     ? "bg-primary text-primary-foreground shadow-md"
-                    : "hover:bg-muted text-foreground"
+                    : "hover:bg-muted text-foreground",
                 )}
               >
                 <Coins className="h-4 w-4" />
@@ -109,7 +109,7 @@ export function Navigation() {
                   "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
                   isActive("/login")
                     ? "bg-primary text-primary-foreground shadow-md"
-                    : "hover:bg-muted text-foreground"
+                    : "hover:bg-muted text-foreground",
                 )}
               >
                 <LogIn className="h-4 w-4" />
