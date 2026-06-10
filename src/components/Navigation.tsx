@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, Map, ChevronDown, Sparkles, Library, User, LogIn, Coins, Tent } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, LogIn, Coins, Tent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -9,19 +10,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function Navigation() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
   const { session } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <nav className="border-b border-border/30 bg-card/80 backdrop-blur-md sticky top-0 z-40 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="font-serif text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-            Piibli Materjalid
+            {t("nav.brand")}
           </Link>
 
           <div className="flex items-center gap-2">
@@ -35,7 +38,7 @@ export function Navigation() {
               )}
             >
               <BookOpen className="h-4 w-4" />
-              <span className="font-medium">Raamatud</span>
+              <span className="font-medium">{t("nav.books")}</span>
             </Link>
 
             <Link
@@ -48,7 +51,7 @@ export function Navigation() {
               )}
             >
               <Library className="h-4 w-4" />
-              <span className="font-medium">E-raamatud</span>
+              <span className="font-medium">{t("nav.ebooks")}</span>
             </Link>
 
             <DropdownMenu>
@@ -63,7 +66,7 @@ export function Navigation() {
                   )}
                 >
                   <Map className="h-4 w-4" />
-                  <span className="font-medium">Uurimine</span>
+                  <span className="font-medium">{t("nav.explore")}</span>
                   <ChevronDown className="h-4 w-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
@@ -71,19 +74,19 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link to="/paigad" className="flex items-center gap-2 cursor-pointer">
                     <Map className="h-4 w-4" />
-                    <span>Piibli paigad</span>
+                    <span>{t("nav.places")}</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/sundmused" className="flex items-center gap-2 cursor-pointer">
                     <Sparkles className="h-4 w-4" />
-                    <span>UT sündmused</span>
+                    <span>{t("nav.events")}</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/kaardid/tabernaakel" className="flex items-center gap-2 cursor-pointer">
                     <Tent className="h-4 w-4" />
-                    <span>Tabernaakel</span>
+                    <span>{t("nav.tabernacle")}</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -113,10 +116,11 @@ export function Navigation() {
                 )}
               >
                 <LogIn className="h-4 w-4" />
-                <span className="font-medium">Logi sisse</span>
+                <span className="font-medium">{t("nav.login")}</span>
               </Link>
             )}
 
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </div>
