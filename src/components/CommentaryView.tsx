@@ -211,12 +211,22 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
         <div
           ref={popRef}
           role="dialog"
-          className="absolute z-[9999] w-[320px] max-h-[380px] overflow-y-auto bg-popover text-popover-foreground border border-border rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-150"
-          style={{ top: pop.top, left: pop.left }}
+          className="fixed z-[9999] w-[320px] max-w-[calc(100vw-16px)] max-h-[60vh] overflow-y-auto bg-popover text-popover-foreground border border-border rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-150"
+          style={{ top: pop.top, left: pop.left, position: "fixed" }}
         >
           <header className="flex justify-between items-center gap-2 border-b border-border pb-2 mb-2 text-[11px] text-muted-foreground">
             <span>📖 {translation}</span>
-            <span className="font-mono text-primary font-semibold">{pop.ref}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-primary font-semibold">{pop.ref}</span>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setPop(null); }}
+                className="text-muted-foreground hover:text-foreground px-1 leading-none"
+                aria-label="Sulge"
+              >
+                ✕
+              </button>
+            </div>
           </header>
           {pop.loading ? (
             <div className="flex items-center gap-2 text-muted-foreground py-3 justify-center">
