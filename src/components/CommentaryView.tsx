@@ -131,18 +131,43 @@ function scanAndWrap(root: HTMLElement, collect: (ref: string) => void) {
     const frag = document.createDocumentFragment();
     let last = 0;
     let m: RegExpExecArray | null;
+    let lastBook: string | null = null;
     while ((m = RX.exec(text)) !== null) {
-      if (m.index > last) {
-        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      let refText: string;
+      let displayText: string;
+      let matchStart = m.index;
+      let matchEnd = m.index + m[0].length;
+
+      if (m[1]) {
+        // Täisviide raamatuga
+        lastBook = m[1];
+        refText = `${m[1]} ${m[2]}:${m[3]}${m[4] ? `-${m[4]}` : ""}`;
+        displayText = m[0];
+      } else if (m[5] && lastBook) {
+        // Jätk: "; 24:4" — kasuta eelmist raamatut
+        refText = `${lastBook} ${m[6]}:${m[7]}${m[8] ? `-${m[8]}` : ""}`;
+        // Säilita eraldaja (; või ,) tekstis, wrap ainult viide ise
+        const sepLen = m[0].indexOf(m[6]);
+        if (matchStart + sepLen > last) {
+          frag.appendChild(document.createTextNode(text.slice(last, matchStart + sepLen)));
+        }
+        displayText = m[0].slice(sepLen);
+        matchStart = matchStart + sepLen;
+      } else {
+        continue;
+      }
+
+      if (m[1] && matchStart > last) {
+        frag.appendChild(document.createTextNode(text.slice(last, matchStart)));
       }
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "bref";
-      btn.dataset.ref = m[0];
-      btn.textContent = m[0];
+      btn.dataset.ref = refText;
+      btn.textContent = displayText;
       frag.appendChild(btn);
-      collect(m[0]);
-      last = m.index + m[0].length;
+      collect(refText);
+      last = matchEnd;
     }
     if (last < text.length) {
       frag.appendChild(document.createTextNode(text.slice(last)));
