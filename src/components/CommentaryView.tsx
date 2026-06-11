@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Loader2, BookMarked, X } from "lucide-react";
 
@@ -247,7 +248,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
         </div>
       )}
 
-      {pop && (
+      {pop && createPortal(
         <div
           ref={popRef}
           role="dialog"
@@ -285,7 +286,8 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
               ))}
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
