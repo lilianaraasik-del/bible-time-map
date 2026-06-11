@@ -38,8 +38,9 @@ const BOOK_PATTERN = BOOK_KEYS
   .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
   .join("|");
 // Unicode-ohutu sõnapiir (mitte \b — see ei tööta täpitähtedega)
+// Matchib kas täisviite (nt "2Ms 17:14") või jätku ilma raamatuta (nt "; 24:4")
 const RX = new RegExp(
-  `(?<![\\p{L}\\p{N}])(${BOOK_PATTERN})\\s+(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?`,
+  `(?<![\\p{L}\\p{N}])(${BOOK_PATTERN})\\s+(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?|([;,])\\s*(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?`,
   "giu"
 );
 
