@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Loader2, BookMarked } from "lucide-react";
+import { Loader2, BookMarked, X } from "lucide-react";
 
 // ====== Eesti piibel 1968 (eraldi Supabase projekt) ======
 const PIIBEL_URL = "https://kcegsowsxokcjwogpkkc.supabase.co";
@@ -31,13 +31,21 @@ const ABBR: Record<string, number> = {
   "1jh": 62, "2jh": 63, "3jh": 64, "jd": 65, "ilm": 66,
 };
 
-// Regex: leiab nt "Jh 3:16", "1Ms 1:1", "Rm 8:38-39", "2Ms 14:1–31"
-const REF_RE = /\b((?:[1-5]\s?)?(?:Ms|Sm|Kn|Aj|Kr|Ts|Tm|Pt|Jh|Jos|Km|Koh|Rt|Esr|Ne|Est|Ii|Iib|Ps|Õp|Op|Kg|Ül|Ul|Js|Jr|Nl|Hs|Tn|Ho|Jl|Am|Ob|Jn|Mi|Na|Ha|Sf|Hg|Sk|Ml|Mt|Mk|Lk|Ap|Rm|Gl|Ef|Fl|Kl|Tt|Fm|Hb|Jk|Jd|Ilm))\s?(\d+):(\d+)(?:\s*[-–]\s*(\d+))?\b/g;
+// Pikemad lühendid enne — et "1Ms" ei matchiks enne "Ms"
+const BOOK_KEYS = Object.keys(ABBR).sort((a, b) => b.length - a.length);
+const BOOK_PATTERN = BOOK_KEYS
+  .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  .join("|");
+// Unicode-ohutu sõnapiir (mitte \b — see ei tööta täpitähtedega)
+const RX = new RegExp(
+  `(?<![\\p{L}\\p{N}])(${BOOK_PATTERN})\\s+(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?`,
+  "giu"
+);
 
 function parseRef(ref: string): { bookNumber: number; chapter: number; vs: number; ve: number } | null {
-  const m = ref.trim().match(/^([1-5]?\s?[A-Za-zÕÄÖÜõäöü]+)\s?(\d+):(\d+)(?:\s*[-–]\s*(\d+))?$/);
+  const m = ref.trim().match(/^([1-5]?\s?\.?\s?[A-Za-zÕÄÖÜõäöü]+)\s+(\d+):(\d+)(?:\s*[-–]\s*(\d+))?$/);
   if (!m) return null;
-  const key = m[1].toLowerCase().replace(/\s/g, "");
+  const key = m[1].toLowerCase().replace(/[.\s]/g, "");
   const bookNumber = ABBR[key];
   if (!bookNumber) return null;
   const chapter = +m[2];
@@ -72,14 +80,14 @@ async function fetchVerses(ref: string): Promise<VerseData | null> {
     const { data: chaps } = await piibelSb
       .from("chapters")
       .select("id")
-      .eq("book_id", books[0].id)
+      .eq("book_id", (books[0] as any).id)
       .eq("chapter_number", p.chapter)
       .limit(1);
     if (!chaps?.[0]) { cache.set(ref, null); return null; }
     const { data: verses } = await piibelSb
       .from("verses")
       .select("verse_number,text")
-      .eq("chapter_id", chaps[0].id)
+      .eq("chapter_id", (chaps[0] as any).id)
       .gte("verse_number", p.vs)
       .lte("verse_number", p.ve)
       .order("verse_number", { ascending: true });
@@ -97,6 +105,50 @@ async function fetchVerses(ref: string): Promise<VerseData | null> {
   }
 }
 
+// TreeWalker — skannib renderdatud DOM-i teksti sõlmi (mitte HTML stringi),
+// nii et viited toimivad ka <strong>/<em>/<a> sees ja ükski viide ei läbi katki.
+function scanAndWrap(root: HTMLElement, collect: (ref: string) => void) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => {
+      if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const parent = (n as Text).parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      if (parent.closest("a,.bref,script,style,code,pre")) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  const targets: Text[] = [];
+  let n: Node | null;
+  while ((n = walker.nextNode())) targets.push(n as Text);
+
+  for (const textNode of targets) {
+    const text = textNode.nodeValue || "";
+    RX.lastIndex = 0;
+    if (!RX.test(text)) continue;
+    RX.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = RX.exec(text)) !== null) {
+      if (m.index > last) {
+        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      }
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "bref";
+      btn.dataset.ref = m[0];
+      btn.textContent = m[0];
+      frag.appendChild(btn);
+      collect(m[0]);
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) {
+      frag.appendChild(document.createTextNode(text.slice(last)));
+    }
+    textNode.parentNode?.replaceChild(frag, textNode);
+  }
+}
+
 interface Props {
   html: string;
   translation?: string;
@@ -104,6 +156,7 @@ interface Props {
 
 export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [allRefs, setAllRefs] = useState<string[]>([]);
   const [pop, setPop] = useState<{
     ref: string;
     top: number;
@@ -113,46 +166,38 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
   } | null>(null);
   const popRef = useRef<HTMLDivElement>(null);
 
-  // Process HTML: wrap refs in buttons, collect unique refs
-  const { processedHtml, allRefs } = useMemo(() => {
+  // Render HTML + skanni DOM viidete suhtes
+  useEffect(() => {
+    if (!containerRef.current) return;
+    containerRef.current.innerHTML = html;
     const seen = new Set<string>();
     const order: string[] = [];
-    // Skip refs inside tags by splitting on tags
-    const parts = html.split(/(<[^>]+>)/g);
-    const out = parts
-      .map((part) => {
-        if (part.startsWith("<")) return part;
-        return part.replace(REF_RE, (full) => {
-          const norm = full.replace(/\s+/g, " ").trim();
-          if (!seen.has(norm)) {
-            seen.add(norm);
-            order.push(norm);
-          }
-          const safe = norm.replace(/"/g, "&quot;");
-          return `<button type="button" class="bref" data-ref="${safe}">${full}</button>`;
-        });
-      })
-      .join("");
-    return { processedHtml: out, allRefs: order };
+    scanAndWrap(containerRef.current, (r) => {
+      const norm = r.replace(/\s+/g, " ").trim();
+      if (!seen.has(norm)) {
+        seen.add(norm);
+        order.push(norm);
+      }
+    });
+    setAllRefs(order);
   }, [html]);
 
-  // Click handler — delegate
+  // Klikkide haldus (delegate kogu document peale)
   useEffect(() => {
     const onClick = async (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const btn = target.closest<HTMLElement>(".bref");
-      if (btn && containerRef.current?.parentElement?.contains(btn)) {
+      if (btn) {
         e.preventDefault();
         e.stopPropagation();
         const ref = btn.dataset.ref!;
         const r = btn.getBoundingClientRect();
         const popW = 320;
         const margin = 8;
-        let left = Math.min(Math.max(margin, r.left), window.innerWidth - popW - margin);
+        const left = Math.min(Math.max(margin, r.left), window.innerWidth - popW - margin);
         let top = r.bottom + 6;
-        // If not enough room below, show above
-        if (top + 200 > window.innerHeight) {
-          top = Math.max(margin, r.top - 6 - 200);
+        if (top + 240 > window.innerHeight) {
+          top = Math.max(margin, r.top - 6 - 240);
         }
         setPop({ ref, top, left, data: null, loading: true });
         const data = await fetchVerses(ref);
@@ -167,7 +212,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  // Close on Escape only (avoid closing on mobile scroll/resize triggers)
+  // Esc sulgeb
   useEffect(() => {
     if (!pop) return;
     const onKey = (e: KeyboardEvent) => {
@@ -177,14 +222,9 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
     return () => window.removeEventListener("keydown", onKey);
   }, [pop]);
 
-
   return (
     <>
-      <div
-        ref={containerRef}
-        className="commentary-prose"
-        dangerouslySetInnerHTML={{ __html: processedHtml }}
-      />
+      <div ref={containerRef} className="commentary-prose" />
 
       {allRefs.length > 0 && (
         <div className="mt-10 pt-6 border-t border-border/50">
@@ -212,7 +252,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
           ref={popRef}
           role="dialog"
           className="fixed z-[9999] w-[320px] max-w-[calc(100vw-16px)] max-h-[60vh] overflow-y-auto bg-popover text-popover-foreground border border-border rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-150"
-          style={{ top: pop.top, left: pop.left, position: "fixed" }}
+          style={{ top: pop.top, left: pop.left }}
         >
           <header className="flex justify-between items-center gap-2 border-b border-border pb-2 mb-2 text-[11px] text-muted-foreground">
             <span>📖 {translation}</span>
@@ -221,10 +261,10 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setPop(null); }}
-                className="text-muted-foreground hover:text-foreground px-1 leading-none"
+                className="text-muted-foreground hover:text-foreground"
                 aria-label="Sulge"
               >
-                ✕
+                <X className="h-3.5 w-3.5" />
               </button>
             </div>
           </header>
