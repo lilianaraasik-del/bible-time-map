@@ -141,12 +141,19 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
     const onClick = async (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const btn = target.closest<HTMLElement>(".bref");
-      if (btn && containerRef.current?.contains(btn)) {
+      if (btn && containerRef.current?.parentElement?.contains(btn)) {
         e.preventDefault();
+        e.stopPropagation();
         const ref = btn.dataset.ref!;
         const r = btn.getBoundingClientRect();
-        const top = window.scrollY + r.bottom + 6;
-        const left = Math.max(8, Math.min(window.scrollX + r.left, window.scrollX + window.innerWidth - 340));
+        const popW = 320;
+        const margin = 8;
+        let left = Math.min(Math.max(margin, r.left), window.innerWidth - popW - margin);
+        let top = r.bottom + 6;
+        // If not enough room below, show above
+        if (top + 200 > window.innerHeight) {
+          top = Math.max(margin, r.top - 6 - 200);
+        }
         setPop({ ref, top, left, data: null, loading: true });
         const data = await fetchVerses(ref);
         setPop((cur) => (cur && cur.ref === ref ? { ...cur, data, loading: false } : cur));
@@ -160,17 +167,16 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  // Close on scroll/resize
+  // Close on Escape only (avoid closing on mobile scroll/resize triggers)
   useEffect(() => {
     if (!pop) return;
-    const close = () => setPop(null);
-    window.addEventListener("scroll", close, { passive: true });
-    window.addEventListener("resize", close);
-    return () => {
-      window.removeEventListener("scroll", close);
-      window.removeEventListener("resize", close);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPop(null);
     };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [pop]);
+
 
   return (
     <>
@@ -205,12 +211,22 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
         <div
           ref={popRef}
           role="dialog"
-          className="absolute z-[9999] w-[320px] max-h-[380px] overflow-y-auto bg-popover text-popover-foreground border border-border rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-150"
-          style={{ top: pop.top, left: pop.left }}
+          className="fixed z-[9999] w-[320px] max-w-[calc(100vw-16px)] max-h-[60vh] overflow-y-auto bg-popover text-popover-foreground border border-border rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-150"
+          style={{ top: pop.top, left: pop.left, position: "fixed" }}
         >
           <header className="flex justify-between items-center gap-2 border-b border-border pb-2 mb-2 text-[11px] text-muted-foreground">
             <span>📖 {translation}</span>
-            <span className="font-mono text-primary font-semibold">{pop.ref}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-primary font-semibold">{pop.ref}</span>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setPop(null); }}
+                className="text-muted-foreground hover:text-foreground px-1 leading-none"
+                aria-label="Sulge"
+              >
+                ✕
+              </button>
+            </div>
           </header>
           {pop.loading ? (
             <div className="flex items-center gap-2 text-muted-foreground py-3 justify-center">
