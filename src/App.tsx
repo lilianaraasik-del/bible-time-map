@@ -16,6 +16,7 @@ import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
 import Tabernacle from "./pages/Tabernacle.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { ScrollToTop } from "./components/ScrollToTop.tsx";
 
 const queryClient = new QueryClient();
 
