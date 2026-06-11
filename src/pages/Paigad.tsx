@@ -938,16 +938,6 @@ export default function Paigad() {
           }
         </main>
 
-        {/* Scroll to Top Button */}
-        {showScrollTop &&
-        <Button
-          onClick={scrollToTop}
-          size="icon"
-          className="fixed bottom-8 right-8 rounded-full shadow-lg hover:shadow-xl transition-all">
-          
-            <ArrowUp className="h-5 w-5" />
-          </Button>
-        }
 
         
       </div>

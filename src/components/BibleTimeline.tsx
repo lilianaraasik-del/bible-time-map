@@ -565,16 +565,6 @@ export function BibleTimeline() {
           <p>{t("footer.copyright", { year: new Date().getFullYear() })}</p>
         </footer>
 
-        {showScrollTop && (
-          <Button
-            onClick={scrollToTop}
-            size="icon"
-            className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full shadow-2xl"
-            aria-label={t("timeline.scrollTop")}
-          >
-            <ArrowUp className="h-6 w-6" />
-          </Button>
-        )}
       </div>
     </div>
   );

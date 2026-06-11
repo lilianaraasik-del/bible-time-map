@@ -757,16 +757,6 @@ export default function RaamatuLeht() {
           </div>
         </footer>
 
-        {showScrollTop && (
-          <Button
-            onClick={scrollToTop}
-            size="icon"
-            className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full shadow-2xl bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110 animate-in fade-in slide-in-from-bottom-4"
-            aria-label="Keri üles"
-          >
-            <ArrowUp className="h-6 w-6" />
-          </Button>
-        )}
       </div>
     </>
   );
