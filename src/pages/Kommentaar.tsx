@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/Navigation";
 import { supabase } from "@/integrations/supabase/client";
+import { CommentaryView } from "@/components/CommentaryView";
 
 interface CommentaryRow {
   id: string;
@@ -130,10 +131,7 @@ const Kommentaar = () => {
                   {row.language.toUpperCase()}
                 </Badge>
               </div>
-              <div
-                className="commentary-prose"
-                dangerouslySetInnerHTML={{ __html: row.content_html }}
-              />
+              <CommentaryView html={row.content_html} />
               <div className="mt-8 pt-6 border-t border-border/50 text-xs text-muted-foreground">
                 <span className="font-semibold">{t("commentary.sourceLabel")}: </span>
                 {t("commentary.sourceClassical")}
