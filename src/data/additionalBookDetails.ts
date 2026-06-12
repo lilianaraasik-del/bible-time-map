@@ -445,7 +445,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Evangeeliumid",
     overview: "Luukas oli arst ja Pauluse kaaslane. Tema evangeelium on kõige üksikasjalikum ning näitab Jeesust kui Päästjat kõigile inimestele – ka vaestele, naistele, paganatele, patustele. Sisaldab kuulsaid tähendamissõnu nagu kadunud poeg ja halastaja samaarlane.",
     authorFacts: ["Oli professionaalne arst", "Pauluse reisikaaslane", "Ainus paganaautor Piiblis", "Kirjutas ka Apostlite teod"],
-    additionalFacts: ["Pikim evangeelium", "Sisaldab kõige rohkem tähendamissõnu", "Erilist tähelepanu naistele ja vaestele", "Adresseeritud Teofilusele"],
+    additionalFacts: ["Pikim evangeelium", "Sisaldab kõige rohkem tähendamissõnu", "Erilist tähelepanu naistele ja vaestele", "Adresseeritud Teofilosele"],
     breakdowns: [
       { title: "Sünd ja lapsepõlv (ptk 1-2)", description: "Ristija Johannes ja Jeesus" },
       { title: "Galilea teenimine (ptk 3-9)", description: "Õpetused ja imeteod" },
