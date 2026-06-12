@@ -195,10 +195,12 @@ function scanAndWrap(root: HTMLElement, collect: (ref: string) => void) {
       let matchEnd = m.index + m[0].length;
 
       if (m[1]) {
-        // Täisviide raamatuga
+        // Täisviide raamatuga (peatükk + valikuline salm/vahemik)
         lastBook = m[1];
-        refText = `${m[1]} ${m[2]}:${m[3]}${m[4] ? `-${m[4]}` : ""}`;
+        const verse = m[3] ? `:${m[3]}${m[4] ? `-${m[4]}` : ""}` : "";
+        refText = `${m[1]} ${m[2]}${verse}`;
         displayText = m[0];
+
       } else if (m[5] && lastBook) {
         // Jätk: "; 24:4" — kasuta eelmist raamatut
         refText = `${lastBook} ${m[6]}:${m[7]}${m[8] ? `-${m[8]}` : ""}`;
