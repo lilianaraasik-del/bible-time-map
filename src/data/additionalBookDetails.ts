@@ -388,11 +388,11 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     piibeeUrl: "https://piibel.ee",
   },
   "malaki": {
-    name: "Malaki",
-    author: "Malaki",
+    name: "Malakia",
+    author: "Malakia",
     period: "u 450-400 eKr",
     category: "Prohvetid",
-    overview: "Malaki on Vana Testamendi viimane raamat. Pärast tema kuulutust kestis 400 aastat 'vaikust', kuni Ristija Johannes alustas. Malaki noomib rahvast vaimse leiguse pärast: poolikud ohvrid, abielulahutused, kümnise kinnipidamine. Kuid lubab: Issand tuleb järsku oma templisse.",
+    overview: "Malakia on Vana Testamendi viimane raamat. Pärast tema kuulutust oli 400 aastat 'vaikust', kuni Ristija Johannes alustas. Malakia noomib rahvast vaimse leiguse pärast: poolikud ohvrid, abielulahutused, kümnise kinnipidamine. Kuid lubab: Issand tuleb järsku oma templisse.",
     authorFacts: ["Eluajast on vähe teada", "Nimi tähendab 'minu sõnumitooja'", "Kuulutas Nehemja ajal", "Vana Testamendi viimane prohvet"],
     additionalFacts: ["Pärast teda 400 aastat 'vaikust'", "Ennustab Eelijat (Ristija Johannes)", "Kümnise teema (Mal 3:10)", "Lõpeb sõnaga 'needus'"],
     breakdowns: [
