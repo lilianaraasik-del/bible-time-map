@@ -13,46 +13,102 @@ const piibelSb = createClient(PIIBEL_URL, PIIBEL_ANON_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-// Eesti raamatu lühendid -> book_number
-const ABBR: Record<string, number> = {
-  "1ms": 1, "2ms": 2, "3ms": 3, "4ms": 4, "5ms": 5,
-  "jos": 6, "km": 7, "koh": 7, "rt": 8, "1sm": 9, "2sm": 10,
-  "1kn": 11, "2kn": 12, "1aj": 13, "2aj": 14,
-  "esr": 15, "ne": 16, "est": 17, "ii": 18, "iib": 18, "ps": 19,
-  "õp": 20, "op": 20, "kg": 21, "ül": 22, "ul": 22,
-  "js": 23, "jr": 24, "nl": 25, "hs": 26, "tn": 27,
-  "ho": 28, "jl": 29, "am": 30, "ob": 31, "jn": 32,
-  "mi": 33, "na": 34, "ha": 35, "sf": 36, "hg": 37,
-  "sk": 38, "ml": 39,
-  "mt": 40, "mk": 41, "lk": 42, "jh": 43, "ap": 44,
-  "rm": 45, "1kr": 46, "2kr": 47, "gl": 48, "ef": 49,
-  "fl": 50, "kl": 51, "1ts": 52, "2ts": 53,
-  "1tm": 54, "2tm": 55, "tt": 56, "fm": 57,
-  "hb": 58, "jk": 59, "1pt": 60, "2pt": 61,
-  "1jh": 62, "2jh": 63, "3jh": 64, "jd": 65, "ilm": 66,
-};
+// Eesti raamatu nimed/lühendid -> book_number.
+// Toetab nii lühendeid (Jl, Ap, Jh) kui ka väljakirjutatud nimesid (Joel, Joeli,
+// "Apostlite teod"), sealhulgas levinumaid käändevorme. Tühik mustris muudetakse
+// regexis \s+, võrdluseks (ABBR võti) eemaldatakse tühikud/punktid + lowercase.
+const BOOK_DEFS: [string, number][] = [
+  // Pentateuh
+  ["1Ms", 1], ["2Ms", 2], ["3Ms", 3], ["4Ms", 4], ["5Ms", 5],
+  ["1. Moosese", 1], ["2. Moosese", 2], ["3. Moosese", 3], ["4. Moosese", 4], ["5. Moosese", 5],
+  ["1 Moosese", 1], ["2 Moosese", 2], ["3 Moosese", 3], ["4 Moosese", 4], ["5 Moosese", 5],
+  // Ajaloolised
+  ["Jos", 6], ["Joosua", 6],
+  ["Km", 7], ["Koh", 7], ["Kohtumõistjate", 7], ["Kohtunike", 7],
+  ["Rt", 8], ["Rut", 8], ["Ruti", 8],
+  ["1Sm", 9], ["2Sm", 10], ["1. Saamueli", 9], ["2. Saamueli", 10], ["1 Saamueli", 9], ["2 Saamueli", 10],
+  ["1Kn", 11], ["2Kn", 12], ["1. Kuningate", 11], ["2. Kuningate", 12], ["1 Kuningate", 11], ["2 Kuningate", 12],
+  ["1Aj", 13], ["2Aj", 14], ["1. Ajaraamat", 13], ["2. Ajaraamat", 14], ["1 Ajaraamat", 13], ["2 Ajaraamat", 14],
+  ["Esr", 15], ["Esra", 15],
+  ["Ne", 16], ["Nehemja", 16],
+  ["Est", 17], ["Estri", 17], ["Ester", 17],
+  // Tarkuseraamatud
+  ["Ii", 18], ["Iib", 18], ["Iiob", 18], ["Iiobi", 18],
+  ["Ps", 19], ["Psalm", 19], ["Psalmid", 19], ["Psalmi", 19],
+  ["Õp", 20], ["Op", 20], ["Õpetussõnad", 20], ["Õpetussõnade", 20],
+  ["Kg", 21], ["Koguja", 21],
+  ["Ül", 22], ["Ul", 22], ["Ülemlaul", 22],
+  // Suurprohvetid
+  ["Js", 23], ["Jesaja", 23], ["Jesaia", 23],
+  ["Jr", 24], ["Jeremija", 24],
+  ["Nl", 25], ["Nutulaulud", 25],
+  ["Hs", 26], ["Hesekiel", 26], ["Hesekieli", 26],
+  ["Tn", 27], ["Taaniel", 27], ["Taanieli", 27],
+  // Väikeprohvetid
+  ["Ho", 28], ["Hoosea", 28],
+  ["Jl", 29], ["Joel", 29], ["Joeli", 29],
+  ["Am", 30], ["Aamos", 30], ["Aamose", 30],
+  ["Ob", 31], ["Obadja", 31],
+  ["Jn", 32], ["Joona", 32],
+  ["Mi", 33], ["Miika", 33],
+  ["Na", 34], ["Nahum", 34], ["Naahum", 34],
+  ["Ha", 35], ["Habakuk", 35],
+  ["Sf", 36], ["Sefanja", 36],
+  ["Hg", 37], ["Haggai", 37],
+  ["Sk", 38], ["Sakarja", 38],
+  ["Ml", 39], ["Malakia", 39],
+  // Evangeeliumid + Apostlite teod
+  ["Mt", 40], ["Matteuse", 40], ["Matteus", 40],
+  ["Mk", 41], ["Markuse", 41], ["Markus", 41],
+  ["Lk", 42], ["Luuka", 42], ["Luukas", 42], ["Luukase", 42],
+  ["Jh", 43], ["Johannese", 43], ["Johannes", 43],
+  ["Ap", 44], ["Apostlite tegude raamat", 44], ["Apostlite teod", 44], ["Apostlite tegudes", 44],
+  // Paulus
+  ["Rm", 45], ["Roomlastele", 45],
+  ["1Kr", 46], ["2Kr", 47], ["1. Korintlastele", 46], ["2. Korintlastele", 47], ["1 Korintlastele", 46], ["2 Korintlastele", 47],
+  ["Gl", 48], ["Galaatlastele", 48],
+  ["Ef", 49], ["Efeslastele", 49],
+  ["Fl", 50], ["Filiplastele", 50],
+  ["Kl", 51], ["Koloslastele", 51],
+  ["1Ts", 52], ["2Ts", 53], ["1. Tessalooniklastele", 52], ["2. Tessalooniklastele", 53], ["1 Tessalooniklastele", 52], ["2 Tessalooniklastele", 53],
+  ["1Tm", 54], ["2Tm", 55], ["1. Timoteosele", 54], ["2. Timoteosele", 55], ["1 Timoteosele", 54], ["2 Timoteosele", 55],
+  ["Tt", 56], ["Tiitusele", 56], ["Tiitus", 56],
+  ["Fm", 57], ["Fileemonile", 57], ["Filemonile", 57],
+  // Üldised kirjad + Ilmutus
+  ["Hb", 58], ["Heebrealastele", 58],
+  ["Jk", 59], ["Jaakobuse", 59],
+  ["1Pt", 60], ["2Pt", 61], ["1. Peetruse", 60], ["2. Peetruse", 61], ["1 Peetruse", 60], ["2 Peetruse", 61],
+  ["1Jh", 62], ["2Jh", 63], ["3Jh", 64], ["1. Johannese", 62], ["2. Johannese", 63], ["3. Johannese", 64], ["1 Johannese", 62], ["2 Johannese", 63], ["3 Johannese", 64],
+  ["Jd", 65], ["Juuda", 65],
+  ["Ilm", 66], ["Ilmutuse", 66], ["Ilmutusraamat", 66], ["Ilmutusraamatu", 66],
+];
 
-// Pikemad lühendid enne — et "1Ms" ei matchiks enne "Ms"
-const BOOK_KEYS = Object.keys(ABBR).sort((a, b) => b.length - a.length);
+const normalizeKey = (s: string) => s.toLowerCase().replace(/[.\s]/g, "");
+const ABBR: Record<string, number> = {};
+for (const [k, n] of BOOK_DEFS) ABBR[normalizeKey(k)] = n;
+
+// Pikemad mustrid enne (et "1. Moosese" matchiks enne "Moosese";
+// "Apostlite tegude raamat" enne "Apostlite teod")
+const BOOK_KEYS = BOOK_DEFS.map(([k]) => k).sort((a, b) => b.length - a.length);
 const BOOK_PATTERN = BOOK_KEYS
-  .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "\\s+"))
   .join("|");
-// Unicode-ohutu sõnapiir (mitte \b — see ei tööta täpitähtedega)
-// Matchib kas täisviite (nt "2Ms 17:14") või jätku ilma raamatuta (nt "; 24:4")
+// Unicode-ohutu sõnapiir. Lubab kas peatüki:salm(-salm) või ainult peatüki
+// (et "Ap 2" lingitaks). Peatükk piiratud 3-kohaliseks ning ei tohi olla
+// järgnevat punkti+numbrit (väldib "u 9. sajand" tüüpi valeklappe).
 const RX = new RegExp(
-  `(?<![\\p{L}\\p{N}])(${BOOK_PATTERN})\\s+(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?|([;,])\\s*(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?`,
+  `(?<![\\p{L}\\p{N}])(${BOOK_PATTERN})\\s+(\\d{1,3})(?::(\\d+)(?:\\s*[-–]\\s*(\\d+))?|(?!\\s*[:.\\d]))|([;,])\\s*(\\d+):(\\d+)(?:\\s*[-–]\\s*(\\d+))?`,
   "giu"
 );
 
 function parseRef(ref: string): { bookNumber: number; chapter: number; vs: number; ve: number } | null {
-  const m = ref.trim().match(/^([1-5]?\s?\.?\s?[A-Za-zÕÄÖÜõäöü]+)\s+(\d+):(\d+)(?:\s*[-–]\s*(\d+))?$/);
+  const m = ref.trim().match(/^(.+?)\s+(\d+)(?::(\d+)(?:\s*[-–]\s*(\d+))?)?$/);
   if (!m) return null;
-  const key = m[1].toLowerCase().replace(/[.\s]/g, "");
-  const bookNumber = ABBR[key];
+  const bookNumber = ABBR[normalizeKey(m[1])];
   if (!bookNumber) return null;
   const chapter = +m[2];
-  const vs = +m[3];
-  const ve = m[4] ? +m[4] : vs;
+  const vs = m[3] ? +m[3] : 1;
+  const ve = m[4] ? +m[4] : (m[3] ? +m[3] : 999);
   return { bookNumber, chapter, vs, ve };
 }
 
