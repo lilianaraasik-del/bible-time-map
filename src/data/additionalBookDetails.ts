@@ -478,7 +478,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 60-80 pKr",
     category: "Ajalugu",
     overview: "Apostlite teod on Luuka evangeeliumi järg. See näitab, kuidas Püha Vaim valatakse välja Nelipühal ja kuidas evangeelium levib Jeruusalemmast Roomasse. Lood Peetrusest, Stefanose tapmisest, Pauluse pöördumisest ja misjonireisidest näitavad, kuidas kogudus kasvab.",
-    authorFacts: ["Luukas oli pealtnägija paljudele sündmustele", "Reisis Paulusega", "Adresseeritud Teofilusele (nagu evangeelium)", "Sisaldab 'meie' lõike, kus Luukas oli kohal"],
+    authorFacts: ["Luukas oli pealtnägija paljudele sündmustele", "Reisis Paulusega", "Adresseeritud Teofilosele (nagu evangeelium)", "Sisaldab 'meie' lõike, kus Luukas oli kohal"],
     additionalFacts: ["Kirjeldab koguduse esimest 30 aastat", "Sisaldab kolm Pauluse misjonireisi", "Lõpeb Pauluse vangistusega Roomas", "Püha Vaim mainitud üle 50 korra"],
     breakdowns: [
       { title: "Nelipüha (ptk 2)", description: "Püha Vaim valatakse välja" },
