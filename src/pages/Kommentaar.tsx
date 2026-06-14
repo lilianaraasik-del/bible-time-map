@@ -168,10 +168,6 @@ function CommentaryCard({ row, t }: { row: CommentaryRow; t: (k: string) => stri
     </Card>
   );
 }
-        )}
-      </main>
-    </div>
-  );
-};
+
 
 export default Kommentaar;
