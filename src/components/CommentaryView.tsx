@@ -237,9 +237,11 @@ function scanAndWrap(root: HTMLElement, collect: (ref: string) => void) {
 interface Props {
   html: string;
   translation?: string;
+  onRefsChange?: (refs: string[]) => void;
+  showRefs?: boolean;
 }
 
-export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Props) {
+export function CommentaryView({ html, translation = "Eesti piibel 1968", onRefsChange, showRefs = true }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [allRefs, setAllRefs] = useState<string[]>([]);
   const [pop, setPop] = useState<{
@@ -265,6 +267,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
       }
     });
     setAllRefs(order);
+    onRefsChange?.(order);
   }, [html]);
 
   // Klikkide haldus (delegate kogu document peale)
@@ -311,7 +314,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Prop
     <>
       <div ref={containerRef} className="commentary-prose" />
 
-      {allRefs.length > 0 && (
+      {showRefs && allRefs.length > 0 && (
         <div className="mt-10 pt-6 border-t border-border/50">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
             <BookMarked className="h-4 w-4" />
