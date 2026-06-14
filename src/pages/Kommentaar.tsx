@@ -121,23 +121,53 @@ const Kommentaar = () => {
             </Link>
           </Card>
         ) : (
-          rows.map((row) => (
-            <Card key={row.id} className="p-8 md:p-10 bg-card/95 backdrop-blur-sm shadow-lg border-2 border-border/50">
-              <div className="mb-6 flex items-center justify-between gap-3 flex-wrap">
-                <h2 className="text-2xl font-serif font-semibold text-foreground">
-                  {t("commentary.introduction")}
-                </h2>
-                <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
-                  {row.language.toUpperCase()}
-                </Badge>
-              </div>
-              <CommentaryView html={row.content_html} />
-              <div className="mt-8 pt-6 border-t border-border/50 text-xs text-muted-foreground">
-                <span className="font-semibold">{t("commentary.sourceLabel")}: </span>
-                {t("commentary.sourceClassical")}
-              </div>
-            </Card>
-          ))
+          rows.map((row) => <CommentaryCard key={row.id} row={row} t={t} />)
+        )}
+      </main>
+    </div>
+  );
+};
+
+function CommentaryCard({ row, t }: { row: CommentaryRow; t: (k: string) => string }) {
+  const [refs, setRefs] = useState<string[]>([]);
+  return (
+    <Card className="p-8 md:p-10 bg-card/95 backdrop-blur-sm shadow-lg border-2 border-border/50">
+      <div className="mb-6 flex items-center justify-between gap-3 flex-wrap">
+        <h2 className="text-2xl font-serif font-semibold text-foreground">
+          {t("commentary.introduction")}
+        </h2>
+        <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
+          {row.language.toUpperCase()}
+        </Badge>
+      </div>
+      <CommentaryView html={row.content_html} onRefsChange={setRefs} showRefs={false} />
+      {refs.length > 0 && (
+        <div className="mt-10 pt-6 border-t border-border/50">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+            <BookMarked className="h-4 w-4" />
+            Viidatud kirjakohad
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {refs.map((r) => (
+              <button
+                key={r}
+                type="button"
+                className="bref inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono bg-primary/10 text-primary hover:bg-primary/20 transition-colors border border-primary/20"
+                data-ref={r}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className="mt-8 pt-6 border-t border-border/50 text-xs text-muted-foreground">
+        <span className="font-semibold">{t("commentary.sourceLabel")}: </span>
+        {t("commentary.sourceClassical")}
+      </div>
+    </Card>
+  );
+}
         )}
       </main>
     </div>
