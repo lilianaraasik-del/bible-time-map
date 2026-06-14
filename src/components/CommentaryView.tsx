@@ -237,9 +237,11 @@ function scanAndWrap(root: HTMLElement, collect: (ref: string) => void) {
 interface Props {
   html: string;
   translation?: string;
+  onRefsChange?: (refs: string[]) => void;
+  showRefs?: boolean;
 }
 
-export function CommentaryView({ html, translation = "Eesti piibel 1968" }: Props) {
+export function CommentaryView({ html, translation = "Eesti piibel 1968", onRefsChange, showRefs = true }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [allRefs, setAllRefs] = useState<string[]>([]);
   const [pop, setPop] = useState<{
