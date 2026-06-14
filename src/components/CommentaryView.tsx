@@ -267,6 +267,7 @@ export function CommentaryView({ html, translation = "Eesti piibel 1968", onRefs
       }
     });
     setAllRefs(order);
+    onRefsChange?.(order);
   }, [html]);
 
   // Klikkide haldus (delegate kogu document peale)
