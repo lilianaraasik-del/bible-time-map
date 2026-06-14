@@ -169,5 +169,8 @@ function CommentaryCard({ row, t }: { row: CommentaryRow; t: (k: string) => stri
   );
 }
 
+export default Kommentaar;
+
+
 
 export default Kommentaar;
