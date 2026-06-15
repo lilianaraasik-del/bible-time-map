@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Map, ChevronDown, Sparkles, Library, LogIn, Coins, Tent } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, LogIn, Coins, Tent, GitBranch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -87,6 +87,12 @@ export function Navigation() {
                   <Link to="/kaardid/tabernaakel" className="flex items-center gap-2 cursor-pointer">
                     <Tent className="h-4 w-4" />
                     <span>{t("nav.tabernacle")}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/jeesuse-sugupuu" className="flex items-center gap-2 cursor-pointer">
+                    <GitBranch className="h-4 w-4" />
+                    <span>{t("nav.genealogy")}</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
