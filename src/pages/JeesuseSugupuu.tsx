@@ -104,7 +104,15 @@ const PERIODS: Period[] = [
         ref: { slug: "1-mooses", label: "1Ms 6 – 9" },
         branches: [
           { name: "Seem", relation: "poeg", desc: "Vanim poeg, Aabrahami esiisa. Tema liinist tulid semiidid.", category: "patriarch", ref: { label: "1Ms 11:10–26" } },
-...
+        ],
+      },
+    ],
+  },
+  {
+    id: "ujutus",
+    title: "Veeuputusest Aabrahamini",
+    span: "u 2400 – 2100 eKr",
+    color: "#D85A30",
     intro: "Seemist Aabrahamini – kümme põlvkonda, mille käigus rahvad jagunesid (1Ms 11).",
     people: [
       { name: "Seem", category: "patriarch", desc: "Noa vanim poeg, elas 600 aastat.", ref: { label: "1Ms 11:10–11" } },
