@@ -214,7 +214,7 @@ const PERIODS: Period[] = [
           { name: "Rahab", relation: "ema", desc: "Jeerikost päästetud naine, Salmoni naine.", ref: { label: "Jos 2; Mt 1:5" } },
         ],
       },
-      { name: "Obed", category: "other", desc: "Boase ja Ruti poeg, Taaveti vanaisa.", ref: { label: "Rt 4:17; Mt 1:5" } },
+      { name: "Oobed", category: "other", desc: "Boase ja Ruti poeg, Taaveti vanaisa.", ref: { label: "Rt 4:17; Mt 1:5" } },
       { name: "Isai", category: "other", desc: "Taaveti isa, Betlemast.", ref: { slug: "1-saamuel", label: "1Sm 16:1; 17:12" } },
     ],
   },
