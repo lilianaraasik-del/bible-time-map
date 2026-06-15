@@ -103,22 +103,12 @@ const PERIODS: Period[] = [
         desc: "Vaga mees omas põlvkonnas. Ehitas laeva ja päästis perekonna veeuputusest.",
         ref: { slug: "1-mooses", label: "1Ms 6 – 9" },
         branches: [
-          { name: "Sem", relation: "poeg", desc: "Vanim poeg, Aabrahami esiisa. Tema liinist tulid semiidid.", category: "patriarch", ref: { label: "1Ms 11:10–26" } },
-          { name: "Haam", relation: "poeg", desc: "Keskmine poeg. Tema lapsed: Kuus, Mitsraim, Puut, Kaanan.", ref: { label: "1Ms 10:6–20" } },
-          { name: "Jaafet", relation: "poeg", desc: "Noorim poeg. Tema soost tulid Vahemere ja Euroopa rahvad.", ref: { label: "1Ms 10:2–5" } },
-        ],
-      },
-    ],
-  },
-  {
-    id: "parast-veeuputust",
-    title: "Pärast veeuputust",
-    span: "u 2400 – 2100 eKr",
-    color: "#3A9AD9",
-    intro: "Semist Aabrahamini – kümme põlvkonda, mille käigus rahvad jagunesid (1Ms 11).",
+          { name: "Seem", relation: "poeg", desc: "Vanim poeg, Aabrahami esiisa. Tema liinist tulid semiidid.", category: "patriarch", ref: { label: "1Ms 11:10–26" } },
+...
+    intro: "Seemist Aabrahamini – kümme põlvkonda, mille käigus rahvad jagunesid (1Ms 11).",
     people: [
-      { name: "Sem", category: "patriarch", desc: "Noa vanim poeg, elas 600 aastat.", ref: { label: "1Ms 11:10–11" } },
-      { name: "Arpaksad", category: "other", desc: "Semi poeg, sündinud 2 aastat pärast veeuputust.", ref: { label: "1Ms 11:12–13" } },
+      { name: "Seem", category: "patriarch", desc: "Noa vanim poeg, elas 600 aastat.", ref: { label: "1Ms 11:10–11" } },
+      { name: "Arpaksad", category: "other", desc: "Seemi poeg, sündinud 2 aastat pärast veeuputust.", ref: { label: "1Ms 11:12–13" } },
       { name: "Selah", category: "other", desc: "Arpaksadi poeg.", ref: { label: "1Ms 11:14–15" } },
       { name: "Eeber", category: "other", desc: "Heebrealaste eelisa – nimi „heebrea“ pärineb temalt.", ref: { label: "1Ms 11:16–17" } },
       { name: "Peleg", category: "other", desc: "„Tema päevil jagunes maa.“ Babüloni torni aeg.", ref: { label: "1Ms 10:25; 11:18–19" } },
