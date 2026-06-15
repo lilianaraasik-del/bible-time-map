@@ -285,7 +285,7 @@ const PERIODS: Period[] = [
     color: "#1D9E75",
     intro: "Saulist Sidkijani – Juuda kuninglik liin, millest sündis Messias.",
     people: [
-      { name: "Saul", category: "king", desc: "Iisraeli esimene kuningas, Benjamiini hõimust.", ref: { slug: "1-saamuel", label: "1Sm 9 – 31" } },
+      { name: "Saul", category: "king", desc: "Iisraeli esimene kuningas, Benjamini hõimust.", ref: { slug: "1-saamuel", label: "1Sm 9 – 31" } },
       {
         name: "Taavet",
         year: "u 1010 – 970 eKr",
