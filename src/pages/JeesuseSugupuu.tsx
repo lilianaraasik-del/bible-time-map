@@ -338,7 +338,7 @@ const PERIODS: Period[] = [
   },
   {
     id: "uus-testament",
-    title: "Messia tulek",
+    title: "Messias tulek",
     span: "u 4 eKr",
     color: "#D4537E",
     intro: "Joosep, Maarja ja Jeesus Kristus – tõotuse täitumine.",
@@ -356,7 +356,7 @@ const PERIODS: Period[] = [
         ref: { slug: "luukas", label: "Lk 1:26–56; 2" },
         branches: [
           { name: "Eliisabet", relation: "sugulane", desc: "Ristija Johannese ema.", ref: { label: "Lk 1:5–25, 36" } },
-          { name: "Ristija Johannes", relation: "sugulane", desc: "Messia eelkäija, tema kuulutaja.", category: "prophet", ref: { slug: "luukas", label: "Lk 1; Mt 3" } },
+          { name: "Ristija Johannes", relation: "sugulane", desc: "Messias eelkäija, tema kuulutaja.", category: "prophet", ref: { slug: "luukas", label: "Lk 1; Mt 3" } },
         ],
       },
       {
@@ -376,8 +376,8 @@ const CAT_COLORS: Record<Category, { bg: string; label: string }> = {
   prophet: { bg: "#E8A33D", label: "Prohvet" },
   priest: { bg: "#B07BC9", label: "Preester" },
   judge: { bg: "#5DAA8E", label: "Kohtumõistja" },
-  other: { bg: "#D85A30", label: "Esivane" },
-  jesus: { bg: "#D4537E", label: "Messia" },
+  other: { bg: "#D85A30", label: "Esivanem" },
+  jesus: { bg: "#D4537E", label: "Messias" },
 };
 
 interface SelectedPerson {
