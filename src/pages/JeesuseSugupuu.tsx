@@ -200,7 +200,7 @@ const PERIODS: Period[] = [
       },
       { name: "Perets", category: "other", desc: "Juuda ja Taamari poeg, kuningliku liini esiisa.", ref: { label: "1Ms 38:29; Rt 4:18" } },
       { name: "Hesron", category: "other", desc: "Peretsi poeg.", ref: { label: "Rt 4:18; Mt 1:3" } },
-      { name: "Ram", category: "other", desc: "Hesroni poeg.", ref: { label: "Rt 4:19; Mt 1:4" } },
+      { name: "Raam", category: "other", desc: "Hesroni poeg.", ref: { label: "Rt 4:19; Mt 1:4" } },
       { name: "Amminadab", category: "other", desc: "Aaroni äi.", ref: { label: "4Ms 1:7; Mt 1:4" } },
       { name: "Nahsson", category: "other", desc: "Juuda hõimu vürst kõrbeteel.", ref: { label: "4Ms 2:3; Mt 1:4" } },
       { name: "Salmon", category: "other", desc: "Rahabi abikaasa.", ref: { label: "Rt 4:20; Mt 1:5" } },
