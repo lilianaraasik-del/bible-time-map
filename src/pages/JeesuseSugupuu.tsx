@@ -1,349 +1,431 @@
-import { useState, useRef, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Tree from "react-d3-tree";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { RotateCcw, Search, BookOpen, ExternalLink } from "lucide-react";
+import {
+  Search,
+  BookOpen,
+  ExternalLink,
+  ChevronDown,
+  ChevronRight,
+  Users,
+} from "lucide-react";
 
-type Category = "patriarch" | "king" | "other" | "jesus";
+type Category = "patriarch" | "king" | "prophet" | "priest" | "judge" | "other" | "jesus";
 
-interface NodeAttrs {
+interface Branch {
+  name: string;
+  relation: string; // "vend", "abikaasa", "poeg" jne
+  desc: string;
+  ref?: { slug?: string; label: string };
+  category?: Category;
+}
+
+interface Person {
+  name: string;
+  year?: string; // umbkaudne aeg
   category: Category;
   desc: string;
-}
-interface BibleNode {
-  name: string;
-  attributes: NodeAttrs;
-  children: BibleNode[];
+  ref?: { slug?: string; label: string };
+  branches?: Branch[];
 }
 
-const bibleTree: BibleNode = {
-  name: "Aadam",
-  attributes: { category: "patriarch", desc: "Esimene inimene, inimkonna esiisa" },
-  children: [
-    {
-      name: "Noa",
-      attributes: { category: "patriarch", desc: "Elas üle suure veeuputuse" },
-      children: [
-        {
-          name: "Aabraham",
-          attributes: { category: "patriarch", desc: "Iisraeli rahva esiisa, u 2000 eKr" },
-          children: [
-            {
-              name: "Iisak",
-              attributes: { category: "patriarch", desc: "Aabrahamile tõotatud poeg" },
-              children: [
-                {
-                  name: "Jaakob",
-                  attributes: { category: "patriarch", desc: "Iisraeli 12 hõimu esiisa" },
-                  children: [
-                    {
-                      name: "Juuda",
-                      attributes: { category: "patriarch", desc: "Juuda hõimu esiisa" },
-                      children: [
-                        { name: "Peres", attributes: { category: "other", desc: "Juuda ja Tamaari poeg" }, children: [
-                          { name: "Hesron", attributes: { category: "other", desc: "Perese poeg" }, children: [
-                            { name: "Ram", attributes: { category: "other", desc: "Hesroni poeg" }, children: [
-                              { name: "Amminadab", attributes: { category: "other", desc: "Rami poeg" }, children: [
-                                { name: "Nahsson", attributes: { category: "other", desc: "Juuda hõimu vürst" }, children: [
-                                  { name: "Salmon", attributes: { category: "other", desc: "Rahabi abikaasa" }, children: [
-                                    { name: "Boas", attributes: { category: "other", desc: "Ruuti lunastaja, Betlemma maavaldaja" }, children: [
-                                      { name: "Obed", attributes: { category: "other", desc: "Boase ja Ruuti poeg" }, children: [
-                                        { name: "Isai", attributes: { category: "other", desc: "Taaveti isa, Betlemast" }, children: [
-                                          { name: "Taavet", attributes: { category: "king", desc: "Iisraeli suurim kuningas, u 1010–970 eKr" }, children: [
-                                            { name: "Saalomon", attributes: { category: "king", desc: "Tark kuningas, templi ehitaja" }, children: [
-                                              { name: "Rehabeam", attributes: { category: "king", desc: "Kuningriik jagunes tema ajal" }, children: [
-                                                { name: "Abija", attributes: { category: "king", desc: "Juuda kuningas" }, children: [
-                                                  { name: "Aasa", attributes: { category: "king", desc: "Valitses 41 aastat" }, children: [
-                                                    { name: "Joosafat", attributes: { category: "king", desc: "Ustav kuningas" }, children: [
-                                                      { name: "Jooram", attributes: { category: "king", desc: "Juuda kuningas" }, children: [
-                                                        { name: "Ussija", attributes: { category: "king", desc: "Valitses 52 aastat" }, children: [
-                                                          { name: "Jootam", attributes: { category: "king", desc: "Ustav kuningas" }, children: [
-                                                            { name: "Aahas", attributes: { category: "king", desc: "Ebajumalaid kummardanud" }, children: [
-                                                              { name: "Hiskija", attributes: { category: "king", desc: "Suur reformaatorkuningas" }, children: [
-                                                                { name: "Manasse", attributes: { category: "king", desc: "Valitses 55 aastat" }, children: [
-                                                                  { name: "Ammon", attributes: { category: "king", desc: "Kurjalt valitsenud" }, children: [
-                                                                    { name: "Joosija", attributes: { category: "king", desc: "Reformaatorkuningas, leidis seaduseraamatu" }, children: [
-                                                                      { name: "Jekonja", attributes: { category: "other", desc: "Viimane kuningas enne Babülooniat" }, children: [
-                                                                        { name: "Sealtiel", attributes: { category: "other", desc: "Jekonja poeg" }, children: [
-                                                                          { name: "Serubabel", attributes: { category: "other", desc: "Juhatas rahva Babülooniast tagasi" }, children: [
-                                                                            { name: "Abiud", attributes: { category: "other", desc: "Serubabeli poeg" }, children: [
-                                                                              { name: "Eliakim", attributes: { category: "other", desc: "Abiudi poeg" }, children: [
-                                                                                { name: "Asor", attributes: { category: "other", desc: "Eliakimi poeg" }, children: [
-                                                                                  { name: "Saadok", attributes: { category: "other", desc: "Asori poeg" }, children: [
-                                                                                    { name: "Ahhim", attributes: { category: "other", desc: "Saadoki poeg" }, children: [
-                                                                                      { name: "Eliud", attributes: { category: "other", desc: "Ahhimi poeg" }, children: [
-                                                                                        { name: "Eleasar", attributes: { category: "other", desc: "Eliudi poeg" }, children: [
-                                                                                          { name: "Mattan", attributes: { category: "other", desc: "Eleasari poeg" }, children: [
-                                                                                            { name: "Jaakob (Joosepi isa)", attributes: { category: "other", desc: "Mattani poeg, Joosepi isa" }, children: [
-                                                                                              { name: "Joosep", attributes: { category: "other", desc: "Maarja mees, Jeesuse kasuisa" }, children: [
-                                                                                                { name: "Jeesus Kristus", attributes: { category: "jesus", desc: "Messia. Sündinud Maarja kaudu u 4 eKr Petlemmas" }, children: [] }
-                                                                                              ]}
-                                                                                            ]}
-                                                                                          ]}
-                                                                                        ]}
-                                                                                      ]}
-                                                                                    ]}
-                                                                                  ]}
-                                                                                ]}
-                                                                              ]}
-                                                                            ]}
-                                                                          ]}
-                                                                        ]}
-                                                                      ]}
-                                                                    ]}
-                                                                  ]}
-                                                                ]}
-                                                              ]}
-                                                            ]}
-                                                          ]}
-                                                        ]}
-                                                      ]}
-                                                    ]}
-                                                  ]}
-                                                ]}
-                                              ]}
-                                            ]}
-                                          ]}
-                                        ]}
-                                      ]}
-                                    ]}
-                                  ]}
-                                ]}
-                              ]}
-                            ]}
-                          ]}
-                        ]}
-                      ]
-                    },
-                    { name: "Ruuben", attributes: { category: "patriarch", desc: "Jaakobi esimene poeg" }, children: [] },
-                    { name: "Siimeon", attributes: { category: "patriarch", desc: "Jaakobi teine poeg" }, children: [] },
-                    { name: "Leevi", attributes: { category: "patriarch", desc: "Preestrite hõimu esiisa" }, children: [
-                      { name: "Mooses", attributes: { category: "other", desc: "Iisraeli suurim prohvet, seaduste andja" }, children: [] },
-                      { name: "Aaron", attributes: { category: "other", desc: "Esimene ülempreester" }, children: [] }
-                    ]},
-                    { name: "Issaskar", attributes: { category: "patriarch", desc: "Jaakobi viies poeg" }, children: [] },
-                    { name: "Sebulon", attributes: { category: "patriarch", desc: "Jaakobi kuues poeg" }, children: [] },
-                    { name: "Daan", attributes: { category: "patriarch", desc: "Jaakobi seitsmes poeg" }, children: [] },
-                    { name: "Naftali", attributes: { category: "patriarch", desc: "Jaakobi kaheksas poeg" }, children: [] },
-                    { name: "Gad", attributes: { category: "patriarch", desc: "Jaakobi üheksas poeg" }, children: [] },
-                    { name: "Aaser", attributes: { category: "patriarch", desc: "Jaakobi kümnes poeg" }, children: [] },
-                    { name: "Joosep (Jaakobi poeg)", attributes: { category: "patriarch", desc: "Jaakobi lemmikpoeg, Egiptuse asekuberner" }, children: [
-                      { name: "Manasse (Joosepi poeg)", attributes: { category: "patriarch", desc: "Joosepi esimene poeg" }, children: [] },
-                      { name: "Efraim", attributes: { category: "patriarch", desc: "Joosepi teine poeg" }, children: [] }
-                    ]},
-                    { name: "Benjamiin", attributes: { category: "patriarch", desc: "Jaakobi noorim poeg" }, children: [
-                      { name: "Saul", attributes: { category: "king", desc: "Iisraeli esimene kuningas" }, children: [] }
-                    ]}
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+interface Period {
+  id: string;
+  title: string;
+  span: string;
+  color: string; // tailwind hex
+  intro: string;
+  people: Person[];
+}
+
+const PERIODS: Period[] = [
+  {
+    id: "eelpotopne",
+    title: "Eelpotopne aeg",
+    span: "u 4000 – 2400 eKr",
+    color: "#7F77DD",
+    intro: "Aadamast Noani – kümme põlvkonda enne suurt veeuputust (1Ms 5).",
+    people: [
+      {
+        name: "Aadam",
+        year: "u 4000 eKr",
+        category: "patriarch",
+        desc: "Esimene inimene, loodud Jumala näo järgi. Elas 930 aastat.",
+        ref: { slug: "1-mooses", label: "1Ms 1:26 – 5:5" },
+        branches: [
+          { name: "Eeva", relation: "abikaasa", desc: "Esimene naine, „kõikide elavate ema“ (1Ms 3:20).", ref: { label: "1Ms 2:18–25" } },
+          { name: "Kain", relation: "poeg", desc: "Põllumees, tappis venna Aabeli. Tema soost tuli Kaini liin.", ref: { slug: "1-mooses", label: "1Ms 4:1–17" } },
+          { name: "Aabel", relation: "poeg", desc: "Karjus, tema ohver oli Jumalale meelepärane. Kaini poolt tapetud.", ref: { label: "1Ms 4:2–8" } },
+        ],
+      },
+      {
+        name: "Set",
+        year: "u 3870 eKr",
+        category: "patriarch",
+        desc: "Aadama kolmas poeg, sündis Aabeli asemele. Elas 912 aastat.",
+        ref: { slug: "1-mooses", label: "1Ms 4:25; 5:3–8" },
+      },
+      { name: "Enos", category: "other", desc: "Seti poeg. Tema ajal hakati hüüdma Issanda nime.", ref: { label: "1Ms 4:26; 5:6–11" } },
+      { name: "Keenan", category: "other", desc: "Enose poeg, elas 910 aastat.", ref: { label: "1Ms 5:9–14" } },
+      { name: "Mahalalel", category: "other", desc: "Keenani poeg, elas 895 aastat.", ref: { label: "1Ms 5:12–17" } },
+      { name: "Jered", category: "other", desc: "Mahalaleli poeg, elas 962 aastat.", ref: { label: "1Ms 5:15–20" } },
+      {
+        name: "Eenok",
+        category: "prophet",
+        desc: "Käis Jumalaga – Jumal võttis ta ära ilma surma nägemata.",
+        ref: { label: "1Ms 5:21–24; Hb 11:5" },
+      },
+      { name: "Metuusala", category: "patriarch", desc: "Vanim inimene Piiblis – elas 969 aastat. Suri veeuputuse aastal.", ref: { label: "1Ms 5:25–27" } },
+      { name: "Lemek", category: "other", desc: "Noa isa, elas 777 aastat.", ref: { label: "1Ms 5:28–31" } },
+      {
+        name: "Noa",
+        year: "u 2950 eKr",
+        category: "patriarch",
+        desc: "Vaga mees omas põlvkonnas. Ehitas laeva ja päästis perekonna veeuputusest.",
+        ref: { slug: "1-mooses", label: "1Ms 6 – 9" },
+        branches: [
+          { name: "Sem", relation: "poeg", desc: "Vanim poeg, Aabrahami esiisa. Tema liinist tulid semiidid.", category: "patriarch", ref: { label: "1Ms 11:10–26" } },
+          { name: "Haam", relation: "poeg", desc: "Keskmine poeg. Tema lapsed: Kuus, Mitsraim, Puut, Kaanan.", ref: { label: "1Ms 10:6–20" } },
+          { name: "Jaafet", relation: "poeg", desc: "Noorim poeg. Tema soost tulid Vahemere ja Euroopa rahvad.", ref: { label: "1Ms 10:2–5" } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "parast-veeuputust",
+    title: "Pärast veeuputust",
+    span: "u 2400 – 2100 eKr",
+    color: "#3A9AD9",
+    intro: "Semist Aabrahamini – kümme põlvkonda, mille käigus rahvad jagunesid (1Ms 11).",
+    people: [
+      { name: "Sem", category: "patriarch", desc: "Noa vanim poeg, elas 600 aastat.", ref: { label: "1Ms 11:10–11" } },
+      { name: "Arpaksad", category: "other", desc: "Semi poeg, sündinud 2 aastat pärast veeuputust.", ref: { label: "1Ms 11:12–13" } },
+      { name: "Selah", category: "other", desc: "Arpaksadi poeg.", ref: { label: "1Ms 11:14–15" } },
+      { name: "Eeber", category: "other", desc: "Heebrealaste eelisa – nimi „heebrea“ pärineb temalt.", ref: { label: "1Ms 11:16–17" } },
+      { name: "Peleg", category: "other", desc: "„Tema päevil jagunes maa.“ Babüloni torni aeg.", ref: { label: "1Ms 10:25; 11:18–19" } },
+      { name: "Reu", category: "other", desc: "Pelegi poeg.", ref: { label: "1Ms 11:20–21" } },
+      { name: "Serug", category: "other", desc: "Reu poeg.", ref: { label: "1Ms 11:22–23" } },
+      { name: "Naahor", category: "other", desc: "Serugi poeg, Terahi isa.", ref: { label: "1Ms 11:24–25" } },
+      {
+        name: "Terah",
+        category: "other",
+        desc: "Aabrahami isa. Lahkus Uurist Haarani.",
+        ref: { label: "1Ms 11:26–32" },
+        branches: [
+          { name: "Naahor", relation: "poeg", desc: "Aabrahami vend, Rebeka vanaisa.", ref: { label: "1Ms 22:20–24" } },
+          { name: "Haaran", relation: "poeg", desc: "Loti isa, suri varakult Uuris.", ref: { label: "1Ms 11:27–28" } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "patriarhid",
+    title: "Patriarhid",
+    span: "u 2100 – 1800 eKr",
+    color: "#D85A30",
+    intro: "Aabraham, Iisak ja Jaakob – tõotuse kandjad. Iisraeli rahva sünd.",
+    people: [
+      {
+        name: "Aabraham",
+        year: "u 2000 eKr",
+        category: "patriarch",
+        desc: "„Paljude rahvaste isa.“ Jumal sõlmis temaga lepingu ja tõotas Kaananimaa.",
+        ref: { slug: "1-mooses", label: "1Ms 12 – 25" },
+        branches: [
+          { name: "Saara", relation: "abikaasa", desc: "Aabrahami naine, sünnitas Iisaki 90-aastaselt.", ref: { label: "1Ms 17:15–21; 21" } },
+          { name: "Haagar", relation: "liignaine", desc: "Egiptlanna teenija, Ismaeli ema.", ref: { label: "1Ms 16; 21:8–21" } },
+          { name: "Ismael", relation: "poeg", desc: "Haagari poeg, araablaste esiisa.", ref: { label: "1Ms 16; 25:12–18" } },
+          { name: "Lott", relation: "vennapoeg", desc: "Aabrahami vennapoeg. Päästetud Soodomast.", ref: { slug: "1-mooses", label: "1Ms 13; 19" } },
+        ],
+      },
+      {
+        name: "Iisak",
+        year: "u 1900 eKr",
+        category: "patriarch",
+        desc: "Tõotatud poeg. Aabraham oli valmis teda Moorija mäel ohverdama.",
+        ref: { slug: "1-mooses", label: "1Ms 21 – 27" },
+        branches: [
+          { name: "Rebeka", relation: "abikaasa", desc: "Iisaki naine, Naahori tütretütar.", ref: { label: "1Ms 24" } },
+          { name: "Eesav", relation: "poeg", desc: "Iisaki vanem poeg, edomiitide esiisa.", category: "other", ref: { label: "1Ms 25:19 – 36" } },
+        ],
+      },
+      {
+        name: "Jaakob",
+        year: "u 1850 eKr",
+        category: "patriarch",
+        desc: "Sai nimeks Iisrael. Kaheteistkümne hõimu isa.",
+        ref: { slug: "1-mooses", label: "1Ms 25:26; 32:28" },
+        branches: [
+          { name: "Lea", relation: "abikaasa", desc: "Esimene naine, sünnitas Ruubeni, Siimeoni, Leevi, Juuda jt.", ref: { label: "1Ms 29 – 30" } },
+          { name: "Raahel", relation: "abikaasa", desc: "Armastatud naine, Joosepi ja Benjamiini ema.", ref: { label: "1Ms 29 – 35" } },
+          { name: "Ruuben", relation: "poeg", desc: "Esmasündinu, kaotas esmasünniõiguse.", ref: { label: "1Ms 29:32; 49:3–4" } },
+          { name: "Siimeon", relation: "poeg", desc: "Jaakobi teine poeg.", ref: { label: "1Ms 29:33" } },
+          { name: "Leevi", relation: "poeg", desc: "Preestrihõimu esiisa.", ref: { label: "1Ms 29:34" } },
+          { name: "Juuda", relation: "poeg", desc: "Kuninglikust hõimust – Taavet ja Jeesus.", category: "patriarch", ref: { label: "1Ms 29:35; 49:8–12" } },
+          { name: "Issaskar", relation: "poeg", desc: "Jaakobi viies poeg.", ref: { label: "1Ms 30:18" } },
+          { name: "Sebulon", relation: "poeg", desc: "Jaakobi kuues poeg.", ref: { label: "1Ms 30:20" } },
+          { name: "Daan", relation: "poeg", desc: "Bilha poeg.", ref: { label: "1Ms 30:6" } },
+          { name: "Naftali", relation: "poeg", desc: "Bilha poeg.", ref: { label: "1Ms 30:8" } },
+          { name: "Gad", relation: "poeg", desc: "Silpa poeg.", ref: { label: "1Ms 30:11" } },
+          { name: "Aaser", relation: "poeg", desc: "Silpa poeg.", ref: { label: "1Ms 30:13" } },
+          { name: "Joosep", relation: "poeg", desc: "Raaheli poeg, Egiptuse asekuningas.", category: "patriarch", ref: { slug: "1-mooses", label: "1Ms 30:24; 37 – 50" } },
+          { name: "Benjamiin", relation: "poeg", desc: "Noorim poeg, Raaheli teine poeg.", ref: { label: "1Ms 35:18" } },
+        ],
+      },
+      {
+        name: "Juuda",
+        category: "patriarch",
+        desc: "Mesia hõimu esiisa. „Lõvi Juuda soost“ (Ilm 5:5).",
+        ref: { label: "1Ms 38; 49:8–12" },
+        branches: [
+          { name: "Taamar", relation: "minia", desc: "Sünnitas Juudale Perese ja Serahi.", ref: { label: "1Ms 38" } },
+        ],
+      },
+      { name: "Peres", category: "other", desc: "Juuda ja Taamari poeg, kuningliku liini esiisa.", ref: { label: "1Ms 38:29; Rt 4:18" } },
+      { name: "Hesron", category: "other", desc: "Perese poeg.", ref: { label: "Rt 4:18; Mt 1:3" } },
+      { name: "Ram", category: "other", desc: "Hesroni poeg.", ref: { label: "Rt 4:19; Mt 1:4" } },
+      { name: "Amminadab", category: "other", desc: "Aaroni äi.", ref: { label: "4Ms 1:7; Mt 1:4" } },
+      { name: "Nahsson", category: "other", desc: "Juuda hõimu vürst kõrbeteel.", ref: { label: "4Ms 2:3; Mt 1:4" } },
+      { name: "Salmon", category: "other", desc: "Rahabi abikaasa.", ref: { label: "Rt 4:20; Mt 1:5" } },
+      {
+        name: "Boas",
+        category: "other",
+        desc: "Betlemma maaomanik, Ruti lunastaja.",
+        ref: { slug: "rutt", label: "Rt 2 – 4" },
+        branches: [
+          { name: "Rutt", relation: "abikaasa", desc: "Moabi naine, Taaveti vanavanaema.", ref: { slug: "rutt", label: "Rt 1 – 4" } },
+          { name: "Rahab", relation: "ema", desc: "Jeerikost päästetud naine, Salmoni naine.", ref: { label: "Jos 2; Mt 1:5" } },
+        ],
+      },
+      { name: "Obed", category: "other", desc: "Boase ja Ruti poeg, Taaveti vanaisa.", ref: { label: "Rt 4:17; Mt 1:5" } },
+      { name: "Isai", category: "other", desc: "Taaveti isa, Betlemast.", ref: { slug: "1-saamuel", label: "1Sm 16:1; 17:12" } },
+    ],
+  },
+  {
+    id: "egiptus-valjarand",
+    title: "Egiptus ja väljaränd",
+    span: "u 1800 – 1400 eKr",
+    color: "#E8A33D",
+    intro: "Joosepi, Moosese ja Aaroni põlvkonnad – orjusest tõotatud maale.",
+    people: [
+      {
+        name: "Joosep",
+        category: "patriarch",
+        desc: "Jaakobi lemmikpoeg, müüdud Egiptusesse, sai vaarao asekuningaks.",
+        ref: { slug: "1-mooses", label: "1Ms 37 – 50" },
+        branches: [
+          { name: "Manasse", relation: "poeg", desc: "Joosepi esmasündinu.", ref: { label: "1Ms 41:51" } },
+          { name: "Efraim", relation: "poeg", desc: "Joosepi noorem poeg, sai esmasünniõnnistuse.", ref: { label: "1Ms 41:52; 48" } },
+        ],
+      },
+      {
+        name: "Mooses",
+        year: "u 1450 eKr",
+        category: "prophet",
+        desc: "Iisraeli suurim prohvet, seaduste andja, viis rahva Egiptusest välja.",
+        ref: { slug: "2-mooses", label: "2Ms 2 – 5Ms 34" },
+        branches: [
+          { name: "Sippora", relation: "abikaasa", desc: "Midjani preestri Jitro tütar.", ref: { label: "2Ms 2:21" } },
+          { name: "Mirjam", relation: "õde", desc: "Prohvet, juhtis naisi laulu ja tantsuga.", ref: { label: "2Ms 15:20" } },
+        ],
+      },
+      {
+        name: "Aaron",
+        category: "priest",
+        desc: "Moosese vanem vend, esimene ülempreester.",
+        ref: { slug: "2-mooses", label: "2Ms 4:14; 28 – 29" },
+      },
+      {
+        name: "Joosua",
+        category: "other",
+        desc: "Moosese järglane, juhtis rahva Kaananimaale.",
+        ref: { slug: "joosua", label: "Jos 1 – 24" },
+      },
+    ],
+  },
+  {
+    id: "kohtumoistjad",
+    title: "Kohtumõistjad",
+    span: "u 1400 – 1050 eKr",
+    color: "#5DAA8E",
+    intro: "Rahva juhid enne kuningate aega (Kohtum. raamat).",
+    people: [
+      { name: "Deboora", category: "judge", desc: "Naissoost kohtumõistja ja prohvet, võitis Siisera.", ref: { slug: "kohtumoistjate", label: "Km 4 – 5" } },
+      { name: "Giideon", category: "judge", desc: "Lõi 300 mehega midjanlasi.", ref: { slug: "kohtumoistjate", label: "Km 6 – 8" } },
+      { name: "Simson", category: "judge", desc: "Kangelane vilistite vastu, naasiir.", ref: { slug: "kohtumoistjate", label: "Km 13 – 16" } },
+      {
+        name: "Saamuel",
+        category: "prophet",
+        desc: "Viimane kohtumõistja, prohvet, võidis kuningateks Sauli ja Taaveti.",
+        ref: { slug: "1-saamuel", label: "1Sm 1 – 25" },
+      },
+    ],
+  },
+  {
+    id: "kuningad",
+    title: "Iisraeli kuningad",
+    span: "u 1050 – 586 eKr",
+    color: "#1D9E75",
+    intro: "Saulist Sidkijani – Juuda kuninglik liin, millest sündis Messias.",
+    people: [
+      { name: "Saul", category: "king", desc: "Iisraeli esimene kuningas, Benjamiini hõimust.", ref: { slug: "1-saamuel", label: "1Sm 9 – 31" } },
+      {
+        name: "Taavet",
+        year: "u 1010 – 970 eKr",
+        category: "king",
+        desc: "Iisraeli suurim kuningas, „mees Jumala südame järgi“.",
+        ref: { slug: "2-saamuel", label: "1Sm 16 – 1Kn 2" },
+        branches: [
+          { name: "Batseba", relation: "abikaasa", desc: "Saalomoni ema.", ref: { label: "2Sm 11 – 12" } },
+          { name: "Naatan", relation: "poeg", desc: "Taaveti poeg – Luuka evangeeliumi sugupuus Maarja liin.", ref: { label: "Lk 3:31" } },
+          { name: "Absalom", relation: "poeg", desc: "Mässas isa vastu.", ref: { label: "2Sm 13 – 18" } },
+        ],
+      },
+      { name: "Saalomon", category: "king", desc: "Tark kuningas, ehitas templi. Valitses 40 aastat.", ref: { slug: "1-kuningate", label: "1Kn 1 – 11" } },
+      { name: "Rehabeam", category: "king", desc: "Tema ajal kuningriik jagunes Juuda ja Iisraeliks.", ref: { label: "1Kn 12; Mt 1:7" } },
+      { name: "Abija", category: "king", desc: "Juuda kuningas.", ref: { label: "1Kn 15:1–8" } },
+      { name: "Aasa", category: "king", desc: "Hea kuningas, valitses 41 aastat.", ref: { label: "1Kn 15:9–24" } },
+      { name: "Joosafat", category: "king", desc: "Ustav kuningas, sõlmis liidu Ahabiga.", ref: { label: "1Kn 22" } },
+      { name: "Jooram", category: "king", desc: "Abielus Iisebeli tütrega.", ref: { label: "2Kn 8:16–24" } },
+      { name: "Ussija", category: "king", desc: "Valitses 52 aastat, suri pidalitõbisena.", ref: { label: "2Kn 15:1–7" } },
+      { name: "Jootam", category: "king", desc: "Ustav kuningas.", ref: { label: "2Kn 15:32–38" } },
+      { name: "Aahas", category: "king", desc: "Kummardas ebajumalaid.", ref: { label: "2Kn 16" } },
+      { name: "Hiskija", category: "king", desc: "Suur reformaator, päästis Jeruusalemma assüürlastest.", ref: { label: "2Kn 18 – 20" } },
+      { name: "Manasse", category: "king", desc: "Valitses 55 aastat, kahetses lõpus.", ref: { label: "2Kn 21:1–18" } },
+      { name: "Ammon", category: "king", desc: "Valitses kaks aastat.", ref: { label: "2Kn 21:19–26" } },
+      { name: "Joosija", category: "king", desc: "Reformaator – leidis templist seaduseraamatu.", ref: { label: "2Kn 22 – 23" } },
+      { name: "Jekonja", category: "king", desc: "Viidi vangina Babüloniasse.", ref: { label: "2Kn 24:8–17; Mt 1:11" } },
+    ],
+  },
+  {
+    id: "pagendus",
+    title: "Pagendus ja vaikus",
+    span: "586 eKr – 4 eKr",
+    color: "#8B6FB9",
+    intro: "Babüloonia vangipõlv ja taastumine. Mattuse sugupuu vähem tuntud nimed.",
+    people: [
+      { name: "Sealtiel", category: "other", desc: "Jekonja poeg, sündinud vangipõlves.", ref: { label: "Mt 1:12; 1Aj 3:17" } },
+      { name: "Serubabel", category: "other", desc: "Juhatas esimese rahva Babüloniast tagasi, ehitas teise templi.", ref: { slug: "esra", label: "Esr 2 – 6; Hg 1 – 2" } },
+      { name: "Abiud", category: "other", desc: "Serubabeli poeg.", ref: { label: "Mt 1:13" } },
+      { name: "Eliakim", category: "other", desc: "Abiudi poeg.", ref: { label: "Mt 1:13" } },
+      { name: "Asor", category: "other", desc: "Eliakimi poeg.", ref: { label: "Mt 1:13" } },
+      { name: "Saadok", category: "other", desc: "Asori poeg.", ref: { label: "Mt 1:14" } },
+      { name: "Ahhim", category: "other", desc: "Saadoki poeg.", ref: { label: "Mt 1:14" } },
+      { name: "Eliud", category: "other", desc: "Ahhimi poeg.", ref: { label: "Mt 1:14" } },
+      { name: "Eleasar", category: "other", desc: "Eliudi poeg.", ref: { label: "Mt 1:15" } },
+      { name: "Mattan", category: "other", desc: "Eleasari poeg.", ref: { label: "Mt 1:15" } },
+      { name: "Jaakob (Joosepi isa)", category: "other", desc: "Mattani poeg, Joosepi isa.", ref: { label: "Mt 1:15–16" } },
+    ],
+  },
+  {
+    id: "uus-testament",
+    title: "Messia tulek",
+    span: "u 4 eKr",
+    color: "#D4537E",
+    intro: "Joosep, Maarja ja Jeesus Kristus – tõotuse täitumine.",
+    people: [
+      {
+        name: "Joosep (Maarja mees)",
+        category: "other",
+        desc: "Naatsareti puusepp, Jeesuse kasuisa. Taaveti soost.",
+        ref: { slug: "matteus", label: "Mt 1:16–25; Lk 2" },
+      },
+      {
+        name: "Maarja",
+        category: "other",
+        desc: "Jeesuse ema, Eelija ja Sakariase sugulane.",
+        ref: { slug: "luukas", label: "Lk 1:26–56; 2" },
+        branches: [
+          { name: "Eliisabet", relation: "sugulane", desc: "Ristija Johannese ema.", ref: { label: "Lk 1:5–25, 36" } },
+          { name: "Ristija Johannes", relation: "sugulane", desc: "Messia eelkäija, tema kuulutaja.", category: "prophet", ref: { slug: "luukas", label: "Lk 1; Mt 3" } },
+        ],
+      },
+      {
+        name: "Jeesus Kristus",
+        year: "u 4 eKr",
+        category: "jesus",
+        desc: "Lubatud Messias, Jumala Poeg. Sündinud Petlemmas, sai ristisurma ja tõusis üles.",
+        ref: { slug: "matteus", label: "Mt 1:16–17; Lk 3:23–38" },
+      },
+    ],
+  },
+];
+
+const CAT_COLORS: Record<Category, { bg: string; label: string }> = {
+  patriarch: { bg: "#7F77DD", label: "Patriarh" },
+  king: { bg: "#1D9E75", label: "Kuningas" },
+  prophet: { bg: "#E8A33D", label: "Prohvet" },
+  priest: { bg: "#B07BC9", label: "Preester" },
+  judge: { bg: "#5DAA8E", label: "Kohtumõistja" },
+  other: { bg: "#D85A30", label: "Esivane" },
+  jesus: { bg: "#D4537E", label: "Messia" },
 };
 
-const COLORS: Record<Category, { bg: string; border: string; label: string }> = {
-  patriarch: { bg: "#7F77DD", border: "#534AB7", label: "Patriarh" },
-  king: { bg: "#1D9E75", border: "#0F6E56", label: "Kuningas" },
-  other: { bg: "#D85A30", border: "#993C1D", label: "Esivane" },
-  jesus: { bg: "#D4537E", border: "#993356", label: "Messia" },
-};
-
-// Bible references per name → { slug, label }
-const REFS: Record<string, { slug: string; label: string }> = {
-  "Aadam": { slug: "1-mooses", label: "1Ms 2:7; 5:1–5" },
-  "Noa": { slug: "1-mooses", label: "1Ms 6–9" },
-  "Aabraham": { slug: "1-mooses", label: "1Ms 12; 17" },
-  "Iisak": { slug: "1-mooses", label: "1Ms 21:1–7" },
-  "Jaakob": { slug: "1-mooses", label: "1Ms 25:26; 32:28" },
-  "Juuda": { slug: "1-mooses", label: "1Ms 29:35; 49:8–12" },
-  "Ruuben": { slug: "1-mooses", label: "1Ms 29:32" },
-  "Siimeon": { slug: "1-mooses", label: "1Ms 29:33" },
-  "Leevi": { slug: "1-mooses", label: "1Ms 29:34" },
-  "Issaskar": { slug: "1-mooses", label: "1Ms 30:18" },
-  "Sebulon": { slug: "1-mooses", label: "1Ms 30:20" },
-  "Daan": { slug: "1-mooses", label: "1Ms 30:6" },
-  "Naftali": { slug: "1-mooses", label: "1Ms 30:8" },
-  "Gad": { slug: "1-mooses", label: "1Ms 30:11" },
-  "Aaser": { slug: "1-mooses", label: "1Ms 30:13" },
-  "Joosep (Jaakobi poeg)": { slug: "1-mooses", label: "1Ms 30:24; 37–50" },
-  "Manasse (Joosepi poeg)": { slug: "1-mooses", label: "1Ms 41:51" },
-  "Efraim": { slug: "1-mooses", label: "1Ms 41:52" },
-  "Benjamiin": { slug: "1-mooses", label: "1Ms 35:18" },
-  "Mooses": { slug: "2-mooses", label: "2Ms 2:1–10" },
-  "Aaron": { slug: "2-mooses", label: "2Ms 28" },
-  "Peres": { slug: "1-mooses", label: "1Ms 38:29; Mt 1:3" },
-  "Hesron": { slug: "matteus", label: "Mt 1:3; Rt 4:18" },
-  "Ram": { slug: "matteus", label: "Mt 1:3–4; Rt 4:19" },
-  "Amminadab": { slug: "matteus", label: "Mt 1:4; 4Ms 1:7" },
-  "Nahsson": { slug: "matteus", label: "Mt 1:4; 4Ms 2:3" },
-  "Salmon": { slug: "matteus", label: "Mt 1:4–5; Rt 4:20" },
-  "Boas": { slug: "rutt", label: "Rt 2–4; Mt 1:5" },
-  "Obed": { slug: "rutt", label: "Rt 4:17; Mt 1:5" },
-  "Isai": { slug: "1-saamuel", label: "1Sm 16:1; Mt 1:5" },
-  "Taavet": { slug: "1-saamuel", label: "1Sm 16; 2Sm 5; Mt 1:6" },
-  "Saul": { slug: "1-saamuel", label: "1Sm 9–31" },
-  "Saalomon": { slug: "1-kuningate", label: "1Kn 1–11; Mt 1:6" },
-  "Rehabeam": { slug: "1-kuningate", label: "1Kn 12; Mt 1:7" },
-  "Abija": { slug: "1-kuningate", label: "1Kn 15:1–8; Mt 1:7" },
-  "Aasa": { slug: "1-kuningate", label: "1Kn 15:9–24; Mt 1:7" },
-  "Joosafat": { slug: "1-kuningate", label: "1Kn 22; Mt 1:8" },
-  "Jooram": { slug: "2-kuningate", label: "2Kn 8:16–24; Mt 1:8" },
-  "Ussija": { slug: "2-kuningate", label: "2Kn 15:1–7; Mt 1:8" },
-  "Jootam": { slug: "2-kuningate", label: "2Kn 15:32–38; Mt 1:9" },
-  "Aahas": { slug: "2-kuningate", label: "2Kn 16; Mt 1:9" },
-  "Hiskija": { slug: "2-kuningate", label: "2Kn 18–20; Mt 1:9" },
-  "Manasse": { slug: "2-kuningate", label: "2Kn 21:1–18; Mt 1:10" },
-  "Ammon": { slug: "2-kuningate", label: "2Kn 21:19–26; Mt 1:10" },
-  "Joosija": { slug: "2-kuningate", label: "2Kn 22–23; Mt 1:10" },
-  "Jekonja": { slug: "2-kuningate", label: "2Kn 24:8–17; Mt 1:11" },
-  "Sealtiel": { slug: "matteus", label: "Mt 1:12; 1Aj 3:17" },
-  "Serubabel": { slug: "esra", label: "Esr 2:2; Mt 1:12" },
-  "Abiud": { slug: "matteus", label: "Mt 1:13" },
-  "Eliakim": { slug: "matteus", label: "Mt 1:13" },
-  "Asor": { slug: "matteus", label: "Mt 1:13–14" },
-  "Saadok": { slug: "matteus", label: "Mt 1:14" },
-  "Ahhim": { slug: "matteus", label: "Mt 1:14" },
-  "Eliud": { slug: "matteus", label: "Mt 1:14–15" },
-  "Eleasar": { slug: "matteus", label: "Mt 1:15" },
-  "Mattan": { slug: "matteus", label: "Mt 1:15" },
-  "Jaakob (Joosepi isa)": { slug: "matteus", label: "Mt 1:15–16" },
-  "Joosep": { slug: "matteus", label: "Mt 1:16; Lk 2" },
-  "Jeesus Kristus": { slug: "matteus", label: "Mt 1:16–17; Lk 3:23–38" },
-};
-
-function computeDepth(node: BibleNode, name: string, depth = 0): number | null {
-  if (node.name === name) return depth;
-  for (const c of node.children || []) {
-    const r = computeDepth(c, name, depth + 1);
-    if (r !== null) return r;
-  }
-  return null;
-}
-
-// Flatten tree to list with generation depth
-interface FlatItem {
+interface SelectedPerson {
   name: string;
-  attrs: NodeAttrs;
-  generation: number;
-  parent: string | null;
-}
-function flatten(node: BibleNode, gen = 0, parent: string | null = null, acc: FlatItem[] = []): FlatItem[] {
-  acc.push({ name: node.name, attrs: node.attributes, generation: gen, parent });
-  for (const c of node.children || []) flatten(c, gen + 1, node.name, acc);
-  return acc;
-}
-
-interface Selected {
-  name: string;
-  attrs: NodeAttrs;
-  generation: number;
+  category: Category;
+  desc: string;
+  ref?: { slug?: string; label: string };
+  year?: string;
+  relation?: string;
 }
 
 export default function JeesuseSugupuu() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [translate, setTranslate] = useState({ x: 400, y: 60 });
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState<Selected | null>(null);
-  const [zoom, setZoom] = useState(0.45);
-  const [resetKey, setResetKey] = useState(0);
-  const [mounted, setMounted] = useState(false);
-  const [view, setView] = useState<"tree" | "list">("tree");
+  const [selected, setSelected] = useState<SelectedPerson | null>(null);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  useEffect(() => {
-    setMounted(true);
-    const update = () => {
-      if (containerRef.current) {
-        const { width } = containerRef.current.getBoundingClientRect();
-        setTranslate({ x: width / 2, y: 60 });
-      }
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [resetKey, view]);
+  const q = search.trim().toLowerCase();
 
-  const flat = useMemo(() => flatten(bibleTree), []);
-  const matches = useMemo(() => {
-    if (!search.trim()) return new Set<string>();
-    const q = search.toLowerCase();
-    return new Set(flat.filter((n) => n.name.toLowerCase().includes(q)).map((n) => n.name));
-  }, [search, flat]);
+  const filteredPeriods = useMemo(() => {
+    if (!q) return PERIODS;
+    return PERIODS.map((p) => ({
+      ...p,
+      people: p.people.filter(
+        (person) =>
+          person.name.toLowerCase().includes(q) ||
+          person.desc.toLowerCase().includes(q) ||
+          (person.branches || []).some(
+            (b) => b.name.toLowerCase().includes(q) || b.desc.toLowerCase().includes(q)
+          )
+      ),
+    })).filter((p) => p.people.length > 0);
+  }, [q]);
 
-  const handleReset = () => {
-    setZoom(0.45);
-    setResetKey((k) => k + 1);
+  const toggle = (key: string) =>
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const openPerson = (p: Person | Branch, relation?: string) => {
+    setSelected({
+      name: p.name,
+      category: (p.category as Category) || "other",
+      desc: p.desc,
+      ref: p.ref,
+      year: (p as Person).year,
+      relation,
+    });
   };
-
-  const openNode = (name: string, attrs: NodeAttrs) => {
-    const gen = computeDepth(bibleTree, name) ?? 0;
-    setSelected({ name, attrs, generation: gen });
-  };
-
-  const renderNode = useCallback(
-    ({ nodeDatum }: any) => {
-      const cat = (nodeDatum.attributes?.category as Category) || "other";
-      const colors = COLORS[cat];
-      const isMatch = matches.has(nodeDatum.name);
-      const dimmed = search.trim() && !isMatch;
-      // truncate display name for the node rectangle
-      const display = nodeDatum.name.length > 16 ? nodeDatum.name.slice(0, 15) + "…" : nodeDatum.name;
-      return (
-        <g
-          style={{ cursor: "pointer", transition: "opacity 0.2s ease", opacity: dimmed ? 0.25 : 1 }}
-          onClick={() => openNode(nodeDatum.name, nodeDatum.attributes)}
-        >
-          <rect
-            x={-60}
-            y={-18}
-            width={120}
-            height={36}
-            rx={10}
-            ry={10}
-            fill={colors.bg}
-            stroke={isMatch ? "#fbbf24" : colors.border}
-            strokeWidth={isMatch ? 3 : 1.5}
-          />
-          <text
-            fill="#ffffff"
-            stroke="none"
-            textAnchor="middle"
-            dy="0.35em"
-            style={{ fontSize: 13, fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500 }}
-          >
-            {display}
-          </text>
-        </g>
-      );
-    },
-    [matches, search]
-  );
-
-  const filteredList = useMemo(() => {
-    if (!search.trim()) return flat;
-    const q = search.toLowerCase();
-    return flat.filter(
-      (n) => n.name.toLowerCase().includes(q) || n.attrs.desc.toLowerCase().includes(q)
-    );
-  }, [flat, search]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
-      <div className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
-          <h1 className="font-serif text-xl font-bold text-foreground mr-auto">Jeesuse sugupuu</h1>
-          <div className="relative flex-1 min-w-[200px] max-w-xs">
+      <header className="border-b border-border bg-card">
+        <div className="max-w-4xl mx-auto px-4 py-5">
+          <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
+            Jeesuse sugupuu
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Aadamast Kristuseni – põhiliin perioodide kaupa. Klõpsa isikul, et näha
+            piibli viidet ja lisainfot; ava harud, et näha vendi, õdesid ja teisi
+            sugulasi.
+          </p>
+          <div className="mt-4 relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Otsi nime või kirjeldust..."
@@ -352,146 +434,213 @@ export default function JeesuseSugupuu() {
               className="pl-9"
             />
           </div>
-          {view === "tree" && (
-            <Button variant="outline" size="sm" onClick={handleReset}>
-              <RotateCcw className="h-4 w-4 mr-2" /> Lähtesta vaade
-            </Button>
-          )}
         </div>
-        <div className="max-w-6xl mx-auto px-4 pb-3 flex flex-wrap items-center gap-3 text-xs">
-          {(Object.keys(COLORS) as Category[]).map((c) => (
-            <div key={c} className="flex items-center gap-1.5">
-              <span
-                className="inline-block w-3.5 h-3.5 rounded"
-                style={{ background: COLORS[c].bg, border: `1.5px solid ${COLORS[c].border}` }}
-              />
-              <span className="text-muted-foreground">{COLORS[c].label}</span>
-            </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        {filteredPeriods.length === 0 && (
+          <p className="text-center text-muted-foreground py-16">Vastet ei leitud.</p>
+        )}
+
+        <div className="space-y-10">
+          {filteredPeriods.map((period) => (
+            <section key={period.id}>
+              <div className="flex items-baseline gap-3 mb-1">
+                <span
+                  className="inline-block w-3 h-3 rounded-full"
+                  style={{ background: period.color }}
+                />
+                <h2 className="font-serif text-xl font-bold text-foreground">
+                  {period.title}
+                </h2>
+                <span className="text-xs text-muted-foreground">{period.span}</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4 ml-6">{period.intro}</p>
+
+              <ol className="relative ml-3 border-l-2 pl-6 space-y-3" style={{ borderColor: period.color + "55" }}>
+                {period.people.map((person, idx) => {
+                  const cat = CAT_COLORS[person.category];
+                  const key = `${period.id}-${idx}-${person.name}`;
+                  const hasBranches = !!person.branches?.length;
+                  const isOpen = !!expanded[key];
+                  return (
+                    <li key={key} className="relative">
+                      <span
+                        className="absolute -left-[1.95rem] top-3 w-3 h-3 rounded-full ring-4 ring-background"
+                        style={{ background: cat.bg }}
+                      />
+                      <div className="rounded-lg border border-border bg-card hover:border-primary/40 transition-all">
+                        <div className="flex items-start gap-3 p-3">
+                          <button
+                            onClick={() => openPerson(person)}
+                            className="flex-1 text-left min-w-0"
+                          >
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-semibold text-foreground">
+                                {person.name}
+                              </span>
+                              <Badge
+                                style={{ background: cat.bg, color: "#fff" }}
+                                className="text-[10px] py-0 border-0"
+                              >
+                                {cat.label}
+                              </Badge>
+                              {person.year && (
+                                <span className="text-[11px] text-muted-foreground">
+                                  {person.year}
+                                </span>
+                              )}
+                              {person.ref && (
+                                <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                                  <BookOpen className="h-3 w-3" />
+                                  {person.ref.label}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {person.desc}
+                            </p>
+                          </button>
+                          {hasBranches && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggle(key)}
+                              className="flex-shrink-0 h-8 px-2 text-xs"
+                            >
+                              <Users className="h-3.5 w-3.5 mr-1" />
+                              {person.branches!.length}
+                              {isOpen ? (
+                                <ChevronDown className="h-3.5 w-3.5 ml-1" />
+                              ) : (
+                                <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                              )}
+                            </Button>
+                          )}
+                        </div>
+
+                        <AnimatePresence initial={false}>
+                          {hasBranches && isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2, ease: "easeInOut" }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-3 pb-3 pt-1 border-t border-border/60 grid sm:grid-cols-2 gap-2">
+                                {person.branches!.map((b, bi) => {
+                                  const bc = CAT_COLORS[(b.category as Category) || "other"];
+                                  return (
+                                    <button
+                                      key={`${key}-b-${bi}`}
+                                      onClick={() => openPerson(b, b.relation)}
+                                      className="text-left rounded-md border border-border/60 bg-background hover:bg-muted/50 p-2 transition-all"
+                                    >
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        <span
+                                          className="inline-block w-2 h-2 rounded-full"
+                                          style={{ background: bc.bg }}
+                                        />
+                                        <span className="font-medium text-sm">
+                                          {b.name}
+                                        </span>
+                                        <span className="text-[10px] text-muted-foreground">
+                                          {b.relation}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                        {b.desc}
+                                      </p>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
           ))}
         </div>
-      </div>
-
-      <Tabs value={view} onValueChange={(v) => setView(v as any)} className="flex-1 flex flex-col">
-        <div className="max-w-6xl mx-auto w-full px-4 pt-3">
-          <TabsList>
-            <TabsTrigger value="tree">Puu</TabsTrigger>
-            <TabsTrigger value="list">Nimekiri</TabsTrigger>
-          </TabsList>
-        </div>
-
-        <TabsContent value="tree" className="flex-1 mt-3">
-          <motion.div
-            ref={containerRef}
-            className="bg-white border-t border-border"
-            style={{ height: "calc(100vh - 240px)", minHeight: 500 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: mounted ? 1 : 0 }}
-            transition={{ duration: 0.5 }}
-            key={resetKey}
-          >
-            {mounted && view === "tree" && (
-              <Tree
-                data={bibleTree as any}
-                orientation="vertical"
-                translate={translate}
-                zoom={zoom}
-                pathFunc="diagonal"
-                renderCustomNodeElement={renderNode}
-                separation={{ siblings: 1.1, nonSiblings: 1.3 }}
-                nodeSize={{ x: 140, y: 70 }}
-                collapsible={false}
-                enableLegacyTransitions
-                transitionDuration={250}
-                scaleExtent={{ min: 0.15, max: 2 }}
-              />
-            )}
-          </motion.div>
-          <p className="text-xs text-muted-foreground text-center py-2">
-            Lohista puud liigutamiseks · keri suumimiseks · klõpsa nimel, et näha detaile
-          </p>
-        </TabsContent>
-
-        <TabsContent value="list" className="flex-1 mt-3">
-          <div className="max-w-3xl mx-auto px-4 pb-12 space-y-2">
-            {filteredList.map((item, idx) => {
-              const colors = COLORS[item.attrs.category];
-              const ref = REFS[item.name];
-              return (
-                <motion.button
-                  key={`${item.name}-${idx}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.25, delay: Math.min(idx * 0.015, 0.6) }}
-                  onClick={() => openNode(item.name, item.attrs)}
-                  className="w-full text-left flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all"
-                >
-                  <div
-                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                    style={{ background: colors.bg, border: `1.5px solid ${colors.border}` }}
-                  >
-                    {item.generation + 1}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-foreground">{item.name}</span>
-                      <Badge variant="outline" className="text-[10px] py-0">
-                        {colors.label}
-                      </Badge>
-                      {ref && (
-                        <span className="text-[11px] text-muted-foreground flex items-center gap-1">
-                          <BookOpen className="h-3 w-3" />
-                          {ref.label}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{item.attrs.desc}</p>
-                  </div>
-                </motion.button>
-              );
-            })}
-            {filteredList.length === 0 && (
-              <p className="text-center text-muted-foreground py-12">Vastet ei leitud.</p>
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
+      </main>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <SheetContent side="right" className="w-full sm:max-w-md">
+        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
           {selected && (
             <>
               <SheetHeader>
-                <SheetTitle className="text-2xl font-serif text-left">{selected.name}</SheetTitle>
+                <SheetTitle className="text-2xl font-serif text-left">
+                  {selected.name}
+                </SheetTitle>
               </SheetHeader>
               <div className="mt-4 space-y-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge
-                    style={{
-                      background: COLORS[selected.attrs.category].bg,
-                      color: "#fff",
-                      border: `1px solid ${COLORS[selected.attrs.category].border}`,
-                    }}
+                    style={{ background: CAT_COLORS[selected.category].bg, color: "#fff" }}
+                    className="border-0"
                   >
-                    {COLORS[selected.attrs.category].label}
+                    {CAT_COLORS[selected.category].label}
                   </Badge>
-                  <Badge variant="outline">Põlvkond {selected.generation + 1}</Badge>
+                  {selected.relation && (
+                    <Badge variant="outline">{selected.relation}</Badge>
+                  )}
+                  {selected.year && <Badge variant="outline">{selected.year}</Badge>}
                 </div>
-                <p className="text-foreground leading-relaxed">{selected.attrs.desc}</p>
-                {REFS[selected.name] && (
+
+                <p className="text-foreground leading-relaxed">{selected.desc}</p>
+
+                {selected.ref && (
                   <div className="rounded-lg border border-border p-3 bg-muted/30">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                       <BookOpen className="h-4 w-4" />
                       Piibli viide
                     </div>
-                    <p className="font-medium text-foreground mb-3">{REFS[selected.name].label}</p>
-                    <Button asChild size="sm" className="w-full">
-                      <Link to={`/raamat/${REFS[selected.name].slug}`}>
-                        Ava Piiblis
-                        <ExternalLink className="h-4 w-4 ml-2" />
-                      </Link>
-                    </Button>
+                    <p className="font-medium text-foreground mb-3">
+                      {selected.ref.label}
+                    </p>
+                    {selected.ref.slug && (
+                      <Button asChild size="sm" className="w-full">
+                        <Link to={`/raamat/${selected.ref.slug}`}>
+                          Ava Piiblis
+                          <ExternalLink className="h-4 w-4 ml-2" />
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 )}
+
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Loe rohkem
+                  </p>
+                  <a
+                    href={`https://piibel.ee/?otsi=${encodeURIComponent(
+                      selected.name.split(" (")[0]
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between w-full rounded-md border border-border p-3 hover:bg-muted/50 transition-all"
+                  >
+                    <span className="text-sm font-medium">piibel.ee – otsing</span>
+                    <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                  </a>
+                  <a
+                    href={`https://et.wikipedia.org/wiki/${encodeURIComponent(
+                      selected.name.split(" (")[0]
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between w-full rounded-md border border-border p-3 hover:bg-muted/50 transition-all"
+                  >
+                    <span className="text-sm font-medium">Vikipeedia (eesti)</span>
+                    <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                  </a>
+                </div>
               </div>
             </>
           )}
