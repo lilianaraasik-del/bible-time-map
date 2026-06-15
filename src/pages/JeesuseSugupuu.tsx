@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import { CommentaryView } from "@/components/CommentaryView";
 import {
   Search,
   BookOpen,
@@ -14,6 +14,20 @@ import {
   ChevronRight,
   Users,
 } from "lucide-react";
+
+const slugifyEt = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\(.*?\)/g, "")
+    .replace(/ä/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/õ/g, "o")
+    .replace(/ü/g, "u")
+    .replace(/š/g, "s")
+    .replace(/ž/g, "z")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
 
 type Category = "patriarch" | "king" | "prophet" | "priest" | "judge" | "other" | "jesus";
 
