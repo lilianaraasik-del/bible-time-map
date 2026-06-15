@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import { CommentaryView } from "@/components/CommentaryView";
 import {
   Search,
   BookOpen,
@@ -14,6 +14,20 @@ import {
   ChevronRight,
   Users,
 } from "lucide-react";
+
+const slugifyEt = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\(.*?\)/g, "")
+    .replace(/ä/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/õ/g, "o")
+    .replace(/ü/g, "u")
+    .replace(/š/g, "s")
+    .replace(/ž/g, "z")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
 
 type Category = "patriarch" | "king" | "prophet" | "priest" | "judge" | "other" | "jesus";
 
@@ -600,17 +614,13 @@ export default function JeesuseSugupuu() {
                       <BookOpen className="h-4 w-4" />
                       Piibli viide
                     </div>
-                    <p className="font-medium text-foreground mb-3">
-                      {selected.ref.label}
+                    <CommentaryView
+                      html={`<p class="font-medium text-foreground">${selected.ref.label}</p>`}
+                      showRefs={false}
+                    />
+                    <p className="text-[11px] text-muted-foreground mt-2">
+                      Klõpsa viitel, et näha kirjakohta.
                     </p>
-                    {selected.ref.slug && (
-                      <Button asChild size="sm" className="w-full">
-                        <Link to={`/raamat/${selected.ref.slug}`}>
-                          Ava Piiblis
-                          <ExternalLink className="h-4 w-4 ml-2" />
-                        </Link>
-                      </Button>
-                    )}
                   </div>
                 )}
 
@@ -619,25 +629,12 @@ export default function JeesuseSugupuu() {
                     Loe rohkem
                   </p>
                   <a
-                    href={`https://piibel.ee/?otsi=${encodeURIComponent(
-                      selected.name.split(" (")[0]
-                    )}`}
+                    href={`https://piibel.ee/sonaraamat/${slugifyEt(selected.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between w-full rounded-md border border-border p-3 hover:bg-muted/50 transition-all"
                   >
-                    <span className="text-sm font-medium">piibel.ee – otsing</span>
-                    <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                  </a>
-                  <a
-                    href={`https://et.wikipedia.org/wiki/${encodeURIComponent(
-                      selected.name.split(" (")[0]
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between w-full rounded-md border border-border p-3 hover:bg-muted/50 transition-all"
-                  >
-                    <span className="text-sm font-medium">Vikipeedia (eesti)</span>
+                    <span className="text-sm font-medium">piibel.ee sõnaraamat</span>
                     <ExternalLink className="h-4 w-4 text-muted-foreground" />
                   </a>
                 </div>
