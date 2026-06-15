@@ -174,7 +174,7 @@ const PERIODS: Period[] = [
         ref: { slug: "1-mooses", label: "1Ms 25:26; 32:28" },
         branches: [
           { name: "Lea", relation: "abikaasa", desc: "Esimene naine, sünnitas Ruubeni, Siimeoni, Leevi, Juuda jt.", ref: { label: "1Ms 29 – 30" } },
-          { name: "Raahel", relation: "abikaasa", desc: "Armastatud naine, Joosepi ja Benjamiini ema.", ref: { label: "1Ms 29 – 35" } },
+          { name: "Raahel", relation: "abikaasa", desc: "Armastatud naine, Joosepi ja Benjamini ema.", ref: { label: "1Ms 29 – 35" } },
           { name: "Ruuben", relation: "poeg", desc: "Esmasündinu, kaotas esmasünniõiguse.", ref: { label: "1Ms 29:32; 49:3–4" } },
           { name: "Siimeon", relation: "poeg", desc: "Jaakobi teine poeg.", ref: { label: "1Ms 29:33" } },
           { name: "Leevi", relation: "poeg", desc: "Preestrihõimu esiisa.", ref: { label: "1Ms 29:34" } },
@@ -183,10 +183,10 @@ const PERIODS: Period[] = [
           { name: "Sebulon", relation: "poeg", desc: "Jaakobi kuues poeg.", ref: { label: "1Ms 30:20" } },
           { name: "Daan", relation: "poeg", desc: "Bilha poeg.", ref: { label: "1Ms 30:6" } },
           { name: "Naftali", relation: "poeg", desc: "Bilha poeg.", ref: { label: "1Ms 30:8" } },
-          { name: "Gad", relation: "poeg", desc: "Silpa poeg.", ref: { label: "1Ms 30:11" } },
+          { name: "Gaad", relation: "poeg", desc: "Silpa poeg.", ref: { label: "1Ms 30:11" } },
           { name: "Aaser", relation: "poeg", desc: "Silpa poeg.", ref: { label: "1Ms 30:13" } },
           { name: "Joosep", relation: "poeg", desc: "Raaheli poeg, Egiptuse asekuningas.", category: "patriarch", ref: { slug: "1-mooses", label: "1Ms 30:24; 37 – 50" } },
-          { name: "Benjamiin", relation: "poeg", desc: "Noorim poeg, Raaheli teine poeg.", ref: { label: "1Ms 35:18" } },
+          { name: "Benjamin", relation: "poeg", desc: "Noorim poeg, Raaheli teine poeg.", ref: { label: "1Ms 35:18" } },
         ],
       },
       {
