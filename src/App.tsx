@@ -15,6 +15,7 @@ import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
 import Tabernacle from "./pages/Tabernacle.tsx";
+import JeesuseSugupuu from "./pages/JeesuseSugupuu.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ScrollToTop } from "./components/ScrollToTop.tsx";
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
             <Route path="/kaardid/tabernaakel" element={<Tabernacle />} />
+            <Route path="/jeesuse-sugupuu" element={<JeesuseSugupuu />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
