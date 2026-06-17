@@ -72,7 +72,7 @@ const BOOK_DEFS: [string, number][] = [
   ["Kl", 51], ["Koloslastele", 51],
   ["1Ts", 52], ["2Ts", 53], ["1. Tessalooniklastele", 52], ["2. Tessalooniklastele", 53], ["1 Tessalooniklastele", 52], ["2 Tessalooniklastele", 53],
   ["1Tm", 54], ["2Tm", 55], ["1. Timoteosele", 54], ["2. Timoteosele", 55], ["1 Timoteosele", 54], ["2 Timoteosele", 55],
-  ["Tt", 56], ["Tiitusele", 56], ["Tiitus", 56],
+  ["Tt", 56], ["Tiitusele", 56], ["Tiituse", 56], ["Tiitus", 56],
   ["Fm", 57], ["Fileemonile", 57], ["Filemonile", 57],
   // Üldised kirjad + Ilmutus
   ["Hb", 58], ["Heebrealastele", 58],
