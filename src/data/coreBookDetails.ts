@@ -42,16 +42,16 @@ export const coreBookDetails: Record<string, BookDetail> = {
       "Nägi Jumala imetegusid ja ime"
     ],
     additionalFacts: [
-      "Põgenev põõsas oli esimene koht, kus Jumal ilmutas end Moosesele",
-      "10 nuhtlust Egiptusele tõestasid Jumala võimsust",
+      "Põlev põõsas oli esimene koht, kus Jumal ilmutas end Moosesele",
+      "10 nuhtlust Egiptlastele tõestasid Jumala võimsust",
       "Punase mere jagunemine on üks tuntuimaid Piibli imetest",
-      "Kirikutelk (tabernaakkel) oli Jumala elamispaik rahva keskel"
+      "Kogudusetelk (tabernaakkel) oli Jumala elamispaik rahva keskel"
     ],
     breakdowns: [
       { title: "Iisraeli orjapõli (ptk 1-2)", description: "Iisrael on Egiptuses orjuses, Mooses sünnib" },
       { title: "Põlev põõsas (ptk 3)", description: "Jumal ilmub Moosesele ja kutsub teda rahvast vabastama" },
       { title: "Kümme nuhtlust (ptk 7-12)", description: "Jumal saadab Egiptusele nuhtlusi, et vaarao laseks rahva lahti" },
-      { title: "Punasel merel (ptk 14)", description: "Jumal lahutab Punase mere veed, iisraellased pääsevad" },
+      { title: "Punane meri pooldub (ptk 14)", description: "Jumal lahutab Punase mere veed, iisraellased pääsevad" },
       { title: "10 käsku (ptk 20)", description: "Jumal annab Moosesele Siinai mäel 10 käsku" }
     ],
     piibeeUrl: "https://piibel.ee"
