@@ -157,6 +157,8 @@ export default function RaamatuLeht() {
             </div>
           </section>
 
+          <BookNav variant="header" />
+
           <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
             <Card className="p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-l-4 border-l-primary shadow-lg">
               <div className="flex gap-4">
