@@ -333,6 +333,8 @@ export default function RaamatuLeht() {
               </div>
             </Card>
           </section>
+
+          <BookNav variant="footer" />
         </main>
 
         <footer className="border-t border-border/30 bg-card/50 backdrop-blur-sm py-8 mt-16">
