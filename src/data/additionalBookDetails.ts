@@ -563,7 +563,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 60-62 pKr",
     category: "Pauluse kirjad",
     overview: "Efesose kiri näitab Jumala suurt plaani – tuua kõik kokku Kristuses. Esimesed kolm peatükki kirjeldavad seda, mida Jumal on meie heaks teinud (taevased õnnistused, päästmine armust). Viimased kolm näitavad, kuidas selles vastuses elada (kogudus, perekond, vaimne sõjavarustus).",
-    authorFacts: ["Kirjutatud Rooma vangistusest", "Paulus oli Efesoses 3 aastat töötanud", "Tükikoid (Tüühikus) kandis kirja edasi", "Üks 'vangipõlve kirjadest'"],
+    authorFacts: ["Kirjutatud Rooma vangistusest", "Paulus oli Efesoses 3 aastat töötanud", "Tühhikos kandis kirja edasi", "Üks 'vangipõlve kirjadest'"],
     additionalFacts: ["Õnnistused esinevad ühe pikima Kreeka lausena", "Sisaldab vaimset sõjavarustust (Ef 6)", "Õpetus abielust kui Kristuse-koguduse pildist", "Pääste armust läbi usu (Ef 2:8-9)"],
     breakdowns: [
       { title: "Vaimsed õnnistused (ptk 1)", description: "Kõik vaimsed õnnistused taevastes" },
