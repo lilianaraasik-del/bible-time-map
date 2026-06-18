@@ -414,9 +414,9 @@ export const coreBookDetails: Record<string, BookDetail> = {
     author: "Nehemja",
     period: "u 430 eKr",
     category: "Ajalugu",
-    overview: "Nehemja raamat jutustab, kuidas Jeruusalemma müürid ehitati uuesti 52 päevaga. Nehemja, Pärsia kuninga joogimees, sai loa minna Jeruusalemma ja juhtida müüride taastamist. Vaatamata vastaste rünnakutele ja sisemistele probleemidele, viis ta töö edukal lõpuni.",
+    overview: "Nehemja raamat jutustab, kuidas Jeruusalemma müürid ehitati uuesti 52 päevaga. Nehemja, Pärsia kuninga joogikallaja, sai loa minna Jeruusalemma ja juhtida müüride taastamist. Vaatamata vastaste rünnakutele ja sisemistele probleemidele, viis ta töö edukal lõpuni.",
     authorFacts: [
-      "Nehemja oli Pärsia kuninga joogimees",
+      "Nehemja oli Pärsia kuninga joogikallaja",
       "Sai loa minna Jeruusalemma 445 eKr",
       "Juhtis müüride ehitamist 52 päevaga",
       "Viis läbi sotsiaalseid ja vaimulikke reforme"
