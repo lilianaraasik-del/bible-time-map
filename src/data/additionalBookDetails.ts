@@ -426,7 +426,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Markus (Johannes Markus)",
     period: "u 55-65 pKr",
     category: "Evangeeliumid",
-    overview: "Markus on lühim ja kiireim evangeelium. See on kirjutatud Peetruse mälestuste põhjal ja näitab Jeesust kui Jumala Sulast, kes tuleb teenima ja oma elu lunaks andma. Sõna 'kohe' esineb ikka ja jälle – Jeesus on aktiivne, energia täis ja tegutsemiseks valmis.",
+    overview: "Markus on lühim ja kiireim evangeelium. See on kirjutatud Peetruse mälestuste põhjal ja näitab Jeesust kui Jumala Sulast, kes tuleb teenima ja oma elu lunaks andma. Sõna 'kohe' esineb ikka ja jälle – Jeesus on aktiivne, energiat täis ja tegutsemiseks valmis.",
     authorFacts: ["Peetruse õpilane Roomas", "Pauluse misjonireisil esimesel reisil", "Tema ema oli koguduse keskuse omanik Jeruusalemmas", "Asutas Aleksandria koguduse"],
     additionalFacts: ["Lühim evangeelium", "Kiire ja dramaatiline stiil", "Sõna 'kohe' esineb 40+ korda", "Kirjutatud Rooma kristlastele"],
     breakdowns: [
