@@ -647,7 +647,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Paulus",
     period: "u 62-64 pKr",
     category: "Pauluse kirjad",
-    overview: "Paulus jättis noore Timoteose Efesosse koguduse eest hoolitsema. Selles kirjas annab ta praktilisi juhiseid: kuidas korraldada palvetamist, kuidas valida koguduse vanemaid ja diakone, kuidas käsitleda erinevaid inimrühmi. See on 'pastorikiri' kirikujuhtidele.",
+    overview: "Paulus jättis noore Timoteose Efesosse koguduse eest hoolitsema. Selles kirjas annab ta praktilisi juhiseid: kuidas korraldada palvetamist, kuidas valida koguduse vanemaid ja diakone, kuidas käsitleda erinevaid inimrühmi. See on 'pastorikiri' koguduse juhtidele.",
     authorFacts: ["Üks 'pastorikirjadest'", "Timoteos oli Pauluse vaimne poeg", "Pärines Lüstrast", "Tema ema ja vanaema olid usklikud"],
     additionalFacts: ["Üks kolmest 'pastorikirjast'", "Sisaldab nõuded vanematele ja diakonitele (ptk 3)", "Hoiatab valeõpetuste eest", "Kirjutatud Pauluse vahepealsel vabaduses oleku ajal"],
     breakdowns: [
