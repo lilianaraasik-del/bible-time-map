@@ -2178,9 +2178,34 @@
         ],
         "additionalFacts": [
           "Mainib 'vai lihas'",
-...
+          "Räägib oma vaimsest tõstmisest 3. taevasse",
+          "Loendab kannatusi teenimises",
+          "Pikim koguduse rahalise abi käsitlus (8-9)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Lohutus kannatuses (ptk 1)",
+            "description": "Lohutus, et meiegi võiksime lohutada"
+          },
+          {
+            "title": "Uue lepingu teenimine (ptk 3-5)",
+            "description": "Au, mis on jäädav"
+          },
+          {
+            "title": "Annetuste kogumine (ptk 8-9)",
             "description": "Helde annetamine"
-...
+          },
+          {
+            "title": "Pauluse kaitse (ptk 10-12)",
+            "description": "Kiitlemine nõrkusest"
+          },
+          {
+            "title": "Lõppmanitsused (ptk 13)",
+            "description": "Katsuge ennast, kas te olete usus"
+          }
+        ]
+      },
+      "quote": {
         "text": "“Sulle saab küllalt minu armust; sest vägi saab nõtruses täie võimuse!.”",
         "reference": "2. Korintlastele 12:9"
       }
