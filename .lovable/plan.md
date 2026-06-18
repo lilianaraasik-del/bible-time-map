@@ -1,64 +1,56 @@
-# Plaan: E-raamatud eraldi projekti
+# Mitmekeelne tugi: Eesti / Inglise / Vene
 
-## Ülevaade
-Praegune projekt (piibel.ee) jääb tasuta Piibli ajajoone/raamatute lehena. E-raamatute funktsionaalsus liigub uude remixitud projekti, kus toimub müük ja lugemine. piibel.ee-le jääb ainult link uuele projektile.
+## Eesmärk
+Kogu rakendus (UI + sisu) töötab kolmes keeles: **ET (vaikimisi)**, **EN**, **RU**. Keelevalija on navigatsiooniribal paremal (theme toggle kõrval). Valitud keel salvestub `localStorage`-i.
 
-## Samm 1: Remix (käsitsi, sinu poolt)
-Lovable UI-s:
-- Vasakul sidebar → praegune projekt → kolm täppi (⋯) → **Remix**
-- Nimeta uus projekt nt `piibel-eraamatud`
-- Anna mulle teada, kui remix on tehtud (või ava uus projekt ja jätka seal tööd)
+## Tehniline lahendus
 
-## Samm 2: Uues projektis (eraldi vestlus)
-Seal palud:
-- Eemaldada kõik **välja arvatud** e-raamatute osa:
-  - Säilita: `src/pages/Eraamatud.tsx`, `src/components/EpubReader.tsx`, `src/components/PdfReader.tsx`, `src/data/eraamatud.ts`, Stripe checkout, `book-proxy` ja `payments-webhook` edge functions, auth
-  - Eemalda: Ajajoon, Raamat, Kaart, Sündmused jne
-- Tee `/` (avaleht) e-raamatute lehe vaikimisi marsruudiks
-- Backend: **uus Lovable Cloud backend** (vt allpool selgitust)
+**Pakettid:** `i18next`, `react-i18next`, `i18next-browser-languagedetector` (kasutame ainult localStorage detektorit, mitte brauserit — vaikimisi jääb eesti)
 
-## Samm 3: Praeguses projektis (piibel.ee) — see plaan katab seda
-Eemalda e-raamatute kood ja asenda navigatsiooni link uue projekti URL-iga.
+**Struktuur:**
+```
+src/i18n/
+  index.ts              // i18n init
+  locales/
+    et/
+      common.json       // nav, nupud, jalus, üldine UI
+      pages.json        // pealkirjad ja tekstid igal lehel
+      books.json        // raamatute nimed, kirjeldused, tsitaadid
+      events.json       // UT sündmused
+      places.json       // Piibli paigad
+    en/ (sama struktuur)
+    ru/ (sama struktuur)
+```
 
-### Eemaldatavad failid
-- `src/pages/Eraamatud.tsx`
-- `src/components/EpubReader.tsx`
-- `src/components/PdfReader.tsx`
-- `src/data/eraamatud.ts`
-- `supabase/functions/book-proxy/`
-- `supabase/functions/payments-webhook/` (kui kasutusel ainult e-raamatute jaoks)
-- Stripe-seotud kood (kui ei kasutata mujal)
+**Komponendid:**
+- `src/components/LanguageSwitcher.tsx` — kompaktne ET/EN/RU dropdown lipukestega (või lihtsalt koodidega), lisatakse `Navigation.tsx`-i `ThemeToggle` kõrvale
+- Olemasolevad andmefailid (`bookQuotes.ts`, `utEvents.ts`, `additionalBookDetails.ts`) — võtmed jäävad samaks, tekstid kolitakse `books.json` / `events.json`-i, ning komponendid loevad `t(\`books.${slug}.quote\`)` jms kaudu
 
-### Muudetavad failid
-- `src/App.tsx` — eemalda `/eraamatud` route ja import
-- `src/components/Navigation.tsx` — asenda sisemine `/eraamatud` link välise `<a href="https://...lovable.app" target="_blank">` lingiga (URL paneme paika, kui uus projekt on olemas)
-- Eemalda kasutamata sõltuvused (epubjs, react-pdf vms) `package.json`-ist
+## Sammud
 
-## Backend-valikute selgitus
+1. **Install** `i18next react-i18next i18next-browser-languagedetector`
+2. **Loo `src/i18n/index.ts`** — init, fallback `et`, detector ainult `localStorage`-st, vaikimisi `et`
+3. **Impordi `./i18n` failis `src/main.tsx`** (enne `App`)
+4. **Eralda kogu UI tekst** kõikidest lehtedest võtmeteks (`common.json`, `pages.json`)
+5. **Konverdi sisuandmed:**
+   - `bookQuotes.ts` → tsitaadid `books.json`-i (`books.<slug>.quote` + `books.<slug>.reference`)
+   - `utEvents.ts` → sündmuste pealkirjad/kirjeldused `events.json`-i
+   - `additionalBookDetails.ts` → raamatute kirjeldused `books.json`-i
+   - Originaalfailid jätame võtmestruktuuriks, tekstid loetakse `t()`-ga
+6. **Tõlgi kõik kolmes keeles** (ET = praegune tekst, EN ja RU professionaalse kvaliteediga tõlge)
+7. **`LanguageSwitcher`** komponent + integreeri `Navigation.tsx`-i
+8. **Asenda kõik kõvakoodis tekstid** `useTranslation()` + `t('võti')` väljakutsetega kõikides lehtedes/komponentides:
+   - `Navigation`, `Index`, `BibleTimeline`, `Raamat`, `Paigad`, `Sundmused`, `Eraamatud`, `Login`, `Profiil`, `Paketid`, `Tabernacle`, `NotFound`, jalus, lugejad
+9. **`<html lang>`** uuendamine vastavalt valitud keelele (`useEffect` `i18n.language` peal)
+10. **SEO:** `index.html` `<title>` ja meta jäävad eesti vaikimisi; lisame dünaamilise `document.title` igale lehele valitud keele järgi
 
-### Variant A: Uus Lovable Cloud backend uues projektis (SOOVITAN)
-- Uus, eraldi Supabase + Stripe konfiguratsioon
-- piibel.ee saab oma backend'i täielikult puhastada e-raamatute koodist
-- Stripe võtmed ja Google auth tuleb uues projektis uuesti seadistada (~10 min)
-- **Plussid:** puhas eraldatus, sõltumatu skaleerimine, lihtne hallata
-- **Miinused:** tellimuste/kasutajate ajalugu (kui on) jääb vanasse — vajab migreerimist, kui oluline
+## Ulatus / hoiatus
 
-### Variant B: Jagatud backend (uus projekt kasutab piibel.ee Supabase'i)
-- Uus projekt teeb päringuid praeguse projekti edge functions'idele
-- piibel.ee peab säilitama `book-proxy`, `payments-webhook`, auth jne — kood jääb alles, ainult frontend eemaldatakse
-- Vaja seadistada CORS kahele domeenile
-- **Plussid:** olemasolevad kasutajad/tellimused töötavad edasi
-- **Miinused:** sidumine, keerukam, piibel.ee ei ole tegelikult "puhas"
+See on **mahukas muudatus** — ~15 lehte/komponenti ja sadu stringe. Tegelen sellega ühe sammuga, aga tulemus tuleb kontrollida lehthaaval. Kui soovid, võin esimesel etapil teha **ainult raamistiku + navi + avalehe + ajajoone** tööle, ja ülejäänud lehed lisada järgmistes voorudes — nii saad varakult kvaliteeti hinnata.
 
-**Soovitus:** Variant A, kui sul pole veel makseid/kasutajaid; Variant B, kui on olemasolevaid maksvaid kliente.
+## Küsimus enne alustamist
+Kas soovid:
+- **A)** Kõik korraga (üks suur muudatus, pikem ootamine, kõik lehed valmis)
+- **B)** Etapiviisi: 1) raamistik + Navi + Avaleht + Ajajoon → 2) Raamatu leht + sisu → 3) Paigad/Sündmused/E-raamatud → 4) Auth/profiil/paketid/tabernaakel
 
-## Järjekord
-1. Sa vastad: kas on olemas makseid/kasutajaid (Variant A vs B)?
-2. Sa teed remixi UI-s
-3. Sa avad uue projekti ja palud seal e-raamatute setup'i
-4. Saad uue projekti URL-i
-5. Tuled tagasi siia → ma kustutan e-raamatute koodi ja panen lingi navigatsiooni
-
-## Küsimus enne implementatsiooni
-- Kas sul on praegu **päris kliente / tellimusi** Stripe'is e-raamatute eest? (mõjutab Variant A vs B valikut)
-- Kas alustame kohe sammuga 3 (piibel.ee puhastamine), eeldades et URL tuleb hiljem ja paneme esialgu placeholder'i (`#`)?
+Soovitan **B** — saad iga etapi järel kvaliteeti hinnata ja vajadusel tõlkeid korrigeerida enne edasi liikumist.

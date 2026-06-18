@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Map, ChevronDown, Sparkles, Library, Tent, GitBranch } from "lucide-react";
+import { BookOpen, Map, ChevronDown, Sparkles, Library, LogIn, Coins, Tent, GitBranch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -11,12 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Navigation() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const { session } = useAuth();
   const { t } = useTranslation();
-
 
   return (
     <nav className="border-b border-border/30 bg-card/80 backdrop-blur-md sticky top-0 z-40 shadow-sm">
@@ -40,15 +41,18 @@ export function Navigation() {
               <span className="font-medium">{t("nav.books")}</span>
             </Link>
 
-            <a
-              href="https://piibel-eraamatud.lovable.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:bg-muted text-foreground"
+            <Link
+              to="/eraamatud"
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                isActive("/eraamatud")
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "hover:bg-muted text-foreground",
+              )}
             >
               <Library className="h-4 w-4" />
               <span className="font-medium">{t("nav.ebooks")}</span>
-            </a>
+            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -94,6 +98,33 @@ export function Navigation() {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {session ? (
+              <Link
+                to="/profiil"
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                  isActive("/profiil") || isActive("/paketid")
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "hover:bg-muted text-foreground",
+                )}
+              >
+                <Coins className="h-4 w-4" />
+                <span className="font-medium">{session.walletCoin}</span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
+                  isActive("/login")
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "hover:bg-muted text-foreground",
+                )}
+              >
+                <LogIn className="h-4 w-4" />
+                <span className="font-medium">{t("nav.login")}</span>
+              </Link>
+            )}
 
             <LanguageSwitcher />
             <ThemeToggle />
