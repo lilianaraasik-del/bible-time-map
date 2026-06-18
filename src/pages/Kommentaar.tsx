@@ -140,7 +140,7 @@ function CommentaryCard({ row, t }: { row: CommentaryRow; t: (k: string) => stri
           {row.language.toUpperCase()}
         </Badge>
       </div>
-      <CommentaryView html={row.content_html} onRefsChange={setRefs} showRefs={false} />
+      <CommentaryView html={row.content_html} onRefsChange={setRefs} showRefs={true} />
       {refs.length > 0 && (
         <div className="mt-10 pt-6 border-t border-border/50">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
