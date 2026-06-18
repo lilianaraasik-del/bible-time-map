@@ -2491,7 +2491,7 @@
       "author": "Paulus",
       "year": "u 62-64 pKr",
       "details": {
-        "overview": "Paulus jättis noore Timoteose Efesosse koguduse eest hoolitsema. Selles kirjas annab ta praktilisi juhiseid: kuidas korraldada palvetamist, kuidas valida koguduse vanemaid ja diakone, kuidas käsitleda erinevaid inimrühmi. See on 'pastorikiri' kirikujuhtidele.",
+        "overview": "Paulus jättis noore Timoteose Efesosse koguduse eest hoolitsema. Selles kirjas annab ta praktilisi juhiseid: kuidas korraldada palvetamist, kuidas valida koguduse vanemaid ja diakone, kuidas käsitleda erinevaid inimrühmi. See on 'pastorikiri' koguduse juhtidele.",
         "authorFacts": [
           "Üks 'pastorikirjadest'",
           "Timoteos oli Pauluse vaimne poeg",
@@ -2528,8 +2528,8 @@
         ]
       },
       "quote": {
-        "text": "Sest Jumal ei ole meile andnud arguse vaimu, vaid väe ja armastuse ja mõistlikkuse vaimu.",
-        "reference": "2. Timoteosele 1:7"
+        "text": "Ära jäta eneses peituvat armuannet hooletusse",
+        "reference": "1. Timoteosele 4:14"
       }
     },
     "2-timoteosele": {
