@@ -666,7 +666,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Pauluse kirjad",
     overview: "See on Pauluse viimane kiri, kirjutatud teisest Rooma vangistusest enne hukkamist. Sõnumi toon on isiklik ja tõsine: 'Olen võidelnud head võitlust, lõpetanud jooksu, säilitanud usu.' Ta julgustab Timoteost olema tugev ja jätkama tema tööd.",
     authorFacts: ["Pauluse viimane kiri", "Kirjutatud Rooma vangistusest", "Lühikest aega enne tema hukkamist", "Sisaldab tema 'testamenti'"],
-    additionalFacts: ["Kuulus värss: 'kogu Pühakiri on Jumala vaim' (2Tm 3:16)", "Pauluse 'testament'", "Mainib paljude nimesid – nii sõpru kui reetjaid", "Lõpeb kuulsa 'olen võidelnud head võitlust'"],
+    additionalFacts: ["Kuulus salm: 'kogu Kiri on Jumala Vaim' (2Tm 3:16)", "Pauluse 'testament'", "Mainib paljude nimesid – nii sõpru kui reetjaid", "Lõpeb kuulsa salmiga 'olen võidelnud head võitlust'"],
     breakdowns: [
       { title: "Süüta uuesti and (ptk 1)", description: "Jumal ei ole meile andnud arguse vaimu" },
       { title: "Tugev olla armus (ptk 2)", description: "Ole nagu hea sõdur" },
