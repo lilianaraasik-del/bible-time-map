@@ -151,18 +151,18 @@ export const coreBookDetails: Record<string, BookDetail> = {
       "Raamat on kirjutatud pealtnägija perspektiivist – 'meie' ja 'tänase päevani' vormid (nt Jos 5:1; 6:25) viitavad sellele, et autor elas kirjeldatud sündmuste ajal"
     ],
     additionalFacts: [
-      "Joosua oli üks 12 luurajast, kes uurisid Kaanani maad – ainult tema ja Kaaleb usaldasid Jumalat ning said tasuks Tõotatud maale jõuda (4Ms 14:6–9, 30)",
+      "Joosua oli üks 12 maakuulajast, kes uurisid Kaanani maad – ainult tema ja Kaaleb usaldasid Jumalat ning said tasuks Tõotatud maale jõuda (4Ms 14:6–9, 30)",
       "Ta juhtis iisraellaste esimest võitu Amaleki vastu Refidimis, samal ajal kui Mooses palvetas mäe otsas (2Ms 17:8–13)",
-      "Joosua oli sõjaväejuht, prohvet ja vaimulik liider ühes isikus – tema juhtimisel jagati maa loosi teel kaheteistkümne suguharu vahel",
+      "Joosua oli sõjaväejuht, prohvet ja vaimulik liider ühes isikus – tema juhtimisel jagati maa liisu teel kaheteistkümne suguharu vahel",
       "Ta elas 110-aastaseks ja maeti oma pärisossa Timnat-Serahisse Efraimi mäestikus (Jos 24:29–30)",
       "Tema kuulus tunnistus 'Mina ja minu pere, meie teenime Issandat' (Jos 24:15) on saanud üheks tuntuimaks usutunnistuseks Vanas Testamendis",
-      "Uues Testamendis võrreldakse Joosuat eeltüübina Jeesusega – mõlema nimi tähendab 'Issand päästab' ning mõlemad juhivad rahva pärandi sisse (Hb 4:8)"
+      "Uues Testamendis võrreldakse Joosuat\u00a0 Jeesusega – mõlema nimi tähendab 'Issand päästab' ning mõlemad juhivad rahva pärandi sisse (Hb 4:8)"
     ],
     breakdowns: [
       { title: "Jordani ületamine (ptk 3-4)", description: "Jumal peatab Jordani jõe vee, rahvas läheb üle" },
-      { title: "Jeeriko vallutamine (ptk 6)", description: "Müürid langevad, kui rahvas marssib linna ümber" },
+      { title: "Jeeriko vallutamine (ptk 6)", description: "Müürid langevad, kui rahvas marssis linna ümber" },
       { title: "Ai vallutamine (ptk 7-8)", description: "Pärast Aakani pattu vallutab Iisrael Ai linna" },
-      { title: "Päikese peatus (ptk 10)", description: "Jumal peatab päikese Joosua palve peale lahingus" },
+      { title: "Päike peatub (ptk 10)", description: "Jumal peatab päikese Joosua palve peale lahingus" },
       { title: "Maa jagamine (ptk 13-21)", description: "Tõotatud maa jaotatakse 12 suguharu vahel" }
     ],
     piibeeUrl: "https://piibel.ee"
