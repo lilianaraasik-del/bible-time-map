@@ -324,9 +324,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Habakuk",
     period: "u 609-605 eKr",
     category: "Prohvetid",
-    overview: "Habakuk on raamat ausatest küsimustest. Prohvet küsib: 'Issand, miks Sa lubad ebaõiglust? Miks kasutad pattust babüloonlasi oma rahva karistamiseks?' Jumal vastab kannatlikult. Lõpuks ütleb Habakuk: 'Õige elab oma usust' – salm, mis sai apostel Pauluse alusõpetuseks.",
+    overview: "Habakuk on raamat ausatest küsimustest. Prohvet küsib: 'Issand, miks Sa lubad ebaõiglust? Miks kasutad patuseid babüloonlasi oma rahva karistamiseks?' Jumal vastab kannatlikult. Lõpuks ütleb Habakuk: 'Õige elab oma usust' – salm, mis sai apostel Pauluse alusõpetuseks.",
     authorFacts: ["Tundmatu päritolu", "Kuulutas Juudas", "Elas vahetult enne Babüloonia sissetungi", "Tema raamat lõpeb laulu palvega"],
-    additionalFacts: ["Kuulus värss: 'Õige elab oma usust' (Hb 2:4)", "Pauluse aluseks Roomakirjas", "Lõpuosa on muusikaline palve", "Dialoog Jumalaga – haruldane vorm"],
+    additionalFacts: ["Kuulus salm: 'Õige elab oma usust' (Hb 2:4)", "Pauluse aluseks Roomakirjas", "Lõpuosa on muusikaline palve", "Dialoog Jumalaga – haruldane vorm"],
     breakdowns: [
       { title: "Esimene kaebus (ptk 1:1-4)", description: "Miks lubad ebaõiglust?" },
       { title: "Jumala vastus (ptk 1:5-11)", description: "Saadan babüloonlased" },
