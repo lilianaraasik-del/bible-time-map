@@ -245,8 +245,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     breakdowns: [
       { title: "Kohus rahvaste vastu (ptk 1-2)", description: "Hukkamõist kaheksale rahvale" },
       { title: "Iisraeli patud (ptk 3-6)", description: "Sotsiaalne ebaõiglus ja luksus" },
-      { title: "Viis nägemust (ptk 7-9:10)", description: "Rohutirtsud, tuli, looditi jt" },
-      { title: "Aamatsja vastasseis (ptk 7:10-17)", description: "Preester nõuab Aamose lahkumist" },
+      { title: "Viis nägemust (ptk 7-9:10)", description: "Rohutirtsud, tuli, tinalood, puuviljakorv" },
+      { title: "Amasja vastasseis (ptk 7:10-17)", description: "Preester nõuab Aamose lahkumist" },
       { title: "Taastamise lubadus (ptk 9:11-15)", description: "Taaveti hütt ehitatakse üles" },
     ],
     piibeeUrl: "https://piibel.ee",
