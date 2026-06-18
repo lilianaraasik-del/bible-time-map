@@ -115,7 +115,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     author: "Mooses",
     period: "u 1445-1405 eKr",
     category: "Seadus",
-    overview: "5. Moosese raamat on Moosese hüvastijätukõned uuele põlvkonnale enne tõotatud maale sisenemist. Ta meenutab Jumala ustavust, kordab seadusi ja julgustab rahvast armastama Jumalat kogu südamest. See on kutse valida elu ja õnnistus, mitte surm ja needus.",
+    overview: "5. Moosese raamat on Moosese hüvastijätukõne uuele põlvkonnale enne tõotatud maale sisenemist. Ta meenutab Jumala ustavust, kordab seadusi ja julgustab rahvast armastama Jumalat kogu südamest. See on kutse valida elu ja õnnistus, mitte surm ja needus.",
     authorFacts: [
       "Viimane raamat, mille Mooses kirjutas",
       "Pidas kolm suurt kõnet rahvale",
