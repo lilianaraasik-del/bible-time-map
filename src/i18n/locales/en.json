@@ -592,6 +592,10 @@
             "description": "David prepares for the temple's construction"
           }
         ]
+      },
+      "quote": {
+        "text": "Yours, O Lord, is the greatness and the power and the glory and the victory and the majesty, for all that is in the heavens and in the earth is yours.",
+        "reference": "1 Chronicles 29:11"
       }
     },
     "2-ajaraamat": {
@@ -634,6 +638,10 @@
             "description": "Permission to return and rebuild the temple"
           }
         ]
+      },
+      "quote": {
+        "text": "If my people who are called by my name humble themselves, and pray and seek my face and turn from their wicked ways, then I will hear from heaven.",
+        "reference": "2 Chronicles 7:14"
       }
     },
     "esra": {
