@@ -618,7 +618,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     additionalFacts: ["Iga peatükk lõpeb Kristuse tagasituleku teemaga", "Tessaloonika oli rikkas kaubateel", "Õpetab püüdmise kohta (1Ts 4:13-18)", "Lühike praktiline kiri"],
     breakdowns: [
       { title: "Tänu nende usu eest (ptk 1)", description: "Te saite eeskujuks kõigile usklikele" },
-      { title: "Pauluse teenimine (ptk 2)", description: "Me käitusime hellitundeliselt" },
+      { title: "Pauluse teenimine (ptk 2)", description: "Me käitusime hellatundeliselt" },
       { title: "Timoteose aruanne (ptk 3)", description: "Häid uudiseid teie usu kohta" },
       { title: "Püha elu ja püüdmine (ptk 4)", description: "Issand ise tuleb taevast alla" },
       { title: "Issanda päev (ptk 5)", description: "Olge valvel, ärge magage" },
