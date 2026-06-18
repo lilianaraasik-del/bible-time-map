@@ -65,14 +65,14 @@ export const coreBookDetails: Record<string, BookDetail> = {
     authorFacts: [
       "Kirjutas raamatu Siinai mäe jalamil",
       "Sai kõik juhised otse Jumalalt",
-      "Õpetas iisraellasi pühadust ja puhastust",
+      "Õpetas iisraellastele pühadust ja puhastust",
       "Seadis sisse preestrite ja ohvrite süsteemi"
     ],
     additionalFacts: [
       "Raamat sisaldab peamiselt Jumala otseseid juhiseid",
       "Aaron ja tema pojad määrati preestreiks",
       "Lepituspäev oli kõige püham päev aastas",
-      "Paljud seadused puudutasid tervise ja hügieeni"
+      "Paljud seadused puudutasid tervist ja hügieeni"
     ],
     breakdowns: [
       { title: "Ohvrid (ptk 1-7)", description: "Viis erinevat ohvri liiki ja nende tähendused" },
