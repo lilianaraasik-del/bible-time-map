@@ -103,7 +103,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Saalomon",
     period: "u 970-930 eKr",
     category: "Luule",
-    overview: "Ülemlaul on armastuslaul – ilus poeem mehe ja naise vahelisest puhast armastusest. See näitab, et armastus, romantika ja abielu on Jumala kingitused. Paljud näevad selles ka allegooriat Jumala armastusest oma rahva vastu ja Kristuse armastusest koguduse vastu.",
+    overview: "Ülemlaul on armastuslaul – ilus poeem mehe ja naise vahelisest puhtast armastusest. See näitab, et armastus, romantika ja abielu on Jumala kingitused. Paljud näevad selles ka allegooriat Jumala armastusest oma rahva vastu ja Kristuse armastusest koguduse vastu.",
     authorFacts: ["Saalomon kirjutas selle nooruses", "Tema 1005 laulust kõige ilusam", "Kirjeldab pulmaaegset armastust", "Üks lühimaid Piibli raamatuid"],
     additionalFacts: ["Raamatus pole kordagi mainitud Jumala nime", "Kasutab rohkesti loodust kujundeina", "Dialoogi peavad pruut, peigmees ja kõrvalseisjad", "Juudid loevad seda paasapühal"],
     breakdowns: [
