@@ -2082,9 +2082,38 @@
           "Kirjutatud Korintose linnast",
           "Paulus ei olnud veel Roomas käinud",
           "Sai kirja Roma koguduse usaldajalt",
-...
+          "Tertius oli kirjutaja"
+        ],
+        "additionalFacts": [
+          "Pikim Pauluse kiri",
+          "Süstemaatilisim kristliku õpetuse esitus",
+          "Lutheri reformatsiooni alus",
           "Peatükk 8 – 'kõik tuleb heaks'"
-...
+        ],
+        "breakdowns": [
+          {
+            "title": "Kõik on patused (ptk 1-3)",
+            "description": "Nii juudid kui paganad on Jumala viha all"
+          },
+          {
+            "title": "Õigeksmõistmine usust (ptk 4-5)",
+            "description": "Aabraham kui näide"
+          },
+          {
+            "title": "Uus elu Kristuses (ptk 6-8)",
+            "description": "Vabadus patust ja Vaim"
+          },
+          {
+            "title": "Iisrael Jumala plaanis (ptk 9-11)",
+            "description": "Jumal pole oma rahvast hüljanud"
+          },
+          {
+            "title": "Praktiline elu (ptk 12-16)",
+            "description": "Kuidas elada Kristuse järgijana"
+          }
+        ]
+      },
+      "quote": {
         "text": "Ent Jumal osutab oma armastuse meie vastu sellega, et Kristus on surnud meie eest, kui me alles patused olime.",
         "reference": "Roomlastele 5:8"
       }
