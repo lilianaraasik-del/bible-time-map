@@ -530,11 +530,11 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Pauluse kirjad",
     overview: "See on Pauluse isiklikem kiri. Pärast 1. kirja sai ta tagasi rünnaku – mõned kahtlesid tema apostliks olemises. Paulus kaitseb oma teenimist mitte oma jõuga, vaid nõrkusega: 'Sest kui ma olen nõrk, siis ma olen vägev.' Raamat näitab tõelise teenija südant.",
     authorFacts: ["Kirjutatud Makedoonia provintsist", "Pauluse isiklikem kiri", "Reageerib valeapostlite süüdistustele", "Sisaldab tema isiklikke kogemusi"],
-    additionalFacts: ["Mainib 'okast lihas'", "Räägib oma vaimsest tõstmisest 3. taevasse", "Loendab kannatusi teenimises", "Pikim koguduse rahalise abi käsitlus (8-9)"],
+    additionalFacts: ["Mainib 'vai lihas'", "Räägib oma vaimsest tõstmisest 3. taevasse", "Loendab kannatusi teenimises", "Pikim koguduse rahalise abi käsitlus (8-9)"],
     breakdowns: [
       { title: "Lohutus kannatuses (ptk 1)", description: "Lohutus, et meiegi võiksime lohutada" },
       { title: "Uue lepingu teenimine (ptk 3-5)", description: "Au, mis on jäädav" },
-      { title: "Annetuste kogumine (ptk 8-9)", description: "Õnnetus jõukas annetajat" },
+      { title: "Annetuste kogumine (ptk 8-9)", description: "Helde annetamine" },
       { title: "Pauluse kaitse (ptk 10-12)", description: "Kiitlemine nõrkusest" },
       { title: "Lõppmanitsused (ptk 13)", description: "Katsuge ennast, kas te olete usus" },
     ],

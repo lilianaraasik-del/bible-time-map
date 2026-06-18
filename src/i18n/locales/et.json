@@ -2177,7 +2177,7 @@
           "Sisaldab tema isiklikke kogemusi"
         ],
         "additionalFacts": [
-          "Mainib 'okast lihas'",
+          "Mainib 'vai lihas'",
           "Räägib oma vaimsest tõstmisest 3. taevasse",
           "Loendab kannatusi teenimises",
           "Pikim koguduse rahalise abi käsitlus (8-9)"
@@ -2193,7 +2193,7 @@
           },
           {
             "title": "Annetuste kogumine (ptk 8-9)",
-            "description": "Õnnetus jõukas annetajat"
+            "description": "Helde annetamine"
           },
           {
             "title": "Pauluse kaitse (ptk 10-12)",
@@ -2206,7 +2206,7 @@
         ]
       },
       "quote": {
-        "text": "Sulle piisab minu armust, sest nõtruses saab vägi täielikuks.",
+        "text": "“Sulle saab küllalt minu armust; sest vägi saab nõtruses täie võimuse!.”",
         "reference": "2. Korintlastele 12:9"
       }
     },
