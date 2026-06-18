@@ -495,8 +495,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 57-58 pKr",
     category: "Pauluse kirjad",
     overview: "Roomakiri on Pauluse meistriteos – kõige täielikum kristliku õpetuse esitus. Paulus selgitab: kõik on patused, kuid Jumal pakub õigeksmõistmise usu kaudu Jeesusesse. Kiri on muutnud miljonite elusid – Augustinust, Lutherist, Wesleyni.",
-    authorFacts: ["Kirjutatud Korintose linnast", "Paulus ei olnud veel Roomas käinud", "Sai kirja Roma koguduse usaldajat", "Tertius oli kirjutaja"],
-    additionalFacts: ["Pikim Pauluse kiri", "Süstemaatilisim kristliku õpetuse esitus", "Lutheri reformatsiooni alus", "Peatükk 8 – 'kõik mõjub heaks'"],
+    authorFacts: ["Kirjutatud Korintose linnast", "Paulus ei olnud veel Roomas käinud", "Sai kirja Roma koguduse usaldajalt", "Tertius oli kirjutaja"],
+    additionalFacts: ["Pikim Pauluse kiri", "Süstemaatilisim kristliku õpetuse esitus", "Lutheri reformatsiooni alus", "Peatükk 8 – 'kõik tuleb heaks'"],
     breakdowns: [
       { title: "Kõik on patused (ptk 1-3)", description: "Nii juudid kui paganad on Jumala viha all" },
       { title: "Õigeksmõistmine usust (ptk 4-5)", description: "Aabraham kui näide" },
