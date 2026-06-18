@@ -783,8 +783,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Johannes (apostel)",
     period: "u 90-95 pKr",
     category: "Üldkirjad",
-    overview: "Vana apostel Johannes kirjutab armastuse kirja oma vaimsetele lastele. Ta käsitleb kolme põhiteemat: Jumal on valgus (käi valguses), Jumal on armastus (armasta üksteist) ja Jumal on tõde (tunnista Jeesus Kristuseks). Kiri annab kindluse pääste kohta.",
-    authorFacts: ["Sama autor kui Johannese evangeelium", "Vana apostel, üle 80-aastane", "Kirjutas Efesosest", "Tema 'lapsukesed' olid teisene põlvkond"],
+    overview: "Vana apostel Johannes kirjutab armastuse kirja oma vaimsetele lastele. Ta käsitleb kolme põhiteemat: Jumal on valgus (käi valguses), Jumal on armastus (armastage üksteist) ja Jumal on tõde (tunnista Jeesus Kristuseks). Kiri annab kindluse pääste kohta.",
+    authorFacts: ["Sama autor kui Johannese evangeelium", "Vana apostel, üle 80-aastane", "Kirjutas Efesosest", "Tema 'lapsukesed' olid teine põlvkond"],
     additionalFacts: ["Sõna 'teadma' esineb 40 korda", "Annab teada päästekindluse", "Hoiatab gnostitsismi eest", "Tema teemad: valgus, armastus, tõde"],
     breakdowns: [
       { title: "Eluvalgus (ptk 1)", description: "See, mis on olnud algusest peale" },
