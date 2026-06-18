@@ -254,8 +254,8 @@ export const coreBookDetails: Record<string, BookDetail> = {
     category: "Ajalugu",
     overview: "2. Saamueli raamat keskendub kuningas Taaveti valitsusele. See näitab nii Taaveti suuri võite kui ka sügavaid pattulangemisi. Vaatamata tema pattudele, nimetas Jumal teda 'meheks oma südame järgi' ja lubas, et tema soost tuleb igavene kuningas.",
     authorFacts: [
-      "Autor on tundmatu, võib-olla prohvet Natan",
-      "Kirjutas objektiivselt Taaveti võitest ja pattudest",
+      "Autor on tundmatu, võib-olla prohvet Naatan",
+      "Kirjutas objektiivselt Taaveti võitudest ja pattudest",
       "Dokumenteeris Taaveti lepingut Jumalaga",
       "Näitas Jumala armu ja õiglust"
     ],
@@ -267,7 +267,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     ],
     breakdowns: [
       { title: "Taavet Juuda kuningas (ptk 1-4)", description: "Taavet saab kuningaks Juudas, seejärel kogu Iisraelis" },
-      { title: "Lepingulaeka Jeruusalemma (ptk 5-7)", description: "Taavet toob laeeka ja saab lepingu Jumalalt" },
+      { title: "Lepingulaeka toomine Jeruusalemma (ptk 5-7)", description: "Taavet toob laeka ja saab lepingu Jumalalt" },
       { title: "Taaveti võidud (ptk 8-10)", description: "Taavet laiendab kuningriiki" },
       { title: "Batseba ja Uurija (ptk 11-12)", description: "Taaveti suurim patt ja karistus" },
       { title: "Absalomi mäss (ptk 13-19)", description: "Taaveti poeg mässab ja sureb" }
