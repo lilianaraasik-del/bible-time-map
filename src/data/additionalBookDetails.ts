@@ -630,9 +630,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Paulus",
     period: "u 51-52 pKr",
     category: "Pauluse kirjad",
-    overview: "Pärast 1. kirja olid mõned tessaloonika usklikud arvama, et Issanda päev on juba tulnud. Mõned olid lõpetanud töötamise. Paulus selgitab: enne Issanda päeva peavad teatud sündmused juhtuma. Ja: kes ei taha töötada, ärgu söögu.",
+    overview: "Pärast 1. kirja olid mõned tessaloonika usklikud arvamusel, et Issanda päev on juba tulnud. Mõned olid lõpetanud töötamise. Paulus selgitab: enne Issanda päeva peavad teatud sündmused juhtuma. Ja: kes ei taha töötada, ärgu söögu.",
     authorFacts: ["Lühike järelkiri 1. kirjale", "Kirjutatud kuid hiljem", "Selgitab esimese kirja arusaamatusi", "Sisaldab praktilisi käsklusi"],
-    additionalFacts: ["Käsitleb 'Seadusetuse meest' (antikrist)", "Kuulus värss: 'Kes ei taha töötada, ärgu söögu' (2Ts 3:10)", "Lubab Issanda kiiret tagasitulekut", "Õpetab pidama kinni traditsioonidest"],
+    additionalFacts: ["Käsitleb 'Seadusetuse meest' (antikristust)", "Kuulus salm: 'Kes ei taha töötada, ärgu söögu' (2Ts 3:10)", "Lubab Issanda kiiret tagasitulekut", "Õpetab pidama kinni traditsioonidest"],
     breakdowns: [
       { title: "Tänu ja palve (ptk 1)", description: "Issand tuleb ja annab vaeva" },
       { title: "Issanda päev (ptk 2)", description: "Enne tuleb taganemine" },
