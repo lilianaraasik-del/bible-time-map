@@ -89,6 +89,10 @@
             "description": "Joosep müüakse orjaks, kuid saab Egiptuse valitsejaks"
           }
         ]
+      },
+      "quote": {
+        "text": "Alguses lõi Jumal taeva ja maa.",
+        "reference": "1. Moosese 1:1"
       }
     },
     "2-mooses": {
@@ -131,6 +135,10 @@
             "description": "Jumal annab Moosesele Siinai mäel 10 käsku"
           }
         ]
+      },
+      "quote": {
+        "text": "Mina olen Issand, su Jumal, kes tõi sind välja Egiptusemaalt, orjusekojast.",
+        "reference": "2. Moosese 20:2"
       }
     },
     "3-mooses": {
@@ -173,6 +181,10 @@
             "description": "Olge pühad, sest mina, Issand, olen püha"
           }
         ]
+      },
+      "quote": {
+        "text": "Olge pühad, sest mina, Issand, teie Jumal, olen püha!",
+        "reference": "3. Moosese 19:2"
       }
     },
     "4-mooses": {
@@ -215,6 +227,10 @@
             "description": "Prohvet, kes ei suutnud neetuda Iisraeli"
           }
         ]
+      },
+      "quote": {
+        "text": "Issand õnnistagu sind ja hoidku sind! Issand lasku oma pale paista sinu peale ja olgu sulle armuline!",
+        "reference": "4. Moosese 6:24-25"
       }
     },
     "5-mooses": {
@@ -257,6 +273,10 @@
             "description": "Mooses sureb Nebo mäel, olles 120-aastane"
           }
         ]
+      },
+      "quote": {
+        "text": "Kuule, Iisrael! Issand, meie Jumal Issand, on ainus.",
+        "reference": "5. Moosese 6:4"
       }
     },
     "joosua": {
@@ -302,6 +322,10 @@
             "description": "Tõotatud maa jaotatakse 12 suguharu vahel"
           }
         ]
+      },
+      "quote": {
+        "text": "Ole vahva ja tugev, ära karda ega kohku, sest Issand, su Jumal, on sinuga kõikjal, kuhu sa lähed!",
+        "reference": "Joosua 1:9"
       }
     },
     "kohtumoistjad": {
@@ -344,6 +368,10 @@
             "description": "Tugevaim kohtumõistja ja Delila"
           }
         ]
+      },
+      "quote": {
+        "text": "Neil päevil ei olnud Iisraelis kuningat; igaüks tegi, mis tema enese silmis õige oli.",
+        "reference": "Kohtumõistjate 21:25"
       }
     },
     "rutt": {
@@ -382,6 +410,10 @@
             "description": "Boase lunastab Rutti ja abiellub temaga"
           }
         ]
+      },
+      "quote": {
+        "text": "Kuhu sina lähed, sinna lähen ka mina, ja kuhu sina jääd, sinna jään ka mina! Sinu rahvas on minu rahvas ja sinu Jumal on minu Jumal.",
+        "reference": "Rutt 1:16"
       }
     },
     "1-saamuel": {
@@ -424,6 +456,10 @@
             "description": "Poiss võidab hiiglase"
           }
         ]
+      },
+      "quote": {
+        "text": "Inimene näeb, mis silma ees, aga Issand näeb, mis südames on.",
+        "reference": "1. Saamueli 16:7"
       }
     },
     "2-saamuel": {
@@ -466,6 +502,10 @@
             "description": "Taaveti poeg mässab ja sureb"
           }
         ]
+      },
+      "quote": {
+        "text": "Sinu sugu ja sinu kuningriik püsivad sinu ees igavesti, sinu aujärg on kindel igaveseks ajaks.",
+        "reference": "2. Saamueli 7:16"
       }
     },
     "1-kuningate": {
@@ -508,6 +548,10 @@
             "description": "Eelija võetakse tuletõllaga taevasse"
           }
         ]
+      },
+      "quote": {
+        "text": "Anna siis oma sulasele sõnakuulelik süda oma rahvale õigust mõistma, et osata vahet teha hea ja kurja vahel!",
+        "reference": "1. Kuningate 3:9"
       }
     },
     "2-kuningate": {
@@ -550,6 +594,10 @@
             "description": "Babüloonia hävitab linna ja templi"
           }
         ]
+      },
+      "quote": {
+        "text": "Ja Eelija läks tuulispeas taeva.",
+        "reference": "2. Kuningate 2:11"
       }
     },
     "1-ajaraamat": {
@@ -592,6 +640,10 @@
             "description": "Taavet valmistab templi ehitamiseks"
           }
         ]
+      },
+      "quote": {
+        "text": "Sinu päralt, Issand, on suurus ja vägevus, ilu, hiilgus ja austus, sest kõik taevas ja maa peal on sinu oma.",
+        "reference": "1. Ajaraamat 29:11"
       }
     },
     "2-ajaraamat": {
@@ -634,6 +686,10 @@
             "description": "Luba naasta ja ehitada tempel uuesti"
           }
         ]
+      },
+      "quote": {
+        "text": "Kui mu rahvas, kelle üle on hüütud minu nime, alandab ennast ja palub, otsib minu palet ja pöördub oma kurjadelt teedelt, siis ma kuulen taevast.",
+        "reference": "2. Ajaraamat 7:14"
       }
     },
     "esra": {
@@ -676,6 +732,10 @@
             "description": "Esra nõuab parandust"
           }
         ]
+      },
+      "quote": {
+        "text": "Meie Jumala käsi oli heatahtlikult meie üle.",
+        "reference": "Esra 8:18"
       }
     },
     "nehemja": {
@@ -718,6 +778,10 @@
             "description": "Nehemja viib läbi reforme"
           }
         ]
+      },
+      "quote": {
+        "text": "Issanda rõõm on teie ramm!",
+        "reference": "Nehemja 8:10"
       }
     },
     "ester": {
@@ -760,6 +824,10 @@
             "description": "Juudid päästetakse, Purim tähistamine"
           }
         ]
+      },
+      "quote": {
+        "text": "Kes teab, kas sa mitte just selle aja jaoks ei olegi saanud kuninglikku seisust?",
+        "reference": "Ester 4:14"
       }
     },
     "iiob": {
@@ -802,6 +870,10 @@
             "description": "Jumal annab Iiobile kahekordselt tagasi"
           }
         ]
+      },
+      "quote": {
+        "text": "Mina tean, et mu Lunastaja elab, ja viimsena tõuseb ta põrmu peale.",
+        "reference": "Iiob 19:25"
       }
     },
     "psalmid": {
@@ -844,6 +916,10 @@
             "description": "Kiidulaulud ja palverännulaulud"
           }
         ]
+      },
+      "quote": {
+        "text": "Issand on mu karjane, mul pole millestki puudus.",
+        "reference": "Psalm 23:1"
       }
     },
     "opetussonad": {
@@ -886,6 +962,10 @@
             "description": "Ideaalse naise portree"
           }
         ]
+      },
+      "quote": {
+        "text": "Issanda kartus on tarkuse algus.",
+        "reference": "Õpetussõnad 9:10"
       }
     },
     "koguja": {
@@ -928,6 +1008,10 @@
             "description": "Karda Jumalat ja pea Tema käske"
           }
         ]
+      },
+      "quote": {
+        "text": "Igaühel on oma aeg, ja iga asi taeva all sünnib omal ajal.",
+        "reference": "Koguja 3:1"
       }
     },
     "ulemlaul": {
@@ -970,6 +1054,10 @@
             "description": "Armastus on tugev kui surm"
           }
         ]
+      },
+      "quote": {
+        "text": "Mina kuulun oma sõbrale ja tema igatseb mind.",
+        "reference": "Ülemlaul 7:11"
       }
     },
     "jesaja": {
@@ -1012,6 +1100,10 @@
             "description": "Uus taevas ja uus maa"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest meile sünnib laps, meile antakse poeg, kelle õlgadel on valitsus ja kellele pannakse nimeks Imeline Nõuandja, Vägev Jumal, Igavene Isa, Rahuvürst.",
+        "reference": "Jesaja 9:5"
       }
     },
     "jeremija": {
@@ -1054,6 +1146,10 @@
             "description": "Babüloonia hävitab linna"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest mina tunnen mõtteid, mis ma teie kohta mõlgutan, ütleb Issand: need on rahu, aga mitte õnnetuse mõtted, et anda teile tulevikku ja lootust.",
+        "reference": "Jeremija 29:11"
       }
     },
     "nutulaul": {
@@ -1096,6 +1192,10 @@
             "description": "Pööra meid enese juurde, Issand"
           }
         ]
+      },
+      "quote": {
+        "text": "Issanda heldus ei ole lõppenud, tema halastused ei ole otsa saanud; need on igal hommikul uued — sinu ustavus on suur!",
+        "reference": "Nutulaulud 3:22-23"
       }
     },
     "hesekiel": {
@@ -1138,6 +1238,10 @@
             "description": "Nägemus tulevasest templist"
           }
         ]
+      },
+      "quote": {
+        "text": "Ma annan teile uue südame ja panen teie sisse uue vaimu.",
+        "reference": "Hesekiel 36:26"
       }
     },
     "taaniel": {
@@ -1180,6 +1284,10 @@
             "description": "Neli looma ja 70 aastanädalat"
           }
         ]
+      },
+      "quote": {
+        "text": "Tema valitsus on igavene valitsus, mis ei lakka, ja tema kuningriik ei hukku iialgi.",
+        "reference": "Taaniel 7:14"
       }
     },
     "hoosea": {
@@ -1222,6 +1330,10 @@
             "description": "Üleskutse meeleparandusele"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest ma armastan vagadust, mitte ohvrit, ja Jumala tundmist enam kui põletusohvreid.",
+        "reference": "Hoosea 6:6"
       }
     },
     "joel": {
@@ -1264,6 +1376,10 @@
             "description": "Kohus Joosafati orus"
           }
         ]
+      },
+      "quote": {
+        "text": "Pärast seda sünnib, et ma valan oma Vaimu kõige liha peale.",
+        "reference": "Joel 3:1"
       }
     },
     "aamos": {
@@ -1306,6 +1422,10 @@
             "description": "Taaveti hütt ehitatakse üles"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga õigus voolaku nagu vesi ja õiglus nagu kuivamatu jõgi!",
+        "reference": "Aamos 5:24"
       }
     },
     "obadja": {
@@ -1348,6 +1468,10 @@
             "description": "Issand saab kuningaks"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest Issanda päev on ligidal kõigile rahvaile.",
+        "reference": "Obadja 1:15"
       }
     },
     "joona": {
@@ -1390,6 +1514,10 @@
             "description": "Jumal halastab kõigile rahvastele"
           }
         ]
+      },
+      "quote": {
+        "text": "Mina olen Heebrea mees ja kardan Issandat, taeva Jumalat, kes on teinud mere ja kuiva maa.",
+        "reference": "Joona 1:9"
       }
     },
     "miika": {
@@ -1432,6 +1560,10 @@
             "description": "Õigust teha, halastust armastada"
           }
         ]
+      },
+      "quote": {
+        "text": "Sulle, inimene, on öeldud, mis on hea ja mida Issand sinult nõuab: ainult õigust teha, headust armastada ja oma Jumala ees alandlikult käia.",
+        "reference": "Miika 6:8"
       }
     },
     "nahum": {
@@ -1474,6 +1606,10 @@
             "description": "Keegi ei kahetse linna langemist"
           }
         ]
+      },
+      "quote": {
+        "text": "Issand on hea, ta on kindel varjupaik ahastuse päeval ning tunneb neid, kes otsivad varju tema juures.",
+        "reference": "Nahum 1:7"
       }
     },
     "habakuk": {
@@ -1516,6 +1652,10 @@
             "description": "Rõõmustan Issandas, ehkki..."
           }
         ]
+      },
+      "quote": {
+        "text": "Aga õige elab oma usust.",
+        "reference": "Habakuk 2:4"
       }
     },
     "sefanja": {
@@ -1558,6 +1698,10 @@
             "description": "Issand rõõmustab sinu üle lauldes"
           }
         ]
+      },
+      "quote": {
+        "text": "Issand, su Jumal, on su keskel, vägev, kes päästab; ta rõõmustab sinu pärast ülirõõmsasti.",
+        "reference": "Sefanja 3:17"
       }
     },
     "haggai": {
@@ -1600,6 +1744,10 @@
             "description": "Sind ma võtan kui pitseri"
           }
         ]
+      },
+      "quote": {
+        "text": "Selle koja tulevane hiilgus saab suuremaks kui esimese oma.",
+        "reference": "Haggai 2:9"
       }
     },
     "sakarja": {
@@ -1642,6 +1790,10 @@
             "description": "Tema jalad seisavad Õlimäel"
           }
         ]
+      },
+      "quote": {
+        "text": "Mitte väe ega võimu läbi, vaid minu Vaimu läbi, ütleb vägede Issand.",
+        "reference": "Sakarja 4:6"
       }
     },
     "malaki": {
@@ -1684,6 +1836,10 @@
             "description": "Eelija saadetakse"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga teile, kes te kardate mu nime, tõuseb õiguse päike, ja paranemine on tema tiibade all.",
+        "reference": "Malakia 3:20"
       }
     },
     "matteus": {
@@ -1726,6 +1882,10 @@
             "description": "Rist, haud ja suur ülesanne"
           }
         ]
+      },
+      "quote": {
+        "text": "Tulge minu juurde kõik, kes olete vaevatud ja koormatud, ja mina annan teile hingamise!",
+        "reference": "Matteuse 11:28"
       }
     },
     "markus": {
@@ -1768,6 +1928,10 @@
             "description": "Tühi haud ja missioonikäsk"
           }
         ]
+      },
+      "quote": {
+        "text": "Ja ta ütles neile: „Minge kõike maailma ja kuulutage evangeeliumi kogu loodule!“",
+        "reference": "Markuse 16:15"
       }
     },
     "luuka": {
@@ -1810,6 +1974,10 @@
             "description": "Emmause tee ja taevaminek"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest Inimese Poeg on tulnud otsima ja päästma kadunut.",
+        "reference": "Luuka 19:10"
       }
     },
     "johannese-evangeelium": {
@@ -1852,6 +2020,10 @@
             "description": "Peetrus taastatakse"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest nõnda on Jumal maailma armastanud, et ta oma ainusündinud Poja on andnud, et ükski, kes temasse usub, ei hukkuks, vaid et tal oleks igavene elu.",
+        "reference": "Johannese 3:16"
       }
     },
     "apostlite-teod": {
@@ -1894,6 +2066,10 @@
             "description": "Paulus saabub Rooma"
           }
         ]
+      },
+      "quote": {
+        "text": "Vaid te saate väe Pühalt Vaimult, kes tuleb teie üle, ja te peate olema minu tunnistajad.",
+        "reference": "Apostlite teod 1:8"
       }
     },
     "rooma": {
@@ -1936,6 +2112,10 @@
             "description": "Kuidas elada Kristuse järgijana"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga Jumal teeb nähtavaks oma armastuse meie vastu sellega, et Kristus suri meie eest, kui me alles patused olime.",
+        "reference": "Roomlastele 5:8"
       }
     },
     "1-korintlastele": {
@@ -1978,6 +2158,10 @@
             "description": "Kristus on tõepoolest üles tõusnud"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga nüüd jääb usk, lootus, armastus, need kolm, aga suurim neist on armastus.",
+        "reference": "1. Korintlastele 13:13"
       }
     },
     "2-korintlastele": {
@@ -2020,6 +2204,10 @@
             "description": "Katsuge ennast, kas te olete usus"
           }
         ]
+      },
+      "quote": {
+        "text": "Sulle piisab minu armust, sest nõtruses saab vägi täielikuks.",
+        "reference": "2. Korintlastele 12:9"
       }
     },
     "galaatlastele": {
@@ -2062,6 +2250,10 @@
             "description": "Armastus, rõõm, rahu..."
           }
         ]
+      },
+      "quote": {
+        "text": "Aga Vaimu vili on armastus, rõõm, rahu, pikk meel, lahkus, headus, ustavus, tasadus, enesevalitsus.",
+        "reference": "Galaatlastele 5:22-23"
       }
     },
     "efeslastele": {
@@ -2104,6 +2296,10 @@
             "description": "Pange selga Jumala kogu sõjavarustus"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest teie olete armu läbi päästetud usu kaudu — ja see ei ole teist enestest, vaid see on Jumala and.",
+        "reference": "Efeslastele 2:8"
       }
     },
     "filiplastele": {
@@ -2146,6 +2342,10 @@
             "description": "Issanda rahu valvaku teie südameid"
           }
         ]
+      },
+      "quote": {
+        "text": "Ma suudan kõik tema läbi, kes mind teeb vägevaks.",
+        "reference": "Filiplastele 4:13"
       }
     },
     "koloslastele": {
@@ -2188,6 +2388,10 @@
             "description": "Tervitused ja viimased manitsused"
           }
         ]
+      },
+      "quote": {
+        "text": "Mida te iial teete, seda tehke kogu südamest, nõnda nagu Issandale ja mitte nagu inimestele.",
+        "reference": "Koloslastele 3:23"
       }
     },
     "1-tessalooniklastele": {
@@ -2230,6 +2434,10 @@
             "description": "Olge valvel, ärge magage"
           }
         ]
+      },
+      "quote": {
+        "text": "Rõõmustage alati, palvetage lakkamatult, tänage kõige eest!",
+        "reference": "1. Tessalooniklastele 5:16-18"
       }
     },
     "2-tessalooniklastele": {
@@ -2272,6 +2480,10 @@
             "description": "Issanda rahu olgu teiega kõikidega"
           }
         ]
+      },
+      "quote": {
+        "text": "Issand aga on ustav; tema kinnitab teid ja hoiab teid kurja eest.",
+        "reference": "2. Tessalooniklastele 3:3"
       }
     },
     "1-timoteosele": {
@@ -2314,6 +2526,10 @@
             "description": "Lesed, vanemad, sulased, rikkad"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest Jumal ei ole meile andnud arguse vaimu, vaid väe ja armastuse ja mõistlikkuse vaimu.",
+        "reference": "2. Timoteosele 1:7"
       }
     },
     "2-timoteosele": {
@@ -2356,6 +2572,10 @@
             "description": "Tule peagi minu juurde"
           }
         ]
+      },
+      "quote": {
+        "text": "Kogu Pühakiri on Jumala sisendatud ja kasulik õpetamiseks, noomimiseks, parandamiseks, kasvatamiseks õiguses.",
+        "reference": "2. Timoteosele 3:16"
       }
     },
     "tiitusele": {
@@ -2398,6 +2618,10 @@
             "description": "Tule kiiresti minu juurde"
           }
         ]
+      },
+      "quote": {
+        "text": "Sest Jumala arm on ilmunud päästvana kõigile inimestele.",
+        "reference": "Tiitusele 2:11"
       }
     },
     "fileemonile": {
@@ -2440,6 +2664,10 @@
             "description": "Tervitused kaaslastelt"
           }
         ]
+      },
+      "quote": {
+        "text": "Võta ta vastu nõnda nagu mind ennast.",
+        "reference": "Fileemonile 1:17"
       }
     },
     "heebrealastele": {
@@ -2482,6 +2710,10 @@
             "description": "Jooskem kannatlikult võidujooksu"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga usk on loodetava tõelisus, nähtamatute asjade tõendus.",
+        "reference": "Heebrealastele 11:1"
       }
     },
     "jaakobus": {
@@ -2524,6 +2756,10 @@
             "description": "Palju suudab õige inimese palve"
           }
         ]
+      },
+      "quote": {
+        "text": "Olge aga sõna tegijad ja mitte üksnes kuuljad, pettes iseendid.",
+        "reference": "Jaakobuse 1:22"
       }
     },
     "1-peetrus": {
@@ -2566,6 +2802,10 @@
             "description": "Hoidke karja, kes on teie hoolde antud"
           }
         ]
+      },
+      "quote": {
+        "text": "Heitke kõik oma mure tema peale, sest tema peab hoolt teie eest.",
+        "reference": "1. Peetruse 5:7"
       }
     },
     "2-peetrus": {
@@ -2608,6 +2848,10 @@
             "description": "Kasvage meie Issanda armus"
           }
         ]
+      },
+      "quote": {
+        "text": "Kasvage meie Issanda ja Päästja Jeesuse Kristuse armus ja tundmises.",
+        "reference": "2. Peetruse 3:18"
       }
     },
     "1-johannese-kiri": {
@@ -2650,6 +2894,10 @@
             "description": "Te võite teada, et teil on igavene elu"
           }
         ]
+      },
+      "quote": {
+        "text": "Jumal on armastus ja kes püsib armastuses, püsib Jumalas ja Jumal püsib temas.",
+        "reference": "1. Johannese 4:16"
       }
     },
     "2-johannese-kiri": {
@@ -2692,6 +2940,10 @@
             "description": "Sinu väljavalitud õde"
           }
         ]
+      },
+      "quote": {
+        "text": "Ja see ongi armastus, et me elame tema käskude järgi.",
+        "reference": "2. Johannese 1:6"
       }
     },
     "3-johannese-kiri": {
@@ -2734,6 +2986,10 @@
             "description": "Tervitused sõbralt sõpradele"
           }
         ]
+      },
+      "quote": {
+        "text": "Mul ei ole suuremat rõõmu kui see, kui ma kuulen, et mu lapsed tões käivad.",
+        "reference": "3. Johannese 1:4"
       }
     },
     "juudas": {
@@ -2776,6 +3032,10 @@
             "description": "Sellele aga, kes võib teid hoida langematuna"
           }
         ]
+      },
+      "quote": {
+        "text": "Aga sellele, kes võib teid hoida komistamast ja seada teid laitmatuna oma kirkuse palge ette hõiskamisega, ainsale Jumalale, meie Päästjale, olgu auhiilgus.",
+        "reference": "Juuda 1:24-25"
       }
     },
     "ilmutus": {
@@ -2818,6 +3078,10 @@
             "description": "Vaata, ma teen kõik uueks"
           }
         ]
+      },
+      "quote": {
+        "text": "Vaata, mina seisan ukse taga ja koputan. Kui keegi kuuleb mu häält ja avab ukse, siis ma tulen tema juurde sisse.",
+        "reference": "Ilmutuse 3:20"
       }
     },
     "kohtumõistjad": {
@@ -2857,6 +3121,22 @@
             "description": "Igaüks tegi, mis talle õige tundus"
           }
         ]
+      },
+      "quote": {
+        "text": "Neil päevil ei olnud Iisraelis kuningat; igaüks tegi, mis tema enese silmis õige oli.",
+        "reference": "Kohtumõistjate 21:25"
+      }
+    },
+    "õpetussõnad": {
+      "quote": {
+        "text": "Issanda kartus on tarkuse algus.",
+        "reference": "Õpetussõnad 9:10"
+      }
+    },
+    "ülemlaul": {
+      "quote": {
+        "text": "Mina kuulun oma sõbrale ja tema igatseb mind.",
+        "reference": "Ülemlaul 7:11"
       }
     }
   },

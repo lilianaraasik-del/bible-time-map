@@ -89,6 +89,10 @@
             "description": "Joseph is sold into slavery but becomes ruler of Egypt"
           }
         ]
+      },
+      "quote": {
+        "text": "In the beginning, God created the heavens and the earth.",
+        "reference": "Genesis 1:1"
       }
     },
     "2-mooses": {
@@ -131,6 +135,10 @@
             "description": "God gives Moses the 10 Commandments on Mount Sinai"
           }
         ]
+      },
+      "quote": {
+        "text": "I am the Lord your God, who brought you out of the land of Egypt, out of the house of slavery.",
+        "reference": "Exodus 20:2"
       }
     },
     "3-mooses": {
@@ -173,6 +181,10 @@
             "description": "Be holy, because I, the Lord, am holy"
           }
         ]
+      },
+      "quote": {
+        "text": "You shall be holy, for I the Lord your God am holy.",
+        "reference": "Leviticus 19:2"
       }
     },
     "4-mooses": {
@@ -215,6 +227,10 @@
             "description": "A prophet who could not curse Israel"
           }
         ]
+      },
+      "quote": {
+        "text": "The Lord bless you and keep you; the Lord make his face shine upon you and be gracious to you.",
+        "reference": "Numbers 6:24-25"
       }
     },
     "5-mooses": {
@@ -257,6 +273,10 @@
             "description": "Moses dies on Mount Nebo, aged 120"
           }
         ]
+      },
+      "quote": {
+        "text": "Hear, O Israel: The Lord our God, the Lord is one.",
+        "reference": "Deuteronomy 6:4"
       }
     },
     "joosua": {
@@ -302,6 +322,10 @@
             "description": "The Promised Land is divided among the 12 tribes"
           }
         ]
+      },
+      "quote": {
+        "text": "Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.",
+        "reference": "Joshua 1:9"
       }
     },
     "kohtumoistjad": {
@@ -344,6 +368,10 @@
             "description": "The strongest judge and Delilah"
           }
         ]
+      },
+      "quote": {
+        "text": "In those days there was no king in Israel. Everyone did what was right in his own eyes.",
+        "reference": "Judges 21:25"
       }
     },
     "rutt": {
@@ -382,6 +410,10 @@
             "description": "Boaz redeems Ruth and marries her"
           }
         ]
+      },
+      "quote": {
+        "text": "Where you go I will go, and where you lodge I will lodge. Your people shall be my people, and your God my God.",
+        "reference": "Ruth 1:16"
       }
     },
     "1-saamuel": {
@@ -424,6 +456,10 @@
             "description": "A boy defeats a giant"
           }
         ]
+      },
+      "quote": {
+        "text": "For the Lord sees not as man sees: man looks on the outward appearance, but the Lord looks on the heart.",
+        "reference": "1 Samuel 16:7"
       }
     },
     "2-saamuel": {
@@ -466,6 +502,10 @@
             "description": "David's son rebels and dies"
           }
         ]
+      },
+      "quote": {
+        "text": "And your house and your kingdom shall be made sure forever before me. Your throne shall be established forever.",
+        "reference": "2 Samuel 7:16"
       }
     },
     "1-kuningate": {
@@ -508,6 +548,10 @@
             "description": "Elijah is taken to heaven in a chariot of fire"
           }
         ]
+      },
+      "quote": {
+        "text": "Give your servant therefore an understanding heart to govern your people, that I may discern between good and evil.",
+        "reference": "1 Kings 3:9"
       }
     },
     "2-kuningate": {
@@ -550,6 +594,10 @@
             "description": "Babylon destroys the city and the temple"
           }
         ]
+      },
+      "quote": {
+        "text": "And Elijah went up by a whirlwind into heaven.",
+        "reference": "2 Kings 2:11"
       }
     },
     "1-ajaraamat": {
@@ -640,7 +688,7 @@
         ]
       },
       "quote": {
-        "text": "If my people who are called by my name humble themselves, and pray and seek my face and turn from their wicked ways, then I will hear from heaven.",
+        "text": "if my people who are called by my name humble themselves, and pray and seek my face and turn from their wicked ways, then I will hear from heaven.",
         "reference": "2 Chronicles 7:14"
       }
     },
@@ -684,6 +732,10 @@
             "description": "Ezra demands repentance"
           }
         ]
+      },
+      "quote": {
+        "text": "the good hand of our God was upon us.",
+        "reference": "Ezra 8:18"
       }
     },
     "nehemja": {
@@ -726,6 +778,10 @@
             "description": "Nehemiah implements reforms"
           }
         ]
+      },
+      "quote": {
+        "text": "for the joy of the Lord is your strength.",
+        "reference": "Nehemiah 8:10"
       }
     },
     "ester": {
@@ -768,6 +824,10 @@
             "description": "The Jews are saved, Purim celebration"
           }
         ]
+      },
+      "quote": {
+        "text": "Who knows whether you have not come to the kingdom for such a time as this?",
+        "reference": "Esther 4:14"
       }
     },
     "iiob": {
@@ -810,6 +870,10 @@
             "description": "God restores double to Job"
           }
         ]
+      },
+      "quote": {
+        "text": "For I know that my Redeemer lives, and at the last he will stand upon the earth.",
+        "reference": "Job 19:25"
       }
     },
     "psalmid": {
@@ -852,6 +916,10 @@
             "description": "Songs of praise and pilgrimage songs"
           }
         ]
+      },
+      "quote": {
+        "text": "The Lord is my shepherd; I shall not want.",
+        "reference": "Psalm 23:1"
       }
     },
     "opetussonad": {
@@ -894,6 +962,10 @@
             "description": "Portrait of an ideal woman"
           }
         ]
+      },
+      "quote": {
+        "text": "The fear of the Lord is the beginning of wisdom.",
+        "reference": "Proverbs 9:10"
       }
     },
     "koguja": {
@@ -936,6 +1008,10 @@
             "description": "Fear God and keep His commandments"
           }
         ]
+      },
+      "quote": {
+        "text": "For everything there is a season, and a time for every matter under heaven.",
+        "reference": "Ecclesiastes 3:1"
       }
     },
     "ulemlaul": {
@@ -978,6 +1054,10 @@
             "description": "Love is as strong as death"
           }
         ]
+      },
+      "quote": {
+        "text": "I am my beloved’s, and his desire is for me.",
+        "reference": "Song of Solomon 7:11"
       }
     },
     "jesaja": {
@@ -1020,6 +1100,10 @@
             "description": "New heavens and a new earth"
           }
         ]
+      },
+      "quote": {
+        "text": "For to us a child is born, to us a son is given; and the government shall be upon his shoulder, and his name shall be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace.",
+        "reference": "Isaiah 9:6"
       }
     },
     "jeremija": {
@@ -1062,6 +1146,10 @@
             "description": "Babylon destroys the city"
           }
         ]
+      },
+      "quote": {
+        "text": "For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.",
+        "reference": "Jeremiah 29:11"
       }
     },
     "nutulaul": {
@@ -1104,6 +1192,10 @@
             "description": "Restore us to yourself, O Lord"
           }
         ]
+      },
+      "quote": {
+        "text": "The steadfast love of the Lord never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.",
+        "reference": "Lamentations 3:22-23"
       }
     },
     "hesekiel": {
@@ -1146,6 +1238,10 @@
             "description": "Vision of a future temple"
           }
         ]
+      },
+      "quote": {
+        "text": "I will give you a new heart, and a new spirit I will put within you.",
+        "reference": "Ezekiel 36:26"
       }
     },
     "taaniel": {
@@ -1188,6 +1284,10 @@
             "description": "Four beasts and 70 weeks"
           }
         ]
+      },
+      "quote": {
+        "text": "His dominion is an everlasting dominion, which shall not pass away; and his kingdom one that shall not be destroyed.",
+        "reference": "Daniel 7:14"
       }
     },
     "hoosea": {
@@ -1230,6 +1330,10 @@
             "description": "Call to repentance"
           }
         ]
+      },
+      "quote": {
+        "text": "For I desire steadfast love and not sacrifice, the knowledge of God rather than burnt offerings.",
+        "reference": "Hosea 6:6"
       }
     },
     "joel": {
@@ -1272,6 +1376,10 @@
             "description": "Judgment in the Valley of Jehoshaphat"
           }
         ]
+      },
+      "quote": {
+        "text": "And it shall come to pass afterward, that I will pour out my Spirit on all flesh.",
+        "reference": "Joel 2:28"
       }
     },
     "aamos": {
@@ -1314,6 +1422,10 @@
             "description": "David's fallen tent will be restored"
           }
         ]
+      },
+      "quote": {
+        "text": "But let justice roll down like waters, and righteousness like an ever-flowing stream.",
+        "reference": "Amos 5:24"
       }
     },
     "obadja": {
@@ -1356,6 +1468,10 @@
             "description": "The Lord shall be king"
           }
         ]
+      },
+      "quote": {
+        "text": "For the day of the Lord is near upon all the nations.",
+        "reference": "Obadiah 1:15"
       }
     },
     "joona": {
@@ -1398,6 +1514,10 @@
             "description": "God has mercy on all nations"
           }
         ]
+      },
+      "quote": {
+        "text": "“I am a Hebrew,” he replied, “and I worship the Lord, the God of heaven, who made the sea and the dry land.”",
+        "reference": "Jonah 1:9"
       }
     },
     "miika": {
@@ -1440,6 +1560,10 @@
             "description": "To act justly, to love mercy"
           }
         ]
+      },
+      "quote": {
+        "text": "He has told you, O man, what is good; and what does the Lord require of you but to do justice, and to love kindness, and to walk humbly with your God?",
+        "reference": "Micah 6:8"
       }
     },
     "nahum": {
@@ -1482,6 +1606,10 @@
             "description": "No one will mourn the city's fall"
           }
         ]
+      },
+      "quote": {
+        "text": "The Lord is good, a stronghold in the day of trouble; He knows those who take refuge in Him.",
+        "reference": "Nahum 1:7"
       }
     },
     "habakuk": {
@@ -1524,6 +1652,10 @@
             "description": "I will rejoice in the Lord, although..."
           }
         ]
+      },
+      "quote": {
+        "text": "But the righteous shall live by his faith.",
+        "reference": "Habakkuk 2:4"
       }
     },
     "sefanja": {
@@ -1566,6 +1698,10 @@
             "description": "The Lord rejoices over you with singing"
           }
         ]
+      },
+      "quote": {
+        "text": "The Lord your God is in your midst, a mighty one who will save; He will rejoice over you with gladness.",
+        "reference": "Zephaniah 3:17"
       }
     },
     "haggai": {
@@ -1608,6 +1744,10 @@
             "description": "I will take you as my signet"
           }
         ]
+      },
+      "quote": {
+        "text": "The latter glory of this house shall be greater than the former.",
+        "reference": "Haggai 2:9"
       }
     },
     "sakarja": {
@@ -1650,6 +1790,10 @@
             "description": "His feet will stand on the Mount of Olives"
           }
         ]
+      },
+      "quote": {
+        "text": "Not by might, nor by power, but by My Spirit, says the Lord of hosts.",
+        "reference": "Zechariah 4:6"
       }
     },
     "malaki": {
@@ -1692,6 +1836,10 @@
             "description": "Elijah will be sent"
           }
         ]
+      },
+      "quote": {
+        "text": "But for you who fear My name, the sun of righteousness shall rise with healing in its wings.",
+        "reference": "Malachi 4:2"
       }
     },
     "matteus": {
@@ -1734,6 +1882,10 @@
             "description": "The cross, the tomb, and the Great Commission"
           }
         ]
+      },
+      "quote": {
+        "text": "Come to Me, all who labor and are heavy laden, and I will give you rest.",
+        "reference": "Matthew 11:28"
       }
     },
     "markus": {
@@ -1776,6 +1928,10 @@
             "description": "The empty tomb and the mission command"
           }
         ]
+      },
+      "quote": {
+        "text": "And He said to them, \"Go into all the world and proclaim the gospel to the whole creation.\"",
+        "reference": "Mark 16:15"
       }
     },
     "luuka": {
@@ -1818,6 +1974,10 @@
             "description": "Road to Emmaus and ascension"
           }
         ]
+      },
+      "quote": {
+        "text": "For the Son of Man came to seek and to save the lost.",
+        "reference": "Luke 19:10"
       }
     },
     "johannese-evangeelium": {
@@ -1860,6 +2020,10 @@
             "description": "Peter restored"
           }
         ]
+      },
+      "quote": {
+        "text": "For God so loved the world, that He gave His only Son, that whoever believes in Him should not perish but have eternal life.",
+        "reference": "John 3:16"
       }
     },
     "apostlite-teod": {
@@ -1902,6 +2066,10 @@
             "description": "Paul arrives in Rome"
           }
         ]
+      },
+      "quote": {
+        "text": "But you will receive power when the Holy Spirit has come upon you, and you will be My witnesses.",
+        "reference": "Acts 1:8"
       }
     },
     "rooma": {
@@ -1944,6 +2112,10 @@
             "description": "How to live as a follower of Christ"
           }
         ]
+      },
+      "quote": {
+        "text": "But God shows His love for us in that while we were still sinners, Christ died for us.",
+        "reference": "Romans 5:8"
       }
     },
     "1-korintlastele": {
@@ -1986,6 +2158,10 @@
             "description": "Christ has indeed risen"
           }
         ]
+      },
+      "quote": {
+        "text": "So now faith, hope, and love abide, these three; but the greatest of these is love.",
+        "reference": "1 Corinthians 13:13"
       }
     },
     "2-korintlastele": {
@@ -2028,6 +2204,10 @@
             "description": "Examine yourselves, to see whether you are in the faith"
           }
         ]
+      },
+      "quote": {
+        "text": "My grace is sufficient for you, for my power is made perfect in weakness.",
+        "reference": "2 Corinthians 12:9"
       }
     },
     "galaatlastele": {
@@ -2070,6 +2250,10 @@
             "description": "Love, joy, peace..."
           }
         ]
+      },
+      "quote": {
+        "text": "But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.",
+        "reference": "Galatians 5:22-23"
       }
     },
     "efeslastele": {
@@ -2112,6 +2296,10 @@
             "description": "Put on the whole armor of God"
           }
         ]
+      },
+      "quote": {
+        "text": "For by grace you have been saved through faith. And this is not your own doing; it is the gift of God.",
+        "reference": "Ephesians 2:8"
       }
     },
     "filiplastele": {
@@ -2154,6 +2342,10 @@
             "description": "The peace of the Lord will guard your hearts"
           }
         ]
+      },
+      "quote": {
+        "text": "I can do all things through him who strengthens me.",
+        "reference": "Philippians 4:13"
       }
     },
     "koloslastele": {
@@ -2196,6 +2388,10 @@
             "description": "Greetings and final admonitions"
           }
         ]
+      },
+      "quote": {
+        "text": "Whatever you do, work heartily, as for the Lord and not for men.",
+        "reference": "Colossians 3:23"
       }
     },
     "1-tessalooniklastele": {
@@ -2238,6 +2434,10 @@
             "description": "Be alert, do not slumber"
           }
         ]
+      },
+      "quote": {
+        "text": "Rejoice always, pray without ceasing, give thanks in all circumstances.",
+        "reference": "1 Thessalonians 5:16-18"
       }
     },
     "2-tessalooniklastele": {
@@ -2280,6 +2480,10 @@
             "description": "The peace of the Lord be with you all"
           }
         ]
+      },
+      "quote": {
+        "text": "But the Lord is faithful. He will establish you and guard you against the evil one.",
+        "reference": "2 Thessalonians 3:3"
       }
     },
     "1-timoteosele": {
@@ -2322,6 +2526,10 @@
             "description": "Widows, elders, servants, the rich"
           }
         ]
+      },
+      "quote": {
+        "text": "For God gave us a spirit not of fear but of power and love and self-control.",
+        "reference": "2 Timothy 1:7"
       }
     },
     "2-timoteosele": {
@@ -2364,6 +2572,10 @@
             "description": "Come quickly to me"
           }
         ]
+      },
+      "quote": {
+        "text": "All Scripture is breathed out by God and profitable for teaching, for reproof, for correction, and for training in righteousness.",
+        "reference": "2 Timothy 3:16"
       }
     },
     "tiitusele": {
@@ -2406,6 +2618,10 @@
             "description": "Come quickly to me"
           }
         ]
+      },
+      "quote": {
+        "text": "For the grace of God has appeared, bringing salvation for all people.",
+        "reference": "Titus 2:11"
       }
     },
     "fileemonile": {
@@ -2448,6 +2664,10 @@
             "description": "Greetings from companions"
           }
         ]
+      },
+      "quote": {
+        "text": "Receive him as you would receive me.",
+        "reference": "Philemon 1:17"
       }
     },
     "heebrealastele": {
@@ -2490,6 +2710,10 @@
             "description": "Let us run with endurance the race"
           }
         ]
+      },
+      "quote": {
+        "text": "Now faith is the assurance of things hoped for, the conviction of things not seen.",
+        "reference": "Hebrews 11:1"
       }
     },
     "jaakobus": {
@@ -2532,6 +2756,10 @@
             "description": "The prayer of a righteous person has great power"
           }
         ]
+      },
+      "quote": {
+        "text": "But be doers of the word, and not hearers only, deceiving yourselves.",
+        "reference": "James 1:22"
       }
     },
     "1-peetrus": {
@@ -2574,6 +2802,10 @@
             "description": "Tend the flock of God that is in your charge"
           }
         ]
+      },
+      "quote": {
+        "text": "Casting all your anxieties on him, because he cares for you.",
+        "reference": "1 Peter 5:7"
       }
     },
     "2-peetrus": {
@@ -2616,6 +2848,10 @@
             "description": "Grow in the grace of our Lord"
           }
         ]
+      },
+      "quote": {
+        "text": "But grow in the grace and knowledge of our Lord and Savior Jesus Christ.",
+        "reference": "2 Peter 3:18"
       }
     },
     "1-johannese-kiri": {
@@ -2658,6 +2894,10 @@
             "description": "You may know that you have eternal life"
           }
         ]
+      },
+      "quote": {
+        "text": "God is love, and whoever abides in love abides in God, and God abides in him.",
+        "reference": "1 John 4:16"
       }
     },
     "2-johannese-kiri": {
@@ -2700,6 +2940,10 @@
             "description": "Your elect sister"
           }
         ]
+      },
+      "quote": {
+        "text": "And this is love, that we walk according to his commandments.",
+        "reference": "2 John 1:6"
       }
     },
     "3-johannese-kiri": {
@@ -2742,6 +2986,10 @@
             "description": "Greetings from a friend to friends"
           }
         ]
+      },
+      "quote": {
+        "text": "I have no greater joy than to hear that my children are walking in the truth.",
+        "reference": "3 John 1:4"
       }
     },
     "juudas": {
@@ -2784,6 +3032,10 @@
             "description": "Now to him who is able to keep you from stumbling"
           }
         ]
+      },
+      "quote": {
+        "text": "Now to him who is able to keep you from stumbling and to present you blameless before the presence of his glory with great joy, to the only God, our Savior, be glory, majesty, dominion, and authority, before all time and now and forever. Amen.",
+        "reference": "Jude 1:24-25"
       }
     },
     "ilmutus": {
@@ -2826,6 +3078,10 @@
             "description": "Behold, I am making all things new"
           }
         ]
+      },
+      "quote": {
+        "text": "Behold, I stand at the door and knock. If anyone hears my voice and opens the door, I will come in to him and eat with him, and he with me.",
+        "reference": "Revelation 3:20"
       }
     },
     "kohtumõistjad": {
@@ -2865,6 +3121,22 @@
             "description": "Everyone did what was right in their own eyes"
           }
         ]
+      },
+      "quote": {
+        "text": "In those days there was no king in Israel. Everyone did what was right in his own eyes.",
+        "reference": "Judges 21:25"
+      }
+    },
+    "õpetussõnad": {
+      "quote": {
+        "text": "The fear of the Lord is the beginning of wisdom.",
+        "reference": "Proverbs 9:10"
+      }
+    },
+    "ülemlaul": {
+      "quote": {
+        "text": "I belong to my beloved, and his desire is for me.",
+        "reference": "Song of Solomon 7:10"
       }
     }
   },
