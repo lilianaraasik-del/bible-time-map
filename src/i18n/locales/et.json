@@ -2950,18 +2950,18 @@
       "author": "Johannes",
       "year": "u 90-95 pKr",
       "details": {
-        "overview": "Lühike isiklik kiri Gaiusele, kes näitas külalislahkust rändavatele kuulutajatele. Vastupidiselt Diotrefesele, kes keeldus külalisi vastu võtmast ja ajas teisi koguduset välja. Kiri õpetab toetama tõe edasikuulutamist.",
+        "overview": "Lühike isiklik kiri Gaajusele, kes näitas külalislahkust rändavatele kuulutajatele. Vastupidiselt Diotrefesele, kes keeldus külalisi vastu võtmast ja ajas teisi koguduset välja. Kiri õpetab toetama tõe edasikuulutamist.",
         "authorFacts": [
-          "Adresseeritud Gaiusele",
+          "Adresseeritud Gaajusele",
           "Kõige isiklikum Johannese kiri",
-          "Mainib kolme inimest: Gaius, Diotrefes, Demetrios",
+          "Mainib kolme inimest: Gaajus, Diotrefes, Demeetrios",
           "Käsitleb koguduste konflikti"
         ],
         "additionalFacts": [
-          "Ainult 14 värssi",
+          "Ainult 14 salmi",
           "Diotrefes 'tahab olla esimene'",
           "Käsitleb külalislahkust",
-          "Demetrios saab head tunnistust"
+          "Demeetrios saab head tunnistust"
         ],
         "breakdowns": [
           {
@@ -2969,16 +2969,16 @@
             "description": "Mul ei ole suuremat rõõmu"
           },
           {
-            "title": "Gaiuse külalislahkus (v 5-8)",
-            "description": "Sa teed truult"
+            "title": "Gaajuse külalislahkus (v 5-8)",
+            "description": "Sa teed ustavalt"
           },
           {
             "title": "Diotrefese probleem (v 9-10)",
             "description": "Tema, kes tahab olla esimene"
           },
           {
-            "title": "Demetriose tunnistus (v 11-12)",
-            "description": "Demetriosele kõik annavad tunnistust"
+            "title": "Demeetriose tunnistus (v 11-12)",
+            "description": "Demeetriosele kõik annavad tunnistust"
           },
           {
             "title": "Lõpetus (v 13-14)",
@@ -2987,7 +2987,7 @@
         ]
       },
       "quote": {
-        "text": "Mul ei ole suuremat rõõmu kui see, kui ma kuulen, et mu lapsed tões käivad.",
+        "text": "“Mul ei ole suuremat rõõmu kui see, et ma kuulen oma lapsi tões käivat.”",
         "reference": "3. Johannese 1:4"
       }
     },
