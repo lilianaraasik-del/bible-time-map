@@ -437,11 +437,11 @@ export const coreBookDetails: Record<string, BookDetail> = {
     piibeeUrl: "https://piibel.ee"
   },
   "ester": {
-    name: "Esteri raamat",
+    name: "Estri raamat",
     author: "Tundmatu (võib-olla Mordokai)",
     period: "u 465 eKr",
     category: "Ajalugu",
-    overview: "Esteri raamat on dramaatiline lugu sellest, kuidas Jumal päästis juudi rahva hävingust Pärsias. Ester, juudi neiu, sai kuningannaks ja riskis oma eluga, et päästa oma rahvast. Kuigi Jumala nime ei mainita, on Tema providentssi selgelt näha kogu loos.",
+    overview: "Estri raamat on dramaatiline lugu sellest, kuidas Jumal päästis juudi rahva hävingust Pärsias. Ester, juudi neiu, sai kuningannaks ja riskis oma eluga, et päästa oma rahvast. Kuigi Jumala nime ei mainita, on Tema providentssi selgelt näha kogu loos.",
     authorFacts: [
       "Autor on tundmatu, võib-olla Mordokai",
       "Kirjutas Pärsia perioodil",
@@ -451,15 +451,15 @@ export const coreBookDetails: Record<string, BookDetail> = {
     additionalFacts: [
       "Ester oli Mordokai õetütar",
       "Ta varjas algul oma juudi päritolu",
-      "Haman ehitas poomispuu Mordokai jaoks",
-      "Lõpuks poodi Haman ise sellel puul üles"
+      "Haaman ehitas poomispuu Mordokai jaoks",
+      "Lõpuks poodi Haaman ise sellel puul üles"
     ],
     breakdowns: [
       { title: "Ester kuningannaks (ptk 1-2)", description: "Vasti kukutatakse, Ester saab kuningannaks" },
-      { title: "Hamani plaan (ptk 3)", description: "Haman plaanib hävitada kõik juudid" },
-      { title: "Mordokai abi (ptk 4)", description: "Mordokai palub Esterit sekkuda" },
-      { title: "Esteri julgus (ptk 5-7)", description: "Ester paljastab Hamani plaani" },
-      { title: "Juutide päästmine (ptk 8-10)", description: "Juudid päästetakse, Purim tähistamine" }
+      { title: "Haamani plaan (ptk 3)", description: "Haaman plaanib hävitada kõik juudid" },
+      { title: "Mordokai abi (ptk 4)", description: "Mordokai palub Estrit sekkuda" },
+      { title: "Estri julgus (ptk 5-7)", description: "Ester paljastab Haamani plaani" },
+      { title: "Juutide päästmine (ptk 8-10)", description: "Juudid päästetakse, Puurim tähistamine" }
     ],
     piibeeUrl: "https://piibel.ee"
   }
