@@ -2871,5 +2871,22 @@
     "sourceLabel": "Source",
     "sourceClassical": "Based on classical commentaries (Matthew Henry, Calvin, Barnes, JFB)",
     "introduction": "Introduction"
+  },
+  "book": {
+    "overview": "Overview",
+    "interestingFactsLabel": "Interesting facts",
+    "aboutBook": "About {{name}}",
+    "moreInterestingLabel": "More to discover",
+    "additionalFactsTitle": "Additional facts",
+    "mainEventsLabel": "Key events",
+    "turningPoints": "Turning points of the book",
+    "turningPointsIntro": "Five of the most important moments that shaped this book's message",
+    "readyToDive": "Ready to dive deeper?",
+    "readFullDescription": "Read the full book of {{name}} and discover even more wisdom",
+    "openOnPiibel": "Open on piibel.ee",
+    "notFoundTitle": "Book not found",
+    "notFoundDesc": "Unfortunately we couldn't find this book.",
+    "backToHome": "Back to home",
+    "footerCopyright": "© {{year}} Tree of Bible Wisdom. All rights reserved."
   }
 }

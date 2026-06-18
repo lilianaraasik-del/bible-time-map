@@ -2871,5 +2871,22 @@
     "sourceLabel": "Allikas",
     "sourceClassical": "Klassikaliste kommentaaride põhjal (Matthew Henry, Calvin, Barnes, JFB)",
     "introduction": "Sissejuhatus"
+  },
+  "book": {
+    "overview": "Ülevaade",
+    "interestingFactsLabel": "Huvitavad faktid",
+    "aboutBook": "{{name}} kohta",
+    "moreInterestingLabel": "Veel huvitavat",
+    "additionalFactsTitle": "Lisafaktid",
+    "mainEventsLabel": "Peamised sündmused",
+    "turningPoints": "Raamatu murdepunktid",
+    "turningPointsIntro": "Viis kõige olulisemat hetke, mis kujundasid selle raamatu sõnumit",
+    "readyToDive": "Valmis süvitsi sukelduma?",
+    "readFullDescription": "Loe täispikka {{name}} raamatut ja avasta veel rohkem tarkust",
+    "openOnPiibel": "Ava piibel.ee lehel",
+    "notFoundTitle": "Raamatut ei leitud",
+    "notFoundDesc": "Kahjuks ei leidnud me seda raamatut.",
+    "backToHome": "Tagasi avalehele",
+    "footerCopyright": "© {{year}} Piibli Tarkuse Puu. Kõik õigused kaitstud."
   }
 }

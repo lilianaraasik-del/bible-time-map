@@ -2871,5 +2871,22 @@
     "sourceLabel": "Источник",
     "sourceClassical": "На основе классических комментариев (Мэтью Генри, Кальвин, Барнс, JFB)",
     "introduction": "Введение"
+  },
+  "book": {
+    "overview": "Обзор",
+    "interestingFactsLabel": "Интересные факты",
+    "aboutBook": "О книге «{{name}}»",
+    "moreInterestingLabel": "Ещё интересное",
+    "additionalFactsTitle": "Дополнительные факты",
+    "mainEventsLabel": "Ключевые события",
+    "turningPoints": "Поворотные моменты книги",
+    "turningPointsIntro": "Пять важнейших моментов, сформировавших послание этой книги",
+    "readyToDive": "Готовы углубиться?",
+    "readFullDescription": "Прочитайте полную книгу «{{name}}» и откройте ещё больше мудрости",
+    "openOnPiibel": "Открыть на piibel.ee",
+    "notFoundTitle": "Книга не найдена",
+    "notFoundDesc": "К сожалению, мы не нашли эту книгу.",
+    "backToHome": "На главную",
+    "footerCopyright": "© {{year}} Древо библейской мудрости. Все права защищены."
   }
 }
