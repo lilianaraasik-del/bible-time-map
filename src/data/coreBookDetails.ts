@@ -97,16 +97,16 @@ export const coreBookDetails: Record<string, BookDetail> = {
     ],
     additionalFacts: [
       "Raamat sisaldab kaks rahvaloendust - alguses ja lõpus",
-      "12 luurajat lähetati Kaanani maad uurima",
+      "12 maakuulajat lähetati Kaanani maad uurima",
       "Ainult Joosua ja Kaaleb usaldasid Jumalat",
       "Mooses lõi kaljust vett, kuid ei täitnud Jumala käsku täpselt"
     ],
     breakdowns: [
       { title: "Rahvaloendus (ptk 1-4)", description: "Iisrael korraldatakse sõjaväeliselt" },
-      { title: "12 luurajat (ptk 13-14)", description: "Rahvas keeldub minema tõotatud maale" },
-      { title: "Koora mäss (ptk 16)", description: "Koora juhitud mäss Moosese vastu ebaõnnestub" },
-      { title: "Vask madu (ptk 21)", description: "Kes vaatab mao poole, jääb ellu" },
-      { title: "Bileam (ptk 22-24)", description: "Prohvet, kes ei suutnud neetuda Iisraeli" }
+      { title: "12 maakuulajat (ptk 13-14)", description: "Rahvas keeldub minema tõotatud maale" },
+      { title: "Korahi mäss (ptk 16)", description: "Korahi juhitud mäss Moosese vastu ebaõnnestub" },
+      { title: "Vaskmadu (ptk 21)", description: "Kes vaatab mao poole, jääb ellu" },
+      { title: "Bileam (ptk 22-24)", description: "Prohvet, kes ei suutnud needa Iisraeli" }
     ],
     piibeeUrl: "https://piibel.ee"
   },
