@@ -88,7 +88,7 @@ function buildUrlFromBookName(bookName: string, chapter: number, verse?: number,
 }
 
 // Regex, mis leiab nt "2Ms 24:13", "Jos 24:26", "4Ms 14:6–9", "Hb 4:8", "1Kr 13:13"
-const REF_RE = /\b((?:[1-3]\s?)?(?:Ms|Js|Jr|Jh|Kr|Kn|Sm|Aj|Ts|Tm|Pt|Ma|Mk|Lk|Mt|Jk|Hb|Hs|Ho|Jl|Am|Ob|Jn|Mi|Na|Ha|Sf|Hg|Sak|Sk|Ml|Jos|Koh|Rt|Esr|Ne|Est|Ii|Iib|Ps|Õp|Op|Kg|Ül|Ul|Tn|Nl|Ap|Rm|Gem|Gl|Ef|Fl|Kl|Tt|Fm|Jd|Ilm))\s?(\d+)(?::(\d+)(?:[–\-](\d+))?)?/gi;
+const REF_RE = /\b((?:[1-3]\s?)?(?:Ms|Js|Jr|Jh|Kr|Kn|Sm|Aj|Ts|Tm|Pt|Ma|Mk|Lk|Mt|Jk|Hb|Hs|Ho|Jl|Am|Ob|Jn|Mi|Na|Ha|Sf|Hg|Sak|Sk|Ml|Jos|Koh|Rt|Esr|Ne|Est|Ii|Iib|Ps|Õp|Op|Kg|Ül|Ul|Tn|Nl|Ap|Rm|Gl|Ef|Fl|Kl|Tt|Fm|Jd|Ilm))\s?(\d+)(?::(\d+)(?:[–\-](\d+))?)?/gi;
 
 // Eraldi regex peatüki:salmide jaoks, kus raamat on jäetud välja (nt "; 7:89" pärast eelnevat viidet).
 // Nõuab eelnevat semikoolonit/komma + tühikut, et vältida juhuslikke arvude:arvude vasteid.
