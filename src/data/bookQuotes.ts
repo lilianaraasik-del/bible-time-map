@@ -279,7 +279,7 @@ export const bookQuotes: Record<string, BookQuote> = {
     reference: "2. Johannese 1:6",
   },
   "3-johannese-kiri": {
-    text: "Mul ei ole suuremat rõõmu kui see, et ma kuulen oma lapsi tões käivat.",
+    text: "“Mul ei ole suuremat rõõmu kui see, et ma kuulen oma lapsi tões käivat.”",
     reference: "3. Johannese 1:4",
   },
   "juudas": {
