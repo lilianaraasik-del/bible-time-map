@@ -343,15 +343,15 @@ export const coreBookDetails: Record<string, BookDetail> = {
     additionalFacts: [
       "Esimesed 9 peatükki on peamiselt sugupuud",
       "Raamat katab samu sündmusi kui Saamueli ja Kuningate raamatud",
-      "Fookus on templi teenistusel ja leevilastel",
-      "Taavet valmistas templi ehitamiseks"
+      "Fookus on templi teenistusel ja leeviitidel",
+      "Taavet valmistus templi ehitamiseks"
     ],
     breakdowns: [
       { title: "Genealoogiad (ptk 1-9)", description: "Sugupuud Aadamast vangipõlveni" },
       { title: "Taaveti valitsus (ptk 10-20)", description: "Taavet saab kuningaks ja võidab vaenlased" },
-      { title: "Lepingulaeka toomine (ptk 13-16)", description: "Taavet toob laeega Jeruusalemma" },
+      { title: "Seaduselaeka toomine (ptk 13-16)", description: "Taavet toob laeka Jeruusalemma" },
       { title: "Taaveti leping (ptk 17)", description: "Jumal lubab igavese kuningriigi" },
-      { title: "Templi ettevalmistused (ptk 21-29)", description: "Taavet valmistab templi ehitamiseks" }
+      { title: "Templi ettevalmistused (ptk 21-29)", description: "Taavet valmistub templi ehitamiseks" }
     ],
     piibeeUrl: "https://piibel.ee"
   },
