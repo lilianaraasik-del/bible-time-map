@@ -172,7 +172,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 593-565 eKr",
     category: "Prohvetid",
     overview: "Hesekiel oli prohvet Babüloonia vangipõlves. Ta sai kummalisi nägemusi – Jumala troonist, kuivanud luudest, mis ärkavad ellu, ja tulevasest templist. Tema sõnum: Jumal ei ole maha jätnud oma rahvast, isegi pagenduses. Tema vaim taastab nad ja annab neile uue südame.",
-    authorFacts: ["Oli preester ja prohvet", "Vangistati 597 eKr Babülooniasse", "Sai esimese nägemuse 30-aastaselt", "Kuulutas 22 aastat vangipõlves"],
+    authorFacts: ["Oli preester ja prohvet", "Vangistati 597 eKr Babüloonias", "Sai esimese nägemuse 30-aastaselt", "Kuulutas 22 aastat vangipõlves"],
     additionalFacts: ["Raamat sisaldab neli kuulsat nägemust", "Kuivanud luude org (ptk 37) ennustab Iisraeli taastamist", "Tegi palju 'näidisetteasteid'", "Tema naine suri prohveti märgina"],
     breakdowns: [
       { title: "Kutse ja nägemus (ptk 1-3)", description: "Jumala troon ja keerulised olendid" },
