@@ -44,6 +44,7 @@ const abbrevToBook: Record<string, string> = {
   "ha": "Habakuk",
   "sf": "Sefanja",
   "hg": "Haggai",
+  "sak": "Sakarja",
   "sk": "Sakarja",
   "ml": "Malakia",
   // Uus Testament
