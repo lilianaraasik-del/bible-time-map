@@ -596,9 +596,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Paulus",
     period: "u 60-62 pKr",
     category: "Pauluse kirjad",
-    overview: "Kolossos oli imbumas valeõpetustest – inglikummardamine, müstilised kogemused, askees. Paulus vastab: Kristus on kõige üle. Tema sees elab täiuses Jumala olemus. Te ei vaja midagi enamat kui Kristust. Kiri sisaldab võimsat Kristuse ülevuse hümni (Kl 1:15-20).",
-    authorFacts: ["Kirjutatud Rooma vangistusest", "Paulus polnud Kolossas käinud", "Epafras oli koguduse asutaja", "Kiri saadeti koos Onesimosega"],
-    additionalFacts: ["Kristuse ülevuse hümn (Kl 1:15-20)", "Sisaldab perekonna käsklusi", "Hoiatab gnostitsismi vastu", "Kaaslane Filemoni kirjale"],
+    overview: "Kolossasa oli imbumas valeõpetusi – inglikummardamine, müstilised kogemused, askees. Paulus vastab: Kristus on kõige üle. Tema sees elab täiuses Jumala olemus. Te ei vaja midagi enamat kui Kristust. Kiri sisaldab võimsat Kristuse ülevuse hümni (Kl 1:15-20).",
+    authorFacts: ["Kirjutatud Rooma vangistusest", "Paulus polnud Kolossas käinud", "Epafras oli koguduse asutaja", "Kiri saadeti koos Oneesimosega"],
+    additionalFacts: ["Kristuse ülevuse hümn (Kl 1:15-20)", "Sisaldab perekonna käsklusi", "Hoiatab gnostitsismi vastu", "Kaaslane Fileemoni kirjale"],
     breakdowns: [
       { title: "Kristuse ülevus (ptk 1)", description: "Kõik on tema läbi loodud" },
       { title: "Hoiatus valeõpetuste vastu (ptk 2)", description: "Ärge laske end pettuda" },
