@@ -767,7 +767,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 65-68 pKr",
     category: "Üldkirjad",
     overview: "Peetruse viimane kiri, kirjutatud lühikest aega enne tema hukkamist. Ta hoiatab valeõpetajate eest, kes 'tulevad teie sekka'. Ta kinnitab Pühakirja autoriteeti ja Kristuse tagasituleku kindlust. 'Issand ei viivita oma tõotusega.'",
-    authorFacts: ["Peetruse 'testament'", "Kirjutatud lühikest aega enne hukkamist", "Hoiatab valeprohveteid", "Käsitleb pühakirja inspireerimist"],
+    authorFacts: ["Peetruse 'testament'", "Kirjutatud lühikest aega enne hukkamist", "Hoiatab valeprohvetite eest", "Käsitleb pühakirja inspireerimist"],
     additionalFacts: ["Mainib Pauluse kirju kui pühakirja", "Selgitab miks Issand 'viivitab'", "Kuulutab uut taevast ja uut maad", "Sarnane Juudase kirjale"],
     breakdowns: [
       { title: "Vaimne kasv (ptk 1)", description: "Lisage usule voorust" },
