@@ -346,10 +346,10 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     additionalFacts: ["Mainib 'Issanda päeva' rohkem kui keegi teine prohvet", "Lõpeb ühe ilusa lubadusega Piiblis (Sf 3:17)", "Tema kuulutus aitas käivitada Joosija reformid", "Kuninglikust suguvõsast"],
     breakdowns: [
       { title: "Kohtupäev (ptk 1)", description: "Issanda päev on lähedal" },
-      { title: "Kohtupauk rahvastele (ptk 2:1-15)", description: "Filistia, Moab, Ammon, Etioopia, Assüüria" },
+      { title: "Kohtupauk rahvastele (ptk 2:1-15)", description: "Vilist, Moab, Ammon, Etioopia, Assüüria" },
       { title: "Jeruusalemm (ptk 3:1-7)", description: "Mässulise linna kohus" },
       { title: "Säästetud jääk (ptk 3:8-13)", description: "Jumal jätab vagase rahva" },
-      { title: "Rõõmu laul (ptk 3:14-20)", description: "Issand rõõmustab sinu üle lauldes" },
+      { title: "Rõõmulaul (ptk 3:14-20)", description: "Issand rõõmustab sinu üle lauldes" },
     ],
     piibeeUrl: "https://piibel.ee",
   },
