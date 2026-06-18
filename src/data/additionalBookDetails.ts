@@ -138,7 +138,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 627-580 eKr",
     category: "Prohvetid",
     overview: "Jeremijat nimetatakse 'nutvaks prohvetiks'. Ta kuulutas Jeruusalemma hävingut 40 aastat, kuid rahvas ei kuulanud. Tema raamat näitab Jumala südamevalu ja õigust ühel ajal. Jeremija kuulutas ka uut lepingut, kus Jumala seadus kirjutatakse südamesse.",
-    authorFacts: ["Kutsuti prohvetiks väga noorelt", "Teenis 40+ aastat enne Jeruusalemma häving", "Kannatas vangistust ja tagakiusamist", "Suri Egiptuses pagulusena"],
+    authorFacts: ["Kutsuti prohvetiks väga noorelt", "Teenis 40+ aastat enne Jeruusalemma häving", "Kannatas vangistust ja tagakiusamist", "Suri Egiptuses paguluses"],
     additionalFacts: ["Tuntud kui 'nutev prohvet'", "Kuulutas uut lepingut (Jr 31:31-34)", "Ostis põllu Jeruusalemma piiramise ajal usu märgina", "Tema kirjutaja oli Baaruk"],
     breakdowns: [
       { title: "Jeremija kutsumine (ptk 1)", description: "Jumal kutsub teda prohvetiks" },
