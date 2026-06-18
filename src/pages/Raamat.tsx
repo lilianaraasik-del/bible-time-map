@@ -200,7 +200,9 @@ export default function RaamatuLeht() {
                 </h2>
               </div>
               <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
-                {t("book.aboutBook", { name })}
+                {t(`books.${book}.aboutTitle`, { 
+                  defaultValue: t("book.aboutBook", { name }) 
+                })}
               </h3>
             </div>
 

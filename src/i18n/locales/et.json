@@ -2992,11 +2992,12 @@
       }
     },
     "juudas": {
-      "name": "Juudase kiri",
-      "author": "Juudas",
+      "name": "Juuda kiri",
+      "author": "Juuda",
       "year": "u 65-80 pKr",
+      "aboutTitle": "Juuda kirja kohta",
       "details": {
-        "overview": "Juudas oli Jeesuse vend, Jakoobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduset sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
+        "overview": "Juudas oli Jeesuse vend, Jakoobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduse sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
         "authorFacts": [
           "Jeesuse poolvend",
           "Jakoobuse vend",
@@ -3005,7 +3006,7 @@
         ],
         "additionalFacts": [
           "Tsiteerib apokriiflikku Hanoki raamatut",
-          "Räägib Mihkelist ja saatanlikust vaidlusest",
+          "Räägib Miikaelist ja saatanlikust vaidlusest",
           "Sarnane 2. Peetruse kirjale",
           "Lõpeb kuulsa doksoloogiaga"
         ],
@@ -3033,7 +3034,7 @@
         ]
       },
       "quote": {
-        "text": "Aga sellele, kes võib teid hoida komistamast ja seada teid laitmatuna oma kirkuse palge ette hõiskamisega, ainsale Jumalale, meie Päästjale, olgu auhiilgus.",
+        "text": "“Aga temale, kes teid võib hoida komistamast ja teid veatumaina seada oma auhiilguse palge ette hõiskamisega, ainule Jumalale, meie Õnnistegijale, Jeesuse Kristuse, meie Issanda läbi olgu au, auhiilgus, võimsus ja valitsus enne kõike maailmaajastut ja nüüd ja kõigi ajastuteni!”",
         "reference": "Juuda 1:24-25"
       }
     },

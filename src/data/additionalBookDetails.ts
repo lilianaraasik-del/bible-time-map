@@ -830,13 +830,13 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     piibeeUrl: "https://piibel.ee",
   },
   "juudas": {
-    name: "Juudase kiri",
-    author: "Juudas (Issanda vend)",
+    name: "Juuda kiri",
+    author: "Juuda (Issanda vend)",
     period: "u 65-80 pKr",
     category: "Üldkirjad",
-    overview: "Juudas oli Jeesuse vend, Jakoobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduset sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
+    overview: "Juudas oli Jeesuse vend, Jakoobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduse sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
     authorFacts: ["Jeesuse poolvend", "Jakoobuse vend", "Pole eluajal olnud usklik", "Üks lühim Uue Testamendi raamat"],
-    additionalFacts: ["Tsiteerib apokriiflikku Hanoki raamatut", "Räägib Mihkelist ja saatanlikust vaidlusest", "Sarnane 2. Peetruse kirjale", "Lõpeb kuulsa doksoloogiaga"],
+    additionalFacts: ["Tsiteerib apokriiflikku Hanoki raamatut", "Räägib Miikaelist ja saatanlikust vaidlusest", "Sarnane 2. Peetruse kirjale", "Lõpeb kuulsa doksoloogiaga"],
     breakdowns: [
       { title: "Üleskutse võidelda usu eest (v 1-4)", description: "Mõned inimesed on hiilinud sisse" },
       { title: "Vana Testamendi näited (v 5-7)", description: "Egiptus, inglid, Soodom" },
