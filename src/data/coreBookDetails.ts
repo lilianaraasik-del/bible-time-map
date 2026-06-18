@@ -1,7 +1,7 @@
 // Põhiraamatud (algne andmestik). Hoiame eestikeelse lähteteksti siin; UI loeb i18n-st.
 import type { BookDetail } from "./additionalBookDetails";
 
-export const coreBookDetails: Record<string, BookDetail> = 
+export const coreBookDetails: Record<string, BookDetail> = {
   "1-mooses": {
     name: "1. Mooses",
     author: "Mooses",
