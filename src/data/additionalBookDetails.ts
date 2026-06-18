@@ -158,7 +158,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     authorFacts: ["Kirjutatud kohe pärast Jeruusalemma langemist", "Jeremija oli pealtnägija", "Viis luuletust, igaüks akrostihhon", "Keskne luuletus on lootuse sõnum"],
     additionalFacts: ["Iga peatükk algab erineva tähestiku järjekorras", "Kolmas ptk on kõige pikem", "Juudid loevad seda Templi hävingu mälestuspäeval (Tisha B'Av)", "Sisaldab tuntumat värssi: 'Tema halastus on uus iga hommik'"],
     breakdowns: [
-      { title: "Leinalaul Sionile (ptk 1)", description: "Jeruusalemm istub üksi nagu lesk" },
+      { title: "Leinalaul Siionile (ptk 1)", description: "Jeruusalemm istub üksi nagu lesk" },
       { title: "Issanda viha (ptk 2)", description: "Jumal on hävitanud oma linna" },
       { title: "Lootuse sära (ptk 3)", description: "Tema halastus on uus iga hommik" },
       { title: "Kuldne saab tahmaks (ptk 4)", description: "Pühakoja hävingu kurbus" },
