@@ -377,9 +377,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Prohvetid",
     overview: "Sakarja kuulutas koos Haggaiga, julgustades rahvast templi taastamisega jätkama. Tema raamat sisaldab kaheksa nägemust ja palju Messia ennustusi: kuningas tuleb eesli seljas, läbistatakse, uuele lepingule. Raamat aitab rahvast näha kaugemale praegustest raskustest.",
     authorFacts: ["Preester ja prohvet", "Töötas koos Haggaiga", "Kutsus rahvast templi taastamisele", "Sai 8 nägemust ühel ööl"],
-    additionalFacts: ["Sisaldab palju Messia ennustusi", "Ennustas kuningas eesli seljas (Sak 9:9 → Mt 21)", "Ennustas läbistamist (Sak 12:10 → Jh 19)", "30 hõbetükki (Sak 11:12 → Mt 26)"],
+    additionalFacts: ["Sisaldab palju Messia ennustusi", "Ennustas kuningas eesli seljas (Sak 9:9 → Mt 21)", "Ennustas läbistamisest (Sak 12:10 → Jh 19)", "30 hõbetükki (Sak 11:12 → Mt 26)"],
     breakdowns: [
-      { title: "Kaheksa nägemust (ptk 1-6)", description: "Mehed, sarved, mõõtenöör jne" },
+      { title: "Kaheksa nägemust (ptk 1-6)", description: "Hobused, sarved, mõõtenöör, küünlajalg, õlipuu, rullraamat, naine vakas, neli vankrit" },
       { title: "Paastu küsimus (ptk 7-8)", description: "Tõeline jumalakartus" },
       { title: "Esimene Messia kuulutus (ptk 9-11)", description: "Kuningas tuleb eesli seljas" },
       { title: "Teine Messia kuulutus (ptk 12-13)", description: "Nad vaatavad teda, keda nad on läbistanud" },
