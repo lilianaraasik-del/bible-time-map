@@ -401,11 +401,11 @@ export const coreBookDetails: Record<string, BookDetail> = {
       "Esra võitles segaabiellumise vastu"
     ],
     breakdowns: [
-      { title: "Esimene naasmism (ptk 1-2)", description: "Serubbaabel viib esimese grupi koju" },
+      { title: "Esimene naasmine (ptk 1-2)", description: "Serubbaabel viib esimese grupi koju" },
       { title: "Templi aluse panemine (ptk 3)", description: "Töö algab, kuid vastased takistavad" },
       { title: "Templi valmistamine (ptk 4-6)", description: "Pärast peatust valmib tempel" },
       { title: "Esra teine naasmisgrupp (ptk 7-8)", description: "Esra toob veel ühe grupi" },
-      { title: "Segaabiellumise probleem (ptk 9-10)", description: "Esra nõuab parandust" }
+      { title: "Segaabiellumise probleem (ptk 9-10)", description: "Esra nõuab meeleparandust" }
     ],
     piibeeUrl: "https://piibel.ee"
   },
