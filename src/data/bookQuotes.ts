@@ -58,7 +58,7 @@ export const bookQuotes: Record<string, BookQuote> = {
     reference: "1. Kuningate 3:9",
   },
   "2-kuningate": {
-    text: "Ja Eelija läks tuulispeas taeva.",
+    text: "Ja Eelija läks tuulepöörises taevasse.",
     reference: "2. Kuningate 2:11",
   },
   "1-ajaraamat": {

@@ -314,13 +314,13 @@ export const coreBookDetails: Record<string, BookDetail> = {
       "Näitas patu tagajärgi"
     ],
     additionalFacts: [
-      "Eelisa tegi kahekordse osa imetegusid võrreldes Eelijaga",
+      "Eliisa tegi kahekordse osa imetegusid võrreldes Eelijaga",
       "Iisraeli (põhja) kuningriik langes 722 eKr Assüüriale",
       "Juuda (lõuna) kuningriik langes 586 eKr Babülooniale",
       "Jeruusalemma tempel hävitati"
     ],
     breakdowns: [
-      { title: "Eelija taevasse minek (ptk 1-2)", description: "Eelisa saab kahekordse osa vaimust" },
+      { title: "Eelija taevasse minek (ptk 1-2)", description: "Eliisa saab kahekordse osa vaimust" },
       { title: "Eelisa imed (ptk 3-8)", description: "Eelisa teeb palju imetegusid" },
       { title: "Iisraeli langemine (ptk 17)", description: "Assüüria võtab põhja kuningriigi vangi" },
       { title: "Hiskija reform (ptk 18-20)", description: "Hea kuningas reformib Juudat" },
