@@ -750,8 +750,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 62-64 pKr",
     category: "Üldkirjad",
     overview: "Peetrus kirjutas tagakiusatud kristlastele Vähem-Aasias. Tema sõnum: te olete Jumala valitud, püha rahvas. Kannatus on osa kristliku elu kutsumusest. Eeskujuks on Kristus ise, kes kannatas süütult. Ärge kartke, hoidke kindlat usku.",
-    authorFacts: ["Apostel ja Jeesuse jünger", "Kalamees Galileast", "Tema algne nimi oli Siimon", "Pärimuse järgi rist löödi pea alaspidi Roomas"],
-    additionalFacts: ["Kirjutatud Roomast ('Babüloon')", "Adresseeritud viiele provintsile", "Markus oli tema kirjutaja", "Käsitleb kannatust 12 korda"],
+    authorFacts: ["Apostel ja Jeesuse jünger", "Kalamees Galileast", "Tema algne nimi oli Siimon", "Pärimuse järgi löödi risti pea alaspidi Roomas"],
+    additionalFacts: ["Kirjutatud Roomast ('Babüloonist')", "Adresseeritud viiele provintsile", "Markus oli tema kirjutaja", "Käsitleb kannatust 12 korda"],
     breakdowns: [
       { title: "Elav lootus (ptk 1)", description: "Kiidetud olgu Jumal ja meie Issanda Isa" },
       { title: "Elav kivi (ptk 2)", description: "Te olete valitud sugu, kuninglik preesterkond" },
