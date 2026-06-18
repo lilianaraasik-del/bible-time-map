@@ -235,7 +235,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     additionalFacts: [
       "Saamuel sündis vastuseks ema Hanna palvele",
       "Ta võidis kaks kuningat: Sauli ja Taaveti",
-      "Saul kaotis kuningriigi sõnakuulmatuse tõttu",
+      "Saul kaotas kuningriigi sõnakuulmatuse tõttu",
       "Taavet lõi Koljati"
     ],
     breakdowns: [
