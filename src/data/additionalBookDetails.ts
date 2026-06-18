@@ -547,7 +547,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Pauluse kirjad",
     overview: "Galaatia kogudusi oli rünnatud valeõpetajate poolt, kes ütlesid: usu Jeesusesse on hea, aga sa pead ka juutide seadusi pidama. Paulus on raevus. Tema sõnum: pääste tuleb ainult armust, ainult usu kaudu, ainult Kristuses. Kiri sai Lutheri reformatsiooni 'manifestiks'.",
     authorFacts: ["Üks Pauluse varasemaid kirju", "Kirjutatud Galaatia provintsi kogudustele", "Pauluse ainus kiri, kus pole tervitusi", "Räägib oma pöördumisest"],
-    additionalFacts: ["Vaba pääste alus – usu ainult Kristuses", "Lutheri reformatsiooni 'manifest'", "Vaimu vili (Gl 5:22-23)", "Kuulus värss: 'Te kõik olete üks Kristuses Jeesuses'"],
+    additionalFacts: ["Vaba pääste alus – usu ainult Kristuses", "Lutheri reformatsiooni 'manifest'", "Vaimu vili (Gl 5:22-23)", "Kuulus salm: 'Te kõik olete üks Kristuses Jeesuses'"],
     breakdowns: [
       { title: "Pauluse kaitse (ptk 1-2)", description: "Mu evangeelium ei ole inimeselt" },
       { title: "Usk vs. seadus (ptk 3)", description: "Aabraham mõisteti õigeks usust" },
