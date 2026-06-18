@@ -411,7 +411,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Evangeeliumid",
     overview: "Matteus oli tölner, kes sai Jeesuse jüngriks. Tema evangeelium näitab Jeesust kui Vana Testamendi tõotuste täideviijat – Messiat, Taaveti Poega, juutide kuningat. Raamat sisaldab Mäejutlust, Jeesuse kuulsamaid tähendamissõnu ja suure ülesande: tehke jüngriteks kõik rahvad.",
     authorFacts: ["Oli Roomale tölnerina maksuvõtja", "Sai jüngriks otse oma maksulauast", "Pärineb Kapernaumast", "Pärimuse järgi suri märtri surma Etioopias"],
-    additionalFacts: ["Esimene raamat Uues Testamendis", "Sisaldab Mäejutlust (Mt 5-7)", "Suur ülesanne (Mt 28:18-20)", "Tsitateerib Vana Testamenti rohkem kui ükski teine evangeelium"],
+    additionalFacts: ["Esimene raamat Uues Testamendis", "Sisaldab Mäejutlust (Mt 5-7)", "Suur ülesanne (Mt 28:18-20)", "Tsiteerib Vana Testamenti rohkem kui ükski teine evangeelium"],
     breakdowns: [
       { title: "Jeesuse sünd (ptk 1-2)", description: "Sugupuu, sünd ja tarkade külaskäik" },
       { title: "Mäejutlus (ptk 5-7)", description: "Õndsakskuulutused ja õpetused" },
