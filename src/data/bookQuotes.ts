@@ -260,7 +260,7 @@ export const bookQuotes: Record<string, BookQuote> = {
   },
   "jaakobus": {
     text: "Aga olge sõna tegijad ja mitte ükspäinis kuuljad, iseendid pettes.",
-    reference: "Jakobuse 1:22",
+    reference: "Jakoobuse 1:22",
   },
   "1-peetrus": {
     text: "Heitke kõik oma mure tema peale, sest tema peab hoolt teie eest!",
