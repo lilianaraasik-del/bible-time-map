@@ -188,7 +188,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     breakdowns: [
       { title: "Iisraeli patt (ptk 1-3)", description: "Rahvas ei hävita kaananlasi ja teenib nende jumalaid" },
       { title: "Debora ja Barak (ptk 4-5)", description: "Naiskohtumõistja ja väejuht võidavad Siisera" },
-      { title: "Gideon (ptk 6-8)", description: "300 meest võidavad tohutu midjanlaste armee" },
+      { title: "Giideon (ptk 6-8)", description: "300 meest võidavad tohutu midjanlaste armee" },
       { title: "Simson (ptk 13-16)", description: "Võimas mees võitleb filiistrite vastu" },
       { title: "Moraalne langus (ptk 17-21)", description: "Igaüks tegi, mis talle õige tundus" }
     ],
