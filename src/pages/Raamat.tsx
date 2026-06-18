@@ -3,13 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp, MessageSquareText } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp, MessageSquareText } from "lucide-react";
 
 import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
 import { coreBookDetails } from "@/data/coreBookDetails";
+import { getAdjacentBooks } from "@/data/bookOrder";
 import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
 import { getBookQuote } from "@/data/bookQuotes";
 import { renderWithBibleRefs } from "@/lib/bibleRefs";
