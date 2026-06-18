@@ -86,7 +86,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Saalomon",
     period: "u 935-900 eKr",
     category: "Tarkus",
-    overview: "Koguja on raamat elu mõttest. Saalomon, kes oli kogenud kõike – rikkust, naudingut, tarkust, tööd – jõuab järeldusele: kõik on tühi tuule taga ilma Jumalata. Raamat õpetab, et tõeline rahuolu tuleb ainult Jumalaga lähedasest suhtest, mitte maistest asjadest.",
+    overview: "Koguja on raamat elu mõttest. Saalomon, kes oli kogenud kõike – rikkust, naudingut, tarkust, tööd – jõuab järeldusele: kõik on tühi töö ilma Jumalata. Raamat õpetab, et tõeline rahulolu tuleb ainult Jumalaga lähedasest suhtest, mitte maistest asjadest.",
     authorFacts: ["Saalomon kirjutas raamatu vanas eas", "Oli proovinud kõiki maiseid naudinguid", "Tundis 700 naist ja 300 liignaist", "Jõudis järeldusele: karda Jumalat"],
     additionalFacts: ["Sõna 'tühi' esineb 38 korda", "Igal asjal on oma aeg (ptk 3)", "Kaks on parem kui üks", "Lõppjäreldus: karda Jumalat ja pea Tema käske"],
     breakdowns: [
