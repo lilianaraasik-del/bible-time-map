@@ -2081,14 +2081,14 @@
         "authorFacts": [
           "Kirjutatud Korintose linnast",
           "Paulus ei olnud veel Roomas käinud",
-          "Sai kirja Roma koguduse usaldajat",
+          "Sai kirja Roma koguduse usaldajalt",
           "Tertius oli kirjutaja"
         ],
         "additionalFacts": [
           "Pikim Pauluse kiri",
           "Süstemaatilisim kristliku õpetuse esitus",
           "Lutheri reformatsiooni alus",
-          "Peatükk 8 – 'kõik mõjub heaks'"
+          "Peatükk 8 – 'kõik tuleb heaks'"
         ],
         "breakdowns": [
           {
@@ -2114,7 +2114,7 @@
         ]
       },
       "quote": {
-        "text": "Aga Jumal teeb nähtavaks oma armastuse meie vastu sellega, et Kristus suri meie eest, kui me alles patused olime.",
+        "text": "Ent Jumal osutab oma armastuse meie vastu sellega, et Kristus on surnud meie eest, kui me alles patused olime.",
         "reference": "Roomlastele 5:8"
       }
     },
