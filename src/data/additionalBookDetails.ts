@@ -728,11 +728,11 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     piibeeUrl: "https://piibel.ee",
   },
   "jaakobus": {
-    name: "Jaakobuse kiri",
-    author: "Jaakobus (Issanda vend)",
+    name: "Jakoobuse kiri",
+    author: "Jakoobus (Issanda vend)",
     period: "u 45-50 pKr",
     category: "Üldkirjad",
-    overview: "Jaakobus oli Jeesuse vend ja Jeruusalemma koguduse juht. Tema kiri on praktiline: usk ilma tegudeta on surnud. Ta käsitleb katsumusi, partsiaalsust, keele ohtlikkust, palvetamise jõudu. Stiililt sarnane Jeesuse Mäejutlusele.",
+    overview: "Jakoobus oli Jeesuse vend ja Jeruusalemma koguduse juht. Tema kiri on praktiline: usk ilma tegudeta on surnud. Ta käsitleb katsumusi, partsiaalsust, keele ohtlikkust, palvetamise jõudu. Stiililt sarnane Jeesuse Mäejutlusele.",
     authorFacts: ["Jeesuse poolvend", "Jeruusalemma koguduse juht", "Pole eluajal olnud usklik (Jh 7:5)", "Sai usklikuks pärast Jeesuse ülestõusmist"],
     additionalFacts: ["Üks varasemaid Uue Testamendi raamatuid", "Sarnane Mäejutlusele", "Kuulus: 'usk ilma tegudeta on surnud' (Jk 2:17)", "Õpetab keele kontrollimist (Jk 3)"],
     breakdowns: [
@@ -834,8 +834,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Juudas (Issanda vend)",
     period: "u 65-80 pKr",
     category: "Üldkirjad",
-    overview: "Juudas oli Jeesuse vend, Jaakobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduset sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
-    authorFacts: ["Jeesuse poolvend", "Jaakobuse vend", "Pole eluajal olnud usklik", "Üks lühim Uue Testamendi raamat"],
+    overview: "Juudas oli Jeesuse vend, Jakoobuse poolvend. Tema lühike kiri on tugev hoiatus valeõpetajate vastu, kes 'on hiilinud koguduset sisse'. Ta toob näiteid Vanast Testamendist – Soodom, Korah, Bileam – ja kutsub usklikke 'usu eest võitlema'.",
+    authorFacts: ["Jeesuse poolvend", "Jakoobuse vend", "Pole eluajal olnud usklik", "Üks lühim Uue Testamendi raamat"],
     additionalFacts: ["Tsiteerib apokriiflikku Hanoki raamatut", "Räägib Mihkelist ja saatanlikust vaidlusest", "Sarnane 2. Peetruse kirjale", "Lõpeb kuulsa doksoloogiaga"],
     breakdowns: [
       { title: "Üleskutse võidelda usu eest (v 1-4)", description: "Mõned inimesed on hiilinud sisse" },
