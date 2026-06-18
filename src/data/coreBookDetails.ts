@@ -202,7 +202,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     overview: "Ruti raamat on ilus armastuse ja truuduse lugu kohtumõistjate tumedal ajastul. Moabi naine Rutt jääb truuks oma ämmale Noomile ja leiab uue elu Iisraelis. Ta abiellub Boasega ja saab kuningas Taaveti vanavanaemaks. See näitab, et Jumala arm ulatub kõigile rahvastele.",
     authorFacts: [
       "Autor on tundmatu",
-      "Kirjutas peale Taaveti kuningaks saamist",
+      "Kirjutati peale Taaveti kuningaks saamist",
       "Rõhutas Jumala providentssi",
       "Näitas, et moablased võivad kuuluda Jumala rahvasse"
     ],
@@ -210,11 +210,11 @@ export const coreBookDetails: Record<string, BookDetail> = {
       "Rutt oli üks kahest Piibli raamatust, mis on nimetatud naise järgi",
       "Rutt on mainitud Jeesuse sugupuus",
       "Lugu leiab aset kohtumõistjate ajastul",
-      "Boase oli Raahabi poeg"
+      "Boas oli Raahabi poeg (Mt 1:5)"
     ],
     breakdowns: [
       { title: "Noomi tragöödia (ptk 1)", description: "Noomi kaotab mehe ja pojad, naaseb Petlemmasse" },
-      { title: "Rutt kohtub Boasega (ptk 2)", description: "Rutt korjab tähki Boase põllul" },
+      { title: "Rutt kohtub Boasega (ptk 2)", description: "Rutt korjab viljapäid Boase põllult" },
       { title: "Rutt palub lunastust (ptk 3)", description: "Noomi juhendab Rutti otsima lunastajat" },
       { title: "Abielu ja lunastus (ptk 4)", description: "Boase lunastab Rutti ja abiellub temaga" }
     ],
