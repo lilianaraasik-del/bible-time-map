@@ -205,8 +205,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Hoosea",
     period: "u 755-715 eKr",
     category: "Prohvetid",
-    overview: "Hoosea raamat on Jumala armastuse näitlik etendus. Jumal käskis Hooseal abielluda truudusetu naisega Goomeriga, et näidata, kui valus on Tema enda armastus truudusetu rahva vastu. Vaatamata kõigele otsib Hoosea oma naise üles ja ostab ta tagasi – nii nagu Jumal otsib oma rahvast.",
-    authorFacts: ["Kuulutas Põhja-kuningriigis", "Teenis 60+ aastat", "Abiellus prohvetimärgina prostituuduga", "Andis lastele sümboolsed nimed"],
+    overview: "Hoosea raamat on Jumala armastuse näitlik etendus. Jumal käskis Hooseal abielluda truudusetu naise Goomeriga, et näidata, kui valus on Tema enda armastus truudusetu rahva vastu. Vaatamata kõigele otsib Hoosea oma naise üles ja ostab ta tagasi – nii nagu Jumal otsib oma rahvast.",
+    authorFacts: ["Kuulutas Põhja-kuningriigis", "Teenis 60+ aastat", "Abiellus prohvetimärgina prostituudiga", "Andis lastele sümboolsed nimed"],
     additionalFacts: ["Tema naine Goomer oli truudusetu", "Lapsed kandsid hoiatusnimesid", "Hoosea ostis oma naise tagasi orjaturult", "Esimene 'väike prohvet' raamat"],
     breakdowns: [
       { title: "Hoosea perekond (ptk 1-3)", description: "Abielu Goomeriga kui Iisraeli pilt" },
