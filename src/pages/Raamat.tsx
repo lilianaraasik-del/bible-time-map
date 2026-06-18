@@ -84,7 +84,11 @@ export default function RaamatuLeht() {
     fallback.breakdowns
   );
 
-  const quote = getBookQuote(book);
+  const fallbackQuote = getBookQuote(book);
+  const quote = {
+    text: tx(`books.${book}.quote.text`, fallbackQuote.text),
+    reference: tx(`books.${book}.quote.reference`, fallbackQuote.reference),
+  };
   const { prev: prevSlug, next: nextSlug } = getAdjacentBooks(book);
   const prevName = prevSlug ? tx(`books.${prevSlug}.name`, allBookDetails[prevSlug]?.name ?? prevSlug) : null;
   const nextName = nextSlug ? tx(`books.${nextSlug}.name`, allBookDetails[nextSlug]?.name ?? nextSlug) : null;
