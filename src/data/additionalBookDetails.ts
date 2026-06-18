@@ -223,8 +223,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 835-800 eKr",
     category: "Prohvetid",
     overview: "Joel kuulutas pärast suurt rohutirtsude katku, mis hävitas saagi. Ta nägi selles Jumala hoiatust ja kutsus rahvast meeleparandusele. Tema kuulus ennustus 'Ma valan oma Vaimu välja kõige liha peale' täitus Nelipühal, kui Püha Vaim valati välja Jeruusalemmas.",
-    authorFacts: ["Eluajast on vähe teada", "Kuulutas Juudas", "Petuueli poeg", "Üks varasemaid kirjutavaid prohveteid"],
-    additionalFacts: ["Rohutirtsude katku tema ajal nimetatakse 'Issanda päevaks'", "Peetrus tsiteeris teda Nelipühal", "Mainib 'Issanda päeva' viis korda", "Lubab Vaimu väljavalamist kõigi peale"],
+    authorFacts: ["Eluajast on vähe teada", "Kuulutas Juudas", "Petueli poeg", "Üks varasemaid kirjutavaid prohveteid"],
+    additionalFacts: ["Rohutirtsude katku tema ajal nimetatakse 'Jehoova päevaks'", "Peetrus tsiteeris teda Nelipühal", "Mainib 'Jehoova (Issanda) päeva' viis korda", "Lubab Vaimu väljavalamist kõigi peale"],
     breakdowns: [
       { title: "Rohutirtsude katk (ptk 1)", description: "Hoiatus karistuse kohta" },
       { title: "Issanda päev (ptk 2:1-17)", description: "Tulevase kohtu kirjeldus" },
