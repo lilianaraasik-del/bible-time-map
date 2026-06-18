@@ -279,7 +279,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     author: "Tundmatu (võib-olla Jeremija)",
     period: "u 560 eKr",
     category: "Ajalugu",
-    overview: "1. Kuningate raamat jutustab Saalomoni valitsusest ja kuningriigi jagunemisest. Saalomon, kõigi aegade targim mees, ehitas templi, kuid langes hiljem ebajumalakummardamisesse. Pärast tema surma jagunesid kuningriik kaheks - Iisraeliks põhjas ja Juudaks lõunas.",
+    overview: "1. Kuningate raamat jutustab Saalomoni valitsusest ja kuningriigi jagunemisest. Saalomon, kõigi aegade targim mees, ehitas templi, kuid langes hiljem ebajumalakummardamisse. Pärast tema surma jagunes kuningriik kaheks - Iisraeliks põhjas ja Juudaks lõunas.",
     authorFacts: [
       "Autor on tundmatu, traditsioon omistab Jeremijale",
       "Kirjutas Babüloonia vangipõlves",
@@ -289,15 +289,15 @@ export const coreBookDetails: Record<string, BookDetail> = {
     additionalFacts: [
       "Saalomon palus tarkust, mitte rikkust või võimu",
       "Ta ehitas kuulsa templi Jeruusalemma",
-      "Tal oli 700 naist ja 300 lisanaist",
+      "Tal oli 700 naist ja 300 liignaist",
       "Eelija oli võimas prohvet Aahabi ajal"
     ],
     breakdowns: [
       { title: "Saalomoni tarkus (ptk 1-4)", description: "Saalomon saab kuningaks ja palub tarkust" },
       { title: "Templi ehitamine (ptk 5-8)", description: "Saalomon ehitab kuulsa templi" },
       { title: "Kuningriigi jagunemine (ptk 12)", description: "10 suguharu eralduvad Juudast" },
-      { title: "Eelija ja Baaali preestrid (ptk 17-18)", description: "Eelija näitab Baaali preestritele Jumala võimsust" },
-      { title: "Eelija taevasse minek (ptk 19-2.Kn 2)", description: "Eelija võetakse tuletõllaga taevasse" }
+      { title: "Eelija ja Baali preestrid (ptk 17-18)", description: "Eelija näitab Baali preestritele Jumala võimsust" },
+      { title: "Eelija taevasse minek (ptk 19-2.Kn 2)", description: "Eelija võetakse tulise vankriga taevasse" }
     ],
     piibeeUrl: "https://piibel.ee"
   },
