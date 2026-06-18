@@ -99,7 +99,7 @@ export default function Eraamatud() {
   const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
 
   useEffect(() => {
-    document.title = "E-raamatud | Piibli Tarkuse Puu";
+    document.title = "E-raamatud | Piibel.ee";
     fetchEraamatud()
       .then(setItems)
       .catch((e) => setError(e?.message || "Viga"))
