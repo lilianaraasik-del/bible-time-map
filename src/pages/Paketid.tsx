@@ -29,7 +29,7 @@ export default function Paketid() {
   const [checkoutPkg, setCheckoutPkg] = useState<PiibelPackage | null>(null);
 
   useEffect(() => {
-    document.title = "Paketid | Piibli Tarkuse Puu";
+    document.title = "Paketid | Piibel.ee";
     if (!authLoading && !session) {
       navigate("/login?redirect=/paketid", { replace: true });
     }

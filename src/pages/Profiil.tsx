@@ -45,7 +45,7 @@ export default function Profiil() {
   }, [loading, session, navigate]);
 
   useEffect(() => {
-    document.title = "Minu profiil | Piibli Tarkuse Puu";
+    document.title = "Minu profiil | Piibel.ee";
     if (!session) return;
 
     Promise.all([
