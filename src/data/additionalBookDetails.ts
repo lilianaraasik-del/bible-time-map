@@ -717,7 +717,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Üldkirjad",
     overview: "Heebrealastele kiri näitab, kuidas Kristus on parem kõigest – inglitest, Moosesest, preestritest, ohvritest. Vana lepingu süsteem oli vari, Kristus on tegelikkus. Kiri julgustab usuelus väsinud kristlasi: ärge minge tagasi, jätkake usus.",
     authorFacts: ["Autor on tundmatu", "Adresseeritud juudi taustaga kristlastele", "Kirjutatud enne templi hävingut (70 pKr)", "Üks teoloogiliselt sügavamaid raamatuid"],
-    additionalFacts: ["Sisaldab usu kangelaste 'au tahvlit' (Hb 11)", "Õpetab Kristust kui ülempreestrit Melkisedeki korras", "Sõna 'parem' esineb 12 korda", "Hoiatab usust ärataganemise eest"],
+    additionalFacts: ["Sisaldab usu kangelaste 'autahvlit' (Hb 11)", "Õpetab Kristust kui ülempreestrit Melkisedeki korras", "Sõna 'parem' esineb 12 korda eesti keeles", "Hoiatab usust ärataganemise eest"],
     breakdowns: [
       { title: "Kristus on parem (ptk 1-4)", description: "Inglitest, Moosesest, hingamisest" },
       { title: "Parem ülempreester (ptk 5-7)", description: "Melkisedeki korras igavesti" },
