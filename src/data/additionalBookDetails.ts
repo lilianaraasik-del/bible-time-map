@@ -512,8 +512,8 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 55-56 pKr",
     category: "Pauluse kirjad",
     overview: "Korintos oli rikas, mitmekultuuriline sadamalinn – ja kogudus seal oli probleemides. Lahkhelid, ebamoraal, kohtuasjad, abielu küsimused, ülestõusmise eitamine. Paulus käsitleb iga probleemi armastuse ja tarkusega. Peatükk 13 – armastuse hümn – on tema vastus kõigele.",
-    authorFacts: ["Kirjutatud Efesusest", "Paulus oli Korintoses asutanud koguduse", "Reageerib koguduse kirjale ja kuulujuttudele", "Sosthenes saatis kirja kaasallkirjastajana"],
-    additionalFacts: ["Sisaldab armastuse hümni (1Kr 13)", "Põhjalikem õpetus armuandidest", "Kirjeldab issanda õhtusöömaaja seadmist", "Pikim õpetus ülestõusmise kohta (1Kr 15)"],
+    authorFacts: ["Kirjutatud Efesusest", "Paulus oli Korintoses asutanud koguduse", "Reageerib koguduse kirjale ja kuulujuttudele", "Soostenes saatis kirja kaasallkirjastajana"],
+    additionalFacts: ["Sisaldab armastuse hümni (1Kr 13)", "Põhjalikem õpetus armuandidest", "Kirjeldab Issanda õhtusöömaaja seadmist", "Pikim õpetus ülestõusmise kohta (1Kr 15)"],
     breakdowns: [
       { title: "Lahkhelid koguduses (ptk 1-4)", description: "Ärge jagunege juhi järgi" },
       { title: "Moraalsed probleemid (ptk 5-6)", description: "Ebamoraal ja kohtuasjad" },
