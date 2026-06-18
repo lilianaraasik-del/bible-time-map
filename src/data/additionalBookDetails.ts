@@ -125,7 +125,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     additionalFacts: ["Raamatus on 66 peatükki – nagu Piiblis raamatuid", "Esimesed 39 ptk käsitlevad kohut, viimased 27 lohutust", "Sisaldab Messia ennustusi: Js 7:14, 9:6, 53", "Kannatava sulase laul (Js 53) ennustab Jeesuse risti"],
     breakdowns: [
       { title: "Kohtukuulutused (ptk 1-12)", description: "Hoiatused Juudale ja Jeruusalemmale" },
-      { title: "Sõnumid rahvastele (ptk 13-23)", description: "Kuulutused naabrirahvaste kohta" },
+      { title: "Sõnumid rahvastele (ptk 13-23)", description: "Kuulutused naaberrahvaste kohta" },
       { title: "Apokalüpsis (ptk 24-27)", description: "Maailma kohtumõistmine ja taastamine" },
       { title: "Lohutus (ptk 40-55)", description: "Rahu sõnum vangipõlvest tagasitulijatele" },
       { title: "Tulevane hiilgus (ptk 56-66)", description: "Uus taevas ja uus maa" },
