@@ -182,7 +182,7 @@ export const coreBookDetails: Record<string, BookDetail> = {
     additionalFacts: [
       "Raamat hõlmab umbes 350-aastast perioodi",
       "Debora oli ainus naiskohtumõistja",
-      "Gideon võitis 300 mehega tohutu armeed",
+      "Giideon võitis 300 mehega tohutu armeed",
       "Simson oli kuulsaim kohtumõistja oma jõu poolest"
     ],
     breakdowns: [
