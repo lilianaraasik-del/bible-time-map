@@ -52,332 +52,2812 @@
     "1-mooses": {
       "name": "Genesis",
       "author": "Moses",
-      "year": "c. 1445-1405 BC"
+      "year": "c. 1445-1405 BC",
+      "details": {
+        "overview": "The book of Genesis is the book of beginnings – it tells of the creation of the world, humankind's fall into sin, and God's plan to save humanity. It shows how God chose Abraham and his descendants to form a nation through whom the Savior would come. The book teaches us about God's power, goodness, and faithfulness.",
+        "authorFacts": [
+          "Led the Israelites out of Egypt",
+          "Received the 10 Commandments from God on Mount Sinai",
+          "Wrote the first five books of the Bible (the Pentateuch)",
+          "Lived for 120 years"
+        ],
+        "additionalFacts": [
+          "Moses was the youngest of three siblings",
+          "His sister, Miriam, was old enough to watch what would happen to her baby brother",
+          "His brother, Aaron, was three years older",
+          "Grew up in Pharaoh's court but chose his own people"
+        ],
+        "breakdowns": [
+          {
+            "title": "Creation Story (ch. 1-2)",
+            "description": "God creates the heavens, the earth, and man in six days"
+          },
+          {
+            "title": "The Fall (ch. 3)",
+            "description": "Adam and Eve fall into temptation and lose Eden"
+          },
+          {
+            "title": "Noah's Ark (ch. 6-9)",
+            "description": "God saves Noah and his family from the flood"
+          },
+          {
+            "title": "Calling of Abraham (ch. 12)",
+            "description": "God calls Abraham and promises him a great nation"
+          },
+          {
+            "title": "Joseph's Story (ch. 37-50)",
+            "description": "Joseph is sold into slavery but becomes ruler of Egypt"
+          }
+        ]
+      }
     },
     "2-mooses": {
       "name": "Exodus",
       "author": "Moses",
-      "year": "c. 1445-1405 BC"
+      "year": "c. 1445-1405 BC",
+      "details": {
+        "overview": "The book of Exodus tells of courage, faith, and stunning miracles. It shows us how God frees His people from slavery and leads them through the wilderness to the promised land. The book teaches that God hears our cries and comes to our aid even when the situation seems hopeless. The 10 Commandments give us moral guidance for living and show God's love for us.",
+        "authorFacts": [
+          "Led the Israelites out of Egypt",
+          "Received the 10 Commandments from God on Mount Sinai",
+          "Wrote the first five books of the Bible",
+          "Witnessed God's mighty acts and miracles"
+        ],
+        "additionalFacts": [
+          "The burning bush was the first place God revealed Himself to Moses",
+          "The 10 plagues on Egypt proved God's power",
+          "The parting of the Red Sea is one of the most famous Bible miracles",
+          "The tabernacle was God's dwelling place among His people"
+        ],
+        "breakdowns": [
+          {
+            "title": "Slavery in Israel (ch. 1-2)",
+            "description": "Israel is enslaved in Egypt, Moses is born"
+          },
+          {
+            "title": "The Burning Bush (ch. 3)",
+            "description": "God appears to Moses and calls him to free His people"
+          },
+          {
+            "title": "The Ten Plagues (ch. 7-12)",
+            "description": "God sends plagues upon Egypt so Pharaoh will release His people"
+          },
+          {
+            "title": "At the Red Sea (ch. 14)",
+            "description": "God parts the waters of the Red Sea, the Israelites escape"
+          },
+          {
+            "title": "The 10 Commandments (ch. 20)",
+            "description": "God gives Moses the 10 Commandments on Mount Sinai"
+          }
+        ]
+      }
     },
     "3-mooses": {
       "name": "Leviticus",
       "author": "Moses",
-      "year": "c. 1445-1405 BC"
+      "year": "c. 1445-1405 BC",
+      "details": {
+        "overview": "The book of Leviticus is a practical guide to holy living. It teaches how to approach a holy God through sacrifices and consecration. The book shows that God desires to live among His people, but sin separates us from Him. The sacrificial system points to the coming Savior who will bring ultimate atonement.",
+        "authorFacts": [
+          "Wrote the book at the foot of Mount Sinai",
+          "Received all instructions directly from God",
+          "Taught the Israelites holiness and purification",
+          "Instituted the system of priests and sacrifices"
+        ],
+        "additionalFacts": [
+          "The book primarily contains direct instructions from God",
+          "Aaron and his sons were appointed as priests",
+          "The Day of Atonement was the holiest day of the year",
+          "Many laws concerned health and hygiene"
+        ],
+        "breakdowns": [
+          {
+            "title": "Sacrifices (ch. 1-7)",
+            "description": "Five different types of offerings and their meanings"
+          },
+          {
+            "title": "Consecration of Priests (ch. 8-10)",
+            "description": "Aaron and his sons are appointed as priests"
+          },
+          {
+            "title": "Clean and Unclean Animals (ch. 11)",
+            "description": "Instructions on food and purification"
+          },
+          {
+            "title": "Day of Atonement (ch. 16)",
+            "description": "The holiest day of the year, atoning for the sins of the people"
+          },
+          {
+            "title": "Holy Living (ch. 19-20)",
+            "description": "Be holy, because I, the Lord, am holy"
+          }
+        ]
+      }
     },
     "4-mooses": {
       "name": "Numbers",
       "author": "Moses",
-      "year": "c. 1445-1405 BC"
+      "year": "c. 1445-1405 BC",
+      "details": {
+        "overview": "The book of Numbers chronicles the Israelites' 40-year journey in the wilderness. It is a story of faith and unbelief, disobedience and God's faithfulness. Despite the people's rebellion and complaining, God remained faithful to them and eventually brought them to the border of the promised land.",
+        "authorFacts": [
+          "Documented the 40-year wilderness journey",
+          "Described the census and organization of the people",
+          "Recorded the people's rebellions and God's punishments",
+          "Lived among the Israelites throughout this period"
+        ],
+        "additionalFacts": [
+          "The book contains two censuses - at the beginning and the end",
+          "12 spies were sent to explore the land of Canaan",
+          "Only Joshua and Caleb trusted God",
+          "Moses struck the rock for water but did not follow God's command precisely"
+        ],
+        "breakdowns": [
+          {
+            "title": "Census (ch. 1-4)",
+            "description": "Israel is organized in a military fashion"
+          },
+          {
+            "title": "12 Spies (ch. 13-14)",
+            "description": "The people refuse to enter the promised land"
+          },
+          {
+            "title": "Korah's Rebellion (ch. 16)",
+            "description": "Korah's rebellion against Moses fails"
+          },
+          {
+            "title": "Bronze Serpent (ch. 21)",
+            "description": "Whoever looks at the serpent will live"
+          },
+          {
+            "title": "Balaam (ch. 22-24)",
+            "description": "A prophet who could not curse Israel"
+          }
+        ]
+      }
     },
     "5-mooses": {
       "name": "Deuteronomy",
       "author": "Moses",
-      "year": "c. 1445-1405 BC"
+      "year": "c. 1445-1405 BC",
+      "details": {
+        "overview": "The book of Deuteronomy contains Moses' farewell speeches to the new generation before entering the promised land. He recounts God's faithfulness, reiterates the laws, and encourages the people to love God with all their heart. It is a call to choose life and blessing, not death and curse.",
+        "authorFacts": [
+          "The last book Moses wrote",
+          "Delivered three major speeches to the people",
+          "Repeated and explained the laws to the new generation",
+          "Died before entering the promised land"
+        ],
+        "additionalFacts": [
+          "Moses saw the promised land from Mount Nebo",
+          "God buried him Himself; no one knows where his grave is",
+          "Joshua was appointed his successor",
+          "The book ends with the verse: 'No prophet has arisen in Israel like Moses'"
+        ],
+        "breakdowns": [
+          {
+            "title": "Recounting History (ch. 1-4)",
+            "description": "Moses recounts God's deeds in the wilderness"
+          },
+          {
+            "title": "10 Commandments Repeated (ch. 5)",
+            "description": "The core of the Law is given again"
+          },
+          {
+            "title": "Shema (ch. 6)",
+            "description": "Love the Lord your God with all your heart"
+          },
+          {
+            "title": "Blessings and Curses (ch. 28)",
+            "description": "Rewards of obedience and consequences of disobedience"
+          },
+          {
+            "title": "Death of Moses (ch. 34)",
+            "description": "Moses dies on Mount Nebo, aged 120"
+          }
+        ]
+      }
     },
     "joosua": {
       "name": "Joshua",
       "author": "Joshua",
-      "year": "c. 1400-1370 BC"
+      "year": "c. 1400-1370 BC",
+      "details": {
+        "overview": "Joshua is a symbol of courage and faith. After Moses' death, he took on the responsibility of leading the Israelites into the promised land. His story teaches us that God provides strength and courage when we trust Him. Joshua did not fear challenges or adversaries, for he knew that God was with him. He is an example for those facing daunting tasks - with faith and courage, the impossible can be achieved.",
+        "authorFacts": [
+          "Joshua (Heb. Yehoshua – 'The Lord is salvation') was the son of Nun, of the tribe of Ephraim, and Moses' closest assistant and servant from the beginning of the wilderness journey (Ex 24:13; 33:11)",
+          "His original name was Hoshea, but Moses gave him the new name Joshua, which refers to his role in saving the people (Num 13:16)",
+          "Moses publicly consecrated him as his successor, laying hands on him and giving him the fullness of the Spirit (Num 27:18–23; Dt 34:9)",
+          "Joshua is traditionally considered the primary author of the book – he himself recorded at least the words of the covenant renewal at Shechem (Jos 24:26); the concluding parts (e.g., his death) were added later by others, probably the priests Eleazar and Phinehas",
+          "The book is written from an eyewitness perspective – 'we' and 'to this day' forms (e.g., Jos 5:1; 6:25) indicate that the author lived during the described events"
+        ],
+        "additionalFacts": [
+          "Joshua was one of the 12 spies who explored the land of Canaan – only he and Caleb trusted God and were rewarded by reaching the Promised Land (Num 14:6–9, 30)",
+          "He led the first Israelite victory against Amalek at Rephidim, while Moses prayed on the mountaintop (Ex 17:8–13)",
+          "Joshua was a military leader, prophet, and spiritual leader in one person – under his leadership, the land was divided by lot among the twelve tribes",
+          "He lived to be 110 years old and was buried in his inheritance at Timnath-Serah in the hill country of Ephraim (Jos 24:29–30)",
+          "His famous testimony 'As for me and my household, we will serve the Lord' (Jos 24:15) has become one of the most well-known declarations of faith in the Old Testament",
+          "In the New Testament, Joshua is compared as a type of Jesus – both names mean 'The Lord saves,' and both lead the people into an inheritance (Heb 4:8)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Crossing the Jordan (ch. 3-4)",
+            "description": "God stops the waters of the Jordan River, the people cross over"
+          },
+          {
+            "title": "Conquest of Jericho (ch. 6)",
+            "description": "The walls fall as the people march around the city"
+          },
+          {
+            "title": "Conquest of Ai (ch. 7-8)",
+            "description": "After Achan's sin, Israel conquers the city of Ai"
+          },
+          {
+            "title": "Sun Standing Still (ch. 10)",
+            "description": "God stops the sun at Joshua's prayer in battle"
+          },
+          {
+            "title": "Division of the Land (ch. 13-21)",
+            "description": "The Promised Land is divided among the 12 tribes"
+          }
+        ]
+      }
     },
     "kohtumoistjad": {
       "name": "Judges",
       "author": "Samuel (traditionally)",
-      "year": "c. 1050-1000 BC"
+      "year": "c. 1050-1000 BC",
+      "details": {
+        "overview": "The book of Judges shows what happens when a people turn away from God. A cycle repeats: the people sin, fall under enemies, cry out to God, and God sends a deliverer – a judge. The book teaches that God is always ready to save those who turn to Him.",
+        "authorFacts": [
+          "Lived during the transitional period from judges to kings",
+          "Was a prophet and priest",
+          "Anointed Saul and David as kings",
+          "Led Israel as the last judge"
+        ],
+        "additionalFacts": [
+          "There are 12 judges in the book",
+          "Samson was the physically strongest judge",
+          "Deborah was the only female judge",
+          "Gideon, with 300 men, defeated 135,000 enemies"
+        ],
+        "breakdowns": [
+          {
+            "title": "Introduction (ch. 1-2)",
+            "description": "Israel does not drive out all the Canaanites"
+          },
+          {
+            "title": "Deborah and Barak (ch. 4-5)",
+            "description": "A prophetess leads to victory over Sisera"
+          },
+          {
+            "title": "Gideon (ch. 6-8)",
+            "description": "300 men defeat the Midianites"
+          },
+          {
+            "title": "Jephthah (ch. 11)",
+            "description": "The tragic consequence of a vow"
+          },
+          {
+            "title": "Samson (ch. 13-16)",
+            "description": "The strongest judge and Delilah"
+          }
+        ]
+      }
     },
     "rutt": {
       "name": "Ruth",
       "author": "Unknown",
-      "year": "c. 1000-900 BC"
+      "year": "c. 1000-900 BC",
+      "details": {
+        "overview": "The book of Ruth is a beautiful story of love and loyalty set in the dark times of the Judges. Ruth, a Moabite woman, remains loyal to her mother-in-law Naomi and finds a new life in Israel. She marries Boaz and becomes the great-grandmother of King David. This shows that God's grace extends to all nations.",
+        "authorFacts": [
+          "Author is unknown",
+          "Written after David became king",
+          "Emphasized God's providence",
+          "Showed that Moabites could belong to God's people"
+        ],
+        "additionalFacts": [
+          "Ruth was one of two Bible books named after a woman",
+          "Ruth is mentioned in Jesus' genealogy",
+          "The story takes place during the time of the Judges",
+          "Boaz was the son of Rahab"
+        ],
+        "breakdowns": [
+          {
+            "title": "Naomi's Tragedy (ch. 1)",
+            "description": "Naomi loses her husband and sons, returns to Bethlehem"
+          },
+          {
+            "title": "Ruth Meets Boaz (ch. 2)",
+            "description": "Ruth gleans in Boaz's field"
+          },
+          {
+            "title": "Ruth Seeks Redemption (ch. 3)",
+            "description": "Naomi instructs Ruth to seek a redeemer"
+          },
+          {
+            "title": "Marriage and Redemption (ch. 4)",
+            "description": "Boaz redeems Ruth and marries her"
+          }
+        ]
+      }
     },
     "1-saamuel": {
       "name": "1 Samuel",
       "author": "Samuel, Nathan, Gad",
-      "year": "c. 1000-900 BC"
+      "year": "c. 1000-900 BC",
+      "details": {
+        "overview": "The first book of Samuel tells of the transition from judges to kings. Samuel, the last great judge and first prophet, anointed Saul and then David as king. The story shows that God seeks people whose heart is after Him, not their outward appearance.",
+        "authorFacts": [
+          "Samuel wrote part of the book",
+          "Other prophets completed it after his death",
+          "Documented Israel's first kings",
+          "Was a prophet, priest, and judge"
+        ],
+        "additionalFacts": [
+          "Samuel was born in answer to his mother Hannah's prayer",
+          "He anointed two kings: Saul and David",
+          "Saul lost the kingdom due to disobedience",
+          "David killed Goliath"
+        ],
+        "breakdowns": [
+          {
+            "title": "Samuel's Birth (ch. 1-3)",
+            "description": "Hannah's prayer and Samuel's calling"
+          },
+          {
+            "title": "Saul Anointed King (ch. 8-10)",
+            "description": "The people want a king"
+          },
+          {
+            "title": "Saul's Disobedience (ch. 13-15)",
+            "description": "Saul loses the kingdom"
+          },
+          {
+            "title": "David Anointed (ch. 16)",
+            "description": "God chooses David"
+          },
+          {
+            "title": "David and Goliath (ch. 17)",
+            "description": "A boy defeats a giant"
+          }
+        ]
+      }
     },
     "2-saamuel": {
       "name": "2 Samuel",
       "author": "Samuel, Nathan, Gad",
-      "year": "c. 1000-900 BC"
+      "year": "c. 1000-900 BC",
+      "details": {
+        "overview": "The second book of Samuel focuses on the reign of King David. It shows both David's great victories and his deep falls into sin. Despite his sins, God called him 'a man after His own heart' and promised that an eternal king would come from his lineage.",
+        "authorFacts": [
+          "Author is unknown, possibly the prophet Nathan",
+          "Wrote objectively about David's victories and sins",
+          "Documented David's covenant with God",
+          "Showed God's grace and justice"
+        ],
+        "additionalFacts": [
+          "David brought the Ark of the Covenant to Jerusalem",
+          "He wanted to build a temple, but God did not allow it",
+          "His greatest sin was the story of Bathsheba and Uriah",
+          "Absalom, his son, rebelled against him"
+        ],
+        "breakdowns": [
+          {
+            "title": "David King of Judah (ch. 1-4)",
+            "description": "David becomes king in Judah, then over all Israel"
+          },
+          {
+            "title": "Ark to Jerusalem (ch. 5-7)",
+            "description": "David brings the Ark and receives a covenant from God"
+          },
+          {
+            "title": "David's Victories (ch. 8-10)",
+            "description": "David expands the kingdom"
+          },
+          {
+            "title": "Bathsheba and Uriah (ch. 11-12)",
+            "description": "David's greatest sin and punishment"
+          },
+          {
+            "title": "Absalom's Rebellion (ch. 13-19)",
+            "description": "David's son rebels and dies"
+          }
+        ]
+      }
     },
     "1-kuningate": {
       "name": "1 Kings",
       "author": "Jeremiah",
-      "year": "c. 560-540 BC"
+      "year": "c. 560-540 BC",
+      "details": {
+        "overview": "The first book of Kings tells of Solomon's reign and the division of the kingdom. Solomon, the wisest man of all time, built the temple but later fell into idolatry. After his death, the kingdom split into two - Israel in the north and Judah in the south.",
+        "authorFacts": [
+          "Author is unknown, tradition attributes it to Jeremiah",
+          "Wrote in Babylonian captivity",
+          "Documented the kings' comparison to God's law",
+          "Emphasized the importance of obedience"
+        ],
+        "additionalFacts": [
+          "Solomon asked for wisdom, not wealth or power",
+          "He built the famous temple in Jerusalem",
+          "He had 700 wives and 300 concubines",
+          "Elijah was a powerful prophet during Ahab's time"
+        ],
+        "breakdowns": [
+          {
+            "title": "Solomon's Wisdom (ch. 1-4)",
+            "description": "Solomon becomes king and asks for wisdom"
+          },
+          {
+            "title": "Building the Temple (ch. 5-8)",
+            "description": "Solomon builds the famous temple"
+          },
+          {
+            "title": "Division of the Kingdom (ch. 12)",
+            "description": "10 tribes separate from Judah"
+          },
+          {
+            "title": "Elijah and the Priests of Baal (ch. 17-18)",
+            "description": "Elijah shows the power of God to the priests of Baal"
+          },
+          {
+            "title": "Elijah Ascends to Heaven (ch. 19-2 Kgs 2)",
+            "description": "Elijah is taken to heaven in a chariot of fire"
+          }
+        ]
+      }
     },
     "2-kuningate": {
       "name": "2 Kings",
       "author": "Jeremiah",
-      "year": "c. 560-540 BC"
+      "year": "c. 560-540 BC",
+      "details": {
+        "overview": "The second book of Kings continues the story of the kings of Israel and Judah until the exile. Most kings were wicked and led the people into idolatry. God sent prophets to warn them, but the people did not listen. Finally, God led both kingdoms into captivity.",
+        "authorFacts": [
+          "Author is unknown, possibly Jeremiah",
+          "Wrote during or immediately after the exile",
+          "Documented the fall of both kingdoms",
+          "Showed the consequences of sin"
+        ],
+        "additionalFacts": [
+          "Elisha performed a double portion of miracles compared to Elijah",
+          "The northern kingdom of Israel fell to Assyria in 722 BC",
+          "The southern kingdom of Judah fell to Babylon in 586 BC",
+          "The temple in Jerusalem was destroyed"
+        ],
+        "breakdowns": [
+          {
+            "title": "Elijah Ascends to Heaven (ch. 1-2)",
+            "description": "Elisha receives a double portion of the spirit"
+          },
+          {
+            "title": "Elisha's Miracles (ch. 3-8)",
+            "description": "Elisha performs many miracles"
+          },
+          {
+            "title": "Fall of Israel (ch. 17)",
+            "description": "Assyria takes the northern kingdom captive"
+          },
+          {
+            "title": "Hezekiah's Reform (ch. 18-20)",
+            "description": "A good king reforms Judah"
+          },
+          {
+            "title": "Fall of Jerusalem (ch. 25)",
+            "description": "Babylon destroys the city and the temple"
+          }
+        ]
+      }
     },
     "1-ajaraamat": {
       "name": "1 Chronicles",
       "author": "Ezra",
-      "year": "c. 450-425 BC"
+      "year": "c. 450-425 BC",
+      "details": {
+        "overview": "1 Chronicles is an overview of Israel's history from Adam to David's kingdom. The book emphasizes the importance of the tribe of Judah and the Jerusalem temple. It was written after the return from exile to show God's faithfulness to His people throughout history.",
+        "authorFacts": [
+          "The author is probably Ezra",
+          "Wrote after the return from Babylonian exile",
+          "Emphasized the importance of the tribe of Judah and the temple",
+          "Used genealogies to connect the past and present"
+        ],
+        "additionalFacts": [
+          "The first 9 chapters are mainly genealogies",
+          "The book covers the same events as the books of Samuel and Kings",
+          "The focus is on the temple service and the Levites",
+          "David prepared for the temple's construction"
+        ],
+        "breakdowns": [
+          {
+            "title": "Genealogies (ch. 1-9)",
+            "description": "Genealogies from Adam to the exile"
+          },
+          {
+            "title": "David's Reign (ch. 10-20)",
+            "description": "David becomes king and defeats his enemies"
+          },
+          {
+            "title": "Bringing the Ark of the Covenant (ch. 13-16)",
+            "description": "David brings the ark to Jerusalem"
+          },
+          {
+            "title": "Davidic Covenant (ch. 17)",
+            "description": "God promises an eternal kingdom"
+          },
+          {
+            "title": "Temple Preparations (ch. 21-29)",
+            "description": "David prepares for the temple's construction"
+          }
+        ]
+      }
     },
     "2-ajaraamat": {
       "name": "2 Chronicles",
       "author": "Ezra",
-      "year": "c. 450-425 BC"
+      "year": "c. 450-425 BC",
+      "details": {
+        "overview": "2 Chronicles focuses on the history of the kings of Judah from Solomon to the exile. Unlike the book of Kings, which documents both kings of Israel and Judah, this book focuses only on the kings of Judah and the temple. The book ends with hope - Cyrus's decree, which allowed the Jews to return home.",
+        "authorFacts": [
+          "The author is probably Ezra",
+          "Wrote for the Jews who returned from exile",
+          "Focused on the temple and Jerusalem",
+          "Showcased God's blessing for faithfulness"
+        ],
+        "additionalFacts": [
+          "Solomon built the temple in 7 years",
+          "Hezekiah and Josiah were two of the best kings",
+          "The book ends with Cyrus's decree (539 BC)",
+          "The rebuilding of the temple was a central theme"
+        ],
+        "breakdowns": [
+          {
+            "title": "Solomon's Temple (ch. 1-9)",
+            "description": "Solomon builds and dedicates the temple"
+          },
+          {
+            "title": "Division of the Kingdom (ch. 10-12)",
+            "description": "10 tribes separate from Judah"
+          },
+          {
+            "title": "Kings of Judah (ch. 13-35)",
+            "description": "Some good, most bad kings"
+          },
+          {
+            "title": "Fall of Jerusalem (ch. 36)",
+            "description": "Babylon destroys the city"
+          },
+          {
+            "title": "Cyrus's Decree (ch. 36)",
+            "description": "Permission to return and rebuild the temple"
+          }
+        ]
+      }
     },
     "esra": {
       "name": "Ezra",
       "author": "Ezra",
-      "year": "c. 450-425 BC"
+      "year": "c. 450-425 BC",
+      "details": {
+        "overview": "The book of Ezra tells how the Jews returned from Babylonian exile and rebuilt the temple. Cyrus's decree allowed them to return, but the journey was difficult. Ezra, a priest and scribe, led a spiritual revival and taught the people God's law.",
+        "authorFacts": [
+          "Ezra was a priest and scribe",
+          "Led the second group of returnees to Jerusalem (458 BC)",
+          "Taught the people the Law of Moses",
+          "Led a spiritual reform"
+        ],
+        "additionalFacts": [
+          "The first group of returnees came under Zerubbabel's leadership (538 BC)",
+          "Temple construction lasted 23 years (536-515 BC)",
+          "Adversaries tried to hinder the construction",
+          "Ezra fought against intermarriage"
+        ],
+        "breakdowns": [
+          {
+            "title": "First Return (ch. 1-2)",
+            "description": "Zerubbabel leads the first group home"
+          },
+          {
+            "title": "Laying the Temple Foundation (ch. 3)",
+            "description": "Work begins, but adversaries hinder it"
+          },
+          {
+            "title": "Completing the Temple (ch. 4-6)",
+            "description": "After a pause, the temple is completed"
+          },
+          {
+            "title": "Ezra's Second Group of Returnees (ch. 7-8)",
+            "description": "Ezra brings another group"
+          },
+          {
+            "title": "The Problem of Intermarriage (ch. 9-10)",
+            "description": "Ezra demands repentance"
+          }
+        ]
+      }
     },
     "nehemja": {
       "name": "Nehemiah",
       "author": "Nehemiah",
-      "year": "c. 445-425 BC"
+      "year": "c. 445-425 BC",
+      "details": {
+        "overview": "The book of Nehemiah tells how the walls of Jerusalem were rebuilt in 52 days. Nehemiah, cupbearer to the Persian king, received permission to go to Jerusalem and lead the restoration of the walls. Despite attacks from adversaries and internal problems, he successfully completed the work.",
+        "authorFacts": [
+          "Nehemiah was cupbearer to the Persian king",
+          "Received permission to go to Jerusalem in 445 BC",
+          "Led the building of the walls in 52 days",
+          "Implemented social and spiritual reforms"
+        ],
+        "additionalFacts": [
+          "Nehemiah heard about Jerusalem's condition and wept",
+          "He prayed for 4 months before going to the king",
+          "Adversaries mocked and threatened, but could not stop him",
+          "Ezra and Nehemiah worked together for spiritual revival"
+        ],
+        "breakdowns": [
+          {
+            "title": "Nehemiah's Prayer (ch. 1-2)",
+            "description": "Nehemiah hears about Jerusalem's condition"
+          },
+          {
+            "title": "Building the Walls (ch. 3-7)",
+            "description": "The walls are completed in 52 days"
+          },
+          {
+            "title": "Reading the Law (ch. 8)",
+            "description": "Ezra reads the law to the people"
+          },
+          {
+            "title": "Repentance (ch. 9-10)",
+            "description": "The people confess sins and make a covenant"
+          },
+          {
+            "title": "Reforms (ch. 11-13)",
+            "description": "Nehemiah implements reforms"
+          }
+        ]
+      }
     },
     "ester": {
       "name": "Esther",
       "author": "Unknown",
-      "year": "c. 470-450 BC"
+      "year": "c. 470-450 BC",
+      "details": {
+        "overview": "The book of Esther is a dramatic story of how God saved the Jewish people from destruction in Persia. Esther, a Jewish maiden, became queen and risked her life to save her people. Although God's name is not mentioned, His providence is clearly seen throughout the story.",
+        "authorFacts": [
+          "The author is unknown, possibly Mordecai",
+          "Wrote during the Persian period",
+          "Does not mention God's name at all",
+          "Showcased God's providence"
+        ],
+        "additionalFacts": [
+          "Esther was Mordecai's cousin",
+          "She initially concealed her Jewish identity",
+          "Haman built a gallows for Mordecai",
+          "Haman was ultimately hanged on his own gallows"
+        ],
+        "breakdowns": [
+          {
+            "title": "Esther Becomes Queen (ch. 1-2)",
+            "description": "Vashti is deposed, Esther becomes queen"
+          },
+          {
+            "title": "Haman's Plot (ch. 3)",
+            "description": "Haman plans to destroy all Jews"
+          },
+          {
+            "title": "Mordecai's Plea (ch. 4)",
+            "description": "Mordecai asks Esther to intervene"
+          },
+          {
+            "title": "Esther's Courage (ch. 5-7)",
+            "description": "Esther exposes Haman's plot"
+          },
+          {
+            "title": "Deliverance of the Jews (ch. 8-10)",
+            "description": "The Jews are saved, Purim celebration"
+          }
+        ]
+      }
     },
     "iiob": {
       "name": "Job",
       "author": "Unknown",
-      "year": "c. 1500-1000 BC"
+      "year": "c. 1500-1000 BC",
+      "details": {
+        "overview": "The Book of Job deals with one of humanity's oldest questions: why do the righteous suffer? Job, a righteous man, loses everything—his possessions, his children, his health. His friends accuse him of sin, but Job holds onto his faith. At the end of the book, God Himself appears and shows His greatness. Job learns to trust, even without understanding.",
+        "authorFacts": [
+          "Lived probably during the time of the patriarchs",
+          "Was the richest man in the East",
+          "Lost ten children in one day",
+          "Eventually received a double blessing"
+        ],
+        "additionalFacts": [
+          "The book is the oldest in the Bible",
+          "Satan appears before God in heaven",
+          "Job lived 140 more years after his trials",
+          "His three daughters were the most beautiful in the land"
+        ],
+        "breakdowns": [
+          {
+            "title": "Prologue (ch. 1-2)",
+            "description": "Satan receives permission to test Job"
+          },
+          {
+            "title": "Dialogues of Friends (ch. 3-31)",
+            "description": "Three friends discuss the causes of suffering"
+          },
+          {
+            "title": "Elihu's Speeches (ch. 32-37)",
+            "description": "Young Elihu offers a new perspective"
+          },
+          {
+            "title": "God Responds (ch. 38-41)",
+            "description": "God demonstrates His greatness through creation"
+          },
+          {
+            "title": "Job's Restoration (ch. 42)",
+            "description": "God restores double to Job"
+          }
+        ]
+      }
     },
     "psalmid": {
       "name": "Psalms",
       "author": "David and others",
-      "year": "c. 1440-450 BC"
+      "year": "c. 1440-450 BC",
+      "details": {
+        "overview": "Psalms are the songs and prayers of the Bible—a mirror of the human soul. They express joy, sorrow, anger, fear, hope, and gratitude. Every emotion a human feels finds its words here. Psalms teach how to honestly communicate with God—not only with thanks, but also with questions and doubts.",
+        "authorFacts": [
+          "David wrote at least 73 psalms",
+          "Asaph wrote 12 psalms",
+          "Moses wrote Ps 90",
+          "Solomon wrote at least 2 psalms"
+        ],
+        "additionalFacts": [
+          "There are a total of 150 psalms",
+          "The longest chapter in the Bible is Ps 119",
+          "The shortest chapter in the Bible is Ps 117",
+          "Psalms are divided into five books"
+        ],
+        "breakdowns": [
+          {
+            "title": "Book I (Ps 1-41)",
+            "description": "Mainly David's psalms"
+          },
+          {
+            "title": "Book II (Ps 42-72)",
+            "description": "Psalms of the sons of Korah and David"
+          },
+          {
+            "title": "Book III (Ps 73-89)",
+            "description": "Psalms of Asaph"
+          },
+          {
+            "title": "Book IV (Ps 90-106)",
+            "description": "Anonymous royal psalms"
+          },
+          {
+            "title": "Book V (Ps 107-150)",
+            "description": "Songs of praise and pilgrimage songs"
+          }
+        ]
+      }
     },
     "opetussonad": {
       "name": "Proverbs",
       "author": "Solomon, Agur, Lemuel, 'sayings of the wise'",
-      "year": "c. 970-700 BC"
+      "year": "c. 970-700 BC",
+      "details": {
+        "overview": "Proverbs is a book of practical wisdom—a guide for daily life. It teaches how to live wisely, honestly, and reverently. The short sayings cover friendship, work, money, family, words, and emotions. The main message of the book: 'The fear of the Lord is the beginning of wisdom.'",
+        "authorFacts": [
+          "Solomon was the wisest man on earth",
+          "Received wisdom from God in a dream",
+          "Wrote over 3000 proverbs",
+          "Ruled for 40 years in peace"
+        ],
+        "additionalFacts": [
+          "The book begins with praise of wisdom",
+          "Ends with the description of a virtuous woman",
+          "Contains the words of both Solomon and Agur",
+          "31 chapters - one for each day of the month"
+        ],
+        "breakdowns": [
+          {
+            "title": "Call of Wisdom (ch. 1-9)",
+            "description": "Father's advice to his son"
+          },
+          {
+            "title": "Proverbs of Solomon (ch. 10-22)",
+            "description": "Short sayings of life wisdom"
+          },
+          {
+            "title": "Words of the Wise (ch. 22-24)",
+            "description": "Teachings for a young person"
+          },
+          {
+            "title": "Hezekiah's Men (ch. 25-29)",
+            "description": "Solomon's words, collected by Hezekiah"
+          },
+          {
+            "title": "Praise of the Virtuous Woman (ch. 31)",
+            "description": "Portrait of an ideal woman"
+          }
+        ]
+      }
     },
     "koguja": {
       "name": "Ecclesiastes",
       "author": "Solomon",
-      "year": "c. 935-900 BC"
+      "year": "c. 935-900 BC",
+      "details": {
+        "overview": "Ecclesiastes is a book about the meaning of life. Solomon, who had experienced everything—wealth, pleasure, wisdom, labor—comes to the conclusion: all is vanity without God. The book teaches that true contentment comes only from a close relationship with God, not from earthly things.",
+        "authorFacts": [
+          "Solomon wrote the book in his old age",
+          "Had tried all earthly pleasures",
+          "Knew 700 wives and 300 concubines",
+          "Concluded: fear God"
+        ],
+        "additionalFacts": [
+          "The word 'vanity' appears 38 times",
+          "There is a season for everything (ch. 3)",
+          "Two are better than one",
+          "The final conclusion: fear God and keep His commandments"
+        ],
+        "breakdowns": [
+          {
+            "title": "All is Vanity (ch. 1-2)",
+            "description": "The futility of wisdom, pleasure, and work"
+          },
+          {
+            "title": "The Theme of Time (ch. 3)",
+            "description": "There is a season for everything"
+          },
+          {
+            "title": "Difficulties of Life (ch. 4-6)",
+            "description": "Violence, wealth, injustice"
+          },
+          {
+            "title": "Practical Wisdom (ch. 7-10)",
+            "description": "How to live wisely"
+          },
+          {
+            "title": "Final Conclusion (ch. 11-12)",
+            "description": "Fear God and keep His commandments"
+          }
+        ]
+      }
     },
     "ulemlaul": {
       "name": "Song of Songs",
       "author": "Solomon",
-      "year": "c. 970-930 BC"
+      "year": "c. 970-930 BC",
+      "details": {
+        "overview": "Song of Songs is a love poem—a beautiful poem about pure love between a man and a woman. It shows that love, romance, and marriage are gifts from God. Many also see it as an allegory for God's love for His people and Christ's love for the Church.",
+        "authorFacts": [
+          "Solomon wrote it in his youth",
+          "The most beautiful of his 1005 songs",
+          "Describes love at the time of marriage",
+          "One of the shortest books in the Bible"
+        ],
+        "additionalFacts": [
+          "God's name is not mentioned even once in the book",
+          "Uses nature extensively as imagery",
+          "The bride, groom, and bystanders converse",
+          "Jews read it during Passover"
+        ],
+        "breakdowns": [
+          {
+            "title": "Love in the Beginning (ch. 1-2)",
+            "description": "The bride and groom praise each other"
+          },
+          {
+            "title": "Seeking and Finding (ch. 3)",
+            "description": "The bride searches for her beloved"
+          },
+          {
+            "title": "The Wedding (ch. 4-5)",
+            "description": "The groom praises the bride's beauty"
+          },
+          {
+            "title": "Mutual Praise (ch. 6-7)",
+            "description": "The lovers describe each other"
+          },
+          {
+            "title": "The Power of Love (ch. 8)",
+            "description": "Love is as strong as death"
+          }
+        ]
+      }
     },
     "jesaja": {
       "name": "Isaiah",
       "author": "Isaiah",
-      "year": "c. 740-680 BC"
+      "year": "c. 740-680 BC",
+      "details": {
+        "overview": "Isaiah is the greatest prophet of the Old Testament—he is called the 'evangelist in the Old Testament'. His book contains the most accurate prophecies about the Messiah: His virgin birth, His suffering for us, and His eternal reign. Isaiah proclaims both judgment and hope.",
+        "authorFacts": [
+          "Served during the time of four kings of Judah",
+          "Received his call through a vision of God in the temple",
+          "Prophesied for 60 years",
+          "According to tradition, he was martyred by King Manasseh"
+        ],
+        "additionalFacts": [
+          "The book has 66 chapters—like the books in the Bible",
+          "The first 39 chapters deal with judgment, the last 27 with comfort",
+          "Contains prophecies of the Messiah: Isa 7:14, 9:6, 53",
+          "The song of the Suffering Servant (Isa 53) predicts Jesus' cross"
+        ],
+        "breakdowns": [
+          {
+            "title": "Proclamations of Judgment (ch. 1-12)",
+            "description": "Warnings to Judah and Jerusalem"
+          },
+          {
+            "title": "Messages to the Nations (ch. 13-23)",
+            "description": "Prophecies concerning neighboring nations"
+          },
+          {
+            "title": "Apocalypse (ch. 24-27)",
+            "description": "World judgment and restoration"
+          },
+          {
+            "title": "Comfort (ch. 40-55)",
+            "description": "A message of peace for those returning from exile"
+          },
+          {
+            "title": "Future Glory (ch. 56-66)",
+            "description": "New heavens and a new earth"
+          }
+        ]
+      }
     },
     "jeremija": {
       "name": "Jeremiah",
       "author": "Jeremiah",
-      "year": "c. 627-580 BC"
+      "year": "c. 627-580 BC",
+      "details": {
+        "overview": "Jeremiah is called the 'weeping prophet'. He foretold the destruction of Jerusalem for 40 years, but the people did not listen. His book shows God's heartache and justice at the same time. Jeremiah also preached about a new covenant where God's law would be written on the heart.",
+        "authorFacts": [
+          "Called to be a prophet at a very young age",
+          "Served for 40+ years before the destruction of Jerusalem",
+          "Suffered imprisonment and persecution",
+          "Died in Egypt as an exile"
+        ],
+        "additionalFacts": [
+          "Known as the 'weeping prophet'",
+          "Prophesied the new covenant (Jer 31:31-34)",
+          "Bought a field during the siege of Jerusalem as a sign of faith",
+          "His scribe was Baruch"
+        ],
+        "breakdowns": [
+          {
+            "title": "Jeremiah's Calling (ch. 1)",
+            "description": "God calls him to be a prophet"
+          },
+          {
+            "title": "Warnings to Judah (ch. 2-25)",
+            "description": "Calls to turn from sin"
+          },
+          {
+            "title": "Confrontations (ch. 26-29)",
+            "description": "Conflict with false prophets"
+          },
+          {
+            "title": "Promise of the New Covenant (ch. 30-33)",
+            "description": "Promises of future restoration"
+          },
+          {
+            "title": "Fall of Jerusalem (ch. 39, 52)",
+            "description": "Babylon destroys the city"
+          }
+        ]
+      }
     },
     "nutulaul": {
       "name": "Lamentations",
       "author": "Jeremiah",
-      "year": "c. 586 BC"
+      "year": "c. 586 BC",
+      "details": {
+        "overview": "Lamentations consists of five funeral songs over the destruction of Jerusalem. Jeremiah mourns for his beloved city, which has become ruins at the hands of Babylon. But amidst the lament, hope shines: 'The steadfast love of the Lord never ceases; His mercies never come to an end' (Lam 3:22).",
+        "authorFacts": [
+          "Written immediately after the fall of Jerusalem",
+          "Jeremiah was an eyewitness",
+          "Five poems, each an acrostic",
+          "The central poem is a message of hope"
+        ],
+        "additionalFacts": [
+          "Each chapter begins with a different alphabetical sequence",
+          "The third chapter is the longest",
+          "Jews read this on the fast day commemorating the destruction of the Temple (Tisha B'Av)",
+          "Contains the well-known verse: 'His mercies are new every morning'"
+        ],
+        "breakdowns": [
+          {
+            "title": "Lament over Zion (ch. 1)",
+            "description": "Jerusalem sits alone like a widow"
+          },
+          {
+            "title": "The Lord's Wrath (ch. 2)",
+            "description": "God has destroyed His city"
+          },
+          {
+            "title": "Glimmer of Hope (ch. 3)",
+            "description": "His mercies are new every morning"
+          },
+          {
+            "title": "Gold Turns to Dross (ch. 4)",
+            "description": "Sorrow over the destruction of the sanctuary"
+          },
+          {
+            "title": "Prayer for Mercy (ch. 5)",
+            "description": "Restore us to yourself, O Lord"
+          }
+        ]
+      }
     },
     "hesekiel": {
       "name": "Ezekiel",
       "author": "Ezekiel",
-      "year": "c. 593-565 BC"
+      "year": "c. 593-565 BC",
+      "details": {
+        "overview": "Ezekiel was a prophet during the Babylonian captivity. He received strange visions – of God's throne, dry bones coming to life, and a future temple. His message: God has not abandoned His people, even in exile. His Spirit will restore them and give them a new heart.",
+        "authorFacts": [
+          "Was a priest and prophet",
+          "Exiled to Babylon in 597 BC",
+          "Received his first vision at age 30",
+          "Prophesied for 22 years in captivity"
+        ],
+        "additionalFacts": [
+          "The book contains four famous visions",
+          "The valley of dry bones (ch. 37) foretells the restoration of Israel",
+          "Performed many 'symbolic acts'",
+          "His wife died as a prophetic sign"
+        ],
+        "breakdowns": [
+          {
+            "title": "Call and Vision (ch. 1-3)",
+            "description": "God's throne and complex beings"
+          },
+          {
+            "title": "Judgment on Jerusalem (ch. 4-24)",
+            "description": "Prophecies about the city's destruction"
+          },
+          {
+            "title": "Judgment on Nations (ch. 25-32)",
+            "description": "Messages to Israel's enemies"
+          },
+          {
+            "title": "Hope of Restoration (ch. 33-39)",
+            "description": "Dry bones come to life"
+          },
+          {
+            "title": "New Temple (ch. 40-48)",
+            "description": "Vision of a future temple"
+          }
+        ]
+      }
     },
     "taaniel": {
       "name": "Daniel",
       "author": "Daniel",
-      "year": "c. 540-530 BC"
+      "year": "c. 540-530 BC",
+      "details": {
+        "overview": "Daniel is the story of a young man who kept his faith even in a foreign land. In Babylon, he refused the king's food, publicly prayed to God, and received wisdom to interpret dreams. In the den of lions, he remained unharmed. His book contains powerful prophetic visions of world empires and the coming of the Messiah.",
+        "authorFacts": [
+          "Exiled to Babylon as a youth",
+          "Served during the reigns of four kings (Nebuchadnezzar–Cyrus)",
+          "Received wisdom directly from God",
+          "Lived to be over 80 years old"
+        ],
+        "additionalFacts": [
+          "His three friends were thrown into the fiery furnace",
+          "Daniel himself was thrown into the den of lions",
+          "The vision of 70 weeks (Dan 9) foretells the coming of the Messiah",
+          "Half of the book is in Aramaic"
+        ],
+        "breakdowns": [
+          {
+            "title": "Faithfulness in Babylon (ch. 1)",
+            "description": "Daniel does not defile himself with the king's food"
+          },
+          {
+            "title": "Nebuchadnezzar's Dream (ch. 2)",
+            "description": "Vision of the great statue representing empires"
+          },
+          {
+            "title": "Fiery Furnace (ch. 3)",
+            "description": "Three friends are saved from the furnace"
+          },
+          {
+            "title": "Lions' Den (ch. 6)",
+            "description": "Daniel is saved from the lions"
+          },
+          {
+            "title": "End-Time Visions (ch. 7-12)",
+            "description": "Four beasts and 70 weeks"
+          }
+        ]
+      }
     },
     "hoosea": {
       "name": "Hosea",
       "author": "Hosea",
-      "year": "c. 755-715 BC"
+      "year": "c. 755-715 BC",
+      "details": {
+        "overview": "The book of Hosea is a live exhibition of God's love. God commanded Hosea to marry an unfaithful woman, Gomer, to show how painful His own love is for an unfaithful people. Despite everything, Hosea seeks out his wife and buys her back – just as God seeks out His people.",
+        "authorFacts": [
+          "Prophesied in the Northern Kingdom",
+          "Served for 60+ years",
+          "Married a prostitute as a prophetic sign",
+          "Gave his children symbolic names"
+        ],
+        "additionalFacts": [
+          "His wife Gomer was unfaithful",
+          "Children bore warning names",
+          "Hosea bought his wife back from the slave market",
+          "The first 'minor prophet' book"
+        ],
+        "breakdowns": [
+          {
+            "title": "Hosea's Family (ch. 1-3)",
+            "description": "Marriage to Gomer as a picture of Israel"
+          },
+          {
+            "title": "Israel's Guilt (ch. 4-7)",
+            "description": "Unfaithfulness and idolatry"
+          },
+          {
+            "title": "Coming Judgment (ch. 8-10)",
+            "description": "Punishment is coming"
+          },
+          {
+            "title": "God's Love (ch. 11)",
+            "description": "When Israel was a child, I loved him"
+          },
+          {
+            "title": "Return (ch. 12-14)",
+            "description": "Call to repentance"
+          }
+        ]
+      }
     },
     "joel": {
       "name": "Joel",
       "author": "Joel",
-      "year": "c. 835-800 BC"
+      "year": "c. 835-800 BC",
+      "details": {
+        "overview": "Joel prophesied after a great locust plague that destroyed the crops. He saw this as God's warning and called the people to repentance. His famous prophecy 'I will pour out my Spirit on all people' was fulfilled at Pentecost when the Holy Spirit was poured out in Jerusalem.",
+        "authorFacts": [
+          "Little is known about his life",
+          "Prophesied in Judah",
+          "Son of Pethuel",
+          "One of the earliest writing prophets"
+        ],
+        "additionalFacts": [
+          "The locust plague in his time is called 'the Day of the Lord'",
+          "Peter quoted him at Pentecost",
+          "Mentions 'the Day of the Lord' five times",
+          "Promises the outpouring of the Spirit on all people"
+        ],
+        "breakdowns": [
+          {
+            "title": "Locust Plague (ch. 1)",
+            "description": "Warning of punishment"
+          },
+          {
+            "title": "The Day of the Lord (ch. 2:1-17)",
+            "description": "Description of the coming judgment"
+          },
+          {
+            "title": "Promises (ch. 2:18-27)",
+            "description": "God will restore the damage"
+          },
+          {
+            "title": "Outpouring of the Spirit (ch. 2:28-32)",
+            "description": "I will pour out my Spirit on all people"
+          },
+          {
+            "title": "Judgment on Nations (ch. 3)",
+            "description": "Judgment in the Valley of Jehoshaphat"
+          }
+        ]
+      }
     },
     "aamos": {
       "name": "Amos",
       "author": "Amos",
-      "year": "c. 760-750 BC"
+      "year": "c. 760-750 BC",
+      "details": {
+        "overview": "Amos was a shepherd from Tekoa, whom God called to be a prophet. He warned the Northern Kingdom about social injustice and the oppression of the poor. His message: empty religious rituals mean nothing if people do not live righteously. 'But let justice roll on like a river.'",
+        "authorFacts": [
+          "Was a shepherd and a sycamore-fig grower",
+          "Had no formal prophetic training",
+          "From the Southern Kingdom, prophesied to the Northern Kingdom",
+          "Confronted King Jeroboam II"
+        ],
+        "additionalFacts": [
+          "Prophesied despite great prosperity",
+          "Uses the repeated phrase 'for three transgressions, even for four'",
+          "His famous verse: 'let justice roll on like a river' (Am 5:24)",
+          "He was expelled from Bethel"
+        ],
+        "breakdowns": [
+          {
+            "title": "Judgment Against Nations (ch. 1-2)",
+            "description": "Condemnation of eight nations"
+          },
+          {
+            "title": "Sins of Israel (ch. 3-6)",
+            "description": "Social injustice and luxury"
+          },
+          {
+            "title": "Five Visions (ch. 7-9:10)",
+            "description": "Locusts, fire, plumb line, etc."
+          },
+          {
+            "title": "Amaziah's Confrontation (ch. 7:10-17)",
+            "description": "Priest demands Amos' departure"
+          },
+          {
+            "title": "Promise of Restoration (ch. 9:11-15)",
+            "description": "David's fallen tent will be restored"
+          }
+        ]
+      }
     },
     "obadja": {
       "name": "Obadiah",
       "author": "Obadiah",
-      "year": "c. 586-585 BC"
+      "year": "c. 586-585 BC",
+      "details": {
+        "overview": "Obadiah is the shortest book in the Old Testament – only one chapter. It is a warning to Edom, the descendants of Esau, who rejoiced over the destruction of Jerusalem. The message: whoever delights in the misfortune of others will be punished themselves. God is just.",
+        "authorFacts": [
+          "Little is known about his life",
+          "Name means 'Servant of the Lord'",
+          "Prophesied after the fall of Jerusalem",
+          "Shortest prophetic book"
+        ],
+        "additionalFacts": [
+          "Only 21 verses",
+          "Addresses Edom (descendants of Esau)",
+          "Edom was located in modern-day Jordan",
+          "Petra was the capital of Edom"
+        ],
+        "breakdowns": [
+          {
+            "title": "Edom's Pride (v 1-9)",
+            "description": "Warning against Edom's aggression"
+          },
+          {
+            "title": "Edom's Guilt (v 10-14)",
+            "description": "Rejoicing over the destruction of Jerusalem"
+          },
+          {
+            "title": "The Day of the Lord (v 15-16)",
+            "description": "Punishment for the nations"
+          },
+          {
+            "title": "Restoration of Israel (v 17-18)",
+            "description": "Zion shall be holy"
+          },
+          {
+            "title": "The Kingdom to the Lord (v 19-21)",
+            "description": "The Lord shall be king"
+          }
+        ]
+      }
     },
     "joona": {
       "name": "Jonah",
       "author": "Jonah",
-      "year": "c. 780-750 BC"
+      "year": "c. 780-750 BC",
+      "details": {
+        "overview": "Jonah is a story of a prophet who fled from God. He was tasked to go to Nineveh, but he went in the opposite direction. After a storm and time in the belly of a fish, he finally obeyed God. Nineveh repented and was saved. The book teaches God's mercy towards all nations.",
+        "authorFacts": [
+          "Prophesied during the reign of King Jeroboam II",
+          "From Gath-Hepher",
+          "Initially fled from God",
+          "Spent three days in the belly of a fish"
+        ],
+        "additionalFacts": [
+          "Jesus compared himself to Jonah",
+          "Being cast out of the fish's belly foreshadowed Christ's resurrection",
+          "Nineveh was the capital of Assyria",
+          "Over 120,000 inhabitants in Nineveh"
+        ],
+        "breakdowns": [
+          {
+            "title": "The Flight (ch. 1)",
+            "description": "Jonah flees on a ship"
+          },
+          {
+            "title": "Prayer in the Fish's Belly (ch. 2)",
+            "description": "Jonah turns to God"
+          },
+          {
+            "title": "Nineveh Repents (ch. 3)",
+            "description": "The city turns from sin"
+          },
+          {
+            "title": "Jonah's Anger (ch. 4)",
+            "description": "The prophet is angry about God's mercy"
+          },
+          {
+            "title": "The Lesson (ch. 4)",
+            "description": "God has mercy on all nations"
+          }
+        ]
+      }
     },
     "miika": {
       "name": "Micah",
       "author": "Micah",
-      "year": "c. 735-700 BC"
+      "year": "c. 735-700 BC",
+      "details": {
+        "overview": "Micah prophesied at the same time as Isaiah. He warned both Israel and Judah about injustice and corruption. But he also prophesied: a ruler will be born in Bethlehem, whose origins are from old, from ancient times. This prophecy was fulfilled in Jesus Christ.",
+        "authorFacts": [
+          "From Moresheth",
+          "A countryman who cared for the poor",
+          "Prophesied in Judah and Israel",
+          "Influenced by Isaiah and Hosea"
+        ],
+        "additionalFacts": [
+          "Prophesied Bethlehem as the birthplace of the Messiah (Micah 5:2)",
+          "Famous verse: 'what the Lord requires of you' (Micah 6:8)",
+          "Warned of the destruction of the temple",
+          "His message was used to save Jeremiah"
+        ],
+        "breakdowns": [
+          {
+            "title": "First Judgment (ch. 1-2)",
+            "description": "Both Samaria and Jerusalem will be judged"
+          },
+          {
+            "title": "Guilt of the Leaders (ch. 3)",
+            "description": "Corruption among the prophets"
+          },
+          {
+            "title": "Future Kingdom (ch. 4)",
+            "description": "The mountains will be raised above all mountains"
+          },
+          {
+            "title": "Ruler from Bethlehem (ch. 5)",
+            "description": "But you, Bethlehem, shall not be counted least among the rulers of Judah"
+          },
+          {
+            "title": "God's Requirement (ch. 6-7)",
+            "description": "To act justly, to love mercy"
+          }
+        ]
+      }
     },
     "nahum": {
       "name": "Nahum",
       "author": "Nahum",
-      "year": "c. 663-612 BC"
+      "year": "c. 663-612 BC",
+      "details": {
+        "overview": "Nahum prophesied the destruction of Nineveh – the city that repented in Jonah's time had returned to wickedness. The book shows that God's patience has limits. Assyria was a cruel empire that had destroyed the Northern Kingdom. Nahum promises: their cruel rule will end.",
+        "authorFacts": [
+          "From Elkosh",
+          "Little is known about his life",
+          "Prophesied in Judah",
+          "Name means 'comfort'"
+        ],
+        "additionalFacts": [
+          "Nineveh was destroyed in 612 BC (exactly as Nahum predicted)",
+          "The book is a masterpiece of poetry",
+          "Contrast with the book of Jonah",
+          "Comfort for the Jews regarding the fall of Assyria"
+        ],
+        "breakdowns": [
+          {
+            "title": "God's Character (ch. 1:1-8)",
+            "description": "Slow to anger, but a sure judge"
+          },
+          {
+            "title": "Nineveh's Doom (ch. 1:9-15)",
+            "description": "Your demise is coming"
+          },
+          {
+            "title": "Siege of Nineveh (ch. 2)",
+            "description": "Enemies prepare for attack"
+          },
+          {
+            "title": "Fall of Nineveh (ch. 3:1-11)",
+            "description": "The end of bloody cities"
+          },
+          {
+            "title": "Final Destruction (ch. 3:12-19)",
+            "description": "No one will mourn the city's fall"
+          }
+        ]
+      }
     },
     "habakuk": {
       "name": "Habakkuk",
       "author": "Habakkuk",
-      "year": "c. 609-605 BC"
+      "year": "c. 609-605 BC",
+      "details": {
+        "overview": "Habakkuk is a book of honest questions. The prophet asks: 'Lord, why do you allow injustice? Why do you use sinful Babylonians to punish your people?' God answers patiently. Finally, Habakkuk says: 'The righteous will live by his faith' – a verse that became a foundational teaching for the Apostle Paul.",
+        "authorFacts": [
+          "Unknown origin",
+          "Prophesied in Judah",
+          "Lived just before the Babylonian invasion",
+          "His book ends with a prayer-song"
+        ],
+        "additionalFacts": [
+          "Famous verse: 'The righteous will live by his faith' (Hb 2:4)",
+          "Paul's foundation in Romans",
+          "The ending is a musical prayer",
+          "Dialogue with God – a rare form"
+        ],
+        "breakdowns": [
+          {
+            "title": "First Complaint (ch. 1:1-4)",
+            "description": "Why do you allow injustice?"
+          },
+          {
+            "title": "God's Answer (ch. 1:5-11)",
+            "description": "I am sending the Babylonians"
+          },
+          {
+            "title": "Second Complaint (ch. 1:12-2:1)",
+            "description": "But the Babylonians are even worse!"
+          },
+          {
+            "title": "Five Woes (ch. 2:2-20)",
+            "description": "The righteous will live by his faith"
+          },
+          {
+            "title": "Habakkuk's Prayer (ch. 3)",
+            "description": "I will rejoice in the Lord, although..."
+          }
+        ]
+      }
     },
     "sefanja": {
       "name": "Zephaniah",
       "author": "Zephaniah",
-      "year": "c. 635-625 BC"
+      "year": "c. 635-625 BC",
+      "details": {
+        "overview": "Zephaniah prophesied during the reign of King Josiah. He warned of the 'Day of the Lord' – a great day of judgment – and called the people to repentance. The book ends with a song of joy: The Lord your God is with you, He is mighty to save. He will rejoice over you with singing.",
+        "authorFacts": [
+          "Great-great-grandson of King Hezekiah",
+          "Prophesied during the reign of King Josiah",
+          "Descended from the royal family",
+          "Likely influenced Josiah's reforms"
+        ],
+        "additionalFacts": [
+          "Mentions the 'Day of the Lord' more than any other prophet",
+          "Ends with one of the most beautiful promises in the Bible (Zep 3:17)",
+          "His prophecy helped initiate Josiah's reforms",
+          "Of royal lineage"
+        ],
+        "breakdowns": [
+          {
+            "title": "Day of Judgment (ch. 1)",
+            "description": "The Day of the Lord is near"
+          },
+          {
+            "title": "Judgment on the Nations (ch. 2:1-15)",
+            "description": "Philistia, Moab, Ammon, Ethiopia, Assyria"
+          },
+          {
+            "title": "Jerusalem (ch. 3:1-7)",
+            "description": "Judgment on the rebellious city"
+          },
+          {
+            "title": "A Remnant Spared (ch. 3:8-13)",
+            "description": "God will leave a humble people"
+          },
+          {
+            "title": "Song of Joy (ch. 3:14-20)",
+            "description": "The Lord rejoices over you with singing"
+          }
+        ]
+      }
     },
     "haggai": {
       "name": "Haggai",
       "author": "Haggai",
-      "year": "c. 520 BC"
+      "year": "c. 520 BC",
+      "details": {
+        "overview": "Haggai was one of the first prophets after the Babylonian captivity. The people had returned, but the rebuilding of the temple had stalled for 16 years. Haggai proclaimed: 'Is it time for you yourselves to live in your paneled houses, while this house lies in ruins?' The people then set to work.",
+        "authorFacts": [
+          "One of the first 'return' prophets",
+          "Worked alongside Zechariah",
+          "Prophesied to Governor Zerubbabel",
+          "His prophecy revived the rebuilding of the temple"
+        ],
+        "additionalFacts": [
+          "One of the shortest books – only 2 chapters",
+          "Prophesied for only 4 months (520 BC)",
+          "The temple was completed 4 years later",
+          "His message yielded results in 24 days"
+        ],
+        "breakdowns": [
+          {
+            "title": "Call to Build (ch. 1:1-11)",
+            "description": "Build the house of the Lord!"
+          },
+          {
+            "title": "The People's Response (ch. 1:12-15)",
+            "description": "The people start working"
+          },
+          {
+            "title": "Glory of the Future Temple (ch. 2:1-9)",
+            "description": "The latter glory of this house will be greater"
+          },
+          {
+            "title": "Blessing from Today (ch. 2:10-19)",
+            "description": "From this day on I will bless you"
+          },
+          {
+            "title": "Promise to Zerubbabel (ch. 2:20-23)",
+            "description": "I will take you as my signet"
+          }
+        ]
+      }
     },
     "sakarja": {
       "name": "Zechariah",
       "author": "Zechariah",
-      "year": "c. 520-475 BC"
+      "year": "c. 520-475 BC",
+      "details": {
+        "overview": "Zechariah prophesied alongside Haggai, encouraging the people to continue rebuilding the temple. His book contains eight visions and many Messianic prophecies: the king comes on a donkey, pierced, for a new covenant. The book helps the people look beyond their current difficulties.",
+        "authorFacts": [
+          "Priest and prophet",
+          "Worked alongside Haggai",
+          "Called the people to rebuild the temple",
+          "Received 8 visions in one night"
+        ],
+        "additionalFacts": [
+          "Contains many Messianic prophecies",
+          "Prophesied the king coming on a donkey (Zec 9:9 → Mt 21)",
+          "Prophesied the piercing (Zec 12:10 → Jn 19)",
+          "30 pieces of silver (Zec 11:12 → Mt 26)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Eight Visions (ch. 1-6)",
+            "description": "Horses, horns, measuring line, etc."
+          },
+          {
+            "title": "The Question of Fasting (ch. 7-8)",
+            "description": "True godliness"
+          },
+          {
+            "title": "First Messianic Prophecy (ch. 9-11)",
+            "description": "The King Comes on a Donkey"
+          },
+          {
+            "title": "Second Messianic Prophecy (ch. 12-13)",
+            "description": "They will look on me, the one they have pierced"
+          },
+          {
+            "title": "The Day of the Lord (ch. 14)",
+            "description": "His feet will stand on the Mount of Olives"
+          }
+        ]
+      }
     },
     "malaki": {
       "name": "Malachi",
       "author": "Malachi",
-      "year": "c. 450-400 BC"
+      "year": "c. 450-400 BC",
+      "details": {
+        "overview": "Malachi is the last book of the Old Testament. After his prophecy, there were 400 years of 'silence' until John the Baptist began his ministry. Malachi rebukes the people for their spiritual lukewarmness: shoddy sacrifices, divorces, withholding tithes. But he promises: The Lord will suddenly come to his temple.",
+        "authorFacts": [
+          "Little is known about his life",
+          "His name means 'my messenger'",
+          "Prophesied during Nehemiah's time",
+          "The last prophet of the Old Testament"
+        ],
+        "additionalFacts": [
+          "Followed by 400 years of 'silence'",
+          "Prophesies Elijah (John the Baptist)",
+          "The topic of tithes (Mal 3:10)",
+          "Ends with the word 'curse'"
+        ],
+        "breakdowns": [
+          {
+            "title": "God's Love (ch. 1:1-5)",
+            "description": "I have loved you"
+          },
+          {
+            "title": "Guilt of the Priests (ch. 1:6-2:9)",
+            "description": "Contemptible sacrifices"
+          },
+          {
+            "title": "Unfaithfulness (ch. 2:10-16)",
+            "description": "Condemnation of divorces"
+          },
+          {
+            "title": "Tithes (ch. 3:1-12)",
+            "description": "Bring the whole tithe into the storehouse"
+          },
+          {
+            "title": "The Day of the Lord (ch. 3:13-4:6)",
+            "description": "Elijah will be sent"
+          }
+        ]
+      }
     },
     "matteus": {
       "name": "Gospel of Matthew",
       "author": "Matthew",
-      "year": "c. 50-70 AD"
+      "year": "c. 50-70 AD",
+      "details": {
+        "overview": "Matthew was a tax collector who became a disciple of Jesus. His Gospel presents Jesus as the fulfillment of Old Testament promises – the Messiah, the Son of David, the King of the Jews. The book contains the Sermon on the Mount, Jesus' most famous parables, and the Great Commission: make disciples of all nations.",
+        "authorFacts": [
+          "Was a tax collector for Rome",
+          "Became a disciple directly from his tax booth",
+          "From Capernaum",
+          "According to tradition, died a martyr's death in Ethiopia"
+        ],
+        "additionalFacts": [
+          "First book in the New Testament",
+          "Contains the Sermon on the Mount (Mt 5-7)",
+          "The Great Commission (Mt 28:18-20)",
+          "Quotes the Old Testament more than any other Gospel"
+        ],
+        "breakdowns": [
+          {
+            "title": "The Birth of Jesus (ch. 1-2)",
+            "description": "Genealogy, birth, and visit of the wise men"
+          },
+          {
+            "title": "Sermon on the Mount (ch. 5-7)",
+            "description": "Beatitudes and teachings"
+          },
+          {
+            "title": "Miracles (ch. 8-9)",
+            "description": "Healings and significances"
+          },
+          {
+            "title": "Parables (ch. 13)",
+            "description": "The sower and the kingdom of heaven"
+          },
+          {
+            "title": "Death and Resurrection (ch. 26-28)",
+            "description": "The cross, the tomb, and the Great Commission"
+          }
+        ]
+      }
     },
     "markus": {
       "name": "Gospel of Mark",
       "author": "Mark",
-      "year": "c. 55-65 AD"
+      "year": "c. 55-65 AD",
+      "details": {
+        "overview": "Mark is the shortest and fastest Gospel. It is written based on Peter's recollections and shows Jesus as God's Servant, who comes to serve and give His life as a ransom. The word 'immediately' appears again and again – Jesus is active, full of energy, and ready to act.",
+        "authorFacts": [
+          "Peter's disciple in Rome",
+          "On Paul's first missionary journey",
+          "His mother owned a church center in Jerusalem",
+          "Founded the church in Alexandria"
+        ],
+        "additionalFacts": [
+          "Shortest Gospel",
+          "Fast-paced and dramatic style",
+          "The word 'immediately' appears 40+ times",
+          "Written for Roman Christians"
+        ],
+        "breakdowns": [
+          {
+            "title": "Beginning (ch. 1)",
+            "description": "John the Baptist and the baptism of Jesus"
+          },
+          {
+            "title": "Galilean Ministry (ch. 1-9)",
+            "description": "Miracles and teachings"
+          },
+          {
+            "title": "Road to Jerusalem (ch. 10)",
+            "description": "Prophecies about suffering"
+          },
+          {
+            "title": "Last Week (ch. 11-15)",
+            "description": "Entry into Jerusalem until the cross"
+          },
+          {
+            "title": "Resurrection (ch. 16)",
+            "description": "The empty tomb and the mission command"
+          }
+        ]
+      }
     },
     "luuka": {
       "name": "Gospel of Luke",
       "author": "Luke",
-      "year": "c. 60-80 AD"
+      "year": "c. 60-80 AD",
+      "details": {
+        "overview": "Luke was a doctor and companion of Paul. His Gospel is the most detailed and portrays Jesus as the Savior for all people - including the poor, women, Gentiles, and sinners. It contains famous parables such as the Prodigal Son and the Good Samaritan.",
+        "authorFacts": [
+          "Was a professional doctor",
+          "Paul's traveling companion",
+          "The only Gentile author in the Bible",
+          "Also wrote the book of Acts"
+        ],
+        "additionalFacts": [
+          "The longest Gospel",
+          "Contains the most parables",
+          "Special attention to women and the poor",
+          "Addressed to Theophilus"
+        ],
+        "breakdowns": [
+          {
+            "title": "Birth and Childhood (ch. 1-2)",
+            "description": "John the Baptist and Jesus"
+          },
+          {
+            "title": "Galilean Ministry (ch. 3-9)",
+            "description": "Teachings and miracles"
+          },
+          {
+            "title": "Journey to Jerusalem (ch. 9-19)",
+            "description": "Parables on the way"
+          },
+          {
+            "title": "Last Week (ch. 19-23)",
+            "description": "Temple, Savior's Supper, cross"
+          },
+          {
+            "title": "Resurrection (ch. 24)",
+            "description": "Road to Emmaus and ascension"
+          }
+        ]
+      }
     },
     "johannese-evangeelium": {
       "name": "Gospel of John",
       "author": "John",
-      "year": "c. 85-95 AD"
+      "year": "c. 85-95 AD",
+      "details": {
+        "overview": "John shows Jesus as the Son of God - the Word who was with God in the beginning. The Gospel contains seven 'I am' statements and seven miracles that prove His divinity. The purpose is clear: 'that you may believe that Jesus is the Christ, the Son of God.'",
+        "authorFacts": [
+          "One of Jesus' 12 disciples",
+          "'The disciple whom Jesus loved'",
+          "Also wrote 1-3 John and Revelation",
+          "Lived the longest (to about 100 years old)"
+        ],
+        "additionalFacts": [
+          "Seven 'I am' statements",
+          "Seven miracles as 'signs'",
+          "The most theological Gospel",
+          "Contains John 3:16 - the most famous verse in the Bible"
+        ],
+        "breakdowns": [
+          {
+            "title": "The Word Became Flesh (ch. 1)",
+            "description": "In the beginning was the Word"
+          },
+          {
+            "title": "Public Ministry (ch. 2-12)",
+            "description": "Miracles and 'I am' statements"
+          },
+          {
+            "title": "Upper Room Discourses (ch. 13-17)",
+            "description": "Teachings on the last night"
+          },
+          {
+            "title": "Cross and Resurrection (ch. 18-20)",
+            "description": "Suffering and victory"
+          },
+          {
+            "title": "Epilogue (ch. 21)",
+            "description": "Peter restored"
+          }
+        ]
+      }
     },
     "apostlite-teod": {
       "name": "Acts of the Apostles",
       "author": "Luke",
-      "year": "c. 60-80 AD"
+      "year": "c. 60-80 AD",
+      "details": {
+        "overview": "Acts is the sequel to Luke's Gospel. It shows how the Holy Spirit is poured out on Pentecost and how the gospel spreads from Jerusalem to Rome. The stories of Peter, the stoning of Stephen, Paul's conversion, and missionary journeys show how the church grows.",
+        "authorFacts": [
+          "Luke was an eyewitness to many events",
+          "Traveled with Paul",
+          "Addressed to Theophilus (like the Gospel)",
+          "Contains 'we' sections where Luke was present"
+        ],
+        "additionalFacts": [
+          "Describes the first 30 years of the church",
+          "Contains three missionary journeys of Paul",
+          "Ends with Paul's imprisonment in Rome",
+          "The Holy Spirit mentioned over 50 times"
+        ],
+        "breakdowns": [
+          {
+            "title": "Pentecost (ch. 2)",
+            "description": "The Holy Spirit is poured out"
+          },
+          {
+            "title": "Death of Stephen (ch. 7)",
+            "description": "First martyr"
+          },
+          {
+            "title": "Conversion of Paul (ch. 9)",
+            "description": "On the road to Damascus"
+          },
+          {
+            "title": "First Missionary Journey (ch. 13-14)",
+            "description": "Paul and Barnabas"
+          },
+          {
+            "title": "Journey to Rome (ch. 27-28)",
+            "description": "Paul arrives in Rome"
+          }
+        ]
+      }
     },
     "rooma": {
       "name": "Romans",
       "author": "Paul",
-      "year": "c. 57-58 AD"
+      "year": "c. 57-58 AD",
+      "details": {
+        "overview": "Romans is Paul's masterpiece - the most complete presentation of Christian doctrine. Paul explains: everyone is a sinner, but God offers justification through faith in Jesus. The letter has changed millions of lives - from Augustine, to Luther, to Wesley.",
+        "authorFacts": [
+          "Written from the city of Corinth",
+          "Paul had not yet been to Rome",
+          "Entrusted the letter to the believers in Rome",
+          "Tertius was the amanuensis"
+        ],
+        "additionalFacts": [
+          "The longest Pauline epistle",
+          "The most systematic presentation of Christian doctrine",
+          "Foundation of Luther's Reformation",
+          "Chapter 8 - 'all things work together for good'"
+        ],
+        "breakdowns": [
+          {
+            "title": "All Are Sinners (ch. 1-3)",
+            "description": "Both Jews and Gentiles are under God's wrath"
+          },
+          {
+            "title": "Justification by Faith (ch. 4-5)",
+            "description": "Abraham as an example"
+          },
+          {
+            "title": "New Life in Christ (ch. 6-8)",
+            "description": "Freedom from sin and the Spirit"
+          },
+          {
+            "title": "Israel in God's Plan (ch. 9-11)",
+            "description": "God has not rejected His people"
+          },
+          {
+            "title": "Practical Living (ch. 12-16)",
+            "description": "How to live as a follower of Christ"
+          }
+        ]
+      }
     },
     "1-korintlastele": {
       "name": "1 Corinthians",
       "author": "Paul",
-      "year": "c. 55-56 AD"
+      "year": "c. 55-56 AD",
+      "details": {
+        "overview": "Corinth was a rich, multicultural port city - and the church there had problems. Divisions, immorality, lawsuits, marriage issues, denial of the resurrection. Paul addresses each problem with love and wisdom. Chapter 13 - the hymn of love - is his answer to everything.",
+        "authorFacts": [
+          "Written from Ephesus",
+          "Paul had founded the church in Corinth",
+          "Responds to a letter from the church and rumors",
+          "Sosthenes co-signed the letter"
+        ],
+        "additionalFacts": [
+          "Contains the hymn of love (1 Cor 13)",
+          "Most thorough teaching on spiritual gifts",
+          "Describes the institution of the Lord's Supper",
+          "Longest teaching on the resurrection (1 Cor 15)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Divisions in the Church (ch. 1-4)",
+            "description": "Do not divide yourselves by leader"
+          },
+          {
+            "title": "Moral Issues (ch. 5-6)",
+            "description": "Immorality and lawsuits"
+          },
+          {
+            "title": "Marriage Questions (ch. 7)",
+            "description": "Answers to specific questions"
+          },
+          {
+            "title": "Spiritual Gifts and Love (ch. 12-14)",
+            "description": "Love is the greatest"
+          },
+          {
+            "title": "The Resurrection (ch. 15)",
+            "description": "Christ has indeed risen"
+          }
+        ]
+      }
     },
     "2-korintlastele": {
       "name": "2 Corinthians",
       "author": "Paul",
-      "year": "c. 56-57 AD"
+      "year": "c. 56-57 AD",
+      "details": {
+        "overview": "This is Paul's most personal letter. After the first letter, he came under attack again - some doubted his apostleship. Paul defends his ministry not by his strength, but by weakness: 'For when I am weak, then I am strong.' The book shows the heart of a true servant.",
+        "authorFacts": [
+          "Written from the province of Macedonia",
+          "Paul's most personal letter",
+          "Responds to accusations from false apostles",
+          "Contains his personal experiences"
+        ],
+        "additionalFacts": [
+          "Mentions 'a thorn in the flesh'",
+          "Speaks of his spiritual ascent to the third heaven",
+          "Enumerates sufferings in ministry",
+          "Longest treatment of financial aid to the church (ch. 8-9)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Comfort in Suffering (ch. 1)",
+            "description": "Comfort so that we too may comfort"
+          },
+          {
+            "title": "Ministry of the New Covenant (ch. 3-5)",
+            "description": "Glory that endures"
+          },
+          {
+            "title": "Collection of Offerings (ch. 8-9)",
+            "description": "Generous giving in affliction"
+          },
+          {
+            "title": "Paul's Defense (ch. 10-12)",
+            "description": "Boasting in weakness"
+          },
+          {
+            "title": "Final Exhortations (ch. 13)",
+            "description": "Examine yourselves, to see whether you are in the faith"
+          }
+        ]
+      }
     },
     "galaatlastele": {
       "name": "Galatians",
       "author": "Paul",
-      "year": "c. 49-50 AD"
+      "year": "c. 49-50 AD",
+      "details": {
+        "overview": "The churches in Galatia had been attacked by false teachers who said: faith in Jesus is good, but you also need to observe Jewish laws. Paul is furious. His message: salvation comes only by grace, only through faith, only in Christ. The letter became the 'manifesto' of Luther's Reformation.",
+        "authorFacts": [
+          "One of Paul's earliest letters",
+          "Written to the churches in the province of Galatia",
+          "Paul's only letter without greetings",
+          "Speaks of his conversion"
+        ],
+        "additionalFacts": [
+          "The basis of free salvation – faith in Christ alone",
+          "Luther's Reformation 'manifesto'",
+          "Fruit of the Spirit (Gal 5:22-23)",
+          "Famous verse: 'You are all one in Christ Jesus'"
+        ],
+        "breakdowns": [
+          {
+            "title": "Paul's Defense (ch. 1-2)",
+            "description": "My gospel is not from man"
+          },
+          {
+            "title": "Faith vs. Law (ch. 3)",
+            "description": "Abraham was justified by faith"
+          },
+          {
+            "title": "Sons, Not Slaves (ch. 4)",
+            "description": "You are children of God"
+          },
+          {
+            "title": "Freedom (ch. 5)",
+            "description": "Christ has set us free"
+          },
+          {
+            "title": "Fruit of the Spirit (ch. 5)",
+            "description": "Love, joy, peace..."
+          }
+        ]
+      }
     },
     "efeslastele": {
       "name": "Ephesians",
       "author": "Paul",
-      "year": "c. 60-62 AD"
+      "year": "c. 60-62 AD",
+      "details": {
+        "overview": "The book of Ephesians reveals God's great plan – to unite all things in Christ. The first three chapters describe what God has done for us (heavenly blessings, salvation by grace). The last three show how to live in response (church, family, spiritual armor).",
+        "authorFacts": [
+          "Written from Roman imprisonment",
+          "Paul had worked in Ephesus for 3 years",
+          "Tychicus carried the letter",
+          "One of the 'prison epistles'"
+        ],
+        "additionalFacts": [
+          "Blessings appear in one of the longest Greek sentences",
+          "Contains spiritual armor (Eph 6)",
+          "Teaching on marriage as a picture of Christ and the church",
+          "Salvation by grace through faith (Eph 2:8-9)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Spiritual Blessings (ch. 1)",
+            "description": "Every spiritual blessing in the heavenly places"
+          },
+          {
+            "title": "Salvation by Grace (ch. 2)",
+            "description": "You have been saved by grace"
+          },
+          {
+            "title": "Mystery Revealed (ch. 3)",
+            "description": "Gentiles are fellow heirs with Jews"
+          },
+          {
+            "title": "Unity of the Church (ch. 4)",
+            "description": "One Lord, one faith, one baptism"
+          },
+          {
+            "title": "Spiritual Armor (ch. 6)",
+            "description": "Put on the whole armor of God"
+          }
+        ]
+      }
     },
     "filiplastele": {
       "name": "Philippians",
       "author": "Paul",
-      "year": "c. 61-62 AD"
+      "year": "c. 61-62 AD",
+      "details": {
+        "overview": "This is Paul's letter of joy – the word 'joy' appears 16 times, despite Paul being in prison. The Philippian church was his favorite, sending him aid. He thanks them and teaches: rejoice in the Lord always, do not worry, think about what is true and lovely.",
+        "authorFacts": [
+          "Written from Roman imprisonment",
+          "Philippi was the first European church",
+          "Paul had baptized Lydia there",
+          "Epaphroditus brought the letter back to the church"
+        ],
+        "additionalFacts": [
+          "The word 'joy' appears 16 times",
+          "Contains the Christ hymn (Phil 2:5-11)",
+          "Famous verse: 'I can do all things through Christ' (Phil 4:13)",
+          "Teaches about peace that surpasses all understanding"
+        ],
+        "breakdowns": [
+          {
+            "title": "Thanksgiving and Prayer (ch. 1)",
+            "description": "For me, to live is Christ"
+          },
+          {
+            "title": "Mind of Christ (ch. 2:1-11)",
+            "description": "He humbled Himself"
+          },
+          {
+            "title": "Shining as Lights (ch. 2:12-30)",
+            "description": "Work out your own salvation"
+          },
+          {
+            "title": "Running Towards the Goal (ch. 3)",
+            "description": "I do not consider that I have already attained it"
+          },
+          {
+            "title": "Rejoice Always (ch. 4)",
+            "description": "The peace of the Lord will guard your hearts"
+          }
+        ]
+      }
     },
     "koloslastele": {
       "name": "Colossians",
       "author": "Paul",
-      "year": "c. 60-62 AD"
+      "year": "c. 60-62 AD",
+      "details": {
+        "overview": "Colossae was being infiltrated by false teachings – angel worship, mystical experiences, asceticism. Paul responds: Christ is above all. In Him dwells the fullness of the Godhead. You need nothing more than Christ. The letter contains a powerful hymn to the supremacy of Christ (Col 1:15-20).",
+        "authorFacts": [
+          "Written from Roman imprisonment",
+          "Paul had not visited Colossae",
+          "Epaphras was the founder of the church",
+          "The letter was sent with Onesimus"
+        ],
+        "additionalFacts": [
+          "Hymn to the supremacy of Christ (Col 1:15-20)",
+          "Contains household codes",
+          "Warns against gnosticism",
+          "Companion to the letter to Philemon"
+        ],
+        "breakdowns": [
+          {
+            "title": "Supremacy of Christ (ch. 1)",
+            "description": "All things were created through Him"
+          },
+          {
+            "title": "Warning Against False Teachings (ch. 2)",
+            "description": "Do not let yourselves be deceived"
+          },
+          {
+            "title": "Old and New Self (ch. 3:1-17)",
+            "description": "Put off the old self"
+          },
+          {
+            "title": "Family Life (ch. 3:18-4:1)",
+            "description": "Wives, husbands, children, masters, slaves"
+          },
+          {
+            "title": "Closing Remarks (ch. 4)",
+            "description": "Greetings and final admonitions"
+          }
+        ]
+      }
     },
     "1-tessalooniklastele": {
       "name": "1 Thessalonians",
       "author": "Paul",
-      "year": "c. 50-51 AD"
+      "year": "c. 50-51 AD",
+      "details": {
+        "overview": "One of Paul's earliest letters, written to the church in Thessalonica, which had suffered persecution. Paul encourages them to persevere and teaches about the return of Christ. Each chapter concludes with this theme – we live in expectation of the Lord's return.",
+        "authorFacts": [
+          "Paul's earliest letter (possibly)",
+          "Written from Corinth",
+          "Paul had been driven out of Thessalonica",
+          "Timothy brought back good news"
+        ],
+        "additionalFacts": [
+          "Each chapter ends with the theme of Christ's return",
+          "Thessalonica was on a prosperous trade route",
+          "Teaches about the rapture (1 Thess 4:13-18)",
+          "A short, practical letter"
+        ],
+        "breakdowns": [
+          {
+            "title": "Thanksgiving for Their Faith (ch. 1)",
+            "description": "You became an example to all believers"
+          },
+          {
+            "title": "Paul's Ministry (ch. 2)",
+            "description": "We dealt gently"
+          },
+          {
+            "title": "Timothy's Report (ch. 3)",
+            "description": "Good news about your faith"
+          },
+          {
+            "title": "Holy Living and the Rapture (ch. 4)",
+            "description": "The Lord Himself will descend from heaven"
+          },
+          {
+            "title": "The Day of the Lord (ch. 5)",
+            "description": "Be alert, do not slumber"
+          }
+        ]
+      }
     },
     "2-tessalooniklastele": {
       "name": "2 Thessalonians",
       "author": "Paul",
-      "year": "c. 51-52 AD"
+      "year": "c. 51-52 AD",
+      "details": {
+        "overview": "After the first letter, some Thessalonian believers thought the Day of the Lord had already come. Some had stopped working. Paul explains: certain events must happen before the Day of the Lord. And: if anyone will not work, neither shall he eat.",
+        "authorFacts": [
+          "A short follow-up letter to the 1st",
+          "Written months later",
+          "Clarifies misunderstandings from the first letter",
+          "Contains practical commands"
+        ],
+        "additionalFacts": [
+          "Deals with the 'man of lawlessness' (antichrist)",
+          "Famous verse: 'If anyone will not work, neither shall he eat' (2 Thess 3:10)",
+          "Promises the swift return of the Lord",
+          "Teaches to hold to traditions"
+        ],
+        "breakdowns": [
+          {
+            "title": "Thanksgiving and Prayer (ch. 1)",
+            "description": "The Lord will come and bring affliction"
+          },
+          {
+            "title": "The Day of the Lord (ch. 2)",
+            "description": "The rebellion must come first"
+          },
+          {
+            "title": "Prayer Request (ch. 3:1-5)",
+            "description": "Pray for us"
+          },
+          {
+            "title": "Duty to Work (ch. 3:6-15)",
+            "description": "If anyone will not work, neither shall he eat"
+          },
+          {
+            "title": "Closing Remarks (ch. 3:16-18)",
+            "description": "The peace of the Lord be with you all"
+          }
+        ]
+      }
     },
     "1-timoteosele": {
       "name": "1 Timothy",
       "author": "Paul",
-      "year": "c. 62-64 AD"
+      "year": "c. 62-64 AD",
+      "details": {
+        "overview": "Paul left young Timothy in Ephesus to care for the church. In this letter, he provides practical instructions on how to organize prayer, how to select church elders and deacons, and how to deal with different groups of people. This is a 'pastoral epistle' for church leaders.",
+        "authorFacts": [
+          "One of the 'pastoral epistles'",
+          "Timothy was Paul's spiritual son",
+          "Originated from Lystra",
+          "His mother and grandmother were believers"
+        ],
+        "additionalFacts": [
+          "One of the three 'pastoral epistles'",
+          "Contains requirements for elders and deacons (ch. 3)",
+          "Warns against false teachings",
+          "Written during Paul's interim period of freedom"
+        ],
+        "breakdowns": [
+          {
+            "title": "Warning against False Teachings (ch. 1)",
+            "description": "Some have strayed from the faith"
+          },
+          {
+            "title": "Prayer and Order (ch. 2)",
+            "description": "Men and women in the church"
+          },
+          {
+            "title": "Requirements for Leaders (ch. 3)",
+            "description": "Elders and deacons"
+          },
+          {
+            "title": "Guard Your Ministry (ch. 4)",
+            "description": "Be an example to believers"
+          },
+          {
+            "title": "Practical Instructions (ch. 5-6)",
+            "description": "Widows, elders, servants, the rich"
+          }
+        ]
+      }
     },
     "2-timoteosele": {
       "name": "2 Timothy",
       "author": "Paul",
-      "year": "c. 66-67 AD"
+      "year": "c. 66-67 AD",
+      "details": {
+        "overview": "This is Paul's last letter, written from his second Roman imprisonment before his execution. The tone of the message is personal and serious: 'I have fought the good fight, I have finished the race, I have kept the faith.' He encourages Timothy to be strong and to continue his work.",
+        "authorFacts": [
+          "Paul's last letter",
+          "Written from Roman imprisonment",
+          "A short time before his execution",
+          "Contains his 'last will and testament'"
+        ],
+        "additionalFacts": [
+          "Famous verse: 'All Scripture is God-breathed' (2 Tim 3:16)",
+          "Paul's 'testament'",
+          "Mentions many names – both friends and betrayers",
+          "Ends with the famous 'I have fought the good fight'"
+        ],
+        "breakdowns": [
+          {
+            "title": "Rekindle the Gift (ch. 1)",
+            "description": "God has not given us a spirit of timidity"
+          },
+          {
+            "title": "Be Strong in Grace (ch. 2)",
+            "description": "Be like a good soldier"
+          },
+          {
+            "title": "The Last Days (ch. 3)",
+            "description": "All Scripture is God-breathed"
+          },
+          {
+            "title": "Paul's Testament (ch. 4)",
+            "description": "I have fought the good fight"
+          },
+          {
+            "title": "Personal Words (ch. 4)",
+            "description": "Come quickly to me"
+          }
+        ]
+      }
     },
     "tiitusele": {
       "name": "Titus",
       "author": "Paul",
-      "year": "c. 62-64 AD"
+      "year": "c. 62-64 AD",
+      "details": {
+        "overview": "Titus was Paul's co-worker in Crete. The island's reputation was poor – 'Cretans are always liars.' Paul instructs Titus: choose good leaders, teach sound doctrine, and set an example yourself. Sound doctrine leads to good works – faith and deeds go hand in hand.",
+        "authorFacts": [
+          "One of the 'pastoral epistles'",
+          "Titus was of Greek background",
+          "Paul's companion on several journeys",
+          "Left in Crete to work"
+        ],
+        "additionalFacts": [
+          "One of the shortest Pauline epistles",
+          "Addresses the 'blessed hope' of Christ's return",
+          "Sound doctrine leads to good works",
+          "Paul's longest teaching on grace (Tit 2:11-14)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Selecting Elders (ch. 1)",
+            "description": "You were to remain in Crete for this reason"
+          },
+          {
+            "title": "Sound Doctrine (ch. 2)",
+            "description": "Instructions for different age groups"
+          },
+          {
+            "title": "Salvation by Grace (ch. 3:1-7)",
+            "description": "He saved us not because of works"
+          },
+          {
+            "title": "Good Deeds (ch. 3:8-11)",
+            "description": "Those who have believed in God"
+          },
+          {
+            "title": "Concluding Words (ch. 3:12-15)",
+            "description": "Come quickly to me"
+          }
+        ]
+      }
     },
     "fileemonile": {
       "name": "Philemon",
       "author": "Paul",
-      "year": "c. 60-62 AD"
+      "year": "c. 60-62 AD",
+      "details": {
+        "overview": "The most personal letter of Paul – only 25 verses. Onesimus was a slave who had run away from his master, Philemon. In Rome, he met Paul and became a believer. Paul sends him back to Philemon with a plea: receive him no longer as a slave, but as a beloved brother.",
+        "authorFacts": [
+          "Written from Roman imprisonment",
+          "Philemon was a wealthy believer in Colossae",
+          "Onesimus was his runaway slave",
+          "Sent along with the letter to the Colossians"
+        ],
+        "additionalFacts": [
+          "Shortest Pauline epistle (one chapter)",
+          "Deals with a runaway slave",
+          "Shows the impact of Christianity on the system of slavery",
+          "Onesimus later became Bishop of Ephesus"
+        ],
+        "breakdowns": [
+          {
+            "title": "Greeting and Commendation (vv 1-7)",
+            "description": "I have heard of your love"
+          },
+          {
+            "title": "Plea for Onesimus (vv 8-16)",
+            "description": "Receive him as you would receive me"
+          },
+          {
+            "title": "Paul's Guarantee (vv 17-19)",
+            "description": "I, Paul, write this with my own hand"
+          },
+          {
+            "title": "Hope for Paul's Release (vv 20-22)",
+            "description": "I hope to come to you"
+          },
+          {
+            "title": "Conclusion (vv 23-25)",
+            "description": "Greetings from companions"
+          }
+        ]
+      }
     },
     "heebrealastele": {
       "name": "Hebrews",
       "author": "Unknown",
-      "year": "c. 65-70 AD"
+      "year": "c. 65-70 AD",
+      "details": {
+        "overview": "The letter to the Hebrews shows how Christ is superior to everything – angels, Moses, priests, sacrifices. The Old Covenant system was a shadow; Christ is the reality. The letter encourages Christians who are weary in their faith: do not go back, continue in faith.",
+        "authorFacts": [
+          "The author is unknown",
+          "Addressed to Christians of Jewish background",
+          "Written before the destruction of the Temple (AD 70)",
+          "One of theologically deepest books"
+        ],
+        "additionalFacts": [
+          "Contains the 'hall of fame' of faith heroes (Heb 11)",
+          "Teaches Christ as High Priest after the order of Melchizedek",
+          "The word 'better' appears 13 times",
+          "Warns against apostasy from the faith"
+        ],
+        "breakdowns": [
+          {
+            "title": "Christ is Superior (ch. 1-4)",
+            "description": "To angels, Moses, rest"
+          },
+          {
+            "title": "A Better High Priest (ch. 5-7)",
+            "description": "Forever after the order of Melchizedek"
+          },
+          {
+            "title": "A Better Covenant (ch. 8-10)",
+            "description": "One sacrifice for all sins"
+          },
+          {
+            "title": "List of Faith Heroes (ch. 11)",
+            "description": "Abel, Enoch, Noah, Abraham..."
+          },
+          {
+            "title": "Exhortations (ch. 12-13)",
+            "description": "Let us run with endurance the race"
+          }
+        ]
+      }
     },
     "jaakobus": {
       "name": "James",
       "author": "James",
-      "year": "c. 45-50 AD"
+      "year": "c. 45-50 AD",
+      "details": {
+        "overview": "James was Jesus' brother and the leader of the Jerusalem church. His letter is practical: faith without works is dead. He discusses trials, partiality, the danger of the tongue, the power of prayer. Stylistically similar to Jesus' Sermon on the Mount.",
+        "authorFacts": [
+          "Jesus' half-brother",
+          "Leader of the Jerusalem church",
+          "Was not a believer during Jesus' lifetime (Jn 7:5)",
+          "Became a believer after Jesus' resurrection"
+        ],
+        "additionalFacts": [
+          "One of the earliest New Testament books",
+          "Similar to the Sermon on the Mount",
+          "Famous: 'faith without works is dead' (Jas 2:17)",
+          "Teaches control of the tongue (Jas 3)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Trials and Temptations (ch. 1)",
+            "description": "Consider it pure joy"
+          },
+          {
+            "title": "Faith and Works (ch. 2)",
+            "description": "Faith without works is dead"
+          },
+          {
+            "title": "The Power of the Tongue (ch. 3)",
+            "description": "The tongue is small, but does great things"
+          },
+          {
+            "title": "Friendship with the World (ch. 4)",
+            "description": "Humble yourselves before the Lord"
+          },
+          {
+            "title": "The Power of Prayer (ch. 5)",
+            "description": "The prayer of a righteous person has great power"
+          }
+        ]
+      }
     },
     "1-peetrus": {
       "name": "1 Peter",
       "author": "Peter",
-      "year": "c. 62-64 AD"
+      "year": "c. 62-64 AD",
+      "details": {
+        "overview": "Peter wrote to persecuted Christians in Asia Minor. His message: you are God's chosen, holy people. Suffering is part of the calling of Christian life. Christ Himself, who suffered innocently, is the example. Do not be afraid, keep strong faith.",
+        "authorFacts": [
+          "Apostle and disciple of Jesus",
+          "Fisherman from Galilee",
+          "His original name was Simon",
+          "According to tradition, he was crucified upside down in Rome"
+        ],
+        "additionalFacts": [
+          "Written from Rome ('Babylon')",
+          "Addressed to five provinces",
+          "Mark was his scribe",
+          "Addresses suffering 12 times"
+        ],
+        "breakdowns": [
+          {
+            "title": "Living Hope (ch. 1)",
+            "description": "Blessed be God and the Father of our Lord"
+          },
+          {
+            "title": "Living Stone (ch. 2)",
+            "description": "You are a chosen race, a royal priesthood"
+          },
+          {
+            "title": "Family Life and Suffering (ch. 3)",
+            "description": "There is nothing to be afraid of"
+          },
+          {
+            "title": "Be Vigilant (ch. 4)",
+            "description": "Suffering is part of the calling"
+          },
+          {
+            "title": "Shepherds and Submission (ch. 5)",
+            "description": "Tend the flock of God that is in your charge"
+          }
+        ]
+      }
     },
     "2-peetrus": {
       "name": "2 Peter",
       "author": "Peter",
-      "year": "c. 65-68 AD"
+      "year": "c. 65-68 AD",
+      "details": {
+        "overview": "Peter's last letter, written shortly before his execution. He warns against false teachers who 'will secretly bring in destructive heresies among you'. He affirms the authority of Scripture and the certainty of Christ's return. 'The Lord is not slow to fulfill his promise.'",
+        "authorFacts": [
+          "Peter's 'testament'",
+          "Written a short time before his execution",
+          "Warns against false prophets",
+          "Addresses the inspiration of Scripture"
+        ],
+        "additionalFacts": [
+          "Mentions Paul's letters as Scripture",
+          "Explains why the Lord 'delays'",
+          "Proclaims a new heaven and a new earth",
+          "Similar to the letter of Jude"
+        ],
+        "breakdowns": [
+          {
+            "title": "Spiritual Growth (ch. 1)",
+            "description": "Add virtue to your faith"
+          },
+          {
+            "title": "Authority of Scripture (ch. 1)",
+            "description": "Men spoke from God as they were carried along by the Holy Spirit"
+          },
+          {
+            "title": "Warning Against False Teachings (ch. 2)",
+            "description": "They will secretly bring in destructive divisions"
+          },
+          {
+            "title": "The Day of the Lord is Coming (ch. 3:1-13)",
+            "description": "He will come like a thief in the night"
+          },
+          {
+            "title": "Grow in Grace (ch. 3:14-18)",
+            "description": "Grow in the grace of our Lord"
+          }
+        ]
+      }
     },
     "1-johannese-kiri": {
       "name": "1 John",
       "author": "John",
-      "year": "c. 90-95 AD"
+      "year": "c. 90-95 AD",
+      "details": {
+        "overview": "The aged Apostle John writes a letter of love to his spiritual children. He addresses three main themes: God is light (walk in the light), God is love (love one another), and God is truth (confess Jesus as the Christ). The letter gives assurance of salvation.",
+        "authorFacts": [
+          "Same author as the Gospel of John",
+          "Aged apostle, over 80 years old",
+          "Wrote from Ephesus",
+          "His 'little children' were the second generation"
+        ],
+        "additionalFacts": [
+          "The word 'know' appears 40 times",
+          "Gives assurance of salvation",
+          "Warns against Gnosticism",
+          "His themes: light, love, truth"
+        ],
+        "breakdowns": [
+          {
+            "title": "The Light of Life (ch. 1)",
+            "description": "That which was from the beginning"
+          },
+          {
+            "title": "Walk in the Light (ch. 2)",
+            "description": "Do not love the world"
+          },
+          {
+            "title": "Children of God (ch. 3)",
+            "description": "How great a love the Father has bestowed on us"
+          },
+          {
+            "title": "Love is from God (ch. 4)",
+            "description": "God is love"
+          },
+          {
+            "title": "Assurance of Salvation (ch. 5)",
+            "description": "You may know that you have eternal life"
+          }
+        ]
+      }
     },
     "2-johannese-kiri": {
       "name": "2 John",
       "author": "John",
-      "year": "c. 90-95 AD"
+      "year": "c. 90-95 AD",
+      "details": {
+        "overview": "A short personal letter to the 'elect lady' (possibly a church). Two main messages: let us love one another (God's old commandment) and beware of deceivers (who do not confess that Jesus has come in the flesh). Proclamation goes hand in hand with care.",
+        "authorFacts": [
+          "One of three letters of John",
+          "Shortest book of the New Testament",
+          "The aged apostle writes",
+          "Addressed to the 'elect lady'"
+        ],
+        "additionalFacts": [
+          "Only 13 verses",
+          "Addresses the limits of hospitality",
+          "Warns against antichrists",
+          "Contrasts with deceptive teachers"
+        ],
+        "breakdowns": [
+          {
+            "title": "Greetings (v. 1-3)",
+            "description": "The elder to the elect lady"
+          },
+          {
+            "title": "Walk in Truth (v. 4-6)",
+            "description": "Let us love one another"
+          },
+          {
+            "title": "Beware of Deceivers (v. 7-11)",
+            "description": "Many deceivers have gone out"
+          },
+          {
+            "title": "Plan to Visit (v. 12)",
+            "description": "I hope to come to you"
+          },
+          {
+            "title": "Greetings (v. 13)",
+            "description": "Your elect sister"
+          }
+        ]
+      }
     },
     "3-johannese-kiri": {
       "name": "3 John",
       "author": "John",
-      "year": "c. 90-95 AD"
+      "year": "c. 90-95 AD",
+      "details": {
+        "overview": "A short personal letter to Gaius, who showed hospitality to itinerant evangelists. In contrast to Diotrephes, who refused to receive guests and cast others out of the church. The letter teaches to support the proclamation of the truth.",
+        "authorFacts": [
+          "Addressed to Gaius",
+          "The most personal letter of John",
+          "Mentions three people: Gaius, Diotrephes, Demetrius",
+          "Addresses church conflict"
+        ],
+        "additionalFacts": [
+          "Only 14 verses",
+          "Diotrephes 'loves to be first'",
+          "Addresses hospitality",
+          "Demetrius receives a good testimony"
+        ],
+        "breakdowns": [
+          {
+            "title": "Greetings (v. 1-4)",
+            "description": "I have no greater joy than this"
+          },
+          {
+            "title": "Gaius' Hospitality (v. 5-8)",
+            "description": "You do faithfully"
+          },
+          {
+            "title": "Diotrephes' Problem (v. 9-10)",
+            "description": "He who loves to be first"
+          },
+          {
+            "title": "Demetrius' Testimony (v. 11-12)",
+            "description": "Everyone speaks well of Demetrius"
+          },
+          {
+            "title": "Conclusion (v. 13-14)",
+            "description": "Greetings from a friend to friends"
+          }
+        ]
+      }
     },
     "juudas": {
       "name": "Jude",
       "author": "Jude",
-      "year": "c. 65-80 AD"
+      "year": "c. 65-80 AD",
+      "details": {
+        "overview": "Jude was Jesus' brother, James' half-brother. His short letter is a strong warning against false teachers who 'have crept in unnoticed'. He gives examples from the Old Testament—Sodom, Korah, Balaam—and urges believers to 'contend for the faith'.",
+        "authorFacts": [
+          "Jesus' half-brother",
+          "Brother of James",
+          "Not a believer during Jesus' lifetime",
+          "One of the shortest books of the New Testament"
+        ],
+        "additionalFacts": [
+          "Quotes the apocryphal Book of Enoch",
+          "Speaks of Michael and the dispute with the devil",
+          "Similar to 2 Peter",
+          "Ends with a famous doxology"
+        ],
+        "breakdowns": [
+          {
+            "title": "Call to Contend for the Faith (v. 1-4)",
+            "description": "Certain people have crept in unnoticed"
+          },
+          {
+            "title": "Old Testament Examples (v. 5-7)",
+            "description": "Egypt, angels, Sodom"
+          },
+          {
+            "title": "Character of False Teachers (v. 8-13)",
+            "description": "They revile what they do not understand"
+          },
+          {
+            "title": "Enoch's Prophecy (v. 14-19)",
+            "description": "The Lord comes with ten thousands of his holy ones"
+          },
+          {
+            "title": "Care and Doxology (v. 20-25)",
+            "description": "Now to him who is able to keep you from stumbling"
+          }
+        ]
+      }
     },
     "ilmutus": {
       "name": "Revelation",
       "author": "John",
-      "year": "c. 95-96 AD"
+      "year": "c. 95-96 AD",
+      "details": {
+        "overview": "The last book of the Bible. Old John was exiled on the island of Patmos. He had a powerful vision of Christ—no longer a humble sufferer, but a glorious King. The book describes the final events of the world, judgment, and the new heaven and new earth. It ends with the words: 'Come, Lord Jesus!'",
+        "authorFacts": [
+          "Apostle John in old age",
+          "Exiled on the island of Patmos",
+          "Received a vision on the Lord's Day",
+          "Addressed to seven churches"
+        ],
+        "additionalFacts": [
+          "The last book of the Bible",
+          "Contains the number 7 over 50 times",
+          "Seven seals, trumpets, and bowls of wrath",
+          "Promises a blessing to its readers (Rev 1:3)"
+        ],
+        "breakdowns": [
+          {
+            "title": "Vision of Christ (ch. 1)",
+            "description": "One like the Son of Man"
+          },
+          {
+            "title": "Seven Letters (ch. 2-3)",
+            "description": "Messages to the seven churches"
+          },
+          {
+            "title": "Heavenly Throne (ch. 4-5)",
+            "description": "The Lamb who was slain"
+          },
+          {
+            "title": "Judgments (ch. 6-19)",
+            "description": "Seals, trumpets, bowls"
+          },
+          {
+            "title": "New Heaven and New Earth (ch. 21-22)",
+            "description": "Behold, I am making all things new"
+          }
+        ]
+      }
+    },
+    "kohtumõistjad": {
+      "details": {
+        "overview": "The book of Judges describes the history of Israel after the death of Joshua until the time of the kings. It is a cyclical story of sin, slavery, repentance, and deliverance. God raised up leaders (judges) who freed the people from their oppressors, but the people repeatedly fell back into sin.",
+        "authorFacts": [
+          "Author is unknown, tradition attributes it to Samuel",
+          "Written during the time of the kings, looking back",
+          "Documented 12 major judges",
+          "Showed Israel's need for a king"
+        ],
+        "additionalFacts": [
+          "The book covers a period of approximately 350 years",
+          "Deborah was the only female judge",
+          "Gideon defeated a huge army with 300 men",
+          "Samson was the most famous judge for his strength"
+        ],
+        "breakdowns": [
+          {
+            "title": "Israel's Sin (ch. 1-3)",
+            "description": "The people fail to destroy the Canaanites and worship their gods"
+          },
+          {
+            "title": "Deborah and Barak (ch. 4-5)",
+            "description": "The female judge and military commander defeat Sisera"
+          },
+          {
+            "title": "Gideon (ch. 6-8)",
+            "description": "300 men defeat a huge Midianite army"
+          },
+          {
+            "title": "Samson (ch. 13-16)",
+            "description": "A powerful man fights against the Philistines"
+          },
+          {
+            "title": "Moral Decline (ch. 17-21)",
+            "description": "Everyone did what was right in their own eyes"
+          }
+        ]
+      }
     }
   },
   "commentary": {
@@ -391,5 +2871,22 @@
     "sourceLabel": "Source",
     "sourceClassical": "Based on classical commentaries (Matthew Henry, Calvin, Barnes, JFB)",
     "introduction": "Introduction"
+  },
+  "book": {
+    "overview": "Overview",
+    "interestingFactsLabel": "Interesting facts",
+    "aboutBook": "About {{name}}",
+    "moreInterestingLabel": "More to discover",
+    "additionalFactsTitle": "Additional facts",
+    "mainEventsLabel": "Key events",
+    "turningPoints": "Turning points of the book",
+    "turningPointsIntro": "Five of the most important moments that shaped this book's message",
+    "readyToDive": "Ready to dive deeper?",
+    "readFullDescription": "Read the full book of {{name}} and discover even more wisdom",
+    "openOnPiibel": "Open on piibel.ee",
+    "notFoundTitle": "Book not found",
+    "notFoundDesc": "Unfortunately we couldn't find this book.",
+    "backToHome": "Back to home",
+    "footerCopyright": "© {{year}} Tree of Bible Wisdom. All rights reserved."
   }
 }
