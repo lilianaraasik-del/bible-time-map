@@ -291,7 +291,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 735-700 eKr",
     category: "Prohvetid",
     overview: "Miika kuulutas samal ajal kui Jesaja. Ta hoiatas nii Iisraeli kui Juudat ebaõigluse ja korruptsiooni pärast. Kuid ta ka ennustas: Petlemmas sünnib valitseja, kelle päritolu on igavikust. See ennustus täitus Jeesuses Kristuses.",
-    authorFacts: ["Pärit Mooresetist", "Maainimene, kes hoolis vaestest", "Kuulutas Juudas ja Iisraelis", "Sai mõjutusi Jesajalt ja Hooseasel"],
+    authorFacts: ["Pärit Morastist", "Maainimene, kes hoolis vaestest", "Kuulutas Juudas ja Iisraelis", "Sai mõjutusi Jesajalt ja Hoosealt"],
     additionalFacts: ["Ennustas Petlemma kui Messia sünnipaika (Mi 5:2)", "Kuulus värss: 'mida Issand sinult nõuab' (Mi 6:8)", "Hoiatas templi hävingust", "Tema sõnumit kasutati Jeremija päästmiseks"],
     breakdowns: [
       { title: "Esimene kohus (ptk 1-2)", description: "Nii Samaaria kui Jeruusalemm hukatakse" },
