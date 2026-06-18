@@ -69,9 +69,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Saalomon jt",
     period: "u 970-700 eKr",
     category: "Tarkus",
-    overview: "Õpetussõnad on praktilise tarkuse raamat – juhend igapäevaeluks. See õpetab, kuidas elada targalt, ausalt ja jumalakartlikult. Lühikesed ütlemised käsitlevad sõprust, tööd, raha, perekonda, sõnu ja tundeid. Raamatu peamine sõnum: 'Issanda kartus on tarkuse algus.'",
+    overview: "Õpetussõnad on praktilise tarkuse raamat – juhend igapäevaeluks. See õpetab, kuidas elada targalt, ausalt ja jumalakartlikult. Lühikesed ütlemised käsitlevad sõprust, tööd, raha, perekonda, sõnu ja tundeid. Raamatu peamine sõnum: 'Jehoova kartus on tarkuse algus.'",
     authorFacts: ["Saalomon oli maa targem mees", "Sai tarkuse Jumalalt unenäos", "Kirjutas üle 3000 õpetussõna", "Valitses 40 aastat rahus"],
-    additionalFacts: ["Raamat algab tarkuse kiitusega", "Lõpeb vooruslise naise kirjeldusega", "Sisaldab nii Saalomoni kui Aaguri sõnu", "31 peatükki – üks iga päeva jaoks kuus"],
+    additionalFacts: ["Raamat algab tarkuse kiitusega", "Lõpeb voorusliku naise kirjeldusega", "Sisaldab nii Saalomoni kui Aaguri sõnu", "31 peatükki – üks iga päeva jaoks kuus"],
     breakdowns: [
       { title: "Tarkuse kutse (ptk 1-9)", description: "Isa nõuanded pojale" },
       { title: "Saalomoni õpetussõnad (ptk 10-22)", description: "Lühikesed elutarkuse laused" },
