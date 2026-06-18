@@ -3,13 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp, MessageSquareText } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, BookOpen, User, Calendar, Quote, Sparkles, CheckCircle2, Info, ArrowUp, MessageSquareText } from "lucide-react";
 
 import { useState, useEffect } from "react";
 
 import { Navigation } from "@/components/Navigation";
 import { additionalBookDetails } from "@/data/additionalBookDetails";
 import { coreBookDetails } from "@/data/coreBookDetails";
+import { getAdjacentBooks } from "@/data/bookOrder";
 import { buildPiibelUrl, parseChapterFromTitle } from "@/lib/piibelLinks";
 import { getBookQuote } from "@/data/bookQuotes";
 import { renderWithBibleRefs } from "@/lib/bibleRefs";
@@ -84,6 +85,43 @@ export default function RaamatuLeht() {
   );
 
   const quote = getBookQuote(book);
+  const { prev: prevSlug, next: nextSlug } = getAdjacentBooks(book);
+  const prevName = prevSlug ? tx(`books.${prevSlug}.name`, allBookDetails[prevSlug]?.name ?? prevSlug) : null;
+  const nextName = nextSlug ? tx(`books.${nextSlug}.name`, allBookDetails[nextSlug]?.name ?? nextSlug) : null;
+
+  const BookNav = ({ variant }: { variant: "header" | "footer" }) => (
+    <nav
+      aria-label={t("book.prevBook") + " / " + t("book.nextBook")}
+      className={`flex items-center justify-between gap-3 ${variant === "header" ? "pt-2" : "pt-4"}`}
+    >
+      {prevSlug && prevName ? (
+        <Link to={`/raamat/${prevSlug}`} className="flex-1 min-w-0">
+          <Button variant="ghost" className="w-full justify-start gap-2 h-auto py-3 hover:bg-primary/5">
+            <ArrowLeft className="w-4 h-4 text-primary shrink-0" />
+            <div className="flex flex-col items-start min-w-0 text-left">
+              <span className="text-xs text-muted-foreground">{t("book.prevBook")}</span>
+              <span className="text-sm font-medium truncate max-w-full">{prevName}</span>
+            </div>
+          </Button>
+        </Link>
+      ) : (
+        <div className="flex-1" />
+      )}
+      {nextSlug && nextName ? (
+        <Link to={`/raamat/${nextSlug}`} className="flex-1 min-w-0">
+          <Button variant="ghost" className="w-full justify-end gap-2 h-auto py-3 hover:bg-primary/5">
+            <div className="flex flex-col items-end min-w-0 text-right">
+              <span className="text-xs text-muted-foreground">{t("book.nextBook")}</span>
+              <span className="text-sm font-medium truncate max-w-full">{nextName}</span>
+            </div>
+            <ArrowRight className="w-4 h-4 text-primary shrink-0" />
+          </Button>
+        </Link>
+      ) : (
+        <div className="flex-1" />
+      )}
+    </nav>
+  );
 
   return (
     <>
@@ -118,6 +156,8 @@ export default function RaamatuLeht() {
               </Link>
             </div>
           </section>
+
+          <BookNav variant="header" />
 
           <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
             <Card className="p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-l-4 border-l-primary shadow-lg">
@@ -293,6 +333,8 @@ export default function RaamatuLeht() {
               </div>
             </Card>
           </section>
+
+          <BookNav variant="footer" />
         </main>
 
         <footer className="border-t border-border/30 bg-card/50 backdrop-blur-sm py-8 mt-16">

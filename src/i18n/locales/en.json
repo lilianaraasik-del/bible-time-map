@@ -2887,6 +2887,8 @@
     "notFoundTitle": "Book not found",
     "notFoundDesc": "Unfortunately we couldn't find this book.",
     "backToHome": "Back to home",
+    "prevBook": "Previous book",
+    "nextBook": "Next book",
     "footerCopyright": "© {{year}} Tree of Bible Wisdom. All rights reserved."
   }
 }

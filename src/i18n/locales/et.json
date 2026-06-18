@@ -2887,6 +2887,8 @@
     "notFoundTitle": "Raamatut ei leitud",
     "notFoundDesc": "Kahjuks ei leidnud me seda raamatut.",
     "backToHome": "Tagasi avalehele",
+    "prevBook": "Eelmine raamat",
+    "nextBook": "Järgmine raamat",
     "footerCopyright": "© {{year}} Piibli Tarkuse Puu. Kõik õigused kaitstud."
   }
 }
