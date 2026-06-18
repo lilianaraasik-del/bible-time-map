@@ -197,7 +197,7 @@ export const bookQuotes: Record<string, BookQuote> = {
     reference: "Johannese 3:16",
   },
   "apostlite-teod": {
-    text: "aga te saate Püha Vaimu väe, kes tuleb teie peale, ja te peate olema minu tunnistajad Jeruusalemmas ja kõigel Juuda- ja Samaariamaal ja maailma otsani!\"",,
+    text: "aga te saate Püha Vaimu väe, kes tuleb teie peale, ja te peate olema minu tunnistajad Jeruusalemmas ja kõigel Juuda- ja Samaariamaal ja maailma otsani!\"",
     reference: "Apostlite teod 1:8",
   },
   // Pauluse kirjad
