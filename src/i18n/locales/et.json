@@ -3010,7 +3010,26 @@
           "Lõpeb kuulsa doksoloogiaga"
         ],
         "breakdowns": [
-...
+          {
+            "title": "Üleskutse võidelda usu eest (v 1-4)",
+            "description": "Mõned inimesed on hiilinud sisse"
+          },
+          {
+            "title": "Vana Testamendi näited (v 5-7)",
+            "description": "Egiptus, inglid, Soodom"
+          },
+          {
+            "title": "Valeõpetajate iseloom (v 8-13)",
+            "description": "Nad teotavad seda, mida ei tea"
+          },
+          {
+            "title": "Hanoki ennustus (v 14-19)",
+            "description": "Issand tuleb pühade tuhandetega"
+          },
+          {
+            "title": "Hoolitsus ja doksoloogia (v 20-25)",
+            "description": "Sellele aga, kes võib teid hoida langematuna"
+          }
         ]
       },
       "quote": {
