@@ -462,7 +462,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Evangeeliumid",
     overview: "Johannes näitab Jeesust kui Jumala Poega – Sõna, kes oli alguses Jumala juures. Evangeelium sisaldab seitse 'Mina olen' ütlust ja seitse imetegu, mis tõestavad Tema jumalikkust. Eesmärk on selge: 'et te usuksite, et Jeesus on Kristus, Jumala Poeg.'",
     authorFacts: ["Üks Jeesuse 12 jüngrist", "'Jünger, keda Jeesus armastas'", "Kirjutas ka 1.-3. Johannese kirja ja Ilmutuse", "Elas kõige kauem (umbes 100 aastaseks)"],
-    additionalFacts: ["Seitse 'Mina olen' ütlust", "Seitse imetegu kui 'tähed'", "Kõige teoloogilisem evangeelium", "Sisaldab Joh 3:16 – piibli kuulsaim värss"],
+    additionalFacts: ["Seitse 'Mina olen' ütlust", "Seitse imetegu kui 'tähed'", "Kõige teoloogilisem evangeelium", "Sisaldab Joh 3:16 – piibli kuulsaim salm"],
     breakdowns: [
       { title: "Sõna sai lihaks (ptk 1)", description: "Alguses oli Sõna" },
       { title: "Avalik teenimine (ptk 2-12)", description: "Imeteod ja 'Mina olen' ütlused" },
