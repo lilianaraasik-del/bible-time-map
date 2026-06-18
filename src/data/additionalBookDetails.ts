@@ -445,12 +445,12 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     category: "Evangeeliumid",
     overview: "Luukas oli arst ja Pauluse kaaslane. Tema evangeelium on kõige üksikasjalikum ning näitab Jeesust kui Päästjat kõigile inimestele – ka vaestele, naistele, paganatele, patustele. Sisaldab kuulsaid tähendamissõnu nagu kadunud poeg ja halastaja samaarlane.",
     authorFacts: ["Oli professionaalne arst", "Pauluse reisikaaslane", "Ainus paganaautor Piiblis", "Kirjutas ka Apostlite teod"],
-    additionalFacts: ["Pikim evangeelium", "Sisaldab kõige rohkem tähendamissõnu", "Erilist tähelepanu naistele ja vaestele", "Adresseeritud Teofilosele"],
+    additionalFacts: ["Pikim evangeelium", "Sisaldab kõige rohkem tähendamissõnu", "Erilist tähelepanu naistele ja vaestele", "Adresseeritud Teofiilosele"],
     breakdowns: [
       { title: "Sünd ja lapsepõlv (ptk 1-2)", description: "Ristija Johannes ja Jeesus" },
       { title: "Galilea teenimine (ptk 3-9)", description: "Õpetused ja imeteod" },
       { title: "Reis Jeruusalemma (ptk 9-19)", description: "Tähendamissõnad teel" },
-      { title: "Viimane nädal (ptk 19-23)", description: "Tempel, Päästja õhtusöök, rist" },
+      { title: "Viimane nädal (ptk 19-23)", description: "Tempel, paasatalle söömine, rist" },
       { title: "Ülestõusmine (ptk 24)", description: "Emmause tee ja taevaminek" },
     ],
     piibeeUrl: "https://piibel.ee",
@@ -478,7 +478,7 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     period: "u 60-80 pKr",
     category: "Ajalugu",
     overview: "Apostlite teod on Luuka evangeeliumi järg. See näitab, kuidas Püha Vaim valatakse välja Nelipühal ja kuidas evangeelium levib Jeruusalemmast Roomasse. Lood Peetrusest, Stefanose tapmisest, Pauluse pöördumisest ja misjonireisidest näitavad, kuidas kogudus kasvab.",
-    authorFacts: ["Luukas oli pealtnägija paljudele sündmustele", "Reisis Paulusega", "Adresseeritud Teofilosele (nagu evangeelium)", "Sisaldab 'meie' lõike, kus Luukas oli kohal"],
+    authorFacts: ["Luukas oli pealtnägija paljudele sündmustele", "Reisis Paulusega", "Adresseeritud Teofiilosele (nagu evangeelium)", "Sisaldab 'meie' lõike, kus Luukas oli kohal"],
     additionalFacts: ["Kirjeldab koguduse esimest 30 aastat", "Sisaldab kolm Pauluse misjonireisi", "Lõpeb Pauluse vangistusega Roomas", "Püha Vaim mainitud üle 50 korra"],
     breakdowns: [
       { title: "Nelipüha (ptk 2)", description: "Püha Vaim valatakse välja" },
