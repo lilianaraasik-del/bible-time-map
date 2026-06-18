@@ -800,9 +800,9 @@ export const additionalBookDetails: Record<string, BookDetail> = {
     author: "Johannes (apostel)",
     period: "u 90-95 pKr",
     category: "Üldkirjad",
-    overview: "Lühike isiklik kiri 'väljavalitud emandale' (võimalik et koguduselle). Kaks põhisõnumit: armastagem üksteist (Jumala vana käsk) ja hoiduge eksitajaist (kes ei tunnista, et Jeesus on tulnud lihasse). Kuulutus käib käsikäes hoolega.",
+    overview: "Lühike isiklik kiri 'väljavalitud emandale' (võimalik et kogudusele). Kaks põhisõnumit: armastagem üksteist (Jumala vana käsk) ja hoiduge eksitajaist (kes ei tunnista, et Jeesus on tulnud lihasse). Kuulutus käib käsikäes hoolega.",
     authorFacts: ["Üks kolmest Johannese kirjast", "Lühim Uue Testamendi raamat", "Vana apostel kirjutab", "Adresseeritud 'väljavalitud emandale'"],
-    additionalFacts: ["Ainult 13 värssi", "Käsitleb külalislahkuse piire", "Hoiatab antikristuste eest", "Vastandub eksitavate õpetajatega"],
+    additionalFacts: ["Ainult 13 salmi", "Käsitleb külalislahkuse piire", "Hoiatab antikristuste eest", "Vastandub eksitavate õpetajatega"],
     breakdowns: [
       { title: "Tervitused (v 1-3)", description: "Vanem väljavalitud emandale" },
       { title: "Käi tões (v 4-6)", description: "Armastagem üksteist" },
