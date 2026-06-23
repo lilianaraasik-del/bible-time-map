@@ -240,7 +240,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGoogle = useCallback(async (): Promise<LoginResult> => {
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: `${window.location.origin}/login`,
         extraParams: { prompt: "select_account" },
       });
 
