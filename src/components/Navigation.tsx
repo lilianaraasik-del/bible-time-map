@@ -41,18 +41,18 @@ export function Navigation() {
               <span className="font-medium">{t("nav.books")}</span>
             </Link>
 
-            <Link
-              to="/eraamatud"
+            <a
+              href="https://eraamat.piibel.ee"
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
-                isActive("/eraamatud")
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "hover:bg-muted text-foreground",
+                "hover:bg-muted text-foreground",
               )}
             >
               <Library className="h-4 w-4" />
               <span className="font-medium">{t("nav.ebooks")}</span>
-            </Link>
+            </a>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
