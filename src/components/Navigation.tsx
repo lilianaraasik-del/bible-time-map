@@ -16,7 +16,10 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 export function Navigation() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-  const isEraamatud = location.pathname.startsWith("/eraamatud");
+  const hideExplore = location.pathname.startsWith("/eraamatud") ||
+                       location.pathname === "/login" ||
+                       location.pathname === "/profiil" ||
+                       location.pathname === "/paketid";
   
   const { t } = useTranslation();
 
@@ -43,7 +46,7 @@ export function Navigation() {
             </Link>
 
 
-            {!isEraamatud && (
+            {!hideExplore && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
