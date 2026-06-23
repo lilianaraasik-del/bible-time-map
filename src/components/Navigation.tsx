@@ -20,7 +20,7 @@ export function Navigation() {
                        location.pathname === "/login" ||
                        location.pathname === "/profiil" ||
                        location.pathname === "/paketid";
-  
+
   const { t } = useTranslation();
 
   return (
@@ -32,20 +32,6 @@ export function Navigation() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <Link
-              to="/ajajoon"
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200",
-                isActive("/ajajoon")
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "hover:bg-muted text-foreground",
-              )}
-            >
-              <BookOpen className="h-4 w-4" />
-              <span className="font-medium">{t("nav.books")}</span>
-            </Link>
-
-
             {!hideExplore && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
