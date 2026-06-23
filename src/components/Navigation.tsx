@@ -46,7 +46,7 @@ export function Navigation() {
             </Link>
 
 
-            {!isEraamatud && (
+            {!hideExplore && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
