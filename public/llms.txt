@@ -1,0 +1,19 @@
+# Piibli Materjalid
+
+> Eestikeelne Piibli õppekeskkond — raamatud, ajalugu, paigad, sündmused, kaardid ja e-raamatud ühes kohas.
+
+Piibli Materjalid (materjalid.piibel.ee) on interaktiivne kogumik Piibli raamatutest ja taustamaterjalist. Saidil saab tutvuda Piibli 66 raamatuga, lugeda kommentaare, jälgida Piibli ajalugu ajajoonel, vaadata pühi paiku kaardil, uurida tabernaakli ehitust ning Jeesuse sugupuud. E-raamatute jaotis pakub raamatuid, audio- ja videosalvestisi.
+
+## Pages
+
+- [Avaleht](/): Sissejuhatus Piibli Materjalidesse.
+- [Piibli ajajoon](/ajajoon): 66 Piibli raamatut kronoloogiliselt koos detailse infoga.
+- [Piibli paigad](/paigad): Pühade paikade interaktiivne kaart.
+- [Piibli sündmused](/sundmused): Olulised Piibli sündmused ja nende kontekst.
+- [Tabernaakli kaart](/kaardid/tabernaakel): Tabernaakli osad ja sümboolika.
+- [Jeesuse sugupuu](/jeesuse-sugupuu): Jeesuse põlvnemine ja sugupuu vaade.
+- [E-raamatud](/eraamatud): Vaimulikud raamatud, audio- ja videosalvestised.
+
+## Optional
+
+- [Logi sisse](/login): Sisselogimine e-raamatute lugemiseks.

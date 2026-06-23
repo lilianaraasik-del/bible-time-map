@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -127,8 +128,34 @@ export default function RaamatuLeht() {
     </nav>
   );
 
+  const pageUrl = `https://materjalid.piibel.ee/raamat/${book}`;
+  const rawDesc = (overview || "").replace(/\s+/g, " ").trim();
+  const metaDesc = rawDesc.length > 155 ? `${rawDesc.slice(0, 152)}…` : rawDesc || `${name} — ${category}. Lugemine, autor, ajastu ja taustainfo.`;
+  const pageTitle = `${name} — Piibli raamat | Piibli Materjalid`;
+
   return (
     <>
+      <Helmet>
+        <title>{pageTitle.length > 60 ? `${name} | Piibli Materjalid` : pageTitle}</title>
+        <meta name="description" content={metaDesc} />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="book" />
+        <meta property="og:title" content={`${name} — Piibli Materjalid`} />
+        <meta property="og:description" content={metaDesc} />
+        <meta property="og:url" content={pageUrl} />
+        <meta name="twitter:title" content={`${name} — Piibli Materjalid`} />
+        <meta name="twitter:description" content={metaDesc} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Book",
+          "name": name,
+          "author": { "@type": "Person", "name": author },
+          "description": metaDesc,
+          "url": pageUrl,
+          "inLanguage": i18n.language || "et",
+          "genre": category,
+        })}</script>
+      </Helmet>
       <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
         <Navigation />
 
