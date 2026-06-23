@@ -14,6 +14,7 @@ import Sundmused from "./pages/Sundmused.tsx";
 import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
+import Eraamatud from "./pages/Eraamatud.tsx";
 import Tabernacle from "./pages/Tabernacle.tsx";
 import JeesuseSugupuu from "./pages/JeesuseSugupuu.tsx";
 import NotFound from "./pages/NotFound.tsx";
