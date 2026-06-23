@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2 } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -83,7 +83,7 @@ function normalizeEpisodeBookUrl(rawBookUrl: string): string {
 
 export default function Eraamatud() {
   const navigate = useNavigate();
-  const { session, loading: authLoading, refreshProfile } = useAuth();
+  const { session, loading: authLoading, logout, refreshProfile } = useAuth();
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -388,6 +388,97 @@ export default function Eraamatud() {
             Vaimulikud raamatud, audiosalvestised ja videod ühes kohas.
           </p>
         </header>
+
+        {session && (
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/40 bg-card px-4 py-3 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <UserIcon className="h-5 w-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">{session.fullName || session.email}</p>
+                <p className="text-xs text-muted-foreground truncate">{session.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/paketid"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition"
+              >
+                <Coins className="h-4 w-4" />
+                {session.walletCoin} münti
+              </Link>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/profiil">
+                  <UserIcon className="h-4 w-4 mr-1.5" />
+                  Profiil
+                </Link>
+              </Button>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                <LogOut className="h-4 w-4 mr-1.5" />
+                Logi välja
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {session && (purchasedBookIds.size > 0 || purchasedEpisodeIds.size > 0) && (() => {
+          const myBooks = items.filter((b) => purchasedBookIds.has(String(b.id)));
+          if (myBooks.length === 0) return null;
+          return (
+            <section className="mb-10">
+              <h2 className="font-serif text-2xl font-semibold mb-4 flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Sinu raamatud ({myBooks.length})
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {myBooks.map((book) => {
+                  const cover = imageUrl(book.portrait_img);
+                  const isOpening = openingId === book.id;
+                  return (
+                    <Card
+                      key={`mine-${book.id}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => !isOpening && open(book)}
+                      onKeyDown={(e) => {
+                        if ((e.key === "Enter" || e.key === " ") && !isOpening) {
+                          e.preventDefault();
+                          open(book);
+                        }
+                      }}
+                      className="group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer"
+                    >
+                      <div className="aspect-[2/3] bg-muted relative overflow-hidden">
+                        {cover ? (
+                          <img
+                            src={cover}
+                            alt={book.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <BookOpen className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                        )}
+                        {isOpening && (
+                          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+                            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                          </div>
+                        )}
+                      </div>
+                      <CardContent className="p-2">
+                        <p className="text-xs font-medium truncate" title={book.title}>{book.title}</p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })()}
+
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)}>
           <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-8">
