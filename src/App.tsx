@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
+            <Route path="/eraamatud" element={<Eraamatud />} />
             <Route path="/kaardid/tabernaakel" element={<Tabernacle />} />
             <Route path="/jeesuse-sugupuu" element={<JeesuseSugupuu />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
