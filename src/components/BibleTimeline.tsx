@@ -302,16 +302,16 @@ export function BibleTimeline() {
         />
       </div>
 
-      <div className="max-w-6xl mx-auto py-16 px-4">
+      <div className="max-w-6xl mx-auto py-8 sm:py-16 px-4">
         <header className="text-center mb-10 animate-in fade-in slide-in-from-top duration-1000">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-card/60 backdrop-blur-sm text-xs text-muted-foreground mb-4">
             <Sparkles className="h-3 w-3" />
             <span>{t("timeline.badge")}</span>
           </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent">
             {t("timeline.heading")}
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto mb-8 px-2">
             {t("timeline.intro")}
           </p>
           <div className="relative max-w-md mx-auto mb-6">
