@@ -1,0 +1,16 @@
+{
+  "name": "Piibli Materjalid",
+  "short_name": "Piibli Materjalid",
+  "description": "Avasta Piibli raamatuid, ajalugu, sündmusi ja pühi paiku interaktiivse ajajoone, kaartide ja e-raamatutega.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#8F5A24",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
