@@ -14,6 +14,7 @@ import Sundmused from "./pages/Sundmused.tsx";
 import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
+import Eraamatud from "./pages/Eraamatud.tsx";
 import Tabernacle from "./pages/Tabernacle.tsx";
 import JeesuseSugupuu from "./pages/JeesuseSugupuu.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
+            <Route path="/eraamatud" element={<Eraamatud />} />
             <Route path="/kaardid/tabernaakel" element={<Tabernacle />} />
             <Route path="/jeesuse-sugupuu" element={<JeesuseSugupuu />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
