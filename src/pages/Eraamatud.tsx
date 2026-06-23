@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
