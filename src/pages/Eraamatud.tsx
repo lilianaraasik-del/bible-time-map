@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -387,6 +387,15 @@ export default function Eraamatud() {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Vaimulikud raamatud, audiosalvestised ja videod ühes kohas.
           </p>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.kerk.eraamatapp&pli=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-3 text-sm text-primary hover:underline font-medium"
+          >
+            <Smartphone className="h-4 w-4" />
+            Lae rakendus androidile
+          </a>
         </header>
 
         {session && (
