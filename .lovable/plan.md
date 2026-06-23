@@ -1,75 +1,70 @@
-## Eesmärk
+# Plaan: E-raamatud kui eraldi sektsioon
 
-Asendada KERK e-raamatud projektis senine **admin_books + KERK rahakott** süsteem **selle projekti `eraamat.piibel.ee` API + peatükipõhise rahakoti süsteemiga**, kohandatud TanStack Start raamistikule. Backend jääb `eraamat.piibel.ee` peale — KERK Lovable Cloud lisatakse vaid auth sillaks (sama mall mis siin).
+Kaks projekti, kaks muudatust. Sisuline loogika ei muutu — ainult navigatsioon ja nähtavus.
 
-## Tähtsad tagajärjed
+---
 
-- KERK olemasolev `admin_books` tabel ja seotud kood (`lib/eraamatud.ts` `fetchAdminBooks`, `adminBookToEraamat`, `adminBooks.functions.ts`) jäävad puutumata, kuid e-raamatukogu lehel neid enam ei kasutata.
-- KERK senine `wallet.functions.ts` rahakoti voog (`purchaseBook`, `getMyWallet`) e-raamatukogu lehel asendatakse piibel.ee `wallet_coin` süsteemiga. Kui `wallet.functions` kasutab veel muid lehti (nt /tellimus), need jäävad alles.
-- KERK `useAuth` saab paralleelse `usePiibelSession` hooki — Supabase auth (Lovable Cloud) jääb identiteediks, aga taustal sünkroonitakse piibel.ee kasutaja sama mustriga nagu siin projektis (`piibel_sessions` tabel + `sync-piibel-session` edge function).
+## 1. Ajajoon (see projekt) — peida e-raamatud ja auth navist
 
-## Sammud KERK projektis
+**Fail: `src/components/Navigation.tsx`**
 
-### 1. Backend (Supabase / Lovable Cloud)
+Eemalda navi-ribast järgmised elemendid (route'id App.tsx-is jäävad alles, et otselink töötaks):
 
-- **Migration**: lisa `piibel_sessions` tabel (sama skeem mis siin: `auth_user_id`, `piibel_user_id`, `piibel_unique_token`, `email`, `full_name`, timestamps; RLS — kasutaja näeb/muudab ainult oma rida).
-- **Edge function `sync-piibel-session`**: võtab praeguse Supabase kasutaja, kutsub piibel.ee `login` (type=2 Google) tema emailiga, salvestab tulemuse `piibel_sessions`-i, tagastab `PiibelSession`.
-- **Edge function `book-proxy`**: võtab `?url=` parameetri, lae EPUB/PDF piibel.ee'st, lisab CORS päised, tagastab streamina (sama nagu siin).
-- Mõlemad funktsioonid `verify_jwt = true` `sync-piibel-session` jaoks, `false` `book-proxy` jaoks. Mõlemad lisatud `supabase/config.toml`-i.
+- `E-raamatud` link (juba eelmises sammus muudetud välislingiks — see eemaldatakse täielikult, sest Bible Reader projekti link tuleb sinna)
+- Login nupp (kui `session` puudub)
+- Profiil + wallet münt nupp (kui `session` olemas)
 
-### 2. Lib failid (`src/lib/`)
+Sama mobiilses menüüs (kui on duplikaadid).
 
-- **`eraamatud.ts`** — kirjuta üle selle projekti versiooniga (lisa `proxyUrl`, `bookFileUrl(book, auth)`, säilita `EraamatApi`, `MediaKind`, `BookFormat`, `getMediaKind`, `bookFormat`, `youtubeEmbed`, `videoEmbedUrl`, `audioUrl`, `fetchEraamatud`). Eemalda KERK `fetchAdminBooks` / `adminBookToEraamat` / `fetchAllBooks` (või jäta alles, kui kasutusel mujal — viitega kommentaaris).
-- **`piibelApi.ts`** — uus fail, kopeerin siit 1:1.
+**Mis JÄÄB navi:** Ajajoon, Paigad/Sündmused dropdown, Tabernaakel, Jeesuse sugupuu, keelevahetus, teema.
 
-### 3. Auth (`src/hooks/usePiibelSession.tsx`)
+**Mis JÄÄB alles aga peidetult:** `/login`, `/profiil`, `/paketid` route'id ja failid — kasutatavad ainult otse-URL-iga (admin/debug otstarbel).
 
-- Uus hook, mis kasutab olemasolevat `useAuth`'i Supabase kasutaja jaoks ja lisab piibel sessiooni laadimise:
-  - Vaatab `piibel_sessions` tabelist rea `auth_user_id` järgi.
-  - Kui puudub, kutsub `sync-piibel-session` edge function'i.
-  - Pärib `piibelGetProfile` `wallet_coin` värskendamiseks.
-- Tagastab `{ session: PiibelSession | null, loading, refreshProfile }`.
+**E-raamatute väljalink:** kuna kogu e-raamatud läheb teise projekti alla, ei lisa siin enam `eraamat.piibel.ee` linki navi-ribasse. Kui hiljem soovid footri linki, saab eraldi lisada.
 
-### 4. Eraamatud route (`src/routes/eraamatud.tsx`)
+---
 
-- Asendan praeguse route'i sisu selle projekti `pages/Eraamatud.tsx` loogikaga:
-  - Episood-põhine avamine (`piibelGetEpisodeBookByContent`).
-  - Müntidega ostmine (`piibelBuyContentEpisode`) + ostuajaloo (`piibelGetWalletTransactions`) põhine lukustuse kontroll.
-  - Hindade ülevaade peatükkide haaval (paralleelne 4-worker fetch).
-  - Peatükkide loendi dialog mitme peatükiga raamatutele.
-  - `proxyUrl` EPUB/PDF jaoks.
-- Asendused TanStack Start mustri jaoks:
-  - `export const Route = createFileRoute("/eraamatud")({ head, component })`.
-  - `useNavigate` → `@tanstack/react-router` ja `navigate({ to: "/auth" })`.
-  - `toast` `@/hooks/use-toast` asemel → `sonner` (mida KERK juba kasutab).
-  - `Navigation` komponent asendatud KERK headeri mustriga (Link KERK + AuthHeaderButton).
-  - `useAuth` → uus `usePiibelSession`.
+## 2. Bible Reader (eraldi projekt) — /eraamatud ja alamlehtedel minimaalne nav
 
-### 5. EpubReader / PdfReader
+Seda muudatust ei tee siin agent — sina lähed Bible Reader projekti ja annad sealsele agendile alljärgneva juhise.
 
-- Võrdle KERK versioone selle projekti omaga; kui käitumine erineb (mark/lehed, kohtade salvestamine), kirjuta üle selle projekti versiooniga. Kui sisuliselt sama, jäta alles.
+**Sõnum Bible Reader agendile:**
 
-### 6. Login (`src/routes/auth.tsx` või `login.tsx`)
+> Tahan, et `/eraamatud` lehel ja kõigil selle alamlehtedel (raamatu avamine, lugeja vaade) oleks navigatsioon minimaalne — see toimib nagu eraldi sektsioon.
+>
+> **Mis JÄÄB nähtavale (kõikidel /eraamatud* lehtedel):**
+> - Logo / saidi pealkiri (klikitav, viib `/eraamatud` peale)
+> - Login / Profiil / Wallet münt (sama loogika nagu praegu)
+> - Keelevahetus (ET/EN/RU)
+> - Teema (tume/hele)
+>
+> **Mis PEIDETAKSE /eraamatud* lehtedel:**
+> - Kõik teised nav lingid (Ajajoon, Piibli raamatud, Paigad, Sündmused, Tabernaakel, Jeesuse sugupuu, jne)
+>
+> **Implementatsioon:** `Navigation.tsx` komponendis kontrolli `useLocation().pathname.startsWith("/eraamatud")` ja renderda tingimuslikult kahte erinevat nav-paigutust (või sama, aga peida sisemised lingid). Footris samuti — kui footris on sektsiooni-lingid, peida need samuti.
 
-- Pärast edukat Supabase sisselogimist (Google), tagumiselt kutsutakse `sync-piibel-session` (uus `usePiibelSession` hook teeb seda automaatselt järgmisel laadimisel). Login lehte ennast ei pea muutma — kui Google on juba olemas.
+---
 
-### 7. Eemaldatav / vananenud kood
+## Tehnilised detailid
 
-- `lib/wallet.functions.ts` kasutus `eraamatud.tsx`-is asendatakse; fail jääb, kui mujal vaja.
-- `Coins` import + KERK `Coins`-ikoonidega UI elemendid asendatakse selle projekti hinnasildi/lukustuse mustriga.
+**Ajajoonis (`src/components/Navigation.tsx`):**
 
-## Mida ma EI tee selle pordi raames
+Eemalda read:
+- E-raamatud `<a>` blokk (read ~44-55 praeguses failis)
+- `session ? <Link to="/profiil">...</Link> : <Link to="/login">...</Link>` blokk (read ~101-127)
 
-- Ei muuda KERK `/tellimus`, `_authenticated/*` lehti.
-- Ei migreeri admin_books andmeid kuhugi — need jäävad andmebaasi alles, lihtsalt e-raamatukogu leht neid ei kasuta.
-- Ei lisa Piibli raamatute kirjelduste süsteemi (Raamat.tsx + data failid + i18n) — kui soovid, see on järgmine eraldi etapp.
+Sellega kaob ka vajadus `Library`, `Coins`, `LogIn` ikoonide impordi järele — eemalda need `lucide-react` impordist (lint puhtuse mõttes).
 
-## Tehnilised märkused
+`AuthProvider` ja `useAuth` jäävad App.tsx-i alles, et `/profiil` jms otse-URL-iga töötaks.
 
-- KERK kasutab React 19 + TanStack Router 1.168 + `sonner` + Tailwind 4. Kõik kasutatavad shadcn komponendid (`Card`, `Dialog`, `Tabs`, `Skeleton`, `Button`) on juba olemas.
-- `react-pdf` (10.4) ja `jszip` (3.10) olemas — EPUB/PDF lugejad töötavad otse.
-- piibel.ee endpointid (`api.piibel.ee`, `eraamat.piibel.ee/admin/public/api`) töötavad kõikjalt, CORS pole probleem JSON päringute jaoks. Probleem on ainult EPUB/PDF failide laadimisel — selle lahendab `book-proxy` edge function.
+**App.tsx:** muudatusi ei vaja — route'id `/login`, `/profiil`, `/paketid` jäävad alles.
 
-## Pärast portimist
+---
 
-KERK e-raamatukogu kuvab piibel.ee `api.piibel.ee/routes/books.php` allikast tulevaid raamatuid, mängib audio/videot, lubab tasulisi peatükke müntidega ostmist. Müntide rahakott on piibel.ee oma — KERK kasutaja peab piibel.ee kontot omama (Google sisselogimine teeb selle automaatselt).
+## Mida see EI tee
+
+- Ei kustuta `Eraamatud.tsx`, `piibelApi.ts`, `eraamatud.ts`, `EpubReader.tsx` ega edge function'eid (`book-proxy`, `sync-piibel-session`). Need jäävad surnud koodina kuni kinnitad eemaldamise.
+- Ei muuda `piibel_sessions` tabelit ega selle RLS poliitikaid.
+- Ei tee Bible Reader projektis ühtegi muudatust — see on käsitsi sammu sinu kätes.
+
+Pärast plaani kinnitamist saan kõik need (kasutamata failid + edge function'id + tabel) eraldi käsklusega ära koristada, kui Bible Reader pool töötab.
