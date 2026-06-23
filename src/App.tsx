@@ -10,7 +10,7 @@ import Raamat from "./pages/Raamat.tsx";
 import Kommentaar from "./pages/Kommentaar.tsx";
 import Paigad from "./pages/Paigad.tsx";
 import Sundmused from "./pages/Sundmused.tsx";
-import Eraamatud from "./pages/Eraamatud.tsx";
+
 import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
@@ -33,7 +33,7 @@ const App = () => (
             <Route path="/ajajoon" element={<Ajajoon />} />
             <Route path="/paigad" element={<Paigad />} />
             <Route path="/sundmused" element={<Sundmused />} />
-            <Route path="/eraamatud" element={<Eraamatud />} />
+            
             <Route path="/raamat/:book" element={<Raamat />} />
             <Route path="/raamat/:book/kommentaar" element={<Kommentaar />} />
             <Route path="/login" element={<Login />} />
