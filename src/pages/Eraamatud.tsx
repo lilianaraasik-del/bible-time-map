@@ -396,6 +396,19 @@ export default function Eraamatud() {
             <Smartphone className="h-4 w-4" />
             Lae rakendus androidile
           </a>
+          <button
+            onClick={() => {
+              toast({
+                title: "Lisa avaekraanile",
+                description:
+                  "iOS: vajuta Share ja vali 'Lisa avaekraanile'. Android: brauseri menüü → 'Lisa avaekraanile' või 'Installi rakendus'.",
+              });
+            }}
+            className="inline-flex items-center gap-2 mt-2 text-sm text-primary hover:underline font-medium"
+          >
+            <Home className="h-4 w-4" />
+            Lisa avaekraanile
+          </button>
         </header>
 
         {session && (
