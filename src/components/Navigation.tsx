@@ -43,6 +43,7 @@ export function Navigation() {
             </Link>
 
 
+            {!isEraamatud && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -86,6 +87,7 @@ export function Navigation() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            )}
 
 
             <LanguageSwitcher />
