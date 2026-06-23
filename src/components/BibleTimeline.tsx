@@ -391,13 +391,14 @@ export function BibleTimeline() {
         </header>
 
         <div className="relative">
-          <div className="absolute left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
+          {/* Timeline rail: left edge on mobile, centered on md+ */}
+          <div className="absolute top-0 bottom-0 w-[3px] left-4 md:left-1/2 md:-translate-x-1/2">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/40 to-primary/20 rounded-full" />
             <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent blur-md rounded-full" />
           </div>
 
           <LayoutGroup>
-            <div className="space-y-2">
+            <div className="space-y-3 md:space-y-2">
               {orderedBooks.map((book, index) => {
                 const isLeft = index % 2 === 0;
                 const highlighted = isHighlighted(book);
@@ -423,7 +424,7 @@ export function BibleTimeline() {
                     className="relative"
                   >
                     {showUtDivider && (
-                      <motion.div layout="position" className="relative my-10 flex items-center justify-center">
+                      <motion.div layout="position" className="relative my-8 md:my-10 flex items-center justify-center pl-10 md:pl-0">
                         <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                         <div className="relative z-10 px-4 py-1.5 rounded-full border border-primary/30 bg-card/90 backdrop-blur-sm text-xs font-semibold text-primary shadow-sm">
                           {t("timeline.newTestamentDivider")}
@@ -431,11 +432,92 @@ export function BibleTimeline() {
                       </motion.div>
                     )}
 
+                    {/* Mobile layout: stacked, line+dot on left */}
+                    <div className="md:hidden relative pl-10">
+                      <div
+                        ref={(el) => {
+                          bookRefs.current[book.slug] = el;
+                        }}
+                        className="group"
+                      >
+                        {/* Dot on rail */}
+                        <div className="absolute left-4 top-6 -translate-x-1/2 z-10">
+                          <div
+                            className={`w-3.5 h-3.5 rounded-full border-[3px] border-background shadow-lg ${
+                              highlighted ? "bg-primary" : style.dot
+                            }`}
+                          />
+                          <div
+                            className={`absolute inset-0 rounded-full blur-md opacity-70 ${
+                              highlighted ? "bg-primary/40" : style.dot
+                            }`}
+                          />
+                        </div>
+                        <Link
+                          to={`/raamat/${book.slug}`}
+                          className="block relative outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
+                        >
+                          <Card
+                            className={`p-4 transition-all duration-500 border-2 bg-card/95 backdrop-blur-sm relative overflow-hidden cursor-pointer ${
+                              highlighted
+                                ? "border-primary shadow-2xl ring-2 ring-primary/30"
+                                : `border-border/50 ${style.ring}`
+                            }`}
+                          >
+                            <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${style.tint} opacity-80`} />
+                            <div className={`absolute left-0 top-0 bottom-0 w-1 ${style.dot}`} />
+                            <div className="space-y-2.5 relative z-10">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex items-start gap-2 min-w-0">
+                                  <div className={`shrink-0 mt-0.5 h-7 w-7 rounded-lg border ${style.chip} flex items-center justify-center`}>
+                                    <Icon className="h-3.5 w-3.5" />
+                                  </div>
+                                  <h3 className="font-serif text-base font-bold leading-tight text-foreground">
+                                    {getName(book.slug)}
+                                  </h3>
+                                </div>
+                                <Badge
+                                  variant="secondary"
+                                  className={`text-[10px] shrink-0 font-bold tracking-wider ${
+                                    book.testament === "OT"
+                                      ? "bg-primary/15 text-primary border-primary/40"
+                                      : "bg-primary text-primary-foreground border-primary"
+                                  }`}
+                                >
+                                  {book.testament === "OT" ? t("timeline.ot") : t("timeline.nt")}
+                                </Badge>
+                              </div>
+                              <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                              <div className="space-y-1 text-xs">
+                                <p className="text-muted-foreground flex items-center gap-1.5">
+                                  <span className="font-semibold text-foreground">{t("timeline.author")}</span>
+                                  <span className="italic truncate">{getAuthor(book.slug)}</span>
+                                </p>
+                                <p className="text-muted-foreground flex items-center gap-1.5">
+                                  <span className="font-semibold text-foreground">{t("timeline.written")}</span>
+                                  <span className="tabular-nums">{getYear(book.slug)}</span>
+                                </p>
+                                <div className="pt-1 flex items-center gap-1.5 flex-wrap">
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full border font-medium ${style.chip}`}>
+                                    <Icon className="h-2.5 w-2.5" />
+                                    {t(`categories.${book.categoryKey}`)}
+                                  </span>
+                                  {sortMode === "written" && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-muted text-muted-foreground border border-border/50 font-mono">
+                                      #{index + 1}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </Card>
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Desktop/tablet layout: alternating two-column */}
                     <div
-                      ref={(el) => {
-                        bookRefs.current[book.slug] = el;
-                      }}
-                      className={`relative flex items-center ${
+                      className={`hidden md:flex relative items-center ${
                         isLeft ? "flex-row" : "flex-row-reverse"
                       } group`}
                     >
@@ -451,6 +533,9 @@ export function BibleTimeline() {
                         />
                         <Link
                           to={`/raamat/${book.slug}`}
+                          ref={(el) => {
+                            if (el) bookRefs.current[book.slug] = el as unknown as HTMLDivElement;
+                          }}
                           className="block relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
                         >
                           <Card
