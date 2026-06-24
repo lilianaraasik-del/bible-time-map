@@ -303,11 +303,35 @@ export async function piibelGetContentDetail(opts: {
   return piibelPost("get_content_detail", opts);
 }
 
-/** Raamatu peatükid (epub failid). */
+/** Raamatu peatükid (epub failid). Tõmbab kõik leheküljed kokku. */
 export async function piibelGetEpisodeBookByContent(opts: {
   user_id?: string | number;
   unique_token?: string;
   content_id: string | number;
-}) {
-  return piibelPost<PiibelEpisode[]>("get_episode_book_by_content", opts);
+}): Promise<PiibelApiResponse<PiibelEpisode[]>> {
+  const all: PiibelEpisode[] = [];
+  let page = 1;
+  let last: PiibelApiResponse<PiibelEpisode[]> | null = null;
+  // Turvalise piiri jaoks max 20 lehte
+  for (let i = 0; i < 20; i++) {
+    const res = await piibelPost<PiibelEpisode[]>("get_episode_book_by_content", {
+      ...opts,
+      page,
+    });
+    last = res;
+    if (res.status !== 200 || !Array.isArray(res.result)) break;
+    all.push(...res.result);
+    if (!res.more_page) break;
+    page++;
+  }
+  return {
+    status: last?.status ?? 200,
+    message: last?.message ?? "",
+    result: all,
+    total_rows: last?.total_rows,
+    total_page: last?.total_page,
+    current_page: last?.current_page,
+    more_page: false,
+  };
 }
+
