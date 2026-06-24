@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { Coins, LogOut, ShoppingBag, BookOpen, CheckCircle2, User as UserIcon } from "lucide-react";
+import { Coins, LogOut, ShoppingBag, BookOpen, CheckCircle2, User as UserIcon, ArrowLeft } from "lucide-react";
 import {
   piibelGetTransactions,
   piibelGetWalletTransactions,
