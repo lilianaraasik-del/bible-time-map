@@ -514,7 +514,7 @@ export default function Eraamatud() {
         })()}
 
 
-        <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)}>
+        <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)} id="koik-raamatud" className="scroll-mt-20">
           <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-8">
             {tabConfig.map(({ key, label, icon: Icon }) => (
               <TabsTrigger key={key} value={key} className="flex items-center gap-2">
