@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { piibelLogin, piibelGoogleLogin, piibelGetProfile, type PiibelUser } from "@/lib/piibelApi";
+import { piibelLogin, piibelGoogleLogin, piibelGetProfile, piibelInvalidateCache, type PiibelUser } from "@/lib/piibelApi";
 
 interface PiibelSession {
   piibelUserId: string;
