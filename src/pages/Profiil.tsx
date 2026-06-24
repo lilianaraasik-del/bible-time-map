@@ -137,6 +137,16 @@ export default function Profiil() {
           </CardContent>
         </Card>
 
+        {historyError && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive flex items-center justify-between gap-3">
+            <span>{historyError}</span>
+            <Button size="sm" variant="outline" onClick={() => window.location.reload()}>
+              Proovi uuesti
+            </Button>
+          </div>
+        )}
+
+
         {/* Avatud raamatud */}
         <Card>
           <CardHeader>
