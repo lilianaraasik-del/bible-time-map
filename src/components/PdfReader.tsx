@@ -138,9 +138,14 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
               <p className="text-sm text-muted-foreground">{error}</p>
               <Button variant="outline" onClick={onClose}>Sulge</Button>
             </div>
+          ) : !authReady ? (
+            <div className="flex items-center justify-center py-24">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
           ) : (
             <Document
-              file={url}
+              file={fileProp}
+
               onLoadSuccess={({ numPages }) => {
                 if (loadTimeoutRef.current) {
                   window.clearTimeout(loadTimeoutRef.current);
