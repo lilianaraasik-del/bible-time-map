@@ -110,6 +110,32 @@ export default function Eraamatud() {
   const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
   const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
 
+  // Offline raamatud
+  const offline = useOfflineBooks();
+  const [downloadingBookId, setDownloadingBookId] = useState<string | null>(null);
+  const [downloadProgress, setDownloadProgress] = useState<number>(0);
+  const [manageOpen, setManageOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState<boolean>(typeof navigator === "undefined" ? true : navigator.onLine);
+  const [playerBlobUrl, setPlayerBlobUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const on = () => setIsOnline(true);
+    const off = () => setIsOnline(false);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+
+  // Vabasta blob: URL kui mängija sulgub
+  useEffect(() => {
+    return () => {
+      if (playerBlobUrl) URL.revokeObjectURL(playerBlobUrl);
+    };
+  }, [playerBlobUrl]);
+
   useEffect(() => {
     document.title = "E-raamatud | Piibel.ee";
     fetchEraamatud()
