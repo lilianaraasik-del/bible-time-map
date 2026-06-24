@@ -231,6 +231,44 @@ export default function Eraamatud() {
     return g;
   }, [items]);
 
+  const priceOf = (b: EraamatApi): number => {
+    if (!isPaid(b)) return 0;
+    const direct = Number(b.novel_coin || 0);
+    if (direct > 0) return direct;
+    const s = episodeSummary[String(b.id)];
+    return s?.minCoin || 0;
+  };
+
+  const typeRank = (b: EraamatApi): number => {
+    const k = getMediaKind(b);
+    return k === "book" ? 0 : k === "audio" ? 1 : 2;
+  };
+
+  const sortList = (list: EraamatApi[]): EraamatApi[] => {
+    if (sortKey === "default") return list;
+    const arr = [...list];
+    const collator = new Intl.Collator("et", { sensitivity: "base" });
+    switch (sortKey) {
+      case "title-asc":
+        arr.sort((a, b) => collator.compare(a.title || "", b.title || ""));
+        break;
+      case "title-desc":
+        arr.sort((a, b) => collator.compare(b.title || "", a.title || ""));
+        break;
+      case "price-asc":
+        arr.sort((a, b) => priceOf(a) - priceOf(b));
+        break;
+      case "price-desc":
+        arr.sort((a, b) => priceOf(b) - priceOf(a));
+        break;
+      case "type":
+        arr.sort((a, b) => typeRank(a) - typeRank(b) || collator.compare(a.title || "", b.title || ""));
+        break;
+    }
+    return arr;
+  };
+
+
   const auth = session
     ? { userId: session.piibelUserId, uniqueToken: session.piibelUniqueToken }
     : null;
