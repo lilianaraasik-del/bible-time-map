@@ -44,21 +44,34 @@ export default function Profiil() {
     }
   }, [loading, session, navigate]);
 
+  const piibelUserId = session?.piibelUserId;
+  const piibelUniqueToken = session?.piibelUniqueToken;
+
   useEffect(() => {
     document.title = "Minu profiil | Piibel.ee";
-    if (!session) return;
+    if (!piibelUserId || !piibelUniqueToken) return;
+
+    let cancelled = false;
+    setHistoryLoading(true);
 
     Promise.all([
-      piibelGetTransactions(session.piibelUserId, session.piibelUniqueToken),
-      piibelGetWalletTransactions(session.piibelUserId, session.piibelUniqueToken),
+      piibelGetTransactions(piibelUserId, piibelUniqueToken),
+      piibelGetWalletTransactions(piibelUserId, piibelUniqueToken),
     ])
       .then(([tx, wt]) => {
+        if (cancelled) return;
         if (tx.status === 200) setTransactions(tx.result || []);
         if (wt.status === 200) setWalletTx(wt.result || []);
       })
       .catch(() => {})
-      .finally(() => setHistoryLoading(false));
-  }, [session]);
+      .finally(() => {
+        if (!cancelled) setHistoryLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [piibelUserId, piibelUniqueToken]);
 
   if (loading || !session) {
     return (
