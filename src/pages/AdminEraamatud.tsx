@@ -212,7 +212,19 @@ export default function AdminEraamatud() {
               </div>
               <div>
                 <Label>Autor</Label>
-                <Input value={author} onChange={(e) => setAuthor(e.target.value)} />
+                <Input
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  list="author-options"
+                  placeholder="Vali olemasolev või kirjuta uus"
+                />
+                <datalist id="author-options">
+                  {Array.from(new Set(books.map((b) => b.author).filter((a): a is string => !!a && a.trim().length > 0)))
+                    .sort((a, b) => a.localeCompare(b, "et"))
+                    .map((a) => (
+                      <option key={a} value={a} />
+                    ))}
+                </datalist>
               </div>
               <div className="md:col-span-2">
                 <Label>Kirjeldus</Label>
