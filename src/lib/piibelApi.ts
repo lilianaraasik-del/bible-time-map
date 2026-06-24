@@ -112,6 +112,13 @@ async function piibelPost<T = unknown>(
     body: params.toString(),
   });
 
+  if (res.status === 429) {
+    return {
+      status: 429,
+      message: "Liiga palju päringuid serverile. Palun proovi mõne hetke pärast uuesti.",
+    } as PiibelApiResponse<T>;
+  }
+
   if (!res.ok) {
     throw new Error(`API viga (${res.status})`);
   }
