@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Loader2, ZoomIn, ZoomOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
+
 
 interface PdfReaderProps {
   url: string;
@@ -20,7 +22,44 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
   const [scale, setScale] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [authReady, setAuthReady] = useState(false);
   const loadTimeoutRef = useRef<number | null>(null);
+
+  const needsAuth = useMemo(() => {
+    try {
+      const u = new URL(url, typeof window !== "undefined" ? window.location.origin : "http://localhost");
+      return u.searchParams.get("auth") === "1";
+    } catch {
+      return false;
+    }
+  }, [url]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setAuthReady(false);
+    setAuthToken(null);
+    if (!needsAuth) {
+      setAuthReady(true);
+      return;
+    }
+    supabase.auth.getSession().then(({ data }) => {
+      if (cancelled) return;
+      setAuthToken(data.session?.access_token ?? null);
+      setAuthReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [url, needsAuth]);
+
+  const fileProp = useMemo(() => {
+    if (needsAuth && authToken) {
+      return { url, httpHeaders: { Authorization: `Bearer ${authToken}` } };
+    }
+    return url;
+  }, [url, needsAuth, authToken]);
+
 
   useEffect(() => {
     setNumPages(0);
@@ -99,9 +138,14 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
               <p className="text-sm text-muted-foreground">{error}</p>
               <Button variant="outline" onClick={onClose}>Sulge</Button>
             </div>
+          ) : !authReady ? (
+            <div className="flex items-center justify-center py-24">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
           ) : (
             <Document
-              file={url}
+              file={fileProp}
+
               onLoadSuccess={({ numPages }) => {
                 if (loadTimeoutRef.current) {
                   window.clearTimeout(loadTimeoutRef.current);
