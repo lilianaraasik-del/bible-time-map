@@ -22,7 +22,44 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
   const [scale, setScale] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [authReady, setAuthReady] = useState(false);
   const loadTimeoutRef = useRef<number | null>(null);
+
+  const needsAuth = useMemo(() => {
+    try {
+      const u = new URL(url, typeof window !== "undefined" ? window.location.origin : "http://localhost");
+      return u.searchParams.get("auth") === "1";
+    } catch {
+      return false;
+    }
+  }, [url]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setAuthReady(false);
+    setAuthToken(null);
+    if (!needsAuth) {
+      setAuthReady(true);
+      return;
+    }
+    supabase.auth.getSession().then(({ data }) => {
+      if (cancelled) return;
+      setAuthToken(data.session?.access_token ?? null);
+      setAuthReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [url, needsAuth]);
+
+  const fileProp = useMemo(() => {
+    if (needsAuth && authToken) {
+      return { url, httpHeaders: { Authorization: `Bearer ${authToken}` } };
+    }
+    return url;
+  }, [url, needsAuth, authToken]);
+
 
   useEffect(() => {
     setNumPages(0);
