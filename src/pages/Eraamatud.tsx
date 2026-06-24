@@ -405,7 +405,14 @@ export default function Eraamatud() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen bg-background select-none"
+      style={{
+        WebkitUserSelect: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
+      }}
+    >
       <Navigation />
 
       <main className="max-w-6xl mx-auto px-6 py-10">
