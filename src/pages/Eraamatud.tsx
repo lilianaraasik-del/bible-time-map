@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown, Download, CheckCircle2, Trash2, WifiOff, HardDrive } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,6 +32,16 @@ import {
   piibelGetWalletTransactions,
 } from "@/lib/piibelApi";
 import type { PiibelEpisode } from "@/lib/piibelApi";
+import {
+  deleteOfflineBook,
+  deleteOfflineBookAll,
+  fetchAsBlob,
+  formatBytes,
+  getOfflineBook,
+  offlineKey,
+  saveOfflineBook,
+  useOfflineBooks,
+} from "@/lib/offlineBooks";
 
 type PlayerState =
   | { kind: "book"; book: EraamatApi; url: string; format: BookFormat }
@@ -99,6 +109,32 @@ export default function Eraamatud() {
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
   const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
   const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
+
+  // Offline raamatud
+  const offline = useOfflineBooks();
+  const [downloadingBookId, setDownloadingBookId] = useState<string | null>(null);
+  const [downloadProgress, setDownloadProgress] = useState<number>(0);
+  const [manageOpen, setManageOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState<boolean>(typeof navigator === "undefined" ? true : navigator.onLine);
+  const [playerBlobUrl, setPlayerBlobUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const on = () => setIsOnline(true);
+    const off = () => setIsOnline(false);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+
+  // Vabasta blob: URL kui mängija sulgub
+  useEffect(() => {
+    return () => {
+      if (playerBlobUrl) URL.revokeObjectURL(playerBlobUrl);
+    };
+  }, [playerBlobUrl]);
 
   useEffect(() => {
     document.title = "E-raamatud | Piibel.ee";
@@ -402,6 +438,26 @@ export default function Eraamatud() {
       }
     }
 
+    // Eelista offline-koopiat, kui see on olemas
+    const cacheKey = offlineKey(book.id, episode.id);
+    const cached = await getOfflineBook(cacheKey);
+    if (cached) {
+      const blobUrl = URL.createObjectURL(cached.blob);
+      setPlayerBlobUrl(blobUrl);
+      setEpisodeList(null);
+      setPlayer({ kind: "book", book, url: blobUrl, format: cached.format });
+      return;
+    }
+
+    if (!isOnline) {
+      toast({
+        title: "Pole offline saadaval",
+        description: "See raamat pole sellesse seadmesse alla laetud. Ühenda internetiga või lae raamat enne alla.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!episode.book) {
       const fallbackUrl = bookFileUrl(book, auth);
       if (!fallbackUrl) {
@@ -428,6 +484,91 @@ export default function Eraamatud() {
     );
     setEpisodeList(null);
     setPlayer({ kind: "book", book, url: proxiedUrl, format });
+  }
+
+  /** Laeb raamatu (kõik ostetud peatükid) offline'ks. */
+  async function downloadBookOffline(book: EraamatApi) {
+    if (!session) {
+      toast({ title: "Sisselogimine vajalik", variant: "destructive" });
+      return;
+    }
+    try {
+      setDownloadingBookId(book.id);
+      setDownloadProgress(0);
+
+      const ep = await piibelGetEpisodeBookByContent({
+        user_id: session.piibelUserId,
+        unique_token: session.piibelUniqueToken,
+        content_id: book.id,
+      });
+      const episodes = (ep.result || []).filter((e) => {
+        if (!e.book) return false;
+        if (!isPaid(book)) return true;
+        return (
+          Number(e.is_buy || 0) === 1 ||
+          purchasedEpisodeIds.has(String(e.id)) ||
+          purchasedBookIds.has(String(book.id))
+        );
+      });
+
+      if (episodes.length === 0) {
+        // Proovi fallback URL-i (mõnel raamatul pole episoode, vaid otsene file_url)
+        const fallbackUrl = bookFileUrl(book, auth);
+        if (!fallbackUrl) {
+          toast({ title: "Pole midagi alla laadida", variant: "destructive" });
+          return;
+        }
+        const proxied = proxyUrl(fallbackUrl);
+        const fmt = await detectRemoteBookFormat(proxied, bookFormat(book));
+        const blob = await fetchAsBlob(proxied, (loaded, total) => {
+          if (total) setDownloadProgress(loaded / total);
+        });
+        await saveOfflineBook({
+          key: offlineKey(book.id, null),
+          bookId: String(book.id),
+          episodeId: "_main",
+          title: book.title,
+          format: fmt,
+          blob,
+        });
+      } else {
+        let i = 0;
+        for (const episode of episodes) {
+          const rawUrl = normalizeEpisodeBookUrl(episode.book!);
+          const proxied = proxyUrl(rawUrl);
+          const fmt = await detectRemoteBookFormat(
+            proxied,
+            rawUrl.toLowerCase().includes(".pdf") ? "pdf" : "epub"
+          );
+          const blob = await fetchAsBlob(proxied, (loaded, total) => {
+            const epPart = total ? loaded / total : 0;
+            setDownloadProgress((i + epPart) / episodes.length);
+          });
+          await saveOfflineBook({
+            key: offlineKey(book.id, episode.id),
+            bookId: String(book.id),
+            episodeId: String(episode.id),
+            title: book.title,
+            episodeName: episode.name,
+            format: fmt,
+            blob,
+          });
+          i++;
+        }
+      }
+
+      await offline.refresh();
+      toast({ title: "Salvestatud offline'ks", description: book.title });
+    } catch (e) {
+      toast({
+        title: "Allalaadimine ebaõnnestus",
+        description: e instanceof Error ? e.message : "Tundmatu viga",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingBookId(null);
+      setDownloadProgress(0);
+    }
   }
 
   async function handleOpenEpisode(book: EraamatApi, episode: PiibelEpisode) {
@@ -551,10 +692,37 @@ export default function Eraamatud() {
                 </div>
               </div>
 
+              {/* Offline-staatuse riba */}
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-border/40 bg-muted/30 px-3 py-2 text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <HardDrive className="h-4 w-4" />
+                  {offline.items.length > 0 ? (
+                    <span>
+                      {offline.bookIds.size} raamat{offline.bookIds.size === 1 ? "" : "ut"} salvestatud offline · {formatBytes(offline.totalSize)}
+                    </span>
+                  ) : (
+                    <span>Ühtegi raamatut pole veel offline'i salvestatud</span>
+                  )}
+                  {!isOnline && (
+                    <span className="ml-2 inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                      <WifiOff className="h-3.5 w-3.5" /> Offline
+                    </span>
+                  )}
+                </div>
+                {offline.items.length > 0 && (
+                  <Button variant="ghost" size="sm" onClick={() => setManageOpen(true)}>
+                    Halda offline-raamatuid
+                  </Button>
+                )}
+              </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {myBooks.map((book) => {
                   const cover = imageUrl(book.portrait_img);
                   const isOpening = openingId === book.id;
+                  const isBookFormat = getMediaKind(book) === "book";
+                  const isSaved = offline.bookIds.has(String(book.id));
+                  const isDownloading = downloadingBookId === book.id;
                   return (
                     <Card
                       key={`mine-${book.id}`}
@@ -587,14 +755,59 @@ export default function Eraamatud() {
                             <Loader2 className="h-6 w-6 animate-spin text-primary" />
                           </div>
                         )}
+                        {isSaved && (
+                          <div className="absolute top-1.5 right-1.5 bg-emerald-500/95 text-white rounded-full p-1 shadow-md" title="Saadaval offline">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                          </div>
+                        )}
                       </div>
-                      <CardContent className="p-2">
+                      <CardContent className="p-2 space-y-1.5">
                         <p className="text-xs font-medium truncate" title={book.title}>{book.title}</p>
+                        {isBookFormat && (
+                          isSaved ? (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="w-full h-7 text-[11px] text-muted-foreground hover:text-destructive"
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await deleteOfflineBookAll(String(book.id));
+                                await offline.refresh();
+                                toast({ title: "Offline koopia kustutatud" });
+                              }}
+                            >
+                              <Trash2 className="h-3 w-3 mr-1" /> Eemalda offline
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full h-7 text-[11px]"
+                              disabled={isDownloading || !isOnline}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                downloadBookOffline(book);
+                              }}
+                            >
+                              {isDownloading ? (
+                                <>
+                                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                  {Math.round(downloadProgress * 100)}%
+                                </>
+                              ) : (
+                                <>
+                                  <Download className="h-3 w-3 mr-1" /> Lae offline
+                                </>
+                              )}
+                            </Button>
+                          )
+                        )}
                       </CardContent>
                     </Card>
                   );
                 })}
               </div>
+
             </section>
           );
         })()}
@@ -764,7 +977,7 @@ export default function Eraamatud() {
         <EpubReader
           url={player.url}
           title={player.book.title}
-          onClose={() => setPlayer(null)}
+          onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
 
@@ -834,7 +1047,7 @@ export default function Eraamatud() {
         <PdfReader
           url={player.url}
           title={player.book.title}
-          onClose={() => setPlayer(null)}
+          onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
 
@@ -859,7 +1072,57 @@ export default function Eraamatud() {
           </div>
         </MediaModal>
       )}
+
+      {/* Offline-raamatute haldus */}
+      {manageOpen && (
+        <Dialog open onOpenChange={(o) => !o && setManageOpen(false)}>
+          <DialogContent className="max-w-xl max-h-[85vh] overflow-hidden flex flex-col p-0 gap-0">
+            <header className="flex items-center justify-between px-5 py-4 border-b border-border bg-card shrink-0">
+              <div className="min-w-0">
+                <h2 className="font-serif text-lg font-semibold truncate">Offline-raamatud</h2>
+                <p className="text-xs text-muted-foreground">
+                  {offline.items.length} faili · {formatBytes(offline.totalSize)}
+                </p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setManageOpen(false)} aria-label="Sulge">
+                <X className="h-5 w-5" />
+              </Button>
+            </header>
+            <div className="overflow-auto p-2">
+              {offline.items.length === 0 ? (
+                <p className="text-center text-sm text-muted-foreground py-8">Pole midagi salvestatud.</p>
+              ) : (
+                <ul className="divide-y divide-border">
+                  {offline.items.map((m) => (
+                    <li key={m.key} className="flex items-center gap-3 px-3 py-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{m.title}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {m.episodeName ? `${m.episodeName} · ` : ""}
+                          {m.format.toUpperCase()} · {formatBytes(m.size)}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-destructive hover:text-destructive"
+                        onClick={async () => {
+                          await deleteOfflineBook(m.key);
+                          await offline.refresh();
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
+
   );
 }
 

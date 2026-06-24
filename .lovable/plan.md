@@ -1,70 +1,73 @@
-# Plaan: E-raamatud kui eraldi sektsioon
+# Offline-raamatud (ainult ostetud PDF/EPUB)
 
-Kaks projekti, kaks muudatust. Sisuline loogika ei muutu — ainult navigatsioon ja nähtavus.
+Eesmärk: kasutaja saab ostetud e-raamatu telefoni/arvutisse alla laadida ja hiljem ilma internetita avada. Heli ja video offline-toetust **ei lisa** (kasutaja valik).
 
----
+## Kuidas see kasutaja jaoks töötab
 
-## 1. Ajajoon (see projekt) — peida e-raamatud ja auth navist
+Igal ostetud raamatul "Sinu raamatud" sektsioonis ilmub uus nupp **"Lae alla offline"** (allanool ikooniga). Kui kasutaja vajutab:
 
-**Fail: `src/components/Navigation.tsx`**
+1. Raamatu fail (PDF või EPUB) tõmmatakse alla ja salvestatakse brauseri lokaalsesse andmebaasi (IndexedDB).
+2. Nupp muutub roheliseks linnukeseks ("Saadaval offline") + väike "X" eemaldamiseks.
+3. Kui kasutaja avab raamatu järgmine kord — internetiga või ilma — laetakse see kohe IndexedDB-st, mitte serverist.
 
-Eemalda navi-ribast järgmised elemendid (route'id App.tsx-is jäävad alles, et otselink töötaks):
+Kui kasutaja on offline ja raamat pole alla laetud, näeb ta selget teadet "Raamat pole offline saadaval — ühenda internetti või lae raamat enne alla."
 
-- `E-raamatud` link (juba eelmises sammus muudetud välislingiks — see eemaldatakse täielikult, sest Bible Reader projekti link tuleb sinna)
-- Login nupp (kui `session` puudub)
-- Profiil + wallet münt nupp (kui `session` olemas)
+Sektsiooni "Sinu raamatud" päisesse tuleb väike olekuriba ("3 raamatut salvestatud offline · 24 MB") + nupp "Halda offline-raamatuid", mis avab dialoogi kõigi salvestatud raamatute nimekirjaga ja võimaluseks neid kustutada.
 
-Sama mobiilses menüüs (kui on duplikaadid).
+## Piirangud, mida kasutajale selgitada
 
-**Mis JÄÄB navi:** Ajajoon, Paigad/Sündmused dropdown, Tabernaakel, Jeesuse sugupuu, keelevahetus, teema.
+- Töötab ainult **selles brauseris ja selles seadmes**, kuhu raamat alla laeti. Teises brauseris/seadmes peab uuesti alla laadima.
+- Brauseri andmete kustutamine ("Clear site data") kustutab ka offline-raamatud.
+- Heli ja video offline’i veel ei tee — need vajavad internetti.
+- Failid jäävad krüpteerimata IndexedDB-sse — sama põhimõte nagu praegu avatud raamatuga, aga kui telefoni keegi teine kasutab, on tal samade andmetega ligipääs.
 
-**Mis JÄÄB alles aga peidetult:** `/login`, `/profiil`, `/paketid` route'id ja failid — kasutatavad ainult otse-URL-iga (admin/debug otstarbel).
+## Tehniline ülevaade
 
-**E-raamatute väljalink:** kuna kogu e-raamatud läheb teise projekti alla, ei lisa siin enam `eraamat.piibel.ee` linki navi-ribasse. Kui hiljem soovid footri linki, saab eraldi lisada.
+### Uus moodul `src/lib/offlineBooks.ts`
 
----
+IndexedDB wrapper (~150 rida, ilma uue npm-paketita — kasutame natiivset `indexedDB` API-d):
 
-## 2. Bible Reader (eraldi projekt) — /eraamatud ja alamlehtedel minimaalne nav
+- `db: "piibel-offline-books"`, store `"books"` keyed by `bookId`.
+- Iga kirje: `{ bookId, title, format: "pdf"|"epub", blob: Blob, size: number, savedAt: number }`.
+- API:
+  - `saveBook(book, blob, format)`
+  - `getBook(bookId): Promise<{blob, format} | null>`
+  - `deleteBook(bookId)`
+  - `listBooks(): Promise<Array<{bookId, title, format, size, savedAt}>>`
+  - `getTotalSize()`
+  - `hasBook(bookId): Promise<boolean>`
+- React hook `useOfflineBooks()`, mis hoiab Set-i salvestatud `bookId`-dest ja kogusummat. Jagatud `Eraamatud.tsx` ja uue haldusdialoogi vahel.
 
-Seda muudatust ei tee siin agent — sina lähed Bible Reader projekti ja annad sealsele agendile alljärgneva juhise.
+### Muudatused `src/pages/Eraamatud.tsx`
 
-**Sõnum Bible Reader agendile:**
+1. **Allalaadimisnupp "Sinu raamatud" kaartidel** (ainult kui `bookFormat(book)` on `pdf` või `epub`):
+   - Olek "ei ole salvestatud" → nupp `Download` ikooniga.
+   - Allalaadimise ajal → spinner + progress (kasutame `fetch` + `response.body` `ReadableStream`, et näidata `XX%`).
+   - Salvestatud → `CheckCircle` ikoon roheliselt + väike `X` eemaldamiseks.
+   - Allalaadimine kasutab sama URL-i loogikat mis avamine: `bookFileUrl(book, auth)` läbi `proxyUrl()` (et CORS töötaks). Toast õnnestumisel/veal.
 
-> Tahan, et `/eraamatud` lehel ja kõigil selle alamlehtedel (raamatu avamine, lugeja vaade) oleks navigatsioon minimaalne — see toimib nagu eraldi sektsioon.
->
-> **Mis JÄÄB nähtavale (kõikidel /eraamatud* lehtedel):**
-> - Logo / saidi pealkiri (klikitav, viib `/eraamatud` peale)
-> - Login / Profiil / Wallet münt (sama loogika nagu praegu)
-> - Keelevahetus (ET/EN/RU)
-> - Teema (tume/hele)
->
-> **Mis PEIDETAKSE /eraamatud* lehtedel:**
-> - Kõik teised nav lingid (Ajajoon, Piibli raamatud, Paigad, Sündmused, Tabernaakel, Jeesuse sugupuu, jne)
->
-> **Implementatsioon:** `Navigation.tsx` komponendis kontrolli `useLocation().pathname.startsWith("/eraamatud")` ja renderda tingimuslikult kahte erinevat nav-paigutust (või sama, aga peida sisemised lingid). Footris samuti — kui footris on sektsiooni-lingid, peida need samuti.
+2. **Raamatu avamine — eelista offline koopiat**:
+   - Praegune `openBook` (umbes rida 400) muutub: enne `fetch`/HEAD-i kontrolli, kas `getBook(book.id)` annab Blob-i. Kui jah, loome `URL.createObjectURL(blob)` ja anname selle `EpubReader`-le või `PdfReader`-le `url` propina.
+   - Object URL-i tuleb `URL.revokeObjectURL` kutsuda kui `player` state nullib.
+   - Kui offline’s puudub ja `navigator.onLine === false`, näita toast "Raamat pole offline saadaval".
 
----
+3. **Olekuriba + halduse dialoog**:
+   - "Sinu raamatud" päise alla väike rida "N raamatut · X MB salvestatud — Halda".
+   - "Halda" avab `Dialog` komponendi, kus iga rea juures pealkiri, formaat, suurus, salvestamise kp ja "Kustuta" nupp.
+   - Dialoog elab sama `Eraamatud.tsx`-i sees (väike komponent, ei tee eraldi faili).
 
-## Tehnilised detailid
+4. **Online/offline indikaator**: kasutame `navigator.onLine` + `window.addEventListener("online"/"offline")` ainult selle jaoks, et muuta avamisveateate sõnastust ja blokeerida ostmist offline’s (osta saab ainult online).
 
-**Ajajoonis (`src/components/Navigation.tsx`):**
+### Muutmata jäävad failid
 
-Eemalda read:
-- E-raamatud `<a>` blokk (read ~44-55 praeguses failis)
-- `session ? <Link to="/profiil">...</Link> : <Link to="/login">...</Link>` blokk (read ~101-127)
+- `EpubReader.tsx`, `PdfReader.tsx` — võtavad juba `url` propi, töötavad blob: URL-iga ilma muudatusteta.
+- `vite.config.ts`, `index.html` — **ei lisa service worker'it ega PWA-d** (kasutaja küsis ainult ostetud raamatuid offline'i, mitte tervet rakendust). IndexedDB üksi ei vaja SW-d.
+- `src/lib/eraamatud.ts` — muudatusi pole vaja.
+- Backend / Supabase — muudatusi pole vaja.
 
-Sellega kaob ka vajadus `Library`, `Coins`, `LogIn` ikoonide impordi järele — eemalda need `lucide-react` impordist (lint puhtuse mõttes).
+## Mida ma EI tee
 
-`AuthProvider` ja `useAuth` jäävad App.tsx-i alles, et `/profiil` jms otse-URL-iga töötaks.
-
-**App.tsx:** muudatusi ei vaja — route'id `/login`, `/profiil`, `/paketid` jäävad alles.
-
----
-
-## Mida see EI tee
-
-- Ei kustuta `Eraamatud.tsx`, `piibelApi.ts`, `eraamatud.ts`, `EpubReader.tsx` ega edge function'eid (`book-proxy`, `sync-piibel-session`). Need jäävad surnud koodina kuni kinnitad eemaldamise.
-- Ei muuda `piibel_sessions` tabelit ega selle RLS poliitikaid.
-- Ei tee Bible Reader projektis ühtegi muudatust — see on käsitsi sammu sinu kätes.
-
-Pärast plaani kinnitamist saan kõik need (kasutamata failid + edge function'id + tabel) eraldi käsklusega ära koristada, kui Bible Reader pool töötab.
+- Ei lisa `vite-plugin-pwa`-d ega service worker'it (kogu rakendus offline polnud soovitud).
+- Ei tee heli/video offline-allalaadimist.
+- Ei lisa krüpteerimist offline-blobile (kui hiljem soovitakse, saab teha eraldi sammuna).
+- Ei muuda kopeerimiskaitse loogikat — see jääb täpselt samaks.
