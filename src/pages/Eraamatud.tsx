@@ -98,7 +98,7 @@ export default function Eraamatud() {
   const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
   const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
-  const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type">("default");
+  const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
 
   useEffect(() => {
     document.title = "E-raamatud | Piibel.ee";
@@ -263,6 +263,13 @@ export default function Eraamatud() {
         break;
       case "type":
         arr.sort((a, b) => typeRank(a) - typeRank(b) || collator.compare(a.title || "", b.title || ""));
+        break;
+      case "newest":
+        arr.sort((a, b) => {
+          const aTime = a.created_at ? new Date(a.created_at).getTime() : 0;
+          const bTime = b.created_at ? new Date(b.created_at).getTime() : 0;
+          return bTime - aTime;
+        });
         break;
     }
     return arr;
@@ -885,7 +892,7 @@ function MediaModal({
   );
 }
 
-type SortKey = "default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type";
+type SortKey = "default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest";
 
 function SortSelect({ value, onChange }: { value: SortKey; onChange: (v: SortKey) => void }) {
   return (
@@ -902,6 +909,7 @@ function SortSelect({ value, onChange }: { value: SortKey; onChange: (v: SortKey
           <SelectItem value="price-asc">Hind (odavam enne)</SelectItem>
           <SelectItem value="price-desc">Hind (kallim enne)</SelectItem>
           <SelectItem value="type">Tüüp</SelectItem>
+          <SelectItem value="newest">Uuemad enne</SelectItem>
         </SelectContent>
       </Select>
     </div>

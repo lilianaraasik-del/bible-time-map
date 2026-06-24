@@ -21,6 +21,7 @@ export interface EraamatApi {
   category_id?: string;
   language_id?: string;
   status?: string;
+  created_at?: string;
 }
 
 export type MediaKind = "book" | "audio" | "video";
