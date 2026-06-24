@@ -519,7 +519,7 @@ export default function Eraamatud() {
           toast({ title: "Pole midagi alla laadida", variant: "destructive" });
           return;
         }
-        const proxied = proxyUrl(fallbackUrl);
+        const proxied = proxyUrl(fallbackUrl, { paid: isPaid(book) });
         const fmt = await detectRemoteBookFormat(proxied, bookFormat(book));
         const blob = await fetchAsBlob(proxied, (loaded, total) => {
           if (total) setDownloadProgress(loaded / total);
