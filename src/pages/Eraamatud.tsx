@@ -478,7 +478,7 @@ export default function Eraamatud() {
 
     const rawUrl = normalizeEpisodeBookUrl(episode.book);
     const lower = rawUrl.toLowerCase();
-    const proxiedUrl = proxyUrl(rawUrl);
+    const proxiedUrl = proxyUrl(rawUrl, { paid: isPaid(book) });
     const format: BookFormat = await detectRemoteBookFormat(
       proxiedUrl,
       lower.includes(".pdf") ? "pdf" : "epub"
