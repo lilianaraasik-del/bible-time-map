@@ -61,7 +61,8 @@ async function detectRemoteBookFormat(url: string, fallback: BookFormat = "epub"
   if (inferredFromUrl) return inferredFromUrl;
 
   try {
-    const res = await fetch(url, { method: "HEAD" });
+    const { proxiedFetch } = await import("@/lib/proxiedFetch");
+    const res = await proxiedFetch(url, { method: "HEAD" });
     if (!res.ok) return fallback;
 
     const contentType = (res.headers.get("content-type") || "").toLowerCase();
@@ -468,7 +469,7 @@ export default function Eraamatud() {
         });
         return;
       }
-      const proxiedFallbackUrl = proxyUrl(fallbackUrl);
+      const proxiedFallbackUrl = proxyUrl(fallbackUrl, { paid: isPaid(book) });
       const fallbackFormat = await detectRemoteBookFormat(proxiedFallbackUrl, bookFormat(book));
       setEpisodeList(null);
       setPlayer({ kind: "book", book, url: proxiedFallbackUrl, format: fallbackFormat });
@@ -477,7 +478,7 @@ export default function Eraamatud() {
 
     const rawUrl = normalizeEpisodeBookUrl(episode.book);
     const lower = rawUrl.toLowerCase();
-    const proxiedUrl = proxyUrl(rawUrl);
+    const proxiedUrl = proxyUrl(rawUrl, { paid: isPaid(book) });
     const format: BookFormat = await detectRemoteBookFormat(
       proxiedUrl,
       lower.includes(".pdf") ? "pdf" : "epub"
@@ -518,7 +519,7 @@ export default function Eraamatud() {
           toast({ title: "Pole midagi alla laadida", variant: "destructive" });
           return;
         }
-        const proxied = proxyUrl(fallbackUrl);
+        const proxied = proxyUrl(fallbackUrl, { paid: isPaid(book) });
         const fmt = await detectRemoteBookFormat(proxied, bookFormat(book));
         const blob = await fetchAsBlob(proxied, (loaded, total) => {
           if (total) setDownloadProgress(loaded / total);
@@ -535,7 +536,7 @@ export default function Eraamatud() {
         let i = 0;
         for (const episode of episodes) {
           const rawUrl = normalizeEpisodeBookUrl(episode.book!);
-          const proxied = proxyUrl(rawUrl);
+          const proxied = proxyUrl(rawUrl, { paid: isPaid(book) });
           const fmt = await detectRemoteBookFormat(
             proxied,
             rawUrl.toLowerCase().includes(".pdf") ? "pdf" : "epub"

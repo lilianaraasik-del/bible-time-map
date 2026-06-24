@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { extractEpubAsHtml } from "@/lib/epubFallback";
+import { proxiedFetch } from "@/lib/proxiedFetch";
 
 interface EpubReaderProps {
   url: string;
@@ -28,7 +29,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         setFallbackHtml(null);
 
         log("samm 1: fetch", url);
-        const res = await fetch(url);
+        const res = await proxiedFetch(url);
         log("samm 2: vastus", { status: res.status, type: res.headers.get("content-type"), length: res.headers.get("content-length") });
         if (!res.ok) {
           if (res.status === 401) throw new Error("Sisselogimine vajalik");
@@ -80,7 +81,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         warn("samm X: EPUB avamine ebaõnnestus", e);
 
         try {
-          const fallbackBuffer = fetchedBuffer ?? (await fetch(url).then((res) => {
+          const fallbackBuffer = fetchedBuffer ?? (await proxiedFetch(url).then((res) => {
             if (!res.ok) throw new Error(`Ei õnnestunud laadida (${res.status})`);
             return res.arrayBuffer();
           }));
