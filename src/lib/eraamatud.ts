@@ -111,9 +111,13 @@ export async function fetchEraamatud(): Promise<EraamatApi[]> {
   return Array.isArray(data) ? data.filter((b) => b.status === "1") : [];
 }
 
-/** Mähib URL-i meie edge function proxy'sse, mis lisab CORS päised. */
-export function proxyUrl(rawUrl: string): string {
+/** Mähib URL-i meie edge function proxy'sse, mis lisab CORS päised.
+ * `paid: true` lisab `auth=1` lipu — book-proxy nõuab siis Authorization
+ * päist ja lisab piibel_unique_token serveripoolselt upstream URL-ile.
+ */
+export function proxyUrl(rawUrl: string, opts?: { paid?: boolean }): string {
   const projectUrl = (import.meta.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
   const base = `${projectUrl}/functions/v1/book-proxy`;
-  return `${base}?url=${encodeURIComponent(rawUrl)}`;
+  const authFlag = opts?.paid ? "&auth=1" : "";
+  return `${base}?url=${encodeURIComponent(rawUrl)}${authFlag}`;
 }
