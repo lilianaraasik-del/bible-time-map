@@ -815,12 +815,16 @@ export default function Eraamatud() {
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)} id="koik-raamatud" className="scroll-mt-20">
           <div className="flex items-center justify-between gap-3 mb-8 flex-wrap">
-            <TabsList className="grid grid-cols-3 max-w-md flex-1">
+            <TabsList className="grid grid-cols-3 max-w-md flex-1 h-auto">
               {tabConfig.map(({ key, label, icon: Icon }) => (
-                <TabsTrigger key={key} value={key} className="flex items-center gap-2">
-                  <Icon className="h-4 w-4" />
+                <TabsTrigger
+                  key={key}
+                  value={key}
+                  className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-1.5 whitespace-nowrap text-xs sm:text-sm"
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
                   <span>{label}</span>
-                  <span className="text-xs text-muted-foreground ml-1">
+                  <span className="hidden sm:inline text-xs text-muted-foreground ml-1">
                     ({grouped[key].length})
                   </span>
                 </TabsTrigger>
