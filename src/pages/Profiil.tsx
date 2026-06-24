@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { Coins, LogOut, ShoppingBag, BookOpen, CheckCircle2 } from "lucide-react";
+import { Coins, LogOut, ShoppingBag, BookOpen, CheckCircle2, User as UserIcon } from "lucide-react";
 import {
   piibelGetTransactions,
   piibelGetWalletTransactions,
@@ -101,17 +101,29 @@ export default function Profiil() {
       <Navigation />
       <main className="max-w-4xl mx-auto px-6 py-10 space-y-6">
         {/* Päis */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-3xl font-bold text-primary">
-              {session.fullName || session.email}
-            </h1>
-            <p className="text-sm text-muted-foreground">{session.email}</p>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/40 bg-card px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <UserIcon className="h-5 w-5 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium truncate">{session.fullName || session.email}</p>
+              <p className="text-xs text-muted-foreground truncate">{session.email}</p>
+            </div>
           </div>
-          <Button variant="outline" onClick={logout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Logi välja
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/paketid"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition"
+            >
+              <Coins className="h-4 w-4" />
+              {session.walletCoin} münti
+            </Link>
+            <Button variant="ghost" size="sm" onClick={logout}>
+              <LogOut className="h-4 w-4 mr-1.5" />
+              Logi välja
+            </Button>
+          </div>
         </div>
 
         {/* Müntide rahakott */}
