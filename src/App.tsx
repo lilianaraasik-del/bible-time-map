@@ -45,6 +45,9 @@ const App = () => (
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
             <Route path="/eraamatud" element={<Eraamatud />} />
+            <Route path="/raamatud" element={<Raamatud />} />
+            <Route path="/tellimus" element={<Tellimus />} />
+            <Route path="/admin/eraamatud" element={<AdminEraamatud />} />
             <Route path="/kaardid/tabernaakel" element={<Tabernacle />} />
             <Route path="/jeesuse-sugupuu" element={<JeesuseSugupuu />} />
             <Route path="/sonaraamat" element={<Sonaraamat />} />
