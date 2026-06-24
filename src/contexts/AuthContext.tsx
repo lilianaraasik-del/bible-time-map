@@ -174,7 +174,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: sub } = supabase.auth.onAuthStateChange((event, authSession) => {
       console.log("[Auth] onAuthStateChange event:", event, "user:", authSession?.user?.email);
-      void loadSession();
+      // Reageeri ainult sisselogimisele ja väljalogimisele.
+      // TOKEN_REFRESHED, USER_UPDATED ja INITIAL_SESSION ei vaja Piibel API ümberlaadimist
+      // (vastasel juhul jookseme rate-limit'i sisse).
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        void loadSession();
+      }
     });
 
     void refreshAuth();
