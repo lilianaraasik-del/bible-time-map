@@ -185,10 +185,10 @@ export default function Raamatud() {
           </div>
           <div className="flex-1 overflow-auto h-full">
             {openBook && openBook.book.format === "epub" && (
-              <EpubReader url={openBook.url} onClose={() => setOpenBook(null)} />
+              <EpubReader url={openBook.url} title={openBook.book.title} onClose={() => setOpenBook(null)} />
             )}
             {openBook && openBook.book.format === "pdf" && (
-              <PdfReader url={openBook.url} onClose={() => setOpenBook(null)} />
+              <PdfReader url={openBook.url} title={openBook.book.title} onClose={() => setOpenBook(null)} />
             )}
           </div>
         </DialogContent>
