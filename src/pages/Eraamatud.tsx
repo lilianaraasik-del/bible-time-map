@@ -61,7 +61,8 @@ async function detectRemoteBookFormat(url: string, fallback: BookFormat = "epub"
   if (inferredFromUrl) return inferredFromUrl;
 
   try {
-    const res = await fetch(url, { method: "HEAD" });
+    const { proxiedFetch } = await import("@/lib/proxiedFetch");
+    const res = await proxiedFetch(url, { method: "HEAD" });
     if (!res.ok) return fallback;
 
     const contentType = (res.headers.get("content-type") || "").toLowerCase();
