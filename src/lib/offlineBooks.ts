@@ -117,7 +117,8 @@ export async function fetchAsBlob(
   url: string,
   onProgress?: (loaded: number, total: number | null) => void
 ): Promise<Blob> {
-  const res = await fetch(url);
+  const { proxiedFetch } = await import("./proxiedFetch");
+  const res = await proxiedFetch(url);
   if (!res.ok) throw new Error(`Allalaadimine ebaõnnestus: HTTP ${res.status}`);
   const totalHeader = res.headers.get("content-length");
   const total = totalHeader ? Number(totalHeader) : null;
