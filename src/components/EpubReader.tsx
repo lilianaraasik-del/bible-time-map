@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { extractEpubAsHtml } from "@/lib/epubFallback";
+import { proxiedFetch } from "@/lib/proxiedFetch";
 
 interface EpubReaderProps {
   url: string;
