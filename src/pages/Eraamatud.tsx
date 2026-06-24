@@ -630,7 +630,7 @@ export default function Eraamatud() {
                   </p>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                    {grouped[key].map((book) => {
+                    {sortList(grouped[key]).map((book) => {
                       const cover = imageUrl(book.portrait_img);
                       const paid = isPaid(book);
                       const hasMedia =
