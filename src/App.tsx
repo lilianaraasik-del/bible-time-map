@@ -15,6 +15,9 @@ import Login from "./pages/Login.tsx";
 import Profiil from "./pages/Profiil.tsx";
 import Paketid from "./pages/Paketid.tsx";
 import Eraamatud from "./pages/Eraamatud.tsx";
+import Raamatud from "./pages/Raamatud.tsx";
+import Tellimus from "./pages/Tellimus.tsx";
+import AdminEraamatud from "./pages/AdminEraamatud.tsx";
 import Tabernacle from "./pages/Tabernacle.tsx";
 import JeesuseSugupuu from "./pages/JeesuseSugupuu.tsx";
 import Sonaraamat from "./pages/Sonaraamat.tsx";
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/profiil" element={<Profiil />} />
             <Route path="/paketid" element={<Paketid />} />
             <Route path="/eraamatud" element={<Eraamatud />} />
+            <Route path="/raamatud" element={<Raamatud />} />
+            <Route path="/tellimus" element={<Tellimus />} />
+            <Route path="/admin/eraamatud" element={<AdminEraamatud />} />
             <Route path="/kaardid/tabernaakel" element={<Tabernacle />} />
             <Route path="/jeesuse-sugupuu" element={<JeesuseSugupuu />} />
             <Route path="/sonaraamat" element={<Sonaraamat />} />
