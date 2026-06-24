@@ -115,12 +115,21 @@ export default function Profiil() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              to="/raamatud"
+              to="/eraamatud"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition"
             >
               <BookOpen className="h-4 w-4" />
               E-raamatud
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin/eraamatud"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-600 text-sm font-semibold hover:bg-amber-500/20 transition"
+              >
+                <Settings className="h-4 w-4" />
+                Halda raamatuid
+              </Link>
+            )}
             <Link
               to="/paketid"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition"
