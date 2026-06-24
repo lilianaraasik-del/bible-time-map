@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { piibelLogin, piibelGoogleLogin, piibelGetProfile, type PiibelUser } from "@/lib/piibelApi";
+import { piibelLogin, piibelGoogleLogin, piibelGetProfile, piibelInvalidateCache, type PiibelUser } from "@/lib/piibelApi";
 
 interface PiibelSession {
   piibelUserId: string;
@@ -131,6 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let walletCoin = 0;
     try {
+      piibelInvalidateCache("get_profile");
       const profile = await piibelGetProfile(data.piibel_user_id, data.piibel_unique_token);
       if (profile.status === 200 && profile.result) {
         walletCoin = Number(profile.result.wallet_coin || 0);
@@ -278,6 +279,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [syncPiibelSession]);
 
   const logout = useCallback(async () => {
+    piibelInvalidateCache();
     await supabase.auth.signOut();
     setSession(null);
   }, []);

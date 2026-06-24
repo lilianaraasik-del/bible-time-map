@@ -127,6 +127,59 @@ async function piibelPost<T = unknown>(
   return json as PiibelApiResponse<T>;
 }
 
+/**
+ * Mälucache + päringu deduping, et vältida rate-limit'i 429 vigu kui
+ * sama lehte renderdatakse mitu korda (StrictMode, auth state muudatused jne).
+ */
+type CacheEntry = { expiresAt: number; value: unknown };
+const responseCache = new Map<string, CacheEntry>();
+const inflight = new Map<string, Promise<unknown>>();
+
+async function piibelPostCached<T = unknown>(
+  endpoint: string,
+  body: Record<string, string | number | undefined>,
+  ttlMs: number
+): Promise<PiibelApiResponse<T>> {
+  const key = `${endpoint}|${JSON.stringify(body)}`;
+  const now = Date.now();
+
+  const cached = responseCache.get(key);
+  if (cached && cached.expiresAt > now) {
+    return cached.value as PiibelApiResponse<T>;
+  }
+
+  const existing = inflight.get(key);
+  if (existing) {
+    return existing as Promise<PiibelApiResponse<T>>;
+  }
+
+  const promise = piibelPost<T>(endpoint, body)
+    .then((res) => {
+      // Ainult edukad vastused panen cache'i — 429 ja vead lasen uuesti proovida
+      if (res.status === 200) {
+        responseCache.set(key, { expiresAt: Date.now() + ttlMs, value: res });
+      }
+      return res;
+    })
+    .finally(() => {
+      inflight.delete(key);
+    });
+
+  inflight.set(key, promise);
+  return promise;
+}
+
+/** Tühista cache (nt peale ostmist või väljalogimist). */
+export function piibelInvalidateCache(endpoint?: string) {
+  if (!endpoint) {
+    responseCache.clear();
+    return;
+  }
+  for (const key of responseCache.keys()) {
+    if (key.startsWith(`${endpoint}|`)) responseCache.delete(key);
+  }
+}
+
 /** Login mobiili kontoga (email + parool, type=4 = Normal). */
 export async function piibelLogin(email: string, password: string) {
   const res = await piibelPost<PiibelUser | PiibelUser[]>("login", {
@@ -159,9 +212,13 @@ export async function piibelGoogleLogin(email: string, full_name: string) {
   } as PiibelApiResponse<PiibelUser>;
 }
 
-/** Kasutaja profiil (sh wallet_coin). */
+/** Kasutaja profiil (sh wallet_coin). Cache 15 s. */
 export async function piibelGetProfile(user_id: string | number, unique_token: string) {
-  const res = await piibelPost<PiibelUser | PiibelUser[]>("get_profile", { user_id, unique_token });
+  const res = await piibelPostCached<PiibelUser | PiibelUser[]>(
+    "get_profile",
+    { user_id, unique_token },
+    15_000
+  );
 
   return {
     ...res,
@@ -169,28 +226,30 @@ export async function piibelGetProfile(user_id: string | number, unique_token: s
   } as PiibelApiResponse<PiibelUser>;
 }
 
-/** Pakettide nimekiri. */
+/** Pakettide nimekiri. Cache 5 min. */
 export async function piibelGetPackages(language_id: string | number = 1) {
-  return piibelPost<PiibelPackage[]>("get_package", { language_id });
+  return piibelPostCached<PiibelPackage[]>("get_package", { language_id }, 5 * 60_000);
 }
 
-/** Müntide ostuajalugu (ostetud paketid). */
+/** Müntide ostuajalugu (ostetud paketid). Cache 30 s. */
 export async function piibelGetTransactions(user_id: string | number, unique_token: string) {
-  return piibelPost<PiibelTransaction[]>("get_transaction_list", {
-    user_id,
-    unique_token,
-  });
+  return piibelPostCached<PiibelTransaction[]>(
+    "get_transaction_list",
+    { user_id, unique_token },
+    30_000
+  );
 }
 
-/** Müntidega avatud raamatute / peatükkide ajalugu. */
+/** Müntidega avatud raamatute / peatükkide ajalugu. Cache 30 s. */
 export async function piibelGetWalletTransactions(
   user_id: string | number,
   unique_token: string
 ) {
-  return piibelPost<PiibelWalletTransaction[]>("get_wallet_transaction_list", {
-    user_id,
-    unique_token,
-  });
+  return piibelPostCached<PiibelWalletTransaction[]>(
+    "get_wallet_transaction_list",
+    { user_id, unique_token },
+    30_000
+  );
 }
 
 /** Lisa ostutehing (= lisab mündid kasutaja rahakotti). */
@@ -203,6 +262,9 @@ export async function piibelAddTransaction(opts: {
   payment_type: string; // "stripe"
   transaction_id: string; // Stripe session id
 }) {
+  piibelInvalidateCache("get_profile");
+  piibelInvalidateCache("get_transaction_list");
+  piibelInvalidateCache("get_wallet_transaction_list");
   return piibelPost("add_transaction", opts);
 }
 
@@ -219,6 +281,8 @@ export async function piibelBuyContentEpisode(opts: {
   content_type?: number; // vaikimisi 1 (book)
   audiobook_type?: number; // vaikimisi 1 (book)
 }) {
+  piibelInvalidateCache("get_profile");
+  piibelInvalidateCache("get_wallet_transaction_list");
   return piibelPost("buy_content_episode", {
     user_id: opts.user_id,
     unique_token: opts.unique_token,
