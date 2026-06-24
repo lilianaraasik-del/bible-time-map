@@ -884,3 +884,26 @@ function MediaModal({
     </Dialog>
   );
 }
+
+type SortKey = "default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type";
+
+function SortSelect({ value, onChange }: { value: SortKey; onChange: (v: SortKey) => void }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+      <Select value={value} onValueChange={(v) => onChange(v as SortKey)}>
+        <SelectTrigger className="h-9 w-[180px] text-sm">
+          <SelectValue placeholder="Järjesta" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="default">Vaikimisi</SelectItem>
+          <SelectItem value="title-asc">Pealkiri (A–Ü)</SelectItem>
+          <SelectItem value="title-desc">Pealkiri (Ü–A)</SelectItem>
+          <SelectItem value="price-asc">Hind (odavam enne)</SelectItem>
+          <SelectItem value="price-desc">Hind (kallim enne)</SelectItem>
+          <SelectItem value="type">Tüüp</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
