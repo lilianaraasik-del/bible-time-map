@@ -49,7 +49,9 @@ export function epubUrl(book: EraamatApi): string | null {
 
 /** Tagastab raamatu faili URL-i (epub või pdf).
  * Kasutab serveri epub.php proxy't, et CORS ja autentimine töötaks.
- * Kui raamat on tasuline, lisab user_id + unique_token URL-ile.
+ * Tasulise raamatu puhul EI lisa enam user_id/unique_token URL-i —
+ * see lisatakse serveripoolselt book-proxy edge function'is, kui
+ * `proxyUrl(..., { paid: true })` lisab `auth=1` flag'i.
  */
 export function bookFileUrl(
   book: EraamatApi,
@@ -57,10 +59,8 @@ export function bookFileUrl(
 ): string | null {
   const base = book.file_url;
   if (!base) return null;
-  if (book.is_paid_novel === "1" && auth) {
-    const sep = base.includes("?") ? "&" : "?";
-    return `${base}${sep}user_id=${encodeURIComponent(auth.userId)}&unique_token=${encodeURIComponent(auth.uniqueToken)}`;
-  }
+  // Tasulisele raamatule on vaja sisselogimist; ilma auth'ita ei tohi proovida.
+  if (book.is_paid_novel === "1" && !auth) return null;
   return base;
 }
 
