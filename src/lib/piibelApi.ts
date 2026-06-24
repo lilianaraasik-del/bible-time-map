@@ -212,9 +212,13 @@ export async function piibelGoogleLogin(email: string, full_name: string) {
   } as PiibelApiResponse<PiibelUser>;
 }
 
-/** Kasutaja profiil (sh wallet_coin). */
+/** Kasutaja profiil (sh wallet_coin). Cache 15 s. */
 export async function piibelGetProfile(user_id: string | number, unique_token: string) {
-  const res = await piibelPost<PiibelUser | PiibelUser[]>("get_profile", { user_id, unique_token });
+  const res = await piibelPostCached<PiibelUser | PiibelUser[]>(
+    "get_profile",
+    { user_id, unique_token },
+    15_000
+  );
 
   return {
     ...res,
@@ -222,28 +226,30 @@ export async function piibelGetProfile(user_id: string | number, unique_token: s
   } as PiibelApiResponse<PiibelUser>;
 }
 
-/** Pakettide nimekiri. */
+/** Pakettide nimekiri. Cache 5 min. */
 export async function piibelGetPackages(language_id: string | number = 1) {
-  return piibelPost<PiibelPackage[]>("get_package", { language_id });
+  return piibelPostCached<PiibelPackage[]>("get_package", { language_id }, 5 * 60_000);
 }
 
-/** Müntide ostuajalugu (ostetud paketid). */
+/** Müntide ostuajalugu (ostetud paketid). Cache 30 s. */
 export async function piibelGetTransactions(user_id: string | number, unique_token: string) {
-  return piibelPost<PiibelTransaction[]>("get_transaction_list", {
-    user_id,
-    unique_token,
-  });
+  return piibelPostCached<PiibelTransaction[]>(
+    "get_transaction_list",
+    { user_id, unique_token },
+    30_000
+  );
 }
 
-/** Müntidega avatud raamatute / peatükkide ajalugu. */
+/** Müntidega avatud raamatute / peatükkide ajalugu. Cache 30 s. */
 export async function piibelGetWalletTransactions(
   user_id: string | number,
   unique_token: string
 ) {
-  return piibelPost<PiibelWalletTransaction[]>("get_wallet_transaction_list", {
-    user_id,
-    unique_token,
-  });
+  return piibelPostCached<PiibelWalletTransaction[]>(
+    "get_wallet_transaction_list",
+    { user_id, unique_token },
+    30_000
+  );
 }
 
 /** Lisa ostutehing (= lisab mündid kasutaja rahakotti). */
