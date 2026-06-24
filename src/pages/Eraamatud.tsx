@@ -449,10 +449,22 @@ export default function Eraamatud() {
           if (myBooks.length === 0) return null;
           return (
             <section className="mb-10">
-              <h2 className="font-serif text-2xl font-semibold mb-4 flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-primary" />
-                Sinu raamatud ({myBooks.length})
-              </h2>
+              <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+                <h2 className="font-serif text-2xl font-semibold flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  Sinu raamatud ({myBooks.length})
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    document.getElementById("koik-raamatud")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                >
+                  Vaata kõiki raamatuid
+                </Button>
+              </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {myBooks.map((book) => {
                   const cover = imageUrl(book.portrait_img);
@@ -502,7 +514,7 @@ export default function Eraamatud() {
         })()}
 
 
-        <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)}>
+        <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)} id="koik-raamatud" className="scroll-mt-20">
           <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-8">
             {tabConfig.map(({ key, label, icon: Icon }) => (
               <TabsTrigger key={key} value={key} className="flex items-center gap-2">
