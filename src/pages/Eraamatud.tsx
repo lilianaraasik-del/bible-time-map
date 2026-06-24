@@ -1072,7 +1072,57 @@ export default function Eraamatud() {
           </div>
         </MediaModal>
       )}
+
+      {/* Offline-raamatute haldus */}
+      {manageOpen && (
+        <Dialog open onOpenChange={(o) => !o && setManageOpen(false)}>
+          <DialogContent className="max-w-xl max-h-[85vh] overflow-hidden flex flex-col p-0 gap-0">
+            <header className="flex items-center justify-between px-5 py-4 border-b border-border bg-card shrink-0">
+              <div className="min-w-0">
+                <h2 className="font-serif text-lg font-semibold truncate">Offline-raamatud</h2>
+                <p className="text-xs text-muted-foreground">
+                  {offline.items.length} faili · {formatBytes(offline.totalSize)}
+                </p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setManageOpen(false)} aria-label="Sulge">
+                <X className="h-5 w-5" />
+              </Button>
+            </header>
+            <div className="overflow-auto p-2">
+              {offline.items.length === 0 ? (
+                <p className="text-center text-sm text-muted-foreground py-8">Pole midagi salvestatud.</p>
+              ) : (
+                <ul className="divide-y divide-border">
+                  {offline.items.map((m) => (
+                    <li key={m.key} className="flex items-center gap-3 px-3 py-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{m.title}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {m.episodeName ? `${m.episodeName} · ` : ""}
+                          {m.format.toUpperCase()} · {formatBytes(m.size)}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-destructive hover:text-destructive"
+                        onClick={async () => {
+                          await deleteOfflineBook(m.key);
+                          await offline.refresh();
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
+
   );
 }
 
