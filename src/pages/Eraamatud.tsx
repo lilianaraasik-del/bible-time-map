@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -97,6 +98,7 @@ export default function Eraamatud() {
   const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
   const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
+  const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type">("default");
 
   useEffect(() => {
     document.title = "E-raamatud | Piibel.ee";
@@ -228,6 +230,44 @@ export default function Eraamatud() {
     items.forEach((b) => g[getMediaKind(b)].push(b));
     return g;
   }, [items]);
+
+  const priceOf = (b: EraamatApi): number => {
+    if (!isPaid(b)) return 0;
+    const direct = Number(b.novel_coin || 0);
+    if (direct > 0) return direct;
+    const s = episodeSummary[String(b.id)];
+    return s?.minCoin || 0;
+  };
+
+  const typeRank = (b: EraamatApi): number => {
+    const k = getMediaKind(b);
+    return k === "book" ? 0 : k === "audio" ? 1 : 2;
+  };
+
+  const sortList = (list: EraamatApi[]): EraamatApi[] => {
+    if (sortKey === "default") return list;
+    const arr = [...list];
+    const collator = new Intl.Collator("et", { sensitivity: "base" });
+    switch (sortKey) {
+      case "title-asc":
+        arr.sort((a, b) => collator.compare(a.title || "", b.title || ""));
+        break;
+      case "title-desc":
+        arr.sort((a, b) => collator.compare(b.title || "", a.title || ""));
+        break;
+      case "price-asc":
+        arr.sort((a, b) => priceOf(a) - priceOf(b));
+        break;
+      case "price-desc":
+        arr.sort((a, b) => priceOf(b) - priceOf(a));
+        break;
+      case "type":
+        arr.sort((a, b) => typeRank(a) - typeRank(b) || collator.compare(a.title || "", b.title || ""));
+        break;
+    }
+    return arr;
+  };
+
 
   const auth = session
     ? { userId: session.piibelUserId, uniqueToken: session.piibelUniqueToken }
@@ -481,7 +521,7 @@ export default function Eraamatud() {
         )}
 
         {session && (purchasedBookIds.size > 0 || purchasedEpisodeIds.size > 0) && (() => {
-          const myBooks = items.filter((b) => purchasedBookIds.has(String(b.id)));
+          const myBooks = sortList(items.filter((b) => purchasedBookIds.has(String(b.id))));
           if (myBooks.length === 0) return null;
           return (
             <section className="mb-10">
@@ -490,15 +530,18 @@ export default function Eraamatud() {
                   <BookOpen className="h-5 w-5 text-primary" />
                   Sinu raamatud ({myBooks.length})
                 </h2>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    document.getElementById("koik-raamatud")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                >
-                  Vaata kõiki raamatuid
-                </Button>
+                <div className="flex items-center gap-2">
+                  <SortSelect value={sortKey} onChange={setSortKey} />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      document.getElementById("koik-raamatud")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                  >
+                    Vaata kõiki raamatuid
+                  </Button>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -551,17 +594,20 @@ export default function Eraamatud() {
 
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as MediaKind)} id="koik-raamatud" className="scroll-mt-20">
-          <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-8">
-            {tabConfig.map(({ key, label, icon: Icon }) => (
-              <TabsTrigger key={key} value={key} className="flex items-center gap-2">
-                <Icon className="h-4 w-4" />
-                <span>{label}</span>
-                <span className="text-xs text-muted-foreground ml-1">
-                  ({grouped[key].length})
-                </span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="flex items-center justify-between gap-3 mb-8 flex-wrap">
+            <TabsList className="grid grid-cols-3 max-w-md flex-1">
+              {tabConfig.map(({ key, label, icon: Icon }) => (
+                <TabsTrigger key={key} value={key} className="flex items-center gap-2">
+                  <Icon className="h-4 w-4" />
+                  <span>{label}</span>
+                  <span className="text-xs text-muted-foreground ml-1">
+                    ({grouped[key].length})
+                  </span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <SortSelect value={sortKey} onChange={setSortKey} />
+          </div>
 
           {loading && (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -590,7 +636,7 @@ export default function Eraamatud() {
                   </p>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                    {grouped[key].map((book) => {
+                    {sortList(grouped[key]).map((book) => {
                       const cover = imageUrl(book.portrait_img);
                       const paid = isPaid(book);
                       const hasMedia =
@@ -836,5 +882,28 @@ function MediaModal({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+type SortKey = "default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type";
+
+function SortSelect({ value, onChange }: { value: SortKey; onChange: (v: SortKey) => void }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+      <Select value={value} onValueChange={(v) => onChange(v as SortKey)}>
+        <SelectTrigger className="h-9 w-[180px] text-sm">
+          <SelectValue placeholder="Järjesta" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="default">Vaikimisi</SelectItem>
+          <SelectItem value="title-asc">Pealkiri (A–Ü)</SelectItem>
+          <SelectItem value="title-desc">Pealkiri (Ü–A)</SelectItem>
+          <SelectItem value="price-asc">Hind (odavam enne)</SelectItem>
+          <SelectItem value="price-desc">Hind (kallim enne)</SelectItem>
+          <SelectItem value="type">Tüüp</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
