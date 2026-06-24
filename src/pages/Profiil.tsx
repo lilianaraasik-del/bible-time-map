@@ -22,6 +22,7 @@ export default function Profiil() {
   const [transactions, setTransactions] = useState<PiibelTransaction[]>([]);
   const [walletTx, setWalletTx] = useState<PiibelWalletTransaction[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [historyError, setHistoryError] = useState<string | null>(null);
 
   // Stripe checkout success
   useEffect(() => {
