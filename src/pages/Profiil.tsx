@@ -19,6 +19,7 @@ export default function Profiil() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { session, loading, logout, refreshProfile } = useAuth();
+  const { isAdmin } = useIsAdmin();
 
   const [transactions, setTransactions] = useState<PiibelTransaction[]>([]);
   const [walletTx, setWalletTx] = useState<PiibelWalletTransaction[]>([]);
