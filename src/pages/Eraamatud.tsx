@@ -438,6 +438,26 @@ export default function Eraamatud() {
       }
     }
 
+    // Eelista offline-koopiat, kui see on olemas
+    const cacheKey = offlineKey(book.id, episode.id);
+    const cached = await getOfflineBook(cacheKey);
+    if (cached) {
+      const blobUrl = URL.createObjectURL(cached.blob);
+      setPlayerBlobUrl(blobUrl);
+      setEpisodeList(null);
+      setPlayer({ kind: "book", book, url: blobUrl, format: cached.format });
+      return;
+    }
+
+    if (!isOnline) {
+      toast({
+        title: "Pole offline saadaval",
+        description: "See raamat pole sellesse seadmesse alla laetud. Ühenda internetiga või lae raamat enne alla.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!episode.book) {
       const fallbackUrl = bookFileUrl(book, auth);
       if (!fallbackUrl) {
@@ -464,6 +484,91 @@ export default function Eraamatud() {
     );
     setEpisodeList(null);
     setPlayer({ kind: "book", book, url: proxiedUrl, format });
+  }
+
+  /** Laeb raamatu (kõik ostetud peatükid) offline'ks. */
+  async function downloadBookOffline(book: EraamatApi) {
+    if (!session) {
+      toast({ title: "Sisselogimine vajalik", variant: "destructive" });
+      return;
+    }
+    try {
+      setDownloadingBookId(book.id);
+      setDownloadProgress(0);
+
+      const ep = await piibelGetEpisodeBookByContent({
+        user_id: session.piibelUserId,
+        unique_token: session.piibelUniqueToken,
+        content_id: book.id,
+      });
+      const episodes = (ep.result || []).filter((e) => {
+        if (!e.book) return false;
+        if (!isPaid(book)) return true;
+        return (
+          Number(e.is_buy || 0) === 1 ||
+          purchasedEpisodeIds.has(String(e.id)) ||
+          purchasedBookIds.has(String(book.id))
+        );
+      });
+
+      if (episodes.length === 0) {
+        // Proovi fallback URL-i (mõnel raamatul pole episoode, vaid otsene file_url)
+        const fallbackUrl = bookFileUrl(book, auth);
+        if (!fallbackUrl) {
+          toast({ title: "Pole midagi alla laadida", variant: "destructive" });
+          return;
+        }
+        const proxied = proxyUrl(fallbackUrl);
+        const fmt = await detectRemoteBookFormat(proxied, bookFormat(book));
+        const blob = await fetchAsBlob(proxied, (loaded, total) => {
+          if (total) setDownloadProgress(loaded / total);
+        });
+        await saveOfflineBook({
+          key: offlineKey(book.id, null),
+          bookId: String(book.id),
+          episodeId: "_main",
+          title: book.title,
+          format: fmt,
+          blob,
+        });
+      } else {
+        let i = 0;
+        for (const episode of episodes) {
+          const rawUrl = normalizeEpisodeBookUrl(episode.book!);
+          const proxied = proxyUrl(rawUrl);
+          const fmt = await detectRemoteBookFormat(
+            proxied,
+            rawUrl.toLowerCase().includes(".pdf") ? "pdf" : "epub"
+          );
+          const blob = await fetchAsBlob(proxied, (loaded, total) => {
+            const epPart = total ? loaded / total : 0;
+            setDownloadProgress((i + epPart) / episodes.length);
+          });
+          await saveOfflineBook({
+            key: offlineKey(book.id, episode.id),
+            bookId: String(book.id),
+            episodeId: String(episode.id),
+            title: book.title,
+            episodeName: episode.name,
+            format: fmt,
+            blob,
+          });
+          i++;
+        }
+      }
+
+      await offline.refresh();
+      toast({ title: "Salvestatud offline'ks", description: book.title });
+    } catch (e) {
+      toast({
+        title: "Allalaadimine ebaõnnestus",
+        description: e instanceof Error ? e.message : "Tundmatu viga",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingBookId(null);
+      setDownloadProgress(0);
+    }
   }
 
   async function handleOpenEpisode(book: EraamatApi, episode: PiibelEpisode) {
