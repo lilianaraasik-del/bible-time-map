@@ -692,10 +692,37 @@ export default function Eraamatud() {
                 </div>
               </div>
 
+              {/* Offline-staatuse riba */}
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-border/40 bg-muted/30 px-3 py-2 text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <HardDrive className="h-4 w-4" />
+                  {offline.items.length > 0 ? (
+                    <span>
+                      {offline.bookIds.size} raamat{offline.bookIds.size === 1 ? "" : "ut"} salvestatud offline · {formatBytes(offline.totalSize)}
+                    </span>
+                  ) : (
+                    <span>Ühtegi raamatut pole veel offline'i salvestatud</span>
+                  )}
+                  {!isOnline && (
+                    <span className="ml-2 inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                      <WifiOff className="h-3.5 w-3.5" /> Offline
+                    </span>
+                  )}
+                </div>
+                {offline.items.length > 0 && (
+                  <Button variant="ghost" size="sm" onClick={() => setManageOpen(true)}>
+                    Halda offline-raamatuid
+                  </Button>
+                )}
+              </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {myBooks.map((book) => {
                   const cover = imageUrl(book.portrait_img);
                   const isOpening = openingId === book.id;
+                  const isBookFormat = getMediaKind(book) === "book";
+                  const isSaved = offline.bookIds.has(String(book.id));
+                  const isDownloading = downloadingBookId === book.id;
                   return (
                     <Card
                       key={`mine-${book.id}`}
@@ -728,14 +755,59 @@ export default function Eraamatud() {
                             <Loader2 className="h-6 w-6 animate-spin text-primary" />
                           </div>
                         )}
+                        {isSaved && (
+                          <div className="absolute top-1.5 right-1.5 bg-emerald-500/95 text-white rounded-full p-1 shadow-md" title="Saadaval offline">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                          </div>
+                        )}
                       </div>
-                      <CardContent className="p-2">
+                      <CardContent className="p-2 space-y-1.5">
                         <p className="text-xs font-medium truncate" title={book.title}>{book.title}</p>
+                        {isBookFormat && (
+                          isSaved ? (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="w-full h-7 text-[11px] text-muted-foreground hover:text-destructive"
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await deleteOfflineBookAll(String(book.id));
+                                await offline.refresh();
+                                toast({ title: "Offline koopia kustutatud" });
+                              }}
+                            >
+                              <Trash2 className="h-3 w-3 mr-1" /> Eemalda offline
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full h-7 text-[11px]"
+                              disabled={isDownloading || !isOnline}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                downloadBookOffline(book);
+                              }}
+                            >
+                              {isDownloading ? (
+                                <>
+                                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                  {Math.round(downloadProgress * 100)}%
+                                </>
+                              ) : (
+                                <>
+                                  <Download className="h-3 w-3 mr-1" /> Lae offline
+                                </>
+                              )}
+                            </Button>
+                          )
+                        )}
                       </CardContent>
                     </Card>
                   );
                 })}
               </div>
+
             </section>
           );
         })()}
