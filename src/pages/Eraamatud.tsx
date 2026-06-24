@@ -977,7 +977,7 @@ export default function Eraamatud() {
         <EpubReader
           url={player.url}
           title={player.book.title}
-          onClose={() => setPlayer(null)}
+          onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
 
@@ -1047,7 +1047,7 @@ export default function Eraamatud() {
         <PdfReader
           url={player.url}
           title={player.book.title}
-          onClose={() => setPlayer(null)}
+          onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
 
