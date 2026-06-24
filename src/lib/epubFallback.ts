@@ -198,6 +198,29 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
 
     chapterDoc.querySelectorAll('link[rel="stylesheet"]').forEach((node) => node.remove());
     chapterDoc.querySelectorAll("script").forEach((node) => node.remove());
+    chapterDoc.querySelectorAll("iframe, object, embed, meta").forEach((node) => node.remove());
+
+    // Eemalda kõik inline event handler atribuudid (onerror, onload, onclick jms)
+    // ning javascript:/data: URL-id href/src väljadelt, et vältida XSS-i,
+    // kui EPUB sisaldab pahatahtlikku HTML-i.
+    chapterDoc.querySelectorAll("*").forEach((el) => {
+      Array.from(el.attributes).forEach((attr) => {
+        const name = attr.name;
+        const value = attr.value || "";
+        if (/^on/i.test(name)) {
+          el.removeAttribute(name);
+          return;
+        }
+        if (
+          (name === "href" || name === "src" || name === "xlink:href" || name === "formaction" || name === "action") &&
+          /^\s*(javascript|vbscript|data):/i.test(value) &&
+          // luba data:-URL-id ainult piltidel, mille me ise oleme resourceMap'ist sisestanud
+          !(name === "src" && /^data:image\//i.test(value))
+        ) {
+          el.removeAttribute(name);
+        }
+      });
+    });
 
     const bodyHtml = chapterDoc.body?.innerHTML || chapterDoc.documentElement?.innerHTML || cleanedChapterText;
 
