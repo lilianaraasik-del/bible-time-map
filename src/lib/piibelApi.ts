@@ -262,6 +262,9 @@ export async function piibelAddTransaction(opts: {
   payment_type: string; // "stripe"
   transaction_id: string; // Stripe session id
 }) {
+  piibelInvalidateCache("get_profile");
+  piibelInvalidateCache("get_transaction_list");
+  piibelInvalidateCache("get_wallet_transaction_list");
   return piibelPost("add_transaction", opts);
 }
 
