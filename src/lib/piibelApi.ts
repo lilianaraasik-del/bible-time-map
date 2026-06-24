@@ -127,6 +127,59 @@ async function piibelPost<T = unknown>(
   return json as PiibelApiResponse<T>;
 }
 
+/**
+ * Mälucache + päringu deduping, et vältida rate-limit'i 429 vigu kui
+ * sama lehte renderdatakse mitu korda (StrictMode, auth state muudatused jne).
+ */
+type CacheEntry = { expiresAt: number; value: unknown };
+const responseCache = new Map<string, CacheEntry>();
+const inflight = new Map<string, Promise<unknown>>();
+
+async function piibelPostCached<T = unknown>(
+  endpoint: string,
+  body: Record<string, string | number | undefined>,
+  ttlMs: number
+): Promise<PiibelApiResponse<T>> {
+  const key = `${endpoint}|${JSON.stringify(body)}`;
+  const now = Date.now();
+
+  const cached = responseCache.get(key);
+  if (cached && cached.expiresAt > now) {
+    return cached.value as PiibelApiResponse<T>;
+  }
+
+  const existing = inflight.get(key);
+  if (existing) {
+    return existing as Promise<PiibelApiResponse<T>>;
+  }
+
+  const promise = piibelPost<T>(endpoint, body)
+    .then((res) => {
+      // Ainult edukad vastused panen cache'i — 429 ja vead lasen uuesti proovida
+      if (res.status === 200) {
+        responseCache.set(key, { expiresAt: Date.now() + ttlMs, value: res });
+      }
+      return res;
+    })
+    .finally(() => {
+      inflight.delete(key);
+    });
+
+  inflight.set(key, promise);
+  return promise;
+}
+
+/** Tühista cache (nt peale ostmist või väljalogimist). */
+export function piibelInvalidateCache(endpoint?: string) {
+  if (!endpoint) {
+    responseCache.clear();
+    return;
+  }
+  for (const key of responseCache.keys()) {
+    if (key.startsWith(`${endpoint}|`)) responseCache.delete(key);
+  }
+}
+
 /** Login mobiili kontoga (email + parool, type=4 = Normal). */
 export async function piibelLogin(email: string, password: string) {
   const res = await piibelPost<PiibelUser | PiibelUser[]>("login", {
