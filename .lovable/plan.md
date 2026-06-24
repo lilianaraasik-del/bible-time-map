@@ -1,73 +1,101 @@
-# Offline-raamatud (ainult ostetud PDF/EPUB)
+## Eesmärk
 
-Eesmärk: kasutaja saab ostetud e-raamatu telefoni/arvutisse alla laadida ja hiljem ilma internetita avada. Heli ja video offline-toetust **ei lisa** (kasutaja valik).
+Kolida e-raamatud (EPUB/PDF) `api.piibel.ee`-st Lovable Cloud privaatsesse storage bucketisse, lisada veebipõhine kuu/aasta tellimuse plaan, ja jätta piibel.ee API alles autentimiseks ning ülejäänud sisule (kommentaarid, audio, video jne).
 
-## Kuidas see kasutaja jaoks töötab
+## 1) Raamatute majutus — privaatne bucket
 
-Igal ostetud raamatul "Sinu raamatud" sektsioonis ilmub uus nupp **"Lae alla offline"** (allanool ikooniga). Kui kasutaja vajutab:
+- Loon privaatse bucketi `eraamatud` (Storage tools).
+- Loon `public.books` tabeli raamatute metaandmetega (asendab `api.piibel.ee/routes/books.php` _ainult raamatute osas_):
+  - `id`, `slug`, `title`, `description`, `author`, `language`, `cover_path` (storage path), `file_path` (storage path), `format` (`epub`|`pdf`), `is_free` (bool), `sort_order`, `published_at`, `created_at`.
+  - RLS: `SELECT` lubatud kõigile (`anon`+`authenticated`) — nimekiri on avalik; failid eraldi gateitud.
+  - GRANT + RLS + service_role haldus.
+- Loon admin-vaate `/admin/eraamatud` (ainult `admin` rolliga kasutajatele — eraldi `user_roles` tabel `app_role` enum'iga `admin`/`user`):
+  - Upload form: pealkiri, kirjeldus, kaas (pilt), fail (epub/pdf), tasuta/tasuline lipp.
+  - Failid laaditakse `eraamatud` bucketisse läbi `supabase.storage.from('eraamatud').upload(...)`.
+- Migreerimine: laadid esialgsed raamatud üles admin UI kaudu (ma ei tõmba neid automaatselt vanast API-st, sest see eeldaks admin tokenit).
 
-1. Raamatu fail (PDF või EPUB) tõmmatakse alla ja salvestatakse brauseri lokaalsesse andmebaasi (IndexedDB).
-2. Nupp muutub roheliseks linnukeseks ("Saadaval offline") + väike "X" eemaldamiseks.
-3. Kui kasutaja avab raamatu järgmine kord — internetiga või ilma — laetakse see kohe IndexedDB-st, mitte serverist.
+## 2) Raamatufaili allalaadimine — uus edge function
 
-Kui kasutaja on offline ja raamat pole alla laetud, näeb ta selget teadet "Raamat pole offline saadaval — ühenda internetti või lae raamat enne alla."
+`book-proxy` asendub `book-download` edge functioniga:
+- Sisendid: `bookId`.
+- Verifitseerib JWT → leiab `auth_user_id`.
+- Kontrollib `public.books.is_free` — kui ei ole tasuta, kontrollib aktiivset tellimust (`public.subscriptions` rida `status in ('active','trialing')` ja `current_period_end > now()`).
+- Genereerib `supabase.storage.from('eraamatud').createSignedUrl(file_path, 300)` ja tagastab `{ url }`.
+- Klient (`EpubReader`, `offlineBooks`, `Eraamatud`) kasutab seda URL-i otse — `proxiedFetch`-i enam vaja ei ole raamatute jaoks.
 
-Sektsiooni "Sinu raamatud" päisesse tuleb väike olekuriba ("3 raamatut salvestatud offline · 24 MB") + nupp "Halda offline-raamatuid", mis avab dialoogi kõigi salvestatud raamatute nimekirjaga ja võimaluseks neid kustutada.
+Vana `book-proxy` edge function ja `bookFileUrl`/`proxiedFetch` raamatu-spetsiifiline loogika eemaldatakse.
 
-## Piirangud, mida kasutajale selgitada
+## 3) Tellimuse plaan (kuu + aasta)
 
-- Töötab ainult **selles brauseris ja selles seadmes**, kuhu raamat alla laeti. Teises brauseris/seadmes peab uuesti alla laadima.
-- Brauseri andmete kustutamine ("Clear site data") kustutab ka offline-raamatud.
-- Heli ja video offline’i veel ei tee — need vajavad internetti.
-- Failid jäävad krüpteerimata IndexedDB-sse — sama põhimõte nagu praegu avatud raamatuga, aga kui telefoni keegi teine kasutab, on tal samade andmetega ligipääs.
+Lovable sisseehitatud Stripe makseintegratsioon (managed payments, ~80 riigi tax handling sees).
 
-## Tehniline ülevaade
+- Tooted (`payments--create_product` + `payments--create_price`):
+  - Toode: `eraamatud_subscription` ("Materjalide tellimus")
+  - Hinnad:
+    - `eraamatud_monthly` — nt 4.99 €/kuus
+    - `eraamatud_yearly` — nt 49 €/aasta
+  - Täpsed hinnad kinnitad sa enne kui ma loon.
+- `subscriptions` tabel (vt `stripe-subscriptions` mall): `user_id`, `stripe_customer_id`, `stripe_subscription_id`, `price_id`, `status`, `current_period_end`, `cancel_at_period_end`, `environment`, `created_at`.
+- Edge functions:
+  - `create-checkout` — embed checkout `managed_payments: { enabled: true }`, JWT verifitseeritud (jätkab juba eksisteerivat fixed funktsiooni, kohandame eraamatud toote jaoks).
+  - `create-portal-session` — Stripe Billing Portal.
+  - `stripe-webhook` — sünkroniseerib `subscriptions` tabeli.
+- UI:
+  - Uus leht `/tellimus` plaani valikuga (kuu vs aasta), embedded checkout overlay.
+  - `useSubscription` hook + `<SubscribeGate>` komponent.
+  - "Halda tellimust" nupp (avab Stripe portal uues tabis).
 
-### Uus moodul `src/lib/offlineBooks.ts`
+## 4) Ligipääsu loogika `/eraamatud`
 
-IndexedDB wrapper (~150 rida, ilma uue npm-paketita — kasutame natiivset `indexedDB` API-d):
+- Tasuta raamat → kõigile (ka sisselogimata) — signed URL ilma kontrollita.
+- Tasuline raamat → vajalik:
+  1. Sisselogimine (praegune piibel.ee API auth jääb alles, sünkroniseeritakse `piibel_sessions` → `auth.users` nagu praegu).
+  2. Aktiivne `subscriptions` rida.
+- Kui kasutaja on sisse logitud aga tellimust ei ole → näita CTA "Telli alates 4.99 €/kuus" mis viib `/tellimus`-e.
 
-- `db: "piibel-offline-books"`, store `"books"` keyed by `bookId`.
-- Iga kirje: `{ bookId, title, format: "pdf"|"epub", blob: Blob, size: number, savedAt: number }`.
-- API:
-  - `saveBook(book, blob, format)`
-  - `getBook(bookId): Promise<{blob, format} | null>`
-  - `deleteBook(bookId)`
-  - `listBooks(): Promise<Array<{bookId, title, format, size, savedAt}>>`
-  - `getTotalSize()`
-  - `hasBook(bookId): Promise<boolean>`
-- React hook `useOfflineBooks()`, mis hoiab Set-i salvestatud `bookId`-dest ja kogusummat. Jagatud `Eraamatud.tsx` ja uue haldusdialoogi vahel.
+Vana piibel.ee `is_paid_novel` + `unique_token` loogika eemaldatakse raamatute teelt (jääb alles ülejäänud sisu jaoks API-s, kuid mitte raamatutes).
 
-### Muudatused `src/pages/Eraamatud.tsx`
+## 5) Mida API-st EI puudutata
 
-1. **Allalaadimisnupp "Sinu raamatud" kaartidel** (ainult kui `bookFormat(book)` on `pdf` või `epub`):
-   - Olek "ei ole salvestatud" → nupp `Download` ikooniga.
-   - Allalaadimise ajal → spinner + progress (kasutame `fetch` + `response.body` `ReadableStream`, et näidata `XX%`).
-   - Salvestatud → `CheckCircle` ikoon roheliselt + väike `X` eemaldamiseks.
-   - Allalaadimine kasutab sama URL-i loogikat mis avamine: `bookFileUrl(book, auth)` läbi `proxyUrl()` (et CORS töötaks). Toast õnnestumisel/veal.
+- Login/sessioonid (`piibel_sessions` tabel jääb).
+- Kommentaarid, audio, video, muud `books.php` mitte-raamat sisu (kui content_type=1 audio või 3 video — need jätkavad senise API kaudu, kui sa just ei taha ka neid kolida; vaikimisi EI puuduta).
+- `eraamatud` lehe audio/video tabid jätkavad senise API kaudu, eraldame ainult `content_type=2` raamatud uude allikasse.
 
-2. **Raamatu avamine — eelista offline koopiat**:
-   - Praegune `openBook` (umbes rida 400) muutub: enne `fetch`/HEAD-i kontrolli, kas `getBook(book.id)` annab Blob-i. Kui jah, loome `URL.createObjectURL(blob)` ja anname selle `EpubReader`-le või `PdfReader`-le `url` propina.
-   - Object URL-i tuleb `URL.revokeObjectURL` kutsuda kui `player` state nullib.
-   - Kui offline’s puudub ja `navigator.onLine === false`, näita toast "Raamat pole offline saadaval".
+## 6) Failide kustutamine ja puhastamine
 
-3. **Olekuriba + halduse dialoog**:
-   - "Sinu raamatud" päise alla väike rida "N raamatut · X MB salvestatud — Halda".
-   - "Halda" avab `Dialog` komponendi, kus iga rea juures pealkiri, formaat, suurus, salvestamise kp ja "Kustuta" nupp.
-   - Dialoog elab sama `Eraamatud.tsx`-i sees (väike komponent, ei tee eraldi faili).
+- Kustutada: `supabase/functions/book-proxy/`, `src/lib/proxiedFetch.ts` raamatu-spetsiifika.
+- Uuendada: `Eraamatud.tsx` — raamatute tab tõmbab `public.books` tabelist; audio/video jätkavad senise API kaudu.
 
-4. **Online/offline indikaator**: kasutame `navigator.onLine` + `window.addEventListener("online"/"offline")` ainult selle jaoks, et muuta avamisveateate sõnastust ja blokeerida ostmist offline’s (osta saab ainult online).
+## Tehniline kokkuvõte (kiirvaade)
 
-### Muutmata jäävad failid
+```text
+Privaatne bucket: eraamatud/
+  ├─ covers/<slug>.jpg
+  └─ files/<slug>.epub | .pdf
 
-- `EpubReader.tsx`, `PdfReader.tsx` — võtavad juba `url` propi, töötavad blob: URL-iga ilma muudatusteta.
-- `vite.config.ts`, `index.html` — **ei lisa service worker'it ega PWA-d** (kasutaja küsis ainult ostetud raamatuid offline'i, mitte tervet rakendust). IndexedDB üksi ei vaja SW-d.
-- `src/lib/eraamatud.ts` — muudatusi pole vaja.
-- Backend / Supabase — muudatusi pole vaja.
+DB tabelid (uued):
+  - books (avalik SELECT, admin INSERT/UPDATE/DELETE)
+  - user_roles + app_role enum + has_role()
+  - subscriptions (Stripe sync)
 
-## Mida ma EI tee
+Edge functions:
+  - book-download   (uus, asendab book-proxy)
+  - create-checkout (uuendatud eraamatud toote jaoks)
+  - create-portal-session (uus)
+  - stripe-webhook  (uus)
+  - book-proxy      (kustutatud)
 
-- Ei lisa `vite-plugin-pwa`-d ega service worker'it (kogu rakendus offline polnud soovitud).
-- Ei tee heli/video offline-allalaadimist.
-- Ei lisa krüpteerimist offline-blobile (kui hiljem soovitakse, saab teha eraldi sammuna).
-- Ei muuda kopeerimiskaitse loogikat — see jääb täpselt samaks.
+Lehed:
+  - /eraamatud      (loeb public.books, signed URL läbi book-download)
+  - /tellimus       (uus — kuu/aasta plaan, embedded checkout)
+  - /admin/eraamatud (uus — admin upload)
+```
+
+## Mida vajan sinult enne ehitamist
+
+1. **Hinnad**: kinnita `4.99 €/kuus` ja `49 €/aasta` — või paku enda omad.
+2. **Tasuta ribi**: kas mõni raamat jääb tasuta (sissejuhatuseks), või kõik tasulised tellimuse taga?
+3. **Admin kasutaja**: kelle email muutub esimeseks adminiks (sinu oma?)?
+4. **Maksete eelduseks**: pean enne ehitust kutsuma sind sisse lülitama sisseehitatud Stripe makseid (üks klikk Lovable UI-s) — kas oled selleks valmis?
+
+Niipea kui need kinnitad, alustan ehitamist alates DB-skeemist ja bucketist, siis admin upload, siis tellimuse plaan, siis lehed.
