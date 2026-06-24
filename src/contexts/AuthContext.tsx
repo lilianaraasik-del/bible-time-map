@@ -131,6 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let walletCoin = 0;
     try {
+      piibelInvalidateCache("get_profile");
       const profile = await piibelGetProfile(data.piibel_user_id, data.piibel_unique_token);
       if (profile.status === 200 && profile.result) {
         walletCoin = Number(profile.result.wallet_coin || 0);
