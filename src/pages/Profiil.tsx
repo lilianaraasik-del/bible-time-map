@@ -54,6 +54,7 @@ export default function Profiil() {
 
     let cancelled = false;
     setHistoryLoading(true);
+    setHistoryError(null);
 
     Promise.all([
       piibelGetTransactions(piibelUserId, piibelUniqueToken),
@@ -61,10 +62,19 @@ export default function Profiil() {
     ])
       .then(([tx, wt]) => {
         if (cancelled) return;
+        if (tx.status === 429 || wt.status === 429) {
+          setHistoryError(
+            "Server on hetkel ülekoormatud (liiga palju päringuid). Palun proovi mõne minuti pärast lehte värskendada."
+          );
+          return;
+        }
         if (tx.status === 200) setTransactions(tx.result || []);
         if (wt.status === 200) setWalletTx(wt.result || []);
       })
-      .catch(() => {})
+      .catch(() => {
+        if (cancelled) return;
+        setHistoryError("Ostuajalugu ei õnnestunud laadida. Proovi hiljem uuesti.");
+      })
       .finally(() => {
         if (!cancelled) setHistoryLoading(false);
       });
