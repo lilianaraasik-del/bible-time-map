@@ -469,7 +469,7 @@ export default function Eraamatud() {
         });
         return;
       }
-      const proxiedFallbackUrl = proxyUrl(fallbackUrl);
+      const proxiedFallbackUrl = proxyUrl(fallbackUrl, { paid: isPaid(book) });
       const fallbackFormat = await detectRemoteBookFormat(proxiedFallbackUrl, bookFormat(book));
       setEpisodeList(null);
       setPlayer({ kind: "book", book, url: proxiedFallbackUrl, format: fallbackFormat });
