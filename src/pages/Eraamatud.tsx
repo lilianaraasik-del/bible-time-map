@@ -106,6 +106,35 @@ export default function Eraamatud() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Keela kopeerimine, teksti valimine, paremklõps ja piltide lohistamine/salvestamine sellel lehel.
+  useEffect(() => {
+    const prevent = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+    const preventKeys = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase();
+      if ((e.ctrlKey || e.metaKey) && ["c", "x", "a", "s", "p", "u"].includes(k)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("contextmenu", prevent);
+    document.addEventListener("copy", prevent);
+    document.addEventListener("cut", prevent);
+    document.addEventListener("dragstart", prevent);
+    document.addEventListener("selectstart", prevent);
+    document.addEventListener("keydown", preventKeys);
+    return () => {
+      document.removeEventListener("contextmenu", prevent);
+      document.removeEventListener("copy", prevent);
+      document.removeEventListener("cut", prevent);
+      document.removeEventListener("dragstart", prevent);
+      document.removeEventListener("selectstart", prevent);
+      document.removeEventListener("keydown", preventKeys);
+    };
+  }, []);
+
+
   // Tõmbame iga raamatu peatükid ja arvutame hinnaülevaate (cache-eeritud).
   useEffect(() => {
     if (items.length === 0) return;
@@ -376,7 +405,14 @@ export default function Eraamatud() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen bg-background select-none"
+      style={{
+        WebkitUserSelect: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
+      }}
+    >
       <Navigation />
 
       <main className="max-w-6xl mx-auto px-6 py-10">
