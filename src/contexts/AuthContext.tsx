@@ -278,6 +278,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [syncPiibelSession]);
 
   const logout = useCallback(async () => {
+    piibelInvalidateCache();
     await supabase.auth.signOut();
     setSession(null);
   }, []);
