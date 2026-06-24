@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Trash2, Upload } from "lucide-react";
+import { Loader2, Trash2, Upload, ArrowLeft, BookOpen, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useAuth } from "@/contexts/AuthContext";
@@ -178,7 +178,29 @@ export default function AdminEraamatud() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-8">
-        <h1 className="font-serif text-3xl font-bold">Admin: e-raamatute haldus</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-serif text-3xl font-bold">Admin: e-raamatute haldus</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/eraamatud">
+                <ArrowLeft className="w-4 h-4 mr-1.5" />
+                Tagasi
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/eraamatud">
+                <BookOpen className="w-4 h-4 mr-1.5" />
+                E-raamatud
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/profiil">
+                <UserIcon className="w-4 h-4 mr-1.5" />
+                Minu profiil
+              </Link>
+            </Button>
+          </div>
+        </div>
 
         <Card>
           <CardContent className="p-6 space-y-4">
