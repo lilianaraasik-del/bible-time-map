@@ -281,6 +281,8 @@ export async function piibelBuyContentEpisode(opts: {
   content_type?: number; // vaikimisi 1 (book)
   audiobook_type?: number; // vaikimisi 1 (book)
 }) {
+  piibelInvalidateCache("get_profile");
+  piibelInvalidateCache("get_wallet_transaction_list");
   return piibelPost("buy_content_episode", {
     user_id: opts.user_id,
     unique_token: opts.unique_token,
