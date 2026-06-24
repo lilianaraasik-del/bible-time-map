@@ -521,7 +521,7 @@ export default function Eraamatud() {
         )}
 
         {session && (purchasedBookIds.size > 0 || purchasedEpisodeIds.size > 0) && (() => {
-          const myBooks = items.filter((b) => purchasedBookIds.has(String(b.id)));
+          const myBooks = sortList(items.filter((b) => purchasedBookIds.has(String(b.id))));
           if (myBooks.length === 0) return null;
           return (
             <section className="mb-10">
