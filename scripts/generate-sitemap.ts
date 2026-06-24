@@ -20,6 +20,7 @@ const staticEntries: SitemapEntry[] = [
   { path: "/kaardid/tabernaakel", changefreq: "monthly", priority: "0.7" },
   { path: "/jeesuse-sugupuu", changefreq: "monthly", priority: "0.7" },
   { path: "/eraamatud", changefreq: "weekly", priority: "0.8" },
+  { path: "/sonaraamat", changefreq: "monthly", priority: "0.7" },
 ];
 
 // Bible book routes — read slugs from the data modules at build time.
