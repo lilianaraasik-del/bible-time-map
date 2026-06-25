@@ -30,7 +30,7 @@ export default function Login() {
 
     if (res.ok) {
       toast({ title: "Tere tulemast!", description: "Sisselogimine õnnestus." });
-      navigate("/profiil");
+      navigate("/eraamatud");
       return;
     }
 
