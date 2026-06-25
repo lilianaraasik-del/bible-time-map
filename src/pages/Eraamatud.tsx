@@ -108,7 +108,7 @@ export default function Eraamatud() {
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
   const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
-  const [episodeSummary, setEpisodeSummary] = useState<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>({});
+  const episodeSummary = useMemo<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>(() => ({}), []);
   const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
 
   // Offline raamatud
@@ -173,50 +173,11 @@ export default function Eraamatud() {
     };
   }, []);
 
-
-  // Tõmbame iga raamatu peatükid ja arvutame hinnaülevaate (cache-eeritud).
-  useEffect(() => {
-    if (items.length === 0) return;
-    let cancelled = false;
-    const bookIds = items.filter((b) => getMediaKind(b) === "book").map((b) => String(b.id));
-
-    const run = async () => {
-      const concurrency = 4;
-      let index = 0;
-      const summary: Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }> = {};
-
-      const worker = async () => {
-        while (!cancelled && index < bookIds.length) {
-          const id = bookIds[index++];
-          try {
-            const res = await piibelGetEpisodeBookByContent({ content_id: id });
-            const eps = res.result || [];
-            if (eps.length === 0) continue;
-            const coins = eps.map((e) => Number(e.is_book_coin || 0));
-            summary[id] = {
-              count: eps.length,
-              minCoin: Math.min(...coins),
-              maxCoin: Math.max(...coins),
-              totalCoin: coins.reduce((a, b) => a + b, 0),
-            };
-          } catch {
-            /* ignore */
-          }
-        }
-      };
-
-      await Promise.all(Array.from({ length: concurrency }, worker));
-      if (!cancelled) setEpisodeSummary(summary);
-    };
-
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [items]);
+  const piibelUserId = session?.piibelUserId;
+  const piibelUniqueToken = session?.piibelUniqueToken;
 
   useEffect(() => {
-    if (!session) {
+    if (!piibelUserId || !piibelUniqueToken) {
       setPurchasedBookIds(new Set());
       setPurchasedEpisodeIds(new Set());
       setPurchaseHistoryLoading(false);
@@ -226,7 +187,7 @@ export default function Eraamatud() {
     let active = true;
     setPurchaseHistoryLoading(true);
 
-    piibelGetWalletTransactions(session.piibelUserId, session.piibelUniqueToken)
+    piibelGetWalletTransactions(piibelUserId, piibelUniqueToken)
       .then((res) => {
         if (!active || res.status !== 200) return;
 
@@ -260,7 +221,7 @@ export default function Eraamatud() {
     return () => {
       active = false;
     };
-  }, [session]);
+  }, [piibelUserId, piibelUniqueToken]);
 
   const grouped = useMemo(() => {
     const g: Record<MediaKind, EraamatApi[]> = { book: [], audio: [], video: [] };
