@@ -25,5 +25,5 @@ export function getStripeEnvironment(): StripeEnv {
 }
 
 export function getSubscriptionStripeEnvironment(): StripeEnv {
-  return paymentsEnvironment();
+  return "live";
 }
