@@ -880,31 +880,34 @@ export default function Eraamatud() {
                             ? `${summary.count} × ${summary.minCoin} münti`
                             : `alates ${summary.minCoin} münti`;
                       } else {
-                        priceLabel = "Tasuline";
-                      }
-                      return (
-                        <Card
-                          key={book.id}
-                          role={hasMedia ? "button" : undefined}
-                          tabIndex={hasMedia ? 0 : -1}
-                          onClick={() => {
-                            if (!hasMedia) return;
-                            if (paid && (authLoading || purchaseHistoryLoading)) return;
-                            if (openingId === book.id) return;
-                            open(book);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key !== "Enter" && e.key !== " ") return;
-                            if (!hasMedia) return;
-                            if (paid && (authLoading || purchaseHistoryLoading)) return;
-                            if (openingId === book.id) return;
-                            e.preventDefault();
-                            open(book);
-                          }}
-                          className={`group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200 ${
-                            hasMedia ? "cursor-pointer" : "cursor-not-allowed opacity-80"
-                          }`}
-                        >
+                         priceLabel = "Tasuline";
+                       }
+                       const needsLogin = paid && !session;
+                       return (
+                         <Card
+                           key={book.id}
+                           role={hasMedia || needsLogin ? "button" : undefined}
+                           tabIndex={hasMedia || needsLogin ? 0 : -1}
+                           onClick={() => {
+                             if (!hasMedia && !needsLogin) return;
+                             if (openingId === book.id) return;
+                             if (needsLogin) { navigate("/login"); return; }
+                             if (paid && (authLoading || purchaseHistoryLoading)) return;
+                             open(book);
+                           }}
+                           onKeyDown={(e) => {
+                             if (e.key !== "Enter" && e.key !== " ") return;
+                             if (!hasMedia && !needsLogin) return;
+                             if (openingId === book.id) return;
+                             if (needsLogin) { e.preventDefault(); navigate("/login"); return; }
+                             if (paid && (authLoading || purchaseHistoryLoading)) return;
+                             e.preventDefault();
+                             open(book);
+                           }}
+                           className={`group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200 ${
+                             hasMedia || needsLogin ? "cursor-pointer" : "cursor-not-allowed opacity-80"
+                           }`}
+                         >
                           <div className="aspect-[2/3] bg-muted relative overflow-hidden">
                             {cover ? (
                               <img
@@ -937,32 +940,36 @@ export default function Eraamatud() {
                             </div>
                           </div>
                           <CardContent className="p-3 space-y-2">
-                            <Button
-                              size="sm"
-                              variant={hasMedia ? "default" : "secondary"}
-                              className="w-full"
-                              disabled={!hasMedia || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (!hasMedia || authLoading || purchaseHistoryLoading || openingId === book.id) return;
-                                open(book);
-                              }}
-                            >
-                              {openingId === book.id ? (
-                                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                              ) : key === "book" ? (
-                                <BookOpen className="h-3.5 w-3.5 mr-1.5" />
-                              ) : (
-                                <Play className="h-3.5 w-3.5 mr-1.5" />
-                              )}
-                              {openingId === book.id
-                                ? "Avan..."
-                                : paid && (authLoading || purchaseHistoryLoading)
-                                ? "Kontrollin..."
-                                : hasMedia
-                                ? cta
-                                : "Pole saadaval"}
-                            </Button>
+                             <Button
+                               size="sm"
+                               variant={hasMedia || needsLogin ? "default" : "secondary"}
+                               className="w-full"
+                               disabled={(!hasMedia && !needsLogin) || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 if (openingId === book.id) return;
+                                 if (needsLogin) { navigate("/login"); return; }
+                                 if (!hasMedia || authLoading || purchaseHistoryLoading) return;
+                                 open(book);
+                               }}
+                             >
+                               {openingId === book.id ? (
+                                 <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                               ) : key === "book" ? (
+                                 <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                               ) : (
+                                 <Play className="h-3.5 w-3.5 mr-1.5" />
+                               )}
+                               {openingId === book.id
+                                 ? "Avan..."
+                                 : paid && (authLoading || purchaseHistoryLoading)
+                                 ? "Kontrollin..."
+                                 : needsLogin
+                                 ? "Logi sisse"
+                                 : hasMedia
+                                 ? cta
+                                 : "Pole saadaval"}
+                             </Button>
                           </CardContent>
                         </Card>
                       );
