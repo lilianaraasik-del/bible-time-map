@@ -81,12 +81,12 @@ Deno.serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceRoleKey) throw new Error("Backend võtmed puuduvad");
 
-    const admin = createClient(supabaseUrl, serviceRoleKey, {
+    const admin = withSyncStep("backend client", () => createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
-    });
+    }));
 
     const jwt = authHeader.replace("Bearer ", "");
-    const { data: userData, error: userError } = await admin.auth.getUser(jwt);
+    const { data: userData, error: userError } = await withStep("auth getUser", () => admin.auth.getUser(jwt));
     if (userError || !userData?.user) {
       return new Response(JSON.stringify({ error: "Vigane sessioon" }), {
         status: 401,
@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
-    console.error("create-subscription-checkout error:", msg);
+    console.error("create-subscription-checkout error:", msg, e instanceof Error ? e.stack : "");
     return new Response(JSON.stringify({ error: msg }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
