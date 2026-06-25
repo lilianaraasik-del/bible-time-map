@@ -18,7 +18,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!authLoading && session) {
-      navigate("/profiil", { replace: true });
+      navigate("/eraamatud", { replace: true });
     }
   }, [authLoading, session, navigate]);
 
@@ -30,7 +30,7 @@ export default function Login() {
 
     if (res.ok) {
       toast({ title: "Tere tulemast!", description: "Sisselogimine õnnestus." });
-      navigate("/profiil");
+      navigate("/eraamatud");
       return;
     }
 
