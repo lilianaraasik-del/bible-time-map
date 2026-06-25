@@ -146,6 +146,15 @@ export default function Eraamatud() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
   // Keela kopeerimine, teksti valimine, paremklõps ja piltide lohistamine/salvestamine sellel lehel.
   useEffect(() => {
     const prevent = (e: Event) => {
