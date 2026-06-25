@@ -118,6 +118,7 @@ export default function Eraamatud() {
   const [manageOpen, setManageOpen] = useState(false);
   const [isOnline, setIsOnline] = useState<boolean>(typeof navigator === "undefined" ? true : navigator.onLine);
   const [playerBlobUrl, setPlayerBlobUrl] = useState<string | null>(null);
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   useEffect(() => {
     const on = () => setIsOnline(true);
