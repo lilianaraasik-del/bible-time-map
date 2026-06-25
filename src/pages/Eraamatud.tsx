@@ -341,12 +341,53 @@ export default function Eraamatud() {
       return;
     }
 
-    if (kind === "audio") {
-      const url = audioUrl(book);
-      if (url) setPlayer({ kind: "audio", book, url });
-    } else {
-      const url = videoEmbedUrl(book);
-      if (url) setPlayer({ kind: "video", book, url });
+    // Audio / video — proovi full_novel, muidu küsi episoode
+    try {
+      setOpeningId(book.id);
+      if (kind === "audio") {
+        let url = audioUrl(book);
+        if (!url) {
+          const ep = await piibelGetEpisodeBookByContent({
+            user_id: session?.piibelUserId,
+            unique_token: session?.piibelUniqueToken,
+            content_id: book.id,
+          });
+          const episodes = (ep.result || []).filter((e) => e.audio && e.audio.trim());
+          if (episodes.length === 0) {
+            toast({ title: "Audio pole saadaval", variant: "destructive" });
+            return;
+          }
+          const raw = normalizeEpisodeBookUrl(episodes[0].audio!);
+          url = proxyUrl(raw, { paid: isPaid(book) });
+        }
+        setPlayer({ kind: "audio", book, url });
+      } else {
+        let url = videoEmbedUrl(book);
+        if (!url) {
+          const ep = await piibelGetEpisodeBookByContent({
+            user_id: session?.piibelUserId,
+            unique_token: session?.piibelUniqueToken,
+            content_id: book.id,
+          });
+          const episodes = (ep.result || []).filter((e) => e.video && e.video.trim());
+          if (episodes.length === 0) {
+            toast({ title: "Video pole saadaval", variant: "destructive" });
+            return;
+          }
+          const src = episodes[0].video!.trim();
+          const yt = youtubeEmbed(src);
+          url = yt || (src.startsWith("http") ? src : proxyUrl(normalizeEpisodeBookUrl(src), { paid: isPaid(book) }));
+        }
+        setPlayer({ kind: "video", book, url });
+      }
+    } catch (e) {
+      toast({
+        title: "Avamine ebaõnnestus",
+        description: e instanceof Error ? e.message : "Tundmatu viga",
+        variant: "destructive",
+      });
+    } finally {
+      setOpeningId(null);
     }
   };
 
