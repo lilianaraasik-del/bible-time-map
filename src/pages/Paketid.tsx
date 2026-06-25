@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { piibelGetPackages, type PiibelPackage } from "@/lib/piibelApi";
-import { Coins, Sparkles, X } from "lucide-react";
+import { Coins, Sparkles, X, ArrowLeft, User } from "lucide-react";
+import { Link } from "react-router-dom";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
