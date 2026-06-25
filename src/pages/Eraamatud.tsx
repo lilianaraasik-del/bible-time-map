@@ -342,43 +342,100 @@ export default function Eraamatud() {
       return;
     }
 
-    // Audio / video — proovi full_novel, muidu küsi episoode
+    // Audio / video — proovi full_novel, muidu küsi episoode (sh tasulised)
     try {
       setOpeningId(book.id);
-      if (kind === "audio") {
-        let url = audioUrl(book);
-        if (!url) {
-          const ep = await piibelGetEpisodeBookByContent({
-            user_id: session?.piibelUserId,
-            unique_token: session?.piibelUniqueToken,
-            content_id: book.id,
-          });
-          const episodes = (ep.result || []).filter((e) => e.audio && e.audio.trim());
-          if (episodes.length === 0) {
-            toast({ title: "Audio pole saadaval", variant: "destructive" });
-            return;
-          }
-          const raw = normalizeEpisodeBookUrl(episodes[0].audio!);
-          url = proxyUrl(raw, { paid: isPaid(book) });
+      const mediaField: "audio" | "video" = kind;
+      const paidField = mediaField === "audio" ? "is_audio_paid" : "is_video_paid";
+      const coinField = mediaField === "audio" ? "is_audio_coin" : "is_video_coin";
+
+      // 1) Otsene full_novel (vana käitumine — ainult tasuta või book-tasemel tasuline)
+      const direct = mediaField === "audio" ? audioUrl(book) : videoEmbedUrl(book);
+      if (direct && !isPaid(book)) {
+        if (mediaField === "audio") setPlayer({ kind: "audio", book, url: direct });
+        else setPlayer({ kind: "video", book, url: direct });
+        return;
+      }
+
+      // 2) Episoodid
+      const ep = await piibelGetEpisodeBookByContent({
+        user_id: session?.piibelUserId,
+        unique_token: session?.piibelUniqueToken,
+        content_id: book.id,
+      });
+      const episodes = (ep.result || []).filter((e) => {
+        const src = mediaField === "audio" ? e.audio : e.video;
+        return !!(src && String(src).trim());
+      });
+
+      if (episodes.length === 0 && direct) {
+        // Fallback book-level tasuline link
+        const url = direct.startsWith("http") && mediaField === "video"
+          ? direct
+          : proxyUrl(direct.startsWith("http") ? direct : normalizeEpisodeBookUrl(direct), { paid: isPaid(book) });
+        if (mediaField === "audio") setPlayer({ kind: "audio", book, url });
+        else setPlayer({ kind: "video", book, url });
+        return;
+      }
+      if (episodes.length === 0) {
+        toast({ title: mediaField === "audio" ? "Audio pole saadaval" : "Video pole saadaval", variant: "destructive" });
+        return;
+      }
+
+      let episode = episodes[0];
+      const isEpisodePaid = Number((episode as any)[paidField] || 0) === 1;
+      const cost = Number((episode as any)[coinField] || 0);
+      const alreadyBought =
+        Number(episode.is_buy || 0) === 1 ||
+        purchasedEpisodeIds.has(String(episode.id)) ||
+        purchasedBookIds.has(String(book.id));
+
+      if (isEpisodePaid && !alreadyBought && cost > 0) {
+        if (!session) {
+          toast({ title: "Sisselogimine vajalik", variant: "destructive" });
+          navigate("/login");
+          return;
         }
+        if (session.walletCoin < cost) {
+          toast({
+            title: "Müntidest jääb puudu",
+            description: `Selle avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+            variant: "destructive",
+          });
+          navigate("/paketid");
+          return;
+        }
+        const buy = await piibelBuyContentEpisode({
+          user_id: session.piibelUserId,
+          unique_token: session.piibelUniqueToken,
+          content_id: book.id,
+          content_episode_id: episode.id,
+          coin: cost,
+        });
+        if (buy.status !== 200) {
+          toast({
+            title: "Ostmine ebaõnnestus",
+            description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
+            variant: "destructive",
+          });
+          return;
+        }
+        setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
+        await refreshProfile();
+        toast({ title: "Avatud!", description: `−${cost} münti` });
+      }
+
+      const rawSrc = String((episode as any)[mediaField]).trim();
+      if (mediaField === "audio") {
+        const url = rawSrc.startsWith("http")
+          ? proxyUrl(rawSrc, { paid: isEpisodePaid || isPaid(book) })
+          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) });
         setPlayer({ kind: "audio", book, url });
       } else {
-        let url = videoEmbedUrl(book);
-        if (!url) {
-          const ep = await piibelGetEpisodeBookByContent({
-            user_id: session?.piibelUserId,
-            unique_token: session?.piibelUniqueToken,
-            content_id: book.id,
-          });
-          const episodes = (ep.result || []).filter((e) => e.video && e.video.trim());
-          if (episodes.length === 0) {
-            toast({ title: "Video pole saadaval", variant: "destructive" });
-            return;
-          }
-          const src = episodes[0].video!.trim();
-          const yt = youtubeEmbed(src);
-          url = yt || (src.startsWith("http") ? src : proxyUrl(normalizeEpisodeBookUrl(src), { paid: isPaid(book) }));
-        }
+        const yt = youtubeEmbed(rawSrc);
+        const url = yt || (rawSrc.startsWith("http")
+          ? rawSrc
+          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) }));
         setPlayer({ kind: "video", book, url });
       }
     } catch (e) {
