@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown, Download, CheckCircle2, Trash2, WifiOff, HardDrive } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown, Download, CheckCircle2, Trash2, WifiOff, HardDrive, Sparkles } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -609,6 +609,13 @@ export default function Eraamatud() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Link
+                to="/tellimus"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-600 text-sm font-semibold hover:bg-amber-500/20 transition"
+              >
+                <Sparkles className="h-4 w-4" />
+                Tellimus
+              </Link>
               <Link
                 to="/paketid"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition"

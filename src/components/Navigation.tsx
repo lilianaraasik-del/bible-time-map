@@ -17,9 +17,7 @@ export function Navigation() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
   const hideExplore = location.pathname.startsWith("/eraamatud") ||
-                       location.pathname === "/login" ||
-                       location.pathname === "/profiil" ||
-                       location.pathname === "/paketid";
+                       location.pathname === "/login";
 
   const { t } = useTranslation();
 
