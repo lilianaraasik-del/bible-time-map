@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Check, Loader2, Sparkles, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getStripeEnvironment } from "@/lib/stripe";
+import { getSubscriptionStripeEnvironment } from "@/lib/stripe";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { toast } from "@/hooks/use-toast";
@@ -55,7 +55,7 @@ export default function Tellimus() {
       const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
         body: {
           priceId,
-          environment: getStripeEnvironment(),
+          environment: getSubscriptionStripeEnvironment(),
           returnUrl: `${window.location.origin}/tellimus?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
           cancelUrl: `${window.location.origin}/tellimus`,
         },
@@ -77,7 +77,7 @@ export default function Tellimus() {
     try {
       const { data, error } = await supabase.functions.invoke("create-portal-session", {
         body: {
-          environment: getStripeEnvironment(),
+          environment: getSubscriptionStripeEnvironment(),
           returnUrl: `${window.location.origin}/tellimus`,
         },
       });
