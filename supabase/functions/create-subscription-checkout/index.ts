@@ -6,7 +6,6 @@ import { type StripeEnv, createStripeClient } from "../_shared/stripe.ts";
 interface Body {
   priceId: string;
   returnUrl: string;
-  cancelUrl?: string;
   environment: StripeEnv;
 }
 
@@ -119,16 +118,16 @@ Deno.serve(async (req) => {
     const session = await withStep("checkout session", () => stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "subscription",
-      success_url: body.returnUrl,
-      cancel_url: body.cancelUrl || body.returnUrl.replace(/\?.*$/, ""),
+      ui_mode: "embedded",
+      return_url: body.returnUrl,
       customer: customerId,
       metadata: { userId: userData.user.id },
       subscription_data: { metadata: { userId: userData.user.id } },
     }));
 
-    if (!session.url) throw new Error("Checkout URL puudub");
+    if (!session.client_secret) throw new Error("Checkout client secret puudub");
 
-    return new Response(JSON.stringify({ url: session.url }), {
+    return new Response(JSON.stringify({ clientSecret: session.client_secret }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
