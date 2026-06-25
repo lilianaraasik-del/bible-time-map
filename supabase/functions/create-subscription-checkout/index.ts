@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "subscription",
-      ui_mode: "embedded",
+      ui_mode: "embedded_page",
       return_url: body.returnUrl,
       customer: customerId,
       metadata: { userId: userData.user.id },
