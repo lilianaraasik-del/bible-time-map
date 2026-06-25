@@ -104,6 +104,9 @@ Deno.serve(async (req) => {
     const stripe = withSyncStep("stripe client", () => createStripeClient(body.environment));
 
     const prices = await withStep("price lookup", () => stripe.prices.list({ lookup_keys: [body.priceId] }));
+    if (!Array.isArray(prices.data)) {
+      throw new Error(`Price lookup failed: ${JSON.stringify(prices).slice(0, 300)}`);
+    }
     if (!prices.data.length) throw new Error("Price not found");
     const stripePrice = prices.data[0];
 
