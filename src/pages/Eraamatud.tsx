@@ -615,6 +615,17 @@ export default function Eraamatud() {
           </button>
         </header>
 
+        {!session && (
+          <div className="mb-6 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-center">
+            <p className="text-sm text-amber-700 dark:text-amber-400">
+              Tasuliste raamatute vaatamiseks ja ostmiseks{" "}
+              <Link to="/login" className="font-semibold underline hover:text-amber-800 dark:hover:text-amber-300">
+                logi sisse
+              </Link>
+            </p>
+          </div>
+        )}
+
         {session && (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/40 bg-card px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3">
