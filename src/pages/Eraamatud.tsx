@@ -17,6 +17,7 @@ import {
   bookFormat,
   audioUrl,
   videoEmbedUrl,
+  youtubeEmbed,
   getMediaKind,
   isPaid,
   proxyUrl,
