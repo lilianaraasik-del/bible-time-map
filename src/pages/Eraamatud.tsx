@@ -107,7 +107,7 @@ export default function Eraamatud() {
   const [purchasedBookIds, setPurchasedBookIds] = useState<Set<string>>(new Set());
   const [purchasedEpisodeIds, setPurchasedEpisodeIds] = useState<Set<string>>(new Set());
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
-  const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
+  const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[]; kind?: MediaKind } | null>(null);
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
   const episodeSummary = useMemo<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>(() => ({}), []);
   const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
@@ -382,62 +382,13 @@ export default function Eraamatud() {
         return;
       }
 
-      let episode = episodes[0];
-      const isEpisodePaid = Number((episode as any)[paidField] || 0) === 1;
-      const cost = Number((episode as any)[coinField] || 0);
-      const alreadyBought =
-        Number(episode.is_buy || 0) === 1 ||
-        purchasedEpisodeIds.has(String(episode.id)) ||
-        purchasedBookIds.has(String(book.id));
-
-      if (isEpisodePaid && !alreadyBought && cost > 0) {
-        if (!session) {
-          toast({ title: "Sisselogimine vajalik", variant: "destructive" });
-          navigate("/login");
-          return;
-        }
-        if (session.walletCoin < cost) {
-          toast({
-            title: "Müntidest jääb puudu",
-            description: `Selle avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
-            variant: "destructive",
-          });
-          navigate("/paketid");
-          return;
-        }
-        const buy = await piibelBuyContentEpisode({
-          user_id: session.piibelUserId,
-          unique_token: session.piibelUniqueToken,
-          content_id: book.id,
-          content_episode_id: episode.id,
-          coin: cost,
-        });
-        if (buy.status !== 200) {
-          toast({
-            title: "Ostmine ebaõnnestus",
-            description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
-            variant: "destructive",
-          });
-          return;
-        }
-        setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
-        await refreshProfile();
-        toast({ title: "Avatud!", description: `−${cost} münti` });
+      // Kui peatükke on rohkem kui üks — näita loendit (sissejuhatus on tavaliselt tasuta)
+      if (episodes.length > 1) {
+        setEpisodeList({ book, episodes, kind: mediaField });
+        return;
       }
 
-      const rawSrc = String((episode as any)[mediaField]).trim();
-      if (mediaField === "audio") {
-        const url = rawSrc.startsWith("http")
-          ? proxyUrl(rawSrc, { paid: isEpisodePaid || isPaid(book) })
-          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) });
-        setPlayer({ kind: "audio", book, url });
-      } else {
-        const yt = youtubeEmbed(rawSrc);
-        const url = yt || (rawSrc.startsWith("http")
-          ? rawSrc
-          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) }));
-        setPlayer({ kind: "video", book, url });
-      }
+      await openSingleMediaEpisode(book, episodes[0], mediaField);
     } catch (e) {
       toast({
         title: "Avamine ebaõnnestus",
@@ -448,6 +399,79 @@ export default function Eraamatud() {
       setOpeningId(null);
     }
   };
+
+  /** Avab ühe audio/video peatüki: vajadusel ostab müntide eest. */
+  async function openSingleMediaEpisode(
+    book: EraamatApi,
+    initialEpisode: PiibelEpisode,
+    mediaField: "audio" | "video",
+  ) {
+    const paidField = mediaField === "audio" ? "is_audio_paid" : "is_video_paid";
+    const coinField = mediaField === "audio" ? "is_audio_coin" : "is_video_coin";
+    let episode = initialEpisode;
+
+    const isEpisodePaid = Number((episode as any)[paidField] || 0) === 1;
+    const cost = Number((episode as any)[coinField] || 0);
+    const alreadyBought =
+      Number(episode.is_buy || 0) === 1 ||
+      purchasedEpisodeIds.has(String(episode.id)) ||
+      purchasedBookIds.has(String(book.id));
+
+    if (isEpisodePaid && !alreadyBought && cost > 0) {
+      if (!session) {
+        toast({ title: "Sisselogimine vajalik", variant: "destructive" });
+        navigate("/login");
+        return;
+      }
+      if (session.walletCoin < cost) {
+        toast({
+          title: "Müntidest jääb puudu",
+          description: `Selle avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+          variant: "destructive",
+        });
+        navigate("/paketid");
+        return;
+      }
+      const buy = await piibelBuyContentEpisode({
+        user_id: session.piibelUserId,
+        unique_token: session.piibelUniqueToken,
+        content_id: book.id,
+        content_episode_id: episode.id,
+        coin: cost,
+      });
+      if (buy.status !== 200) {
+        toast({
+          title: "Ostmine ebaõnnestus",
+          description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
+          variant: "destructive",
+        });
+        return;
+      }
+      setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
+      await refreshProfile();
+      toast({ title: "Avatud!", description: `−${cost} münti` });
+    }
+
+    const rawSrc = String((episode as any)[mediaField] || "").trim();
+    if (!rawSrc) {
+      toast({ title: "Sisu pole saadaval", variant: "destructive" });
+      return;
+    }
+    setEpisodeList(null);
+    if (mediaField === "audio") {
+      const url = rawSrc.startsWith("http")
+        ? proxyUrl(rawSrc, { paid: isEpisodePaid || isPaid(book) })
+        : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) });
+      setPlayer({ kind: "audio", book, url });
+    } else {
+      const yt = youtubeEmbed(rawSrc);
+      const url = yt || (rawSrc.startsWith("http")
+        ? rawSrc
+        : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) }));
+      setPlayer({ kind: "video", book, url });
+    }
+  }
+
 
   /** Avab ühe peatüki: vajadusel ostab müntide eest, siis käivitab lugeja. */
   async function openSingleEpisode(book: EraamatApi, initialEpisode: PiibelEpisode) {
@@ -1103,12 +1127,24 @@ export default function Eraamatud() {
             <div className="overflow-auto p-2">
               <ul className="divide-y divide-border">
                 {episodeList.episodes.map((episode) => {
-                  const cost = Number(episode.is_book_coin || 0);
+                  const mediaKind = episodeList.kind;
+                  const isMedia = mediaKind === "audio" || mediaKind === "video";
+                  const paidField = mediaKind === "audio" ? "is_audio_paid" : mediaKind === "video" ? "is_video_paid" : null;
+                  const coinField = mediaKind === "audio" ? "is_audio_coin" : mediaKind === "video" ? "is_video_coin" : null;
+                  const mediaSrc = isMedia ? String((episode as any)[mediaKind!] || "").trim() : "";
+                  const isEpPaid = paidField ? Number((episode as any)[paidField] || 0) === 1 : false;
+                  const cost = isMedia
+                    ? Number((episode as any)[coinField!] || 0)
+                    : Number(episode.is_book_coin || 0);
                   const bought =
                     Number(episode.is_buy || 0) === 1 ||
-                    purchasedEpisodeIds.has(String(episode.id));
-                  const hasFile = !!episode.book;
+                    purchasedEpisodeIds.has(String(episode.id)) ||
+                    purchasedBookIds.has(String(episodeList.book.id));
+                  const hasFile = isMedia ? !!mediaSrc : !!episode.book;
+                  const isFreeIntro = isMedia && !isEpPaid;
                   const isOpening = openingEpisodeId === String(episode.id);
+                  const Icon = mediaKind === "audio" ? Headphones : mediaKind === "video" ? Video : BookOpen;
+                  const ctaLabel = mediaKind === "audio" ? "Kuula" : mediaKind === "video" ? "Vaata" : "Loe";
                   return (
                     <li
                       key={episode.id}
@@ -1121,23 +1157,40 @@ export default function Eraamatud() {
                             ? "Sisu pole veel saadaval"
                             : bought
                             ? "Ostetud"
-                            : cost > 0
-                            ? `${cost} münti`
-                            : "Tasuta"}
+                            : isFreeIntro || cost === 0
+                            ? "Tasuta"
+                            : `${cost} münti`}
                         </p>
                       </div>
                       <Button
                         size="sm"
                         variant={hasFile ? "default" : "secondary"}
                         disabled={!hasFile || isOpening}
-                        onClick={() => handleOpenEpisode(episodeList.book, episode)}
+                        onClick={async () => {
+                          if (isMedia) {
+                            try {
+                              setOpeningEpisodeId(String(episode.id));
+                              await openSingleMediaEpisode(episodeList.book, episode, mediaKind!);
+                            } catch (e) {
+                              toast({
+                                title: "Avamine ebaõnnestus",
+                                description: e instanceof Error ? e.message : "Tundmatu viga",
+                                variant: "destructive",
+                              });
+                            } finally {
+                              setOpeningEpisodeId(null);
+                            }
+                          } else {
+                            handleOpenEpisode(episodeList.book, episode);
+                          }
+                        }}
                       >
                         {isOpening ? (
                           <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
                         ) : (
-                          <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                          <Icon className="h-3.5 w-3.5 mr-1.5" />
                         )}
-                        {isOpening ? "Avan..." : hasFile ? "Loe" : "Pole saadaval"}
+                        {isOpening ? "Avan..." : hasFile ? ctaLabel : "Pole saadaval"}
                       </Button>
                     </li>
                   );
