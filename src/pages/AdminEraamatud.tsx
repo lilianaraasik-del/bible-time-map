@@ -244,8 +244,32 @@ export default function AdminEraamatud() {
                 Minu profiil
               </Link>
             </Button>
-          </div>
         </div>
+
+        <Card>
+          <CardContent className="p-6 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-serif text-xl font-semibold">Impordi api.piibel.ee-st</h2>
+                <p className="text-sm text-muted-foreground">Tõmbab kõik e-raamatud (fail + kaanepilt) Lovable Cloudi.</p>
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={() => onImportFromApi(false)} disabled={importing} size="sm">
+                  {importing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+                  Impordi puuduvad
+                </Button>
+                <Button onClick={() => onImportFromApi(true)} disabled={importing} size="sm" variant="outline">
+                  Asenda kõik
+                </Button>
+              </div>
+            </div>
+            {importLog.length > 0 && (
+              <pre className="text-xs bg-muted rounded p-3 max-h-64 overflow-auto whitespace-pre-wrap">
+                {importLog.join("\n")}
+              </pre>
+            )}
+          </CardContent>
+        </Card>
 
         <Card>
           <CardContent className="p-6 space-y-4">
