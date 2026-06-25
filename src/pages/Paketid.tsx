@@ -64,6 +64,18 @@ export default function Paketid() {
       <Navigation />
 
       <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Tagasi
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/eraamatud">E-raamatud</Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/profiil"><User className="h-4 w-4 mr-1" /> Minu profiil</Link>
+          </Button>
+        </div>
+
         <header className="mb-10 text-center">
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-3">
             Müntide paketid
