@@ -349,12 +349,8 @@ export default function Eraamatud() {
       const paidField = mediaField === "audio" ? "is_audio_paid" : "is_video_paid";
       const coinField = mediaField === "audio" ? "is_audio_coin" : "is_video_coin";
 
-      // 1) Otsene full_novel (ainult video puhul — audiole näitame alati episoodide loendit)
+      // 1) Episoodid — nii audiol kui videol näitame alati peatükkide loendit (kui neid on)
       const direct = mediaField === "audio" ? audioUrl(book) : videoEmbedUrl(book);
-      if (mediaField === "video" && direct && !isPaid(book)) {
-        setPlayer({ kind: "video", book, url: direct });
-        return;
-      }
 
       // 2) Episoodid
       const ep = await piibelGetEpisodeBookByContent({
@@ -381,13 +377,10 @@ export default function Eraamatud() {
         return;
       }
 
-      // Audiole näitame alati episoodide loendit; videole ainult kui peatükke on mitu
-      if (mediaField === "audio" || episodes.length > 1) {
-        setEpisodeList({ book, episodes, kind: mediaField });
-        return;
-      }
+      // Näitame alati episoodide loendit (audio ja video puhul)
+      setEpisodeList({ book, episodes, kind: mediaField });
+      return;
 
-      await openSingleMediaEpisode(book, episodes[0], mediaField);
 
     } catch (e) {
       toast({
