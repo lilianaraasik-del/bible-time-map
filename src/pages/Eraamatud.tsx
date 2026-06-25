@@ -906,9 +906,7 @@ export default function Eraamatud() {
                       const hasMedia =
                         key === "book"
                           ? !!bookFileUrl(book, auth)
-                          : key === "audio"
-                          ? !!audioUrl(book)
-                          : !!videoEmbedUrl(book);
+                          : true;
                       const coinPrice = Number(book.novel_coin || 0);
                       const summary = key === "book" ? episodeSummary[String(book.id)] : undefined;
                       let priceLabel: string;
