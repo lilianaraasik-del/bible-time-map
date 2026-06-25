@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Check, Loader2, Sparkles, User } from "lucide-react";
+import { ArrowLeft, Check, Loader2, Sparkles, User, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getSubscriptionStripeEnvironment } from "@/lib/stripe";
+import { getStripe, getSubscriptionStripeEnvironment } from "@/lib/stripe";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { toast } from "@/hooks/use-toast";
+import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 type Plan = "materjalid_monthly" | "materjalid_yearly";
 
@@ -25,13 +27,54 @@ const PLANS: PlanInfo[] = [
   { id: "materjalid_yearly", title: "Aasta plaan", price: "69 €", period: "aastas", badge: "Säästa 17%" },
 ];
 
+function getEdgeErrorMessage(error: unknown): string | undefined {
+  return error instanceof Error ? error.message : undefined;
+}
+
+function SubscriptionCheckout({ priceId, onClose }: { priceId: Plan; onClose: () => void }) {
+  const stripePromise = useMemo(() => getStripe(), []);
+
+  const fetchClientSecret = useCallback(async (): Promise<string> => {
+    const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
+      body: {
+        priceId,
+        environment: getSubscriptionStripeEnvironment(),
+        returnUrl: `${window.location.origin}/tellimus?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      },
+    });
+
+    if (error || !data?.clientSecret) {
+      throw new Error(data?.error || getEdgeErrorMessage(error) || "Checkout ebaõnnestus");
+    }
+
+    return data.clientSecret;
+  }, [priceId]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+        <h2 className="font-serif text-lg font-semibold">E-raamatute tellimus</h2>
+        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Sulge">
+          <X className="h-5 w-5" />
+        </Button>
+      </header>
+      <div className="flex-1 overflow-auto p-4 md:p-8">
+        <div className="max-w-3xl mx-auto">
+          <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Tellimus() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
   const { isActive, loading: subLoading, refresh } = useSubscription();
 
   const [selected, setSelected] = useState<Plan | null>(null);
-  const [creating, setCreating] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
 
   // Kui sisselogimata, suuna login lehele
@@ -48,39 +91,8 @@ export default function Tellimus() {
     }
   }, [refresh]);
 
-  const startCheckout = async (priceId: Plan) => {
+  const startCheckout = (priceId: Plan) => {
     setSelected(priceId);
-    setCreating(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
-        body: {
-          priceId,
-          environment: getSubscriptionStripeEnvironment(),
-          returnUrl: `${window.location.origin}/tellimus?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: `${window.location.origin}/tellimus`,
-        },
-      });
-      // Loe vea sisu välja kui edge function tagastas non-2xx
-      let url: string | undefined = data?.url;
-      let errMsg: string | undefined;
-      if (error) {
-        try {
-          const ctx = (error as { context?: Response }).context;
-          if (ctx && typeof ctx.json === "function") {
-            const body = await ctx.json();
-            errMsg = body?.error;
-          }
-        } catch { /* ignore */ }
-        errMsg = errMsg || (error as Error).message;
-      }
-      if (!url) throw new Error(errMsg || data?.error || "Checkout ebaõnnestus");
-      // Suuna sama aknas Stripe Checkoutile - tagasi tullakse return_url-iga
-      window.location.assign(url);
-    } catch (e) {
-      toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
-      setSelected(null);
-      setCreating(false);
-    }
   };
 
   const openPortal = async () => {
@@ -103,6 +115,7 @@ export default function Tellimus() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PaymentTestModeBanner />
       <Navigation />
       <main className="max-w-4xl mx-auto px-4 py-10">
         <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -165,10 +178,8 @@ export default function Tellimus() {
                 </ul>
                 <Button
                   onClick={() => startCheckout(p.id)}
-                  disabled={creating && selected === p.id}
                   className="mt-2"
                 >
-                  {creating && selected === p.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   {isActive ? "Vaheta plaani" : "Telli"}
                 </Button>
               </CardContent>
@@ -176,6 +187,7 @@ export default function Tellimus() {
           ))}
         </div>
       </main>
+      {selected && <SubscriptionCheckout priceId={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
