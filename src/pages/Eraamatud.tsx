@@ -615,6 +615,17 @@ export default function Eraamatud() {
           </button>
         </header>
 
+        {!session && (
+          <div className="mb-6 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-center">
+            <p className="text-sm text-amber-700 dark:text-amber-400">
+              Tasuliste raamatute vaatamiseks ja ostmiseks{" "}
+              <Link to="/login" className="font-semibold underline hover:text-amber-800 dark:hover:text-amber-300">
+                logi sisse
+              </Link>
+            </p>
+          </div>
+        )}
+
         {session && (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/40 bg-card px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3">
@@ -869,31 +880,34 @@ export default function Eraamatud() {
                             ? `${summary.count} × ${summary.minCoin} münti`
                             : `alates ${summary.minCoin} münti`;
                       } else {
-                        priceLabel = "Tasuline";
-                      }
-                      return (
-                        <Card
-                          key={book.id}
-                          role={hasMedia ? "button" : undefined}
-                          tabIndex={hasMedia ? 0 : -1}
-                          onClick={() => {
-                            if (!hasMedia) return;
-                            if (paid && (authLoading || purchaseHistoryLoading)) return;
-                            if (openingId === book.id) return;
-                            open(book);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key !== "Enter" && e.key !== " ") return;
-                            if (!hasMedia) return;
-                            if (paid && (authLoading || purchaseHistoryLoading)) return;
-                            if (openingId === book.id) return;
-                            e.preventDefault();
-                            open(book);
-                          }}
-                          className={`group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200 ${
-                            hasMedia ? "cursor-pointer" : "cursor-not-allowed opacity-80"
-                          }`}
-                        >
+                         priceLabel = "Tasuline";
+                       }
+                       const needsLogin = paid && !session;
+                       return (
+                         <Card
+                           key={book.id}
+                           role={hasMedia || needsLogin ? "button" : undefined}
+                           tabIndex={hasMedia || needsLogin ? 0 : -1}
+                           onClick={() => {
+                             if (!hasMedia && !needsLogin) return;
+                             if (openingId === book.id) return;
+                             if (needsLogin) { navigate("/login"); return; }
+                             if (paid && (authLoading || purchaseHistoryLoading)) return;
+                             open(book);
+                           }}
+                           onKeyDown={(e) => {
+                             if (e.key !== "Enter" && e.key !== " ") return;
+                             if (!hasMedia && !needsLogin) return;
+                             if (openingId === book.id) return;
+                             if (needsLogin) { e.preventDefault(); navigate("/login"); return; }
+                             if (paid && (authLoading || purchaseHistoryLoading)) return;
+                             e.preventDefault();
+                             open(book);
+                           }}
+                           className={`group overflow-hidden border-border/40 hover:border-primary/50 hover:shadow-lg transition-all duration-200 ${
+                             hasMedia || needsLogin ? "cursor-pointer" : "cursor-not-allowed opacity-80"
+                           }`}
+                         >
                           <div className="aspect-[2/3] bg-muted relative overflow-hidden">
                             {cover ? (
                               <img
@@ -926,32 +940,36 @@ export default function Eraamatud() {
                             </div>
                           </div>
                           <CardContent className="p-3 space-y-2">
-                            <Button
-                              size="sm"
-                              variant={hasMedia ? "default" : "secondary"}
-                              className="w-full"
-                              disabled={!hasMedia || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (!hasMedia || authLoading || purchaseHistoryLoading || openingId === book.id) return;
-                                open(book);
-                              }}
-                            >
-                              {openingId === book.id ? (
-                                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                              ) : key === "book" ? (
-                                <BookOpen className="h-3.5 w-3.5 mr-1.5" />
-                              ) : (
-                                <Play className="h-3.5 w-3.5 mr-1.5" />
-                              )}
-                              {openingId === book.id
-                                ? "Avan..."
-                                : paid && (authLoading || purchaseHistoryLoading)
-                                ? "Kontrollin..."
-                                : hasMedia
-                                ? cta
-                                : "Pole saadaval"}
-                            </Button>
+                             <Button
+                               size="sm"
+                               variant={hasMedia || needsLogin ? "default" : "secondary"}
+                               className="w-full"
+                               disabled={(!hasMedia && !needsLogin) || (paid && (authLoading || purchaseHistoryLoading)) || openingId === book.id}
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 if (openingId === book.id) return;
+                                 if (needsLogin) { navigate("/login"); return; }
+                                 if (!hasMedia || authLoading || purchaseHistoryLoading) return;
+                                 open(book);
+                               }}
+                             >
+                               {openingId === book.id ? (
+                                 <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                               ) : key === "book" ? (
+                                 <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                               ) : (
+                                 <Play className="h-3.5 w-3.5 mr-1.5" />
+                               )}
+                               {openingId === book.id
+                                 ? "Avan..."
+                                 : paid && (authLoading || purchaseHistoryLoading)
+                                 ? "Kontrollin..."
+                                 : needsLogin
+                                 ? "Logi sisse"
+                                 : hasMedia
+                                 ? cta
+                                 : "Pole saadaval"}
+                             </Button>
                           </CardContent>
                         </Card>
                       );
