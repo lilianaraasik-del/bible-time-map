@@ -382,62 +382,95 @@ export default function Eraamatud() {
         return;
       }
 
-      let episode = episodes[0];
-      const isEpisodePaid = Number((episode as any)[paidField] || 0) === 1;
-      const cost = Number((episode as any)[coinField] || 0);
-      const alreadyBought =
-        Number(episode.is_buy || 0) === 1 ||
-        purchasedEpisodeIds.has(String(episode.id)) ||
-        purchasedBookIds.has(String(book.id));
+      // Kui peatükke on rohkem kui üks — näita loendit (sissejuhatus on tavaliselt tasuta)
+      if (episodes.length > 1) {
+        setEpisodeList({ book, episodes, kind: mediaField });
+        return;
+      }
 
-      if (isEpisodePaid && !alreadyBought && cost > 0) {
-        if (!session) {
-          toast({ title: "Sisselogimine vajalik", variant: "destructive" });
-          navigate("/login");
-          return;
-        }
-        if (session.walletCoin < cost) {
-          toast({
-            title: "Müntidest jääb puudu",
-            description: `Selle avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
-            variant: "destructive",
-          });
-          navigate("/paketid");
-          return;
-        }
-        const buy = await piibelBuyContentEpisode({
-          user_id: session.piibelUserId,
-          unique_token: session.piibelUniqueToken,
-          content_id: book.id,
-          content_episode_id: episode.id,
-          coin: cost,
+      await openSingleMediaEpisode(book, episodes[0], mediaField);
+    } catch (e) {
+      toast({
+        title: "Avamine ebaõnnestus",
+        description: e instanceof Error ? e.message : "Tundmatu viga",
+        variant: "destructive",
+      });
+    } finally {
+      setOpeningId(null);
+    }
+  };
+
+  /** Avab ühe audio/video peatüki: vajadusel ostab müntide eest. */
+  async function openSingleMediaEpisode(
+    book: EraamatApi,
+    initialEpisode: PiibelEpisode,
+    mediaField: "audio" | "video",
+  ) {
+    const paidField = mediaField === "audio" ? "is_audio_paid" : "is_video_paid";
+    const coinField = mediaField === "audio" ? "is_audio_coin" : "is_video_coin";
+    let episode = initialEpisode;
+
+    const isEpisodePaid = Number((episode as any)[paidField] || 0) === 1;
+    const cost = Number((episode as any)[coinField] || 0);
+    const alreadyBought =
+      Number(episode.is_buy || 0) === 1 ||
+      purchasedEpisodeIds.has(String(episode.id)) ||
+      purchasedBookIds.has(String(book.id));
+
+    if (isEpisodePaid && !alreadyBought && cost > 0) {
+      if (!session) {
+        toast({ title: "Sisselogimine vajalik", variant: "destructive" });
+        navigate("/login");
+        return;
+      }
+      if (session.walletCoin < cost) {
+        toast({
+          title: "Müntidest jääb puudu",
+          description: `Selle avamiseks on vaja ${cost} münti, sul on ${session.walletCoin}.`,
+          variant: "destructive",
         });
-        if (buy.status !== 200) {
-          toast({
-            title: "Ostmine ebaõnnestus",
-            description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
-            variant: "destructive",
-          });
-          return;
-        }
-        setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
-        await refreshProfile();
-        toast({ title: "Avatud!", description: `−${cost} münti` });
+        navigate("/paketid");
+        return;
       }
+      const buy = await piibelBuyContentEpisode({
+        user_id: session.piibelUserId,
+        unique_token: session.piibelUniqueToken,
+        content_id: book.id,
+        content_episode_id: episode.id,
+        coin: cost,
+      });
+      if (buy.status !== 200) {
+        toast({
+          title: "Ostmine ebaõnnestus",
+          description: `${buy.message || "Tundmatu viga"} (status ${buy.status}).`,
+          variant: "destructive",
+        });
+        return;
+      }
+      setPurchasedEpisodeIds((prev) => new Set(prev).add(String(episode.id)));
+      await refreshProfile();
+      toast({ title: "Avatud!", description: `−${cost} münti` });
+    }
 
-      const rawSrc = String((episode as any)[mediaField]).trim();
-      if (mediaField === "audio") {
-        const url = rawSrc.startsWith("http")
-          ? proxyUrl(rawSrc, { paid: isEpisodePaid || isPaid(book) })
-          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) });
-        setPlayer({ kind: "audio", book, url });
-      } else {
-        const yt = youtubeEmbed(rawSrc);
-        const url = yt || (rawSrc.startsWith("http")
-          ? rawSrc
-          : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) }));
-        setPlayer({ kind: "video", book, url });
-      }
+    const rawSrc = String((episode as any)[mediaField] || "").trim();
+    if (!rawSrc) {
+      toast({ title: "Sisu pole saadaval", variant: "destructive" });
+      return;
+    }
+    setEpisodeList(null);
+    if (mediaField === "audio") {
+      const url = rawSrc.startsWith("http")
+        ? proxyUrl(rawSrc, { paid: isEpisodePaid || isPaid(book) })
+        : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) });
+      setPlayer({ kind: "audio", book, url });
+    } else {
+      const yt = youtubeEmbed(rawSrc);
+      const url = yt || (rawSrc.startsWith("http")
+        ? rawSrc
+        : proxyUrl(normalizeEpisodeBookUrl(rawSrc), { paid: isEpisodePaid || isPaid(book) }));
+      setPlayer({ kind: "video", book, url });
+    }
+  }
     } catch (e) {
       toast({
         title: "Avamine ebaõnnestus",
