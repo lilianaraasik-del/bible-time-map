@@ -118,6 +118,7 @@ export default function Eraamatud() {
   const [manageOpen, setManageOpen] = useState(false);
   const [isOnline, setIsOnline] = useState<boolean>(typeof navigator === "undefined" ? true : navigator.onLine);
   const [playerBlobUrl, setPlayerBlobUrl] = useState<string | null>(null);
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   useEffect(() => {
     const on = () => setIsOnline(true);
@@ -143,6 +144,15 @@ export default function Eraamatud() {
       .then(setItems)
       .catch((e) => setError(e?.message || "Viga"))
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   // Keela kopeerimine, teksti valimine, paremklõps ja piltide lohistamine/salvestamine sellel lehel.
@@ -583,17 +593,25 @@ export default function Eraamatud() {
             Lae rakendus androidile&nbsp; &nbsp; &nbsp;&nbsp;
           </a>
           <button
-            onClick={() => {
-              toast({
-                title: "Lisa avaekraanile",
-                description:
-                  "iOS: vajuta Share ja vali 'Lisa avaekraanile'. Android: brauseri menüü → 'Lisa avaekraanile' või 'Installi rakendus'.",
-              });
+            onClick={async () => {
+              if (installPrompt) {
+                (installPrompt as any).prompt();
+                const { outcome } = await (installPrompt as any).userChoice;
+                if (outcome === "accepted") {
+                  setInstallPrompt(null);
+                }
+              } else {
+                toast({
+                  title: "Lisa KERK avaekraanile",
+                  description:
+                    "iOS: vajuta Share ja vali 'Lisa avaekraanile'. Android: brauseri menüü → 'Lisa avaekraanile' või 'Installi rakendus'.",
+                });
+              }
             }}
             className="inline-flex items-center gap-2 mt-2 text-sm text-primary hover:underline font-medium"
           >
             <Home className="h-4 w-4" />
-            Lisa avaekraanile
+            {installPrompt ? "Installi KERK" : "Lisa KERK avaekraanile"}
           </button>
         </header>
 
