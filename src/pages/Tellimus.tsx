@@ -97,7 +97,7 @@ export default function Tellimus() {
       <Navigation />
       <main className="max-w-4xl mx-auto px-4 py-10">
         <header className="text-center mb-10">
-          <h1 className="font-serif text-4xl font-bold mb-3">Piibli materjalide tellimus</h1>
+          <h1 className="font-serif text-4xl font-bold mb-3">E-raamatute tellimus</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
             Saa ligipääs kõikidele e-raamatutele ja materjalidele. Tühista igal ajal.
           </p>
