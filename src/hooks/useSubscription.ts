@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { getStripeEnvironment } from "@/lib/stripe";
+import { getSubscriptionStripeEnvironment } from "@/lib/stripe";
 
 interface SubscriptionRow {
   status: string;
@@ -23,7 +23,7 @@ export function useSubscription() {
       }
       let env: "sandbox" | "live";
       try {
-        env = getStripeEnvironment();
+        env = getSubscriptionStripeEnvironment();
       } catch {
         setSubscription(null);
         return;
