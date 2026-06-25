@@ -6,6 +6,7 @@ import { type StripeEnv, createStripeClient } from "../_shared/stripe.ts";
 interface Body {
   priceId: string;
   returnUrl: string;
+  cancelUrl?: string;
   environment: StripeEnv;
 }
 
@@ -15,30 +16,48 @@ async function resolveOrCreateCustomer(
 ): Promise<string> {
   if (!/^[a-zA-Z0-9_-]+$/.test(options.userId)) throw new Error("Invalid userId");
 
-  const found = await stripe.customers.search({
+  const found = await withStep("customer search", () => stripe.customers.search({
     query: `metadata['userId']:'${options.userId}'`,
     limit: 1,
-  });
+  }));
   if (found.data.length) return found.data[0].id;
 
   if (options.email) {
-    const existing = await stripe.customers.list({ email: options.email, limit: 1 });
+    const existing = await withStep("customer list", () => stripe.customers.list({ email: options.email, limit: 1 }));
     if (existing.data.length) {
       const customer = existing.data[0];
       if (customer.metadata?.userId !== options.userId) {
-        await stripe.customers.update(customer.id, {
+        await withStep("customer update", () => stripe.customers.update(customer.id, {
           metadata: { ...customer.metadata, userId: options.userId },
-        });
+        }));
       }
       return customer.id;
     }
   }
 
-  const created = await stripe.customers.create({
+  const created = await withStep("customer create", () => stripe.customers.create({
     ...(options.email && { email: options.email }),
     metadata: { userId: options.userId },
-  });
+  }));
   return created.id;
+}
+
+async function withStep<T>(step: string, action: () => Promise<T>): Promise<T> {
+  try {
+    return await action();
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`${step}: ${msg}`);
+  }
+}
+
+function withSyncStep<T>(step: string, action: () => T): T {
+  try {
+    return action();
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`${step}: ${msg}`);
+  }
 }
 
 Deno.serve(async (req) => {
@@ -68,7 +87,7 @@ Deno.serve(async (req) => {
     });
 
     const jwt = authHeader.replace("Bearer ", "");
-    const { data: userData, error: userError } = await admin.auth.getUser(jwt);
+    const { data: userData, error: userError } = await withStep("auth getUser", () => admin.auth.getUser(jwt));
     if (userError || !userData?.user) {
       return new Response(JSON.stringify({ error: "Vigane sessioon" }), {
         status: 401,
@@ -83,9 +102,12 @@ Deno.serve(async (req) => {
     }
     if (!body.returnUrl) throw new Error("Missing returnUrl");
 
-    const stripe = createStripeClient(body.environment);
+    const stripe = withSyncStep("stripe client", () => createStripeClient(body.environment));
 
-    const prices = await stripe.prices.list({ lookup_keys: [body.priceId] });
+    const prices = await withStep("price lookup", () => stripe.prices.list({ lookup_keys: [body.priceId] }));
+    if (!Array.isArray(prices.data)) {
+      throw new Error(`Price lookup failed: ${JSON.stringify(prices).slice(0, 300)}`);
+    }
     if (!prices.data.length) throw new Error("Price not found");
     const stripePrice = prices.data[0];
 
@@ -94,23 +116,25 @@ Deno.serve(async (req) => {
       userId: userData.user.id,
     });
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await withStep("checkout session", () => stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "subscription",
-      ui_mode: "embedded_page",
-      return_url: body.returnUrl,
+      success_url: body.returnUrl,
+      cancel_url: body.cancelUrl || body.returnUrl.replace(/\?.*$/, ""),
       customer: customerId,
       metadata: { userId: userData.user.id },
       subscription_data: { metadata: { userId: userData.user.id } },
-    });
+    }));
 
-    return new Response(JSON.stringify({ clientSecret: session.client_secret }), {
+    if (!session.url) throw new Error("Checkout URL puudub");
+
+    return new Response(JSON.stringify({ url: session.url }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
-    console.error("create-subscription-checkout error:", msg);
+    console.error("create-subscription-checkout error:", msg, e instanceof Error ? e.stack : "");
     return new Response(JSON.stringify({ error: msg }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
