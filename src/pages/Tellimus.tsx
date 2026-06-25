@@ -96,6 +96,18 @@ export default function Tellimus() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="max-w-4xl mx-auto px-4 py-10">
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Tagasi
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/eraamatud">E-raamatud</Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/profiil"><User className="h-4 w-4 mr-1" /> Minu profiil</Link>
+          </Button>
+        </div>
+
         <header className="text-center mb-10">
           <h1 className="font-serif text-4xl font-bold mb-3">E-raamatute tellimus</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
