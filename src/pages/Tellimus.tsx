@@ -3,8 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { ArrowLeft, Check, Loader2, Sparkles, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getStripe } from "@/lib/stripe";
 import { getSubscriptionStripeEnvironment } from "@/lib/stripe";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -32,6 +34,7 @@ export default function Tellimus() {
 
   const [selected, setSelected] = useState<Plan | null>(null);
   const [creating, setCreating] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
 
   // Kui sisselogimata, suuna login lehele
@@ -57,13 +60,12 @@ export default function Tellimus() {
           priceId,
           environment: getSubscriptionStripeEnvironment(),
           returnUrl: `${window.location.origin}/tellimus?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: `${window.location.origin}/tellimus`,
         },
       });
-      if (error || !data?.url) {
+      if (error || !data?.clientSecret) {
         throw new Error(error?.message || data?.error || "Checkout ebaõnnestus");
       }
-      window.location.href = data.url;
+      setClientSecret(data.clientSecret);
     } catch (e) {
       toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
       setSelected(null);
@@ -112,6 +114,16 @@ export default function Tellimus() {
             Saa ligipääs kõikidele e-raamatutele ja materjalidele. Tühista igal ajal.
           </p>
         </header>
+
+        {clientSecret && (
+          <Card className="mb-8">
+            <CardContent className="p-4 sm:p-6">
+              <EmbeddedCheckoutProvider stripe={getStripe()} options={{ clientSecret }}>
+                <EmbeddedCheckout />
+              </EmbeddedCheckoutProvider>
+            </CardContent>
+          </Card>
+        )}
 
         {!authLoading && !subLoading && isActive && (
           <Card className="mb-8 border-primary/40">
