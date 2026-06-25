@@ -69,7 +69,9 @@ Deno.serve(async (req) => {
   }
 
   try {
+    let checkpoint = "start";
     const authHeader = req.headers.get("Authorization");
+    checkpoint = "auth header";
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Autentimine vajalik" }), {
         status: 401,
@@ -79,14 +81,17 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    checkpoint = "env read";
     if (!supabaseUrl || !serviceRoleKey) throw new Error("Backend võtmed puuduvad");
 
     const admin = withSyncStep("backend client", () => createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     }));
+    checkpoint = "backend client";
 
     const jwt = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await withStep("auth getUser", () => admin.auth.getUser(jwt));
+    checkpoint = "auth getUser";
     if (userError || !userData?.user) {
       return new Response(JSON.stringify({ error: "Vigane sessioon" }), {
         status: 401,
@@ -95,6 +100,7 @@ Deno.serve(async (req) => {
     }
 
     const body = (await req.json()) as Body;
+    checkpoint = "body parsed";
     if (!body.priceId || !/^[a-zA-Z0-9_-]+$/.test(body.priceId)) throw new Error("Invalid priceId");
     if (body.environment !== "sandbox" && body.environment !== "live") {
       throw new Error("Invalid environment");
@@ -102,8 +108,10 @@ Deno.serve(async (req) => {
     if (!body.returnUrl) throw new Error("Missing returnUrl");
 
     const stripe = withSyncStep("stripe client", () => createStripeClient(body.environment));
+    checkpoint = "stripe client";
 
     const prices = await withStep("price lookup", () => stripe.prices.list({ lookup_keys: [body.priceId] }));
+    checkpoint = "price lookup";
     if (!prices.data.length) throw new Error("Price not found");
     const stripePrice = prices.data[0];
 
@@ -111,6 +119,7 @@ Deno.serve(async (req) => {
       email: userData.user.email,
       userId: userData.user.id,
     });
+    checkpoint = "customer";
 
     const session = await withStep("checkout session", () => stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
@@ -121,6 +130,7 @@ Deno.serve(async (req) => {
       metadata: { userId: userData.user.id },
       subscription_data: { metadata: { userId: userData.user.id } },
     }));
+    checkpoint = "checkout session";
 
     return new Response(JSON.stringify({ clientSecret: session.client_secret }), {
       status: 200,
