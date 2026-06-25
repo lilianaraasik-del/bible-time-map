@@ -68,8 +68,8 @@ Deno.serve(async (req) => {
     });
   }
 
+  let checkpoint = "start";
   try {
-    let checkpoint = "start";
     const authHeader = req.headers.get("Authorization");
     checkpoint = "auth header";
     if (!authHeader?.startsWith("Bearer ")) {
@@ -139,7 +139,7 @@ Deno.serve(async (req) => {
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     console.error("create-subscription-checkout error:", msg, e instanceof Error ? e.stack : "");
-    return new Response(JSON.stringify({ error: msg }), {
+    return new Response(JSON.stringify({ error: `${checkpoint}: ${msg}` }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
