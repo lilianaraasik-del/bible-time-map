@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Check, Loader2, Sparkles, User } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Loader2, Sparkles, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getSubscriptionStripeEnvironment } from "@/lib/stripe";
 import { useAuth } from "@/contexts/AuthContext";
@@ -31,7 +31,7 @@ export default function Tellimus() {
   const { isActive, loading: subLoading, refresh } = useSubscription();
 
   const [selected, setSelected] = useState<Plan | null>(null);
-  const [creating, setCreating] = useState(false);
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
 
   // Kui sisselogimata, suuna login lehele
@@ -50,7 +50,7 @@ export default function Tellimus() {
 
   const startCheckout = async (priceId: Plan) => {
     setSelected(priceId);
-    setCreating(true);
+    setCheckoutUrl(null);
     try {
       const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
         body: {
@@ -60,26 +60,15 @@ export default function Tellimus() {
           cancelUrl: `${window.location.origin}/tellimus`,
         },
       });
-      // Loe vea sisu välja kui edge function tagastas non-2xx
-      let url: string | undefined = data?.url;
-      let errMsg: string | undefined;
-      if (error) {
-        try {
-          const ctx = (error as { context?: Response }).context;
-          if (ctx && typeof ctx.json === "function") {
-            const body = await ctx.json();
-            errMsg = body?.error;
-          }
-        } catch { /* ignore */ }
-        errMsg = errMsg || (error as Error).message;
+
+      if (error || !data?.url) {
+        throw new Error(data?.error || error?.message || "Checkout ebaõnnestus");
       }
-      if (!url) throw new Error(errMsg || data?.error || "Checkout ebaõnnestus");
-      // Suuna sama aknas Stripe Checkoutile - tagasi tullakse return_url-iga
-      window.location.assign(url);
+
+      setCheckoutUrl(data.url);
     } catch (e) {
       toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
       setSelected(null);
-      setCreating(false);
     }
   };
 
@@ -124,6 +113,22 @@ export default function Tellimus() {
           </p>
         </header>
 
+        {checkoutUrl && (
+          <Card className="mb-8 border-primary/40">
+            <CardContent className="p-6 flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <div className="font-medium">Makseleht on valmis</div>
+                <div className="text-sm text-muted-foreground">Ava Stripe makseleht ja lõpeta tellimus turvaliselt seal.</div>
+              </div>
+              <Button asChild>
+                <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4 mr-2" /> Ava makseleht
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         {!authLoading && !subLoading && isActive && (
           <Card className="mb-8 border-primary/40">
             <CardContent className="p-6 flex items-center justify-between gap-4 flex-wrap">
@@ -165,10 +170,10 @@ export default function Tellimus() {
                 </ul>
                 <Button
                   onClick={() => startCheckout(p.id)}
-                  disabled={creating && selected === p.id}
+                  disabled={selected === p.id && !checkoutUrl}
                   className="mt-2"
                 >
-                  {creating && selected === p.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  {selected === p.id && !checkoutUrl ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   {isActive ? "Vaheta plaani" : "Telli"}
                 </Button>
               </CardContent>
