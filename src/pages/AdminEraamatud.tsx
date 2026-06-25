@@ -43,6 +43,51 @@ export default function AdminEraamatud() {
   const [books, setBooks] = useState<BookRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importLog, setImportLog] = useState<string[]>([]);
+
+  const onImportFromApi = async (overwrite = false) => {
+    if (importing) return;
+    if (!confirm(overwrite
+      ? "Impordi kõik API-st üle (asenda olemasolevad)?"
+      : "Impordi kõik raamatud api.piibel.ee-st (vahele jätta juba imporditud)?")) return;
+    setImporting(true);
+    setImportLog([]);
+    try {
+      let offset: number | null = 0;
+      let totalImported = 0, totalSkipped = 0, totalFailed = 0, totalCount = 0;
+      while (offset !== null) {
+        setImportLog((l) => [...l, `Töötlen alates ${offset}...`]);
+        const { data, error } = await supabase.functions.invoke("import-eraamatud", {
+          body: { offset, limit: 5, overwrite },
+        });
+        if (error) throw error;
+        const res = data as {
+          total: number; nextOffset: number | null;
+          imported: number; skipped: number; failed: number;
+          items: { title: string; status: string; reason?: string }[];
+        };
+        totalCount = res.total;
+        totalImported += res.imported;
+        totalSkipped += res.skipped;
+        totalFailed += res.failed;
+        setImportLog((l) => [
+          ...l,
+          ...res.items.map((it) => `  ${it.status === "failed" ? "✗" : "✓"} ${it.title}${it.reason ? ` (${it.reason})` : ""}`),
+        ]);
+        offset = res.nextOffset;
+      }
+      toast({
+        title: "Import valmis",
+        description: `${totalImported} imporditud, ${totalSkipped} vahele jäetud, ${totalFailed} ebaõnnestus (${totalCount} kokku)`,
+      });
+      void loadBooks();
+    } catch (e) {
+      toast({ title: "Impordi viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
+    } finally {
+      setImporting(false);
+    }
+  };
 
   // form
   const [title, setTitle] = useState("");
