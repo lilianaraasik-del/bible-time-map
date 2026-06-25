@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Check, Loader2, Sparkles, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getStripe, getStripeEnvironment } from "@/lib/stripe";
+import { getStripeEnvironment } from "@/lib/stripe";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { toast } from "@/hooks/use-toast";
@@ -32,7 +31,6 @@ export default function Tellimus() {
   const { isActive, loading: subLoading, refresh } = useSubscription();
 
   const [selected, setSelected] = useState<Plan | null>(null);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
 
@@ -53,19 +51,19 @@ export default function Tellimus() {
   const startCheckout = async (priceId: Plan) => {
     setSelected(priceId);
     setCreating(true);
-    setClientSecret(null);
     try {
       const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
         body: {
           priceId,
           environment: getStripeEnvironment(),
           returnUrl: `${window.location.origin}/tellimus?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+          cancelUrl: `${window.location.origin}/tellimus`,
         },
       });
-      if (error || !data?.clientSecret) {
+      if (error || !data?.url) {
         throw new Error(error?.message || data?.error || "Checkout ebaõnnestus");
       }
-      setClientSecret(data.clientSecret);
+      window.location.href = data.url;
     } catch (e) {
       toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
       setSelected(null);
@@ -115,7 +113,7 @@ export default function Tellimus() {
           </p>
         </header>
 
-        {!authLoading && !subLoading && isActive && !clientSecret && (
+        {!authLoading && !subLoading && isActive && (
           <Card className="mb-8 border-primary/40">
             <CardContent className="p-6 flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
@@ -135,52 +133,37 @@ export default function Tellimus() {
           </Card>
         )}
 
-        {!clientSecret && (
-          <div className="grid md:grid-cols-2 gap-6">
-            {PLANS.map((p) => (
-              <Card key={p.id} className="relative overflow-hidden">
-                {p.badge && (
-                  <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> {p.badge}
-                  </div>
-                )}
-                <CardContent className="p-6 flex flex-col gap-4">
-                  <h2 className="font-serif text-2xl font-semibold">{p.title}</h2>
-                  <div>
-                    <span className="text-4xl font-bold">{p.price}</span>
-                    <span className="text-muted-foreground"> / {p.period}</span>
-                  </div>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Kõik e-raamatud</li>
-                    <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Tühista igal ajal</li>
-                    <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Toeta meie tööd</li>
-                  </ul>
-                  <Button
-                    onClick={() => startCheckout(p.id)}
-                    disabled={creating && selected === p.id}
-                    className="mt-2"
-                  >
-                    {creating && selected === p.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-                    {isActive ? "Vaheta plaani" : "Telli"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {clientSecret && (
-          <div className="mt-6">
-            <Button variant="ghost" onClick={() => { setClientSecret(null); setSelected(null); }} className="mb-4">
-              ← Tagasi plaanide juurde
-            </Button>
-            <div id="checkout" className="bg-card rounded-lg overflow-hidden">
-              <EmbeddedCheckoutProvider stripe={getStripe()} options={{ clientSecret }}>
-                <EmbeddedCheckout />
-              </EmbeddedCheckoutProvider>
-            </div>
-          </div>
-        )}
+        <div className="grid md:grid-cols-2 gap-6">
+          {PLANS.map((p) => (
+            <Card key={p.id} className="relative overflow-hidden">
+              {p.badge && (
+                <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> {p.badge}
+                </div>
+              )}
+              <CardContent className="p-6 flex flex-col gap-4">
+                <h2 className="font-serif text-2xl font-semibold">{p.title}</h2>
+                <div>
+                  <span className="text-4xl font-bold">{p.price}</span>
+                  <span className="text-muted-foreground"> / {p.period}</span>
+                </div>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Kõik e-raamatud</li>
+                  <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Tühista igal ajal</li>
+                  <li className="flex gap-2"><Check className="w-4 h-4 text-primary mt-0.5" /> Toeta meie tööd</li>
+                </ul>
+                <Button
+                  onClick={() => startCheckout(p.id)}
+                  disabled={creating && selected === p.id}
+                  className="mt-2"
+                >
+                  {creating && selected === p.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  {isActive ? "Vaheta plaani" : "Telli"}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </main>
     </div>
   );
