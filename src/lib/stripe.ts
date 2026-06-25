@@ -20,3 +20,7 @@ export function getStripe(): Promise<Stripe | null> {
 export function getStripeEnvironment(): StripeEnv {
   return environment;
 }
+
+export function getSubscriptionStripeEnvironment(): StripeEnv {
+  return "live";
+}
