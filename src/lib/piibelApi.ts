@@ -338,9 +338,15 @@ export async function piibelGetEpisodeBookByContent(opts: {
     // sisu. Peatume kohe, kui uus leht ei lisa ühtegi uut peatükki.
     if (seenIds.size === before) break;
 
-    if (!res.more_page) break;
-    if (res.total_page && page >= Number(res.total_page)) break;
+    const totalPage = res.total_page ? Number(res.total_page) : null;
+    const hasMoreByTotal = totalPage !== null && page < totalPage;
+    // API tagastab vahel more_page=false isegi kui total_page näitab veel lehti.
+    // Eelistame total_page'i, et audioraamatute pikemad episoodide nimekirjad
+    // täielikult kätte saada.
+    if (!hasMoreByTotal && !res.more_page) break;
+    if (totalPage !== null && page >= totalPage) break;
     page++;
+
   }
   return {
     status: last?.status ?? 200,
