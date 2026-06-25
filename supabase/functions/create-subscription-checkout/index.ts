@@ -1,7 +1,7 @@
 // Edge function: loo Stripe embedded checkout sessioon tellimuse jaoks.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { type StripeEnv, stripeGatewayRequest } from "../_shared/stripe.ts";
+import { type StripeEnv, createStripeClient } from "../_shared/stripe.ts";
 
 interface Body {
   priceId: string;
@@ -10,23 +10,23 @@ interface Body {
 }
 
 async function resolveOrCreateCustomer(
-  env: StripeEnv,
+  stripe: ReturnType<typeof createStripeClient>,
   options: { email?: string; userId: string }
 ): Promise<string> {
   if (!/^[a-zA-Z0-9_-]+$/.test(options.userId)) throw new Error("Invalid userId");
 
-  const found = await withStep("customer search", () => stripeGatewayRequest<{ data: Array<{ id: string }> }>(env, "GET", "/v1/customers/search", {
+  const found = await withStep("customer search", () => stripe.customers.search({
     query: `metadata['userId']:'${options.userId}'`,
     limit: 1,
   }));
   if (found.data.length) return found.data[0].id;
 
   if (options.email) {
-    const existing = await withStep("customer list", () => stripeGatewayRequest<{ data: Array<{ id: string; metadata?: Record<string, string> }> }>(env, "GET", "/v1/customers", { email: options.email, limit: 1 }));
+    const existing = await withStep("customer list", () => stripe.customers.list({ email: options.email, limit: 1 }));
     if (existing.data.length) {
       const customer = existing.data[0];
       if (customer.metadata?.userId !== options.userId) {
-        await withStep("customer update", () => stripeGatewayRequest(env, "POST", `/v1/customers/${customer.id}`, {
+        await withStep("customer update", () => stripe.customers.update(customer.id, {
           metadata: { ...customer.metadata, userId: options.userId },
         }));
       }
@@ -34,7 +34,7 @@ async function resolveOrCreateCustomer(
     }
   }
 
-  const created = await withStep("customer create", () => stripeGatewayRequest<{ id: string }>(env, "POST", "/v1/customers", {
+  const created = await withStep("customer create", () => stripe.customers.create({
     ...(options.email && { email: options.email }),
     metadata: { userId: options.userId },
   }));
@@ -92,19 +92,21 @@ Deno.serve(async (req) => {
     }
     if (!body.returnUrl) throw new Error("Missing returnUrl");
 
-    const prices = await withStep("price lookup", () => stripeGatewayRequest<{ data: Array<{ id: string }> }>(body.environment, "GET", "/v1/prices", { lookup_keys: [body.priceId] }));
+    const stripe = createStripeClient(body.environment);
+
+    const prices = await withStep("price lookup", () => stripe.prices.list({ lookup_keys: [body.priceId] }));
     if (!prices.data.length) throw new Error("Price not found");
     const stripePrice = prices.data[0];
 
-    const customerId = await resolveOrCreateCustomer(body.environment, {
+    const customerId = await resolveOrCreateCustomer(stripe, {
       email: userData.user.email,
       userId: userData.user.id,
     });
 
-    const session = await withStep("checkout session", () => stripeGatewayRequest<{ client_secret: string }>(body.environment, "POST", "/v1/checkout/sessions", {
+    const session = await withStep("checkout session", () => stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "subscription",
-      ui_mode: "embedded_page",
+      ui_mode: "embedded",
       return_url: body.returnUrl,
       customer: customerId,
       metadata: { userId: userData.user.id },

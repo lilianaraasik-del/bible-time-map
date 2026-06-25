@@ -1,5 +1,5 @@
 import { encode } from "https://deno.land/std@0.168.0/encoding/hex.ts";
-import Stripe from "https://esm.sh/stripe@22.0.2?target=denonext";
+import Stripe from "https://esm.sh/stripe@18.5.0";
 
 const getEnv = (key: string): string => {
   const value = Deno.env.get(key);
@@ -22,71 +22,19 @@ export function createStripeClient(env: StripeEnv): Stripe {
   const lovableApiKey = getEnv("LOVABLE_API_KEY");
 
   return new Stripe(connectionApiKey, {
-    apiVersion: "2026-03-25.dahlia",
-    httpClient: Stripe.createFetchHttpClient((input: RequestInfo | URL, init?: RequestInit) => {
-      const stripeUrl = input instanceof Request ? input.url : input.toString();
-      const gatewayUrl = stripeUrl.replace("https://api.stripe.com", GATEWAY_STRIPE_BASE);
+    apiVersion: "2025-03-31.basil",
+    httpClient: Stripe.createFetchHttpClient((url: string | URL, init?: RequestInit) => {
+      const gatewayUrl = url.toString().replace("https://api.stripe.com", GATEWAY_STRIPE_BASE);
       return fetch(gatewayUrl, {
         ...init,
         headers: {
-          ...Object.fromEntries(
-            new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined)).entries()
-          ),
+          ...Object.fromEntries(new Headers(init?.headers).entries()),
           "X-Connection-Api-Key": connectionApiKey,
           "Lovable-API-Key": lovableApiKey,
         },
       });
     }),
   });
-}
-
-function appendFormValue(params: URLSearchParams, key: string, value: unknown) {
-  if (value === undefined || value === null) return;
-  if (Array.isArray(value)) {
-    value.forEach((item, index) => appendFormValue(params, `${key}[${index}]`, item));
-    return;
-  }
-  if (typeof value === "object") {
-    for (const [childKey, childValue] of Object.entries(value as Record<string, unknown>)) {
-      appendFormValue(params, `${key}[${childKey}]`, childValue);
-    }
-    return;
-  }
-  params.append(key, String(value));
-}
-
-export async function stripeGatewayRequest<T>(
-  env: StripeEnv,
-  method: "GET" | "POST",
-  path: string,
-  body?: Record<string, unknown>
-): Promise<T> {
-  const connectionApiKey = getConnectionApiKey(env);
-  const lovableApiKey = getEnv("LOVABLE_API_KEY");
-  const params = new URLSearchParams();
-  for (const [key, value] of Object.entries(body ?? {})) appendFormValue(params, key, value);
-
-  const url = new URL(`${GATEWAY_STRIPE_BASE}${path}`);
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${connectionApiKey}`,
-    "Stripe-Version": "2026-03-25.dahlia",
-    "X-Connection-Api-Key": connectionApiKey,
-    "Lovable-API-Key": lovableApiKey,
-  };
-
-  const response = await fetch(method === "GET" && params.size ? `${url.toString()}?${params}` : url, {
-    method,
-    headers: method === "POST" ? { ...headers, "Content-Type": "application/x-www-form-urlencoded" } : headers,
-    body: method === "POST" ? params.toString() : undefined,
-  });
-
-  const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
-  if (!response.ok) {
-    const message = data?.error?.message || data?.message || text || `Stripe request failed (${response.status})`;
-    throw new Error(message);
-  }
-  return data as T;
 }
 
 export async function verifyWebhook(
