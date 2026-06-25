@@ -349,11 +349,10 @@ export default function Eraamatud() {
       const paidField = mediaField === "audio" ? "is_audio_paid" : "is_video_paid";
       const coinField = mediaField === "audio" ? "is_audio_coin" : "is_video_coin";
 
-      // 1) Otsene full_novel (vana käitumine — ainult tasuta või book-tasemel tasuline)
+      // 1) Otsene full_novel (ainult video puhul — audiole näitame alati episoodide loendit)
       const direct = mediaField === "audio" ? audioUrl(book) : videoEmbedUrl(book);
-      if (direct && !isPaid(book)) {
-        if (mediaField === "audio") setPlayer({ kind: "audio", book, url: direct });
-        else setPlayer({ kind: "video", book, url: direct });
+      if (mediaField === "video" && direct && !isPaid(book)) {
+        setPlayer({ kind: "video", book, url: direct });
         return;
       }
 
@@ -369,7 +368,7 @@ export default function Eraamatud() {
       });
 
       if (episodes.length === 0 && direct) {
-        // Fallback book-level tasuline link
+        // Fallback book-level link
         const url = direct.startsWith("http") && mediaField === "video"
           ? direct
           : proxyUrl(direct.startsWith("http") ? direct : normalizeEpisodeBookUrl(direct), { paid: isPaid(book) });
@@ -382,13 +381,14 @@ export default function Eraamatud() {
         return;
       }
 
-      // Kui peatükke on rohkem kui üks — näita loendit (sissejuhatus on tavaliselt tasuta)
-      if (episodes.length > 1) {
+      // Audiole näitame alati episoodide loendit; videole ainult kui peatükke on mitu
+      if (mediaField === "audio" || episodes.length > 1) {
         setEpisodeList({ book, episodes, kind: mediaField });
         return;
       }
 
       await openSingleMediaEpisode(book, episodes[0], mediaField);
+
     } catch (e) {
       toast({
         title: "Avamine ebaõnnestus",
