@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   /** Loe sessioon andmebaasist (peale auth sessiooni taastamist). */
-  const loadSession = useCallback(async () => {
+  const loadSession = useCallback(async (opts?: { forceProfileRefresh?: boolean }) => {
     const {
       data: { session: authSession },
       error: authError,
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let walletCoin = 0;
     try {
-      piibelInvalidateCache("get_profile");
+      if (opts?.forceProfileRefresh) piibelInvalidateCache("get_profile");
       const profile = await piibelGetProfile(data.piibel_user_id, data.piibel_unique_token);
       if (profile.status === 200 && profile.result) {
         walletCoin = Number(profile.result.wallet_coin || 0);
@@ -286,7 +286,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, loading, login, loginWithGoogle, logout, refreshProfile: loadSession }}
+      value={{ session, loading, login, loginWithGoogle, logout, refreshProfile: () => loadSession({ forceProfileRefresh: true }) }}
     >
       {children}
     </AuthContext.Provider>
