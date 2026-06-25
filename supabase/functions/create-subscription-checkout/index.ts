@@ -50,6 +50,15 @@ async function withStep<T>(step: string, action: () => Promise<T>): Promise<T> {
   }
 }
 
+function withSyncStep<T>(step: string, action: () => T): T {
+  try {
+    return action();
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`${step}: ${msg}`);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") {
@@ -92,7 +101,7 @@ Deno.serve(async (req) => {
     }
     if (!body.returnUrl) throw new Error("Missing returnUrl");
 
-    const stripe = createStripeClient(body.environment);
+    const stripe = withSyncStep("stripe client", () => createStripeClient(body.environment));
 
     const prices = await withStep("price lookup", () => stripe.prices.list({ lookup_keys: [body.priceId] }));
     if (!prices.data.length) throw new Error("Price not found");
