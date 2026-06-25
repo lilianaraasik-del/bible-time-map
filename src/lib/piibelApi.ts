@@ -155,9 +155,12 @@ async function piibelPostCached<T = unknown>(
 
   const promise = piibelPost<T>(endpoint, body)
     .then((res) => {
-      // Ainult edukad vastused panen cache'i — 429 ja vead lasen uuesti proovida
+      // Edukad vastused cache'i pikemalt; 429 lühikeseks ajaks, et mitu komponenti
+      // ei kordaks sama päringut ja ei süvendaks rate-limit'i.
       if (res.status === 200) {
         responseCache.set(key, { expiresAt: Date.now() + ttlMs, value: res });
+      } else if (res.status === 429) {
+        responseCache.set(key, { expiresAt: Date.now() + 60_000, value: res });
       }
       return res;
     })
@@ -310,18 +313,33 @@ export async function piibelGetEpisodeBookByContent(opts: {
   content_id: string | number;
 }): Promise<PiibelApiResponse<PiibelEpisode[]>> {
   const all: PiibelEpisode[] = [];
+  const seenIds = new Set<string>();
   let page = 1;
   let last: PiibelApiResponse<PiibelEpisode[]> | null = null;
-  // Turvalise piiri jaoks max 20 lehte
-  for (let i = 0; i < 20; i++) {
-    const res = await piibelPost<PiibelEpisode[]>("get_episode_book_by_content", {
+  const maxPages = 20;
+
+  for (let i = 0; i < maxPages; i++) {
+    const res = await piibelPostCached<PiibelEpisode[]>("get_episode_book_by_content", {
       ...opts,
       page,
-    });
+    }, 10 * 60_000);
     last = res;
     if (res.status !== 200 || !Array.isArray(res.result)) break;
-    all.push(...res.result);
+
+    const before = seenIds.size;
+    for (const episode of res.result) {
+      const id = String(episode.id);
+      if (seenIds.has(id)) continue;
+      seenIds.add(id);
+      all.push(episode);
+    }
+
+    // Mõnel API vastusel jääb more_page tõeks ja järgmised lehed kordavad sama
+    // sisu. Peatume kohe, kui uus leht ei lisa ühtegi uut peatükki.
+    if (seenIds.size === before) break;
+
     if (!res.more_page) break;
+    if (res.total_page && page >= Number(res.total_page)) break;
     page++;
   }
   return {
