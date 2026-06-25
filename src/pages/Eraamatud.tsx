@@ -471,16 +471,7 @@ export default function Eraamatud() {
       setPlayer({ kind: "video", book, url });
     }
   }
-    } catch (e) {
-      toast({
-        title: "Avamine ebaõnnestus",
-        description: e instanceof Error ? e.message : "Tundmatu viga",
-        variant: "destructive",
-      });
-    } finally {
-      setOpeningId(null);
-    }
-  };
+
 
   /** Avab ühe peatüki: vajadusel ostab müntide eest, siis käivitab lugeja. */
   async function openSingleEpisode(book: EraamatApi, initialEpisode: PiibelEpisode) {
