@@ -107,7 +107,7 @@ export default function Eraamatud() {
   const [purchasedBookIds, setPurchasedBookIds] = useState<Set<string>>(new Set());
   const [purchasedEpisodeIds, setPurchasedEpisodeIds] = useState<Set<string>>(new Set());
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
-  const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[] } | null>(null);
+  const [episodeList, setEpisodeList] = useState<{ book: EraamatApi; episodes: PiibelEpisode[]; kind?: MediaKind } | null>(null);
   const [openingEpisodeId, setOpeningEpisodeId] = useState<string | null>(null);
   const episodeSummary = useMemo<Record<string, { count: number; minCoin: number; maxCoin: number; totalCoin: number }>>(() => ({}), []);
   const [sortKey, setSortKey] = useState<"default" | "title-asc" | "title-desc" | "price-asc" | "price-desc" | "type" | "newest">("default");
