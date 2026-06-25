@@ -321,8 +321,10 @@ export async function piibelGetEpisodeBookByContent(opts: {
   for (let i = 0; i < maxPages; i++) {
     const res = await piibelPostCached<PiibelEpisode[]>("get_episode_book_by_content", {
       ...opts,
+      page_no: page,
       page,
     }, 10 * 60_000);
+
     last = res;
     if (res.status !== 200 || !Array.isArray(res.result)) break;
 
