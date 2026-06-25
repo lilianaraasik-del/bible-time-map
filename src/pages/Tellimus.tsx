@@ -51,7 +51,6 @@ export default function Tellimus() {
   const startCheckout = async (priceId: Plan) => {
     setSelected(priceId);
     setCreating(true);
-    const checkoutWindow = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
         body: {
@@ -61,20 +60,25 @@ export default function Tellimus() {
           cancelUrl: `${window.location.origin}/tellimus`,
         },
       });
-      if (error || !data?.url) {
-        throw new Error(error?.message || data?.error || "Checkout ebaõnnestus");
+      // Loe vea sisu välja kui edge function tagastas non-2xx
+      let url: string | undefined = data?.url;
+      let errMsg: string | undefined;
+      if (error) {
+        try {
+          const ctx = (error as { context?: Response }).context;
+          if (ctx && typeof ctx.json === "function") {
+            const body = await ctx.json();
+            errMsg = body?.error;
+          }
+        } catch { /* ignore */ }
+        errMsg = errMsg || (error as Error).message;
       }
-      if (checkoutWindow) {
-        checkoutWindow.opener = null;
-        checkoutWindow.location.href = data.url;
-      } else {
-        window.location.href = data.url;
-      }
+      if (!url) throw new Error(errMsg || data?.error || "Checkout ebaõnnestus");
+      // Suuna sama aknas Stripe Checkoutile - tagasi tullakse return_url-iga
+      window.location.assign(url);
     } catch (e) {
-      checkoutWindow?.close();
       toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
       setSelected(null);
-    } finally {
       setCreating(false);
     }
   };
