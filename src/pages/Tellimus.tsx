@@ -51,6 +51,7 @@ export default function Tellimus() {
   const startCheckout = async (priceId: Plan) => {
     setSelected(priceId);
     setCreating(true);
+    const checkoutWindow = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.functions.invoke("create-subscription-checkout", {
         body: {
@@ -63,8 +64,14 @@ export default function Tellimus() {
       if (error || !data?.url) {
         throw new Error(error?.message || data?.error || "Checkout ebaõnnestus");
       }
-      window.open(data.url, "_blank", "noopener,noreferrer");
+      if (checkoutWindow) {
+        checkoutWindow.opener = null;
+        checkoutWindow.location.href = data.url;
+      } else {
+        window.location.href = data.url;
+      }
     } catch (e) {
+      checkoutWindow?.close();
       toast({ title: "Viga", description: e instanceof Error ? e.message : "Tundmatu viga", variant: "destructive" });
       setSelected(null);
     } finally {
