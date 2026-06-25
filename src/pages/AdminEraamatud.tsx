@@ -244,6 +244,7 @@ export default function AdminEraamatud() {
                 Minu profiil
               </Link>
             </Button>
+          </div>
         </div>
 
         <Card>
