@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown, Download, CheckCircle2, Trash2, WifiOff, HardDrive } from "lucide-react";
+import { BookOpen, Headphones, Video, Play, X, Lock, Loader2, Coins, LogOut, User as UserIcon, Smartphone, Home, ArrowUpDown, Download, CheckCircle2, Trash2, WifiOff, HardDrive, Sparkles } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
