@@ -1,5 +1,5 @@
 // Edge function: loo Stripe embedded checkout sessioon tellimuse jaoks.
-import { corsHeaders } from "@supabase/supabase-js/cors";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { type StripeEnv, createStripeClient } from "../_shared/stripe.ts";
 
