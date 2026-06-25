@@ -593,17 +593,25 @@ export default function Eraamatud() {
             Lae rakendus androidile&nbsp; &nbsp; &nbsp;&nbsp;
           </a>
           <button
-            onClick={() => {
-              toast({
-                title: "Lisa avaekraanile",
-                description:
-                  "iOS: vajuta Share ja vali 'Lisa avaekraanile'. Android: brauseri menüü → 'Lisa avaekraanile' või 'Installi rakendus'.",
-              });
+            onClick={async () => {
+              if (installPrompt) {
+                (installPrompt as any).prompt();
+                const { outcome } = await (installPrompt as any).userChoice;
+                if (outcome === "accepted") {
+                  setInstallPrompt(null);
+                }
+              } else {
+                toast({
+                  title: "Lisa KERK avaekraanile",
+                  description:
+                    "iOS: vajuta Share ja vali 'Lisa avaekraanile'. Android: brauseri menüü → 'Lisa avaekraanile' või 'Installi rakendus'.",
+                });
+              }
             }}
             className="inline-flex items-center gap-2 mt-2 text-sm text-primary hover:underline font-medium"
           >
             <Home className="h-4 w-4" />
-            Lisa avaekraanile
+            {installPrompt ? "Installi KERK" : "Lisa KERK avaekraanile"}
           </button>
         </header>
 
