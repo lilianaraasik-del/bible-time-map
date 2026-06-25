@@ -1127,12 +1127,24 @@ export default function Eraamatud() {
             <div className="overflow-auto p-2">
               <ul className="divide-y divide-border">
                 {episodeList.episodes.map((episode) => {
-                  const cost = Number(episode.is_book_coin || 0);
+                  const mediaKind = episodeList.kind;
+                  const isMedia = mediaKind === "audio" || mediaKind === "video";
+                  const paidField = mediaKind === "audio" ? "is_audio_paid" : mediaKind === "video" ? "is_video_paid" : null;
+                  const coinField = mediaKind === "audio" ? "is_audio_coin" : mediaKind === "video" ? "is_video_coin" : null;
+                  const mediaSrc = isMedia ? String((episode as any)[mediaKind!] || "").trim() : "";
+                  const isEpPaid = paidField ? Number((episode as any)[paidField] || 0) === 1 : false;
+                  const cost = isMedia
+                    ? Number((episode as any)[coinField!] || 0)
+                    : Number(episode.is_book_coin || 0);
                   const bought =
                     Number(episode.is_buy || 0) === 1 ||
-                    purchasedEpisodeIds.has(String(episode.id));
-                  const hasFile = !!episode.book;
+                    purchasedEpisodeIds.has(String(episode.id)) ||
+                    purchasedBookIds.has(String(episodeList.book.id));
+                  const hasFile = isMedia ? !!mediaSrc : !!episode.book;
+                  const isFreeIntro = isMedia && !isEpPaid;
                   const isOpening = openingEpisodeId === String(episode.id);
+                  const Icon = mediaKind === "audio" ? Headphones : mediaKind === "video" ? Video : BookOpen;
+                  const ctaLabel = mediaKind === "audio" ? "Kuula" : mediaKind === "video" ? "Vaata" : "Loe";
                   return (
                     <li
                       key={episode.id}
@@ -1145,23 +1157,40 @@ export default function Eraamatud() {
                             ? "Sisu pole veel saadaval"
                             : bought
                             ? "Ostetud"
-                            : cost > 0
-                            ? `${cost} münti`
-                            : "Tasuta"}
+                            : isFreeIntro || cost === 0
+                            ? "Tasuta"
+                            : `${cost} münti`}
                         </p>
                       </div>
                       <Button
                         size="sm"
                         variant={hasFile ? "default" : "secondary"}
                         disabled={!hasFile || isOpening}
-                        onClick={() => handleOpenEpisode(episodeList.book, episode)}
+                        onClick={async () => {
+                          if (isMedia) {
+                            try {
+                              setOpeningEpisodeId(String(episode.id));
+                              await openSingleMediaEpisode(episodeList.book, episode, mediaKind!);
+                            } catch (e) {
+                              toast({
+                                title: "Avamine ebaõnnestus",
+                                description: e instanceof Error ? e.message : "Tundmatu viga",
+                                variant: "destructive",
+                              });
+                            } finally {
+                              setOpeningEpisodeId(null);
+                            }
+                          } else {
+                            handleOpenEpisode(episodeList.book, episode);
+                          }
+                        }}
                       >
                         {isOpening ? (
                           <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
                         ) : (
-                          <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                          <Icon className="h-3.5 w-3.5 mr-1.5" />
                         )}
-                        {isOpening ? "Avan..." : hasFile ? "Loe" : "Pole saadaval"}
+                        {isOpening ? "Avan..." : hasFile ? ctaLabel : "Pole saadaval"}
                       </Button>
                     </li>
                   );
