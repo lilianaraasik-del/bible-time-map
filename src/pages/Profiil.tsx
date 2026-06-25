@@ -158,12 +158,20 @@ export default function Profiil() {
                 </p>
               </div>
             </div>
-            <Button asChild>
-              <Link to="/paketid">
-                <ShoppingBag className="h-4 w-4 mr-2" />
-                Osta münte
-              </Link>
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button asChild>
+                <Link to="/paketid">
+                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  Osta münte
+                </Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/tellimus">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Osta tellimus
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

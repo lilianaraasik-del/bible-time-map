@@ -74,6 +74,9 @@ export default function Paketid() {
           <Button variant="outline" size="sm" asChild>
             <Link to="/profiil"><User className="h-4 w-4 mr-1" /> Minu profiil</Link>
           </Button>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/tellimus"><Crown className="h-4 w-4 mr-1" /> Osta tellimus</Link>
+          </Button>
         </div>
 
         <header className="mb-10 text-center">
