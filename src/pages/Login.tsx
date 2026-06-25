@@ -18,7 +18,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!authLoading && session) {
-      navigate("/profiil", { replace: true });
+      navigate("/eraamatud", { replace: true });
     }
   }, [authLoading, session, navigate]);
 
