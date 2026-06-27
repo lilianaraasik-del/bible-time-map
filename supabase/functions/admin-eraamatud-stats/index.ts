@@ -1,6 +1,6 @@
 // Edge function: tagasta adminile tellijate nimekiri + raamatute avamise logi.
-import { corsHeaders } from "@supabase/supabase-js/cors";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
