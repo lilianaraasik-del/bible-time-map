@@ -141,7 +141,7 @@ export default function AdminEraamatud() {
   };
 
   useEffect(() => {
-    if (isAdmin) void loadBooks();
+    if (isAdmin) { void loadBooks(); void loadStats(); }
   }, [isAdmin]);
 
   const reset = () => {
