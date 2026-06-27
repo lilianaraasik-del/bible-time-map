@@ -1,0 +1,2 @@
+CREATE POLICY "Users can insert own opens" ON public.book_opens FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can delete own opens" ON public.book_opens FOR DELETE TO authenticated USING (auth.uid() = user_id);
