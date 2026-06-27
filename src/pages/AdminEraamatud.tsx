@@ -46,6 +46,31 @@ export default function AdminEraamatud() {
   const [importing, setImporting] = useState(false);
   const [importLog, setImportLog] = useState<string[]>([]);
 
+  // stats
+  type Subscriber = { user_id: string | null; email: string | null; status: string | null; price_id: string | null; current_period_start: string | null; current_period_end: string | null; cancel_at_period_end: boolean | null; environment: string | null; stripe_customer_id: string | null; stripe_subscription_id: string | null; created_at: string };
+  type ReadRow = { id: string; user_id: string | null; email: string | null; book_id: string | null; book_title: string | null; book_author: string | null; opened_at: string };
+  type TopBook = { book_id: string; title: string; count: number };
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [reads, setReads] = useState<ReadRow[]>([]);
+  const [topBooks, setTopBooks] = useState<TopBook[]>([]);
+
+  const loadStats = async () => {
+    setStatsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-eraamatud-stats", { body: {} });
+      if (error) throw error;
+      const res = data as { subscribers: Subscriber[]; reads: ReadRow[]; topBooks: TopBook[] };
+      setSubscribers(res.subscribers || []);
+      setReads(res.reads || []);
+      setTopBooks(res.topBooks || []);
+    } catch (e) {
+      toast({ title: "Statistika viga", description: e instanceof Error ? e.message : "Tundmatu", variant: "destructive" });
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
   const onImportFromApi = async (overwrite = false) => {
     if (importing) return;
     if (!confirm(overwrite
