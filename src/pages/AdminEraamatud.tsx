@@ -355,7 +355,101 @@ export default function AdminEraamatud() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardContent className="p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5" />
+                <h2 className="font-serif text-xl font-semibold">Tellijad ja lugemised</h2>
+              </div>
+              <Button size="sm" variant="outline" onClick={() => void loadStats()} disabled={statsLoading}>
+                {statsLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                Värskenda
+              </Button>
+            </div>
+
+            <div>
+              <h3 className="font-medium mb-2">Tellijad ({subscribers.length})</h3>
+              {subscribers.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Tellijaid pole.</p>
+              ) : (
+                <div className="overflow-auto max-h-80 border rounded">
+                  <table className="w-full text-sm">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="text-left p-2">Email</th>
+                        <th className="text-left p-2">Staatus</th>
+                        <th className="text-left p-2">Periood</th>
+                        <th className="text-left p-2">Env</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subscribers.map((s, i) => (
+                        <tr key={`${s.stripe_subscription_id ?? i}`} className="border-t">
+                          <td className="p-2">{s.email ?? s.user_id ?? "—"}</td>
+                          <td className="p-2">{s.status ?? "—"}{s.cancel_at_period_end ? " (cancel)" : ""}</td>
+                          <td className="p-2 whitespace-nowrap">
+                            {s.current_period_start ? new Date(s.current_period_start).toLocaleDateString("et-EE") : "—"}
+                            {" – "}
+                            {s.current_period_end ? new Date(s.current_period_end).toLocaleDateString("et-EE") : "—"}
+                          </td>
+                          <td className="p-2">{s.environment ?? "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="font-medium mb-2">Populaarseimad raamatud</h3>
+              {topBooks.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Lugemisi veel pole.</p>
+              ) : (
+                <ul className="text-sm space-y-1">
+                  {topBooks.slice(0, 20).map((t) => (
+                    <li key={t.book_id} className="flex justify-between border-b py-1">
+                      <span className="truncate">{t.title}</span>
+                      <span className="text-muted-foreground">{t.count}×</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div>
+              <h3 className="font-medium mb-2">Viimased avamised ({reads.length})</h3>
+              {reads.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Avamisi pole.</p>
+              ) : (
+                <div className="overflow-auto max-h-96 border rounded">
+                  <table className="w-full text-sm">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="text-left p-2">Aeg</th>
+                        <th className="text-left p-2">Kasutaja</th>
+                        <th className="text-left p-2">Raamat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reads.map((r) => (
+                        <tr key={r.id} className="border-t">
+                          <td className="p-2 whitespace-nowrap">{new Date(r.opened_at).toLocaleString("et-EE")}</td>
+                          <td className="p-2">{r.email ?? r.user_id ?? "—"}</td>
+                          <td className="p-2">{r.book_title ?? "—"}{r.book_author ? ` — ${r.book_author}` : ""}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         <div>
+
           <h2 className="font-serif text-xl font-semibold mb-3">Olemasolevad raamatud ({books.length})</h2>
           {loading ? (
             <div className="flex justify-center py-10"><Loader2 className="w-5 h-5 animate-spin" /></div>
