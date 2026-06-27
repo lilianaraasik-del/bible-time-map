@@ -1,0 +1,1 @@
+REVOKE SELECT (file_path) ON public.books FROM anon;
