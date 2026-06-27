@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      book_opens: {
+        Row: {
+          book_id: string | null
+          id: string
+          opened_at: string
+          user_id: string | null
+        }
+        Insert: {
+          book_id?: string | null
+          id?: string
+          opened_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          book_id?: string | null
+          id?: string
+          opened_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_opens_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       books: {
         Row: {
           author: string | null

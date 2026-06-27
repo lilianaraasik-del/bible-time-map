@@ -88,6 +88,15 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Logi avamine (proovi tuvastada kasutaja kui auth header on olemas)
+    let openerUserId: string | null = null;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const { data: u } = await admin.auth.getUser(authHeader.replace("Bearer ", ""));
+      openerUserId = u?.user?.id ?? null;
+    }
+    await admin.from("book_opens").insert({ user_id: openerUserId, book_id: book.id });
+
     // Signeeritud URL — kehtib 5 minutit
     const { data: signed, error: signErr } = await admin.storage
       .from("eraamatud")
