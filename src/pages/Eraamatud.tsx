@@ -100,6 +100,9 @@ function normalizeEpisodeBookUrl(rawBookUrl: string): string {
 export default function Eraamatud() {
   const navigate = useNavigate();
   const { session, loading: authLoading, logout, refreshProfile } = useAuth();
+  const isMobileOrTablet = useIsMobileOrTablet();
+  const previewOnly = !isMobileOrTablet;
+
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
