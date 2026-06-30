@@ -156,10 +156,11 @@ export function EpubReader({ url, title, onClose, previewOnly = false }: EpubRea
             <div className="absolute inset-0 overflow-auto bg-background">
               <div dangerouslySetInnerHTML={{ __html: fallbackHtml }} />
               {previewOnly && !loading && !error && (
-                <div className="sticky bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/95 to-transparent border-t border-border">
-                  <DesktopBlockedOverlayInline />
+                <div className="absolute inset-x-0 bottom-0 z-10">
+                  <DesktopBlockedOverlay variant="after-preview" />
                 </div>
               )}
+
             </div>
           ) : (
             <div className="absolute inset-0" />
