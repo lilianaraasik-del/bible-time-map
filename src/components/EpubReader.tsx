@@ -4,14 +4,19 @@ import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { extractEpubAsHtml } from "@/lib/epubFallback";
 import { proxiedFetch } from "@/lib/proxiedFetch";
+import { DesktopBlockedOverlay } from "@/components/DesktopBlockedOverlay";
+
+const PREVIEW_CHAPTER_LIMIT = 1;
 
 interface EpubReaderProps {
   url: string;
   title: string;
   onClose: () => void;
+  previewOnly?: boolean;
 }
 
-export function EpubReader({ url, title, onClose }: EpubReaderProps) {
+export function EpubReader({ url, title, onClose, previewOnly = false }: EpubReaderProps) {
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fallbackHtml, setFallbackHtml] = useState<string | null>(null);
