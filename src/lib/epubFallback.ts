@@ -115,7 +115,7 @@ function rewriteDocumentLinks(doc: Document, basePath: string, resourceMap: Map<
   });
 }
 
-export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
+export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string, maxChapters?: number) {
   const zip = await JSZip.loadAsync(buffer);
   const containerXml = await zip.file("META-INF/container.xml")?.async("string");
 
