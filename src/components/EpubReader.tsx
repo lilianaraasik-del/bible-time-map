@@ -4,14 +4,19 @@ import { X, Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { extractEpubAsHtml } from "@/lib/epubFallback";
 import { proxiedFetch } from "@/lib/proxiedFetch";
+import { DesktopBlockedOverlay } from "@/components/DesktopBlockedOverlay";
+
+const PREVIEW_CHAPTER_LIMIT = 1;
 
 interface EpubReaderProps {
   url: string;
   title: string;
   onClose: () => void;
+  previewOnly?: boolean;
 }
 
-export function EpubReader({ url, title, onClose }: EpubReaderProps) {
+export function EpubReader({ url, title, onClose, previewOnly = false }: EpubReaderProps) {
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fallbackHtml, setFallbackHtml] = useState<string | null>(null);
@@ -70,7 +75,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         }
 
         log("samm 5: loon EPUB-ist sisemise HTML-vaate");
-        const html = await extractEpubAsHtml(fetchedBuffer, title);
+        const html = await extractEpubAsHtml(fetchedBuffer, title, previewOnly ? PREVIEW_CHAPTER_LIMIT : undefined);
         log("samm 6: HTML fallback valmis", { htmlLength: html.length });
         if (cancelled) return;
         setFallbackHtml(html);
@@ -86,7 +91,7 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
             return res.arrayBuffer();
           }));
           log("samm X.1: teine katse fallback puhver", { bytes: fallbackBuffer.byteLength });
-          const html = await extractEpubAsHtml(fallbackBuffer, title);
+          const html = await extractEpubAsHtml(fallbackBuffer, title, previewOnly ? PREVIEW_CHAPTER_LIMIT : undefined);
           log("samm X.2: teine HTML fallback valmis", html.length);
           if (cancelled) return;
           setFallbackHtml(html);
@@ -119,8 +124,15 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
         className="max-w-none w-screen h-screen p-0 gap-0 rounded-none border-0 flex flex-col [&>button]:hidden"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
-          <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
+        <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border bg-card shrink-0">
+          <div className="min-w-0 flex-1">
+            <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
+            {previewOnly && !loading && !error && (
+              <p className="text-xs text-muted-foreground truncate">
+                Tasuta sissejuhatus · ava mobiilis terve raamatu lugemiseks
+              </p>
+            )}
+          </div>
           <Button variant="ghost" size="icon" onClick={onClose} aria-label="Sulge">
             <X className="h-5 w-5" />
           </Button>
@@ -143,11 +155,18 @@ export function EpubReader({ url, title, onClose }: EpubReaderProps) {
           {fallbackHtml ? (
             <div className="absolute inset-0 overflow-auto bg-background">
               <div dangerouslySetInnerHTML={{ __html: fallbackHtml }} />
+              {previewOnly && !loading && !error && (
+                <div className="absolute inset-x-0 bottom-0 z-10">
+                  <DesktopBlockedOverlay variant="after-preview" />
+                </div>
+              )}
+
             </div>
           ) : (
             <div className="absolute inset-0" />
           )}
         </div>
+
       </DialogContent>
     </Dialog>
   );

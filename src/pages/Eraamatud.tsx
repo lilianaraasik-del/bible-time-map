@@ -43,6 +43,9 @@ import {
   saveOfflineBook,
   useOfflineBooks,
 } from "@/lib/offlineBooks";
+import { useIsMobileOrTablet } from "@/hooks/useIsMobileOrTablet";
+
+
 
 type PlayerState =
   | { kind: "book"; book: EraamatApi; url: string; format: BookFormat }
@@ -97,6 +100,9 @@ function normalizeEpisodeBookUrl(rawBookUrl: string): string {
 export default function Eraamatud() {
   const navigate = useNavigate();
   const { session, loading: authLoading, logout, refreshProfile } = useAuth();
+  const isMobileOrTablet = useIsMobileOrTablet();
+  const previewOnly = !isMobileOrTablet;
+
   const [items, setItems] = useState<EraamatApi[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1100,9 +1106,11 @@ export default function Eraamatud() {
         <EpubReader
           url={player.url}
           title={player.book.title}
+          previewOnly={previewOnly}
           onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
+
 
       {/* Episoodide loend (kui raamatul on mitu peatükki) */}
       {episodeList && (
@@ -1199,8 +1207,10 @@ export default function Eraamatud() {
         <PdfReader
           url={player.url}
           title={player.book.title}
+          previewOnly={previewOnly}
           onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
+
       )}
 
       {/* Audio mängija */}

@@ -115,7 +115,7 @@ function rewriteDocumentLinks(doc: Document, basePath: string, resourceMap: Map<
   });
 }
 
-export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
+export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string, maxChapters?: number) {
   const zip = await JSZip.loadAsync(buffer);
   const containerXml = await zip.file("META-INF/container.xml")?.async("string");
 
@@ -150,7 +150,7 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
   );
 
   const chapterAnchors = new Map<string, string>();
-  const chapterPaths = spineNodes
+  const allChapterPaths = spineNodes
     .map((node, index) => {
       const manifestItem = manifest.get(node.getAttribute("idref") || "");
       if (!manifestItem?.href) return null;
@@ -159,6 +159,13 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string) {
       return { ...manifestItem, anchor };
     })
     .filter((item): item is { href: string; mediaType: string; anchor: string } => Boolean(item));
+
+  // Eelvaates piira peatükkide arvu. Jäta vahele tühjad/kaane-peatükid kuni esimese sisuka peatükini.
+  let chapterPaths = allChapterPaths;
+  if (typeof maxChapters === "number" && maxChapters > 0) {
+    chapterPaths = allChapterPaths.slice(0, maxChapters);
+  }
+
 
   const resourceMap = new Map<string, string>();
 

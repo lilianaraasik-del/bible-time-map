@@ -6,17 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Loader2, ZoomIn, ZoomOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { DesktopBlockedOverlay } from "@/components/DesktopBlockedOverlay";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
+const PREVIEW_PAGE_LIMIT = 3;
 
 interface PdfReaderProps {
   url: string;
   title: string;
   onClose: () => void;
+  previewOnly?: boolean;
 }
 
-export function PdfReader({ url, title, onClose }: PdfReaderProps) {
+export function PdfReader({ url, title, onClose, previewOnly = false }: PdfReaderProps) {
+
   const [numPages, setNumPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
@@ -85,15 +89,19 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
     };
   }, [url]);
 
+  const effectiveMaxPage = previewOnly ? Math.min(numPages, PREVIEW_PAGE_LIMIT) : numPages;
+  const showOverlay = previewOnly && numPages > 0 && page >= effectiveMaxPage;
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") setPage((p) => Math.min(numPages, p + 1));
+      if (e.key === "ArrowRight") setPage((p) => Math.min(effectiveMaxPage, p + 1));
       if (e.key === "ArrowLeft") setPage((p) => Math.max(1, p - 1));
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [numPages, onClose]);
+  }, [effectiveMaxPage, onClose]);
+
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -187,6 +195,9 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
               )}
             </Document>
           )}
+          {showOverlay && (
+            <DesktopBlockedOverlay variant="after-preview" previewPages={PREVIEW_PAGE_LIMIT} />
+          )}
         </div>
 
         {!error && numPages > 0 && (
@@ -201,15 +212,16 @@ export function PdfReader({ url, title, onClose }: PdfReaderProps) {
               <ChevronLeft className="h-5 w-5" />
             </Button>
             <span className="text-sm text-muted-foreground tabular-nums">
-              {page} / {numPages}
+              {page} / {previewOnly ? `${effectiveMaxPage} (eelvaade)` : numPages}
             </span>
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setPage((p) => Math.min(numPages, p + 1))}
-              disabled={page >= numPages}
+              onClick={() => setPage((p) => Math.min(effectiveMaxPage, p + 1))}
+              disabled={page >= effectiveMaxPage}
               aria-label="Järgmine"
             >
+
               <ChevronRight className="h-5 w-5" />
             </Button>
           </footer>
