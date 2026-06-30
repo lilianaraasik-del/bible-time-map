@@ -150,7 +150,7 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string, maxC
   );
 
   const chapterAnchors = new Map<string, string>();
-  const chapterPaths = spineNodes
+  const allChapterPaths = spineNodes
     .map((node, index) => {
       const manifestItem = manifest.get(node.getAttribute("idref") || "");
       if (!manifestItem?.href) return null;
@@ -159,6 +159,13 @@ export async function extractEpubAsHtml(buffer: ArrayBuffer, title: string, maxC
       return { ...manifestItem, anchor };
     })
     .filter((item): item is { href: string; mediaType: string; anchor: string } => Boolean(item));
+
+  // Eelvaates piira peatükkide arvu. Jäta vahele tühjad/kaane-peatükid kuni esimese sisuka peatükini.
+  let chapterPaths = allChapterPaths;
+  if (typeof maxChapters === "number" && maxChapters > 0) {
+    chapterPaths = allChapterPaths.slice(0, maxChapters);
+  }
+
 
   const resourceMap = new Map<string, string>();
 
