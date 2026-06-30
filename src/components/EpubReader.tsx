@@ -91,7 +91,7 @@ export function EpubReader({ url, title, onClose, previewOnly = false }: EpubRea
             return res.arrayBuffer();
           }));
           log("samm X.1: teine katse fallback puhver", { bytes: fallbackBuffer.byteLength });
-          const html = await extractEpubAsHtml(fallbackBuffer, title);
+          const html = await extractEpubAsHtml(fallbackBuffer, title, previewOnly ? PREVIEW_CHAPTER_LIMIT : undefined);
           log("samm X.2: teine HTML fallback valmis", html.length);
           if (cancelled) return;
           setFallbackHtml(html);
