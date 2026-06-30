@@ -89,15 +89,19 @@ export function PdfReader({ url, title, onClose, previewOnly = false }: PdfReade
     };
   }, [url]);
 
+  const effectiveMaxPage = previewOnly ? Math.min(numPages, PREVIEW_PAGE_LIMIT) : numPages;
+  const showOverlay = previewOnly && numPages > 0 && page >= effectiveMaxPage;
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") setPage((p) => Math.min(numPages, p + 1));
+      if (e.key === "ArrowRight") setPage((p) => Math.min(effectiveMaxPage, p + 1));
       if (e.key === "ArrowLeft") setPage((p) => Math.max(1, p - 1));
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [numPages, onClose]);
+  }, [effectiveMaxPage, onClose]);
+
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
