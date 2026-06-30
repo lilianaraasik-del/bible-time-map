@@ -195,6 +195,9 @@ export function PdfReader({ url, title, onClose, previewOnly = false }: PdfReade
               )}
             </Document>
           )}
+          {showOverlay && (
+            <DesktopBlockedOverlay variant="after-preview" previewPages={PREVIEW_PAGE_LIMIT} />
+          )}
         </div>
 
         {!error && numPages > 0 && (
@@ -209,15 +212,16 @@ export function PdfReader({ url, title, onClose, previewOnly = false }: PdfReade
               <ChevronLeft className="h-5 w-5" />
             </Button>
             <span className="text-sm text-muted-foreground tabular-nums">
-              {page} / {numPages}
+              {page} / {previewOnly ? `${effectiveMaxPage} (eelvaade)` : numPages}
             </span>
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setPage((p) => Math.min(numPages, p + 1))}
-              disabled={page >= numPages}
+              onClick={() => setPage((p) => Math.min(effectiveMaxPage, p + 1))}
+              disabled={page >= effectiveMaxPage}
               aria-label="Järgmine"
             >
+
               <ChevronRight className="h-5 w-5" />
             </Button>
           </footer>
