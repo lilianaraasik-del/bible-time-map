@@ -75,7 +75,7 @@ export function EpubReader({ url, title, onClose, previewOnly = false }: EpubRea
         }
 
         log("samm 5: loon EPUB-ist sisemise HTML-vaate");
-        const html = await extractEpubAsHtml(fetchedBuffer, title);
+        const html = await extractEpubAsHtml(fetchedBuffer, title, previewOnly ? PREVIEW_CHAPTER_LIMIT : undefined);
         log("samm 6: HTML fallback valmis", { htmlLength: html.length });
         if (cancelled) return;
         setFallbackHtml(html);
