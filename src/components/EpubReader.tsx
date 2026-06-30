@@ -124,8 +124,15 @@ export function EpubReader({ url, title, onClose, previewOnly = false }: EpubRea
         className="max-w-none w-screen h-screen p-0 gap-0 rounded-none border-0 flex flex-col [&>button]:hidden"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
-          <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
+        <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border bg-card shrink-0">
+          <div className="min-w-0 flex-1">
+            <h2 className="font-serif text-lg font-semibold truncate">{title}</h2>
+            {previewOnly && !loading && !error && (
+              <p className="text-xs text-muted-foreground truncate">
+                Tasuta sissejuhatus · ava mobiilis terve raamatu lugemiseks
+              </p>
+            )}
+          </div>
           <Button variant="ghost" size="icon" onClick={onClose} aria-label="Sulge">
             <X className="h-5 w-5" />
           </Button>
@@ -148,11 +155,17 @@ export function EpubReader({ url, title, onClose, previewOnly = false }: EpubRea
           {fallbackHtml ? (
             <div className="absolute inset-0 overflow-auto bg-background">
               <div dangerouslySetInnerHTML={{ __html: fallbackHtml }} />
+              {previewOnly && !loading && !error && (
+                <div className="sticky bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/95 to-transparent border-t border-border">
+                  <DesktopBlockedOverlayInline />
+                </div>
+              )}
             </div>
           ) : (
             <div className="absolute inset-0" />
           )}
         </div>
+
       </DialogContent>
     </Dialog>
   );
