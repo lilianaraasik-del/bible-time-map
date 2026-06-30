@@ -1207,8 +1207,10 @@ export default function Eraamatud() {
         <PdfReader
           url={player.url}
           title={player.book.title}
+          previewOnly={previewOnly}
           onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
+
       )}
 
       {/* Audio mängija */}
