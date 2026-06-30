@@ -1106,9 +1106,11 @@ export default function Eraamatud() {
         <EpubReader
           url={player.url}
           title={player.book.title}
+          previewOnly={previewOnly}
           onClose={() => { setPlayer(null); setPlayerBlobUrl(null); }}
         />
       )}
+
 
       {/* Episoodide loend (kui raamatul on mitu peatükki) */}
       {episodeList && (
