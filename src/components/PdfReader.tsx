@@ -6,17 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Loader2, ZoomIn, ZoomOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { DesktopBlockedOverlay } from "@/components/DesktopBlockedOverlay";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
+const PREVIEW_PAGE_LIMIT = 3;
 
 interface PdfReaderProps {
   url: string;
   title: string;
   onClose: () => void;
+  previewOnly?: boolean;
 }
 
-export function PdfReader({ url, title, onClose }: PdfReaderProps) {
+export function PdfReader({ url, title, onClose, previewOnly = false }: PdfReaderProps) {
+
   const [numPages, setNumPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
