@@ -132,7 +132,7 @@ export default function AdminEraamatud() {
     setLoading(true);
     const { data, error } = await supabase
       .from("books")
-      .select("*")
+      .select("id, slug, title, description, author, language, cover_path, format, is_free, sort_order, published_at")
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
     if (error) toast({ title: "Viga", description: error.message, variant: "destructive" });
