@@ -65,18 +65,62 @@ async function tx<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => ID
   });
 }
 
+// iOS/WebKit bug: Blob objects stored in IndexedDB become unreadable when read back
+// (https://bugs.webkit.org/show_bug.cgi?id=182085). We store the raw ArrayBuffer + mime
+// and reconstruct the Blob on read to work reliably on iOS Safari and PWA.
+interface StoredRecord {
+  key: string;
+  bookId: string;
+  episodeId: string;
+  title: string;
+  episodeName?: string;
+  format: BookFormat;
+  buffer: ArrayBuffer;
+  mime: string;
+  size: number;
+  savedAt: number;
+}
+
 export async function saveOfflineBook(record: Omit<OfflineBookRecord, "savedAt" | "size">): Promise<void> {
-  const full: OfflineBookRecord = {
-    ...record,
-    size: record.blob.size,
+  const buffer = await record.blob.arrayBuffer();
+  const stored: StoredRecord = {
+    key: record.key,
+    bookId: record.bookId,
+    episodeId: record.episodeId,
+    title: record.title,
+    episodeName: record.episodeName,
+    format: record.format,
+    buffer,
+    mime: record.blob.type || (record.format === "pdf" ? "application/pdf" : "application/epub+zip"),
+    size: buffer.byteLength,
     savedAt: Date.now(),
   };
-  await tx("readwrite", (store) => store.put(full));
+  await tx("readwrite", (store) => store.put(stored));
 }
 
 export async function getOfflineBook(key: string): Promise<OfflineBookRecord | null> {
-  const res = await tx<OfflineBookRecord | undefined>("readonly", (store) => store.get(key) as IDBRequest<OfflineBookRecord | undefined>);
-  return res ?? null;
+  const res = await tx<StoredRecord | OfflineBookRecord | undefined>(
+    "readonly",
+    (store) => store.get(key) as IDBRequest<StoredRecord | OfflineBookRecord | undefined>
+  );
+  if (!res) return null;
+  // Support both new (buffer) and legacy (blob) records
+  if ("buffer" in res && res.buffer) {
+    const s = res as StoredRecord;
+    const blob = new Blob([s.buffer], { type: s.mime });
+    return {
+      key: s.key,
+      bookId: s.bookId,
+      episodeId: s.episodeId,
+      title: s.title,
+      episodeName: s.episodeName,
+      format: s.format,
+      blob,
+      size: s.size,
+      savedAt: s.savedAt,
+    };
+  }
+  return res as OfflineBookRecord;
 }
 
 export async function deleteOfflineBook(key: string): Promise<void> {
