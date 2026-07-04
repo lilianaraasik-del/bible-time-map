@@ -21,7 +21,7 @@ interface BookRow {
   author: string | null;
   language: string;
   cover_path: string | null;
-  file_path: string;
+  file_path?: string;
   format: string;
   is_free: boolean;
   sort_order: number;
