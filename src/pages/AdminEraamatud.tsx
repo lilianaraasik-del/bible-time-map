@@ -21,7 +21,7 @@ interface BookRow {
   author: string | null;
   language: string;
   cover_path: string | null;
-  file_path: string;
+  file_path?: string;
   format: string;
   is_free: boolean;
   sort_order: number;
@@ -132,7 +132,7 @@ export default function AdminEraamatud() {
     setLoading(true);
     const { data, error } = await supabase
       .from("books")
-      .select("*")
+      .select("id, slug, title, description, author, language, cover_path, format, is_free, sort_order, published_at")
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
     if (error) toast({ title: "Viga", description: error.message, variant: "destructive" });
@@ -204,9 +204,14 @@ export default function AdminEraamatud() {
   const onDelete = async (book: BookRow) => {
     if (!confirm(`Kustutada "${book.title}"?`)) return;
     try {
-      const paths = [book.file_path];
+      // file_path is admin-only via secure function (not exposed to normal clients)
+      const { data: filePath, error: rpcErr } = await supabase
+        .rpc("admin_get_book_file_path", { _book_id: book.id });
+      if (rpcErr) throw rpcErr;
+      const paths: string[] = [];
+      if (filePath) paths.push(filePath as string);
       if (book.cover_path) paths.push(book.cover_path);
-      await supabase.storage.from("eraamatud").remove(paths);
+      if (paths.length) await supabase.storage.from("eraamatud").remove(paths);
       const { error } = await supabase.from("books").delete().eq("id", book.id);
       if (error) throw error;
       toast({ title: "Kustutatud" });
