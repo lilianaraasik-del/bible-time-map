@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/Navigation";
-import { supabase } from "@/integrations/supabase/client";
 import { CommentaryView } from "@/components/CommentaryView";
 
 interface CommentaryRow {
@@ -31,37 +30,26 @@ const Kommentaar = () => {
       if (!book) return;
       setLoading(true);
       const lang = (["et", "en", "ru"].includes(i18n.language) ? i18n.language : "et");
-      // Try current language first
-      let { data, error } = await supabase
-        .from("commentaries")
-        .select("*")
-        .eq("book_slug", book)
-        .eq("language", lang)
-        .order("section", { ascending: true });
-
-      // Fallback to English, then Estonian, if nothing for current lang
-      if ((!data || data.length === 0) && lang !== "en") {
-        const fallback = await supabase
-          .from("commentaries")
-          .select("*")
-          .eq("book_slug", book)
-          .eq("language", "en")
-          .order("section", { ascending: true });
-        if (fallback.data && fallback.data.length > 0) data = fallback.data;
-      }
-      if ((!data || data.length === 0) && lang !== "et") {
-        const fallback = await supabase
-          .from("commentaries")
-          .select("*")
-          .eq("book_slug", book)
-          .eq("language", "et")
-          .order("section", { ascending: true });
-        if (fallback.data && fallback.data.length > 0) data = fallback.data;
+      // Classical introductions are publicly readable static content.
+      // A versioned JSON file is published alongside this site, with no database dependency.
+      let data: CommentaryRow[] = [];
+      let loadError: Error | null = null;
+      try {
+        const response = await fetch("/data/commentaries.json");
+        if (!response.ok) throw new Error(`Commentary data HTTP ${response.status}`);
+        const all = await response.json() as Record<string, Record<string, CommentaryRow[]>>;
+        const byLanguage = all[book] ?? {};
+        data = byLanguage[lang]?.length ? byLanguage[lang]
+          : byLanguage.en?.length ? byLanguage.en
+          : byLanguage.et ?? [];
+        data = [...data].sort((a, b) => a.section.localeCompare(b.section));
+      } catch (err) {
+        loadError = err instanceof Error ? err : new Error(String(err));
       }
 
       if (!cancelled) {
-        if (error) console.error(error);
-        setRows(data ?? []);
+        if (loadError) console.error("Classical introductions failed to load:", loadError);
+        setRows(data);
         setLoading(false);
       }
     }
